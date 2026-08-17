@@ -1,0 +1,14 @@
+{
+  "name": "Flash Crush-Files",
+  "short_name": "Flash Crush-Files",
+  "description": "Free browser-based PDF and image compressor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f4ff",
+  "theme_color": "#a855f7",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "categories": ["utilities", "productivity"]
+}

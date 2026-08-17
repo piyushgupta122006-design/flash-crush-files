@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://nanocrush.vercel.app/sitemap.xml
+
+# Block nothing — all pages are public
