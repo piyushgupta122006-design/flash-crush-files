@@ -9,8 +9,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithCredential,
   signOut as fbSignOut,
   onAuthStateChanged,
 } from "firebase/auth";
@@ -70,10 +69,6 @@ export function useAuth() {
   const gapiPickerReadyRef = useRef(false);
 
   useEffect(() => {
-    getRedirectResult(auth).catch((err) => {
-      console.warn("Redirect result error:", err);
-    });
-
     const unsub = onAuthStateChanged(auth, (fbUser) => {
       if (fbUser) {
         setUser({
@@ -93,16 +88,25 @@ export function useAuth() {
     return unsub;
   }, []);
 
+  const ensureGisReady = useCallback(async () => {
+    if (gisReadyRef.current && window.google?.accounts) return;
+    await loadScript("gis-script", "https://accounts.google.com/gsi/client");
+    gisReadyRef.current = true;
+  }, []);
+
   const signIn = useCallback(async () => {
     setAuthStatus("loading");
     setAuthError(null);
+
+    // 1. Primary: Direct Firebase Popup
     try {
       const provider = new GoogleAuthProvider();
-      provider.addScope("email");
-      provider.addScope("profile");
-      await signInWithPopup(auth, provider);
-      setAuthStatus("signedin");
-      return true;
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, provider);
+      if (result?.user) {
+        setAuthStatus("signedin");
+        return true;
+      }
     } catch (err) {
       if (
         err.code === "auth/popup-closed-by-user" ||
@@ -111,25 +115,50 @@ export function useAuth() {
         setAuthStatus("idle");
         return false;
       }
-      if (err.code === "auth/popup-blocked") {
-        // Fallback to redirect sign-in if popup is blocked by browser
+
+      // 2. If popup is blocked by browser, try Google Identity Services prompt
+      if (err.code === "auth/popup-blocked" || err.message?.includes("popup")) {
         try {
-          const provider = new GoogleAuthProvider();
-          provider.addScope("email");
-          provider.addScope("profile");
-          await signInWithRedirect(auth, provider);
-          return true;
+          await ensureGisReady();
+          if (window.google?.accounts?.id) {
+            return new Promise((resolve) => {
+              window.google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: async (response) => {
+                  if (response.credential) {
+                    try {
+                      const credential = GoogleAuthProvider.credential(response.credential);
+                      await signInWithCredential(auth, credential);
+                      setAuthStatus("signedin");
+                      resolve(true);
+                      return;
+                    } catch (e) {
+                      setAuthError(e.message || "Credential sign-in failed.");
+                    }
+                  }
+                  setAuthStatus("error");
+                  resolve(false);
+                },
+              });
+              window.google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed()) {
+                  setAuthError("Pop-up blocked. Please allow pop-ups for this site in your browser URL bar.");
+                  setAuthStatus("error");
+                  resolve(false);
+                }
+              });
+            });
+          }
         } catch {
-          setAuthError("Pop-up blocked. Please allow pop-ups for this site.");
-          setAuthStatus("error");
-          return false;
+          // fallback
         }
       }
+
       setAuthError(err.message || "Sign-in failed.");
       setAuthStatus("error");
       return false;
     }
-  }, []);
+  }, [ensureGisReady]);
 
   const signOut = useCallback(async () => {
     driveTokenRef.current = { accessToken: null, expiresAt: 0 };
