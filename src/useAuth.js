@@ -9,6 +9,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut as fbSignOut,
   onAuthStateChanged,
 } from "firebase/auth";
@@ -68,6 +70,10 @@ export function useAuth() {
   const gapiPickerReadyRef = useRef(false);
 
   useEffect(() => {
+    getRedirectResult(auth).catch((err) => {
+      console.warn("Redirect result error:", err);
+    });
+
     const unsub = onAuthStateChanged(auth, (fbUser) => {
       if (fbUser) {
         setUser({
@@ -104,6 +110,20 @@ export function useAuth() {
       ) {
         setAuthStatus("idle");
         return false;
+      }
+      if (err.code === "auth/popup-blocked") {
+        // Fallback to redirect sign-in if popup is blocked by browser
+        try {
+          const provider = new GoogleAuthProvider();
+          provider.addScope("email");
+          provider.addScope("profile");
+          await signInWithRedirect(auth, provider);
+          return true;
+        } catch {
+          setAuthError("Pop-up blocked. Please allow pop-ups for this site.");
+          setAuthStatus("error");
+          return false;
+        }
       }
       setAuthError(err.message || "Sign-in failed.");
       setAuthStatus("error");
