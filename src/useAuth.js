@@ -69,6 +69,14 @@ export function useAuth() {
   const gapiPickerReadyRef = useRef(false);
 
   useEffect(() => {
+    // Preload GIS & GAPI scripts immediately on mount
+    loadScript("gis-script", "https://accounts.google.com/gsi/client")
+      .then(() => { gisReadyRef.current = true; })
+      .catch(() => {});
+    loadGapiPicker()
+      .then(() => { gapiPickerReadyRef.current = true; })
+      .catch(() => {});
+
     const unsub = onAuthStateChanged(auth, (fbUser) => {
       if (fbUser) {
         setUser({
@@ -89,7 +97,7 @@ export function useAuth() {
   }, []);
 
   const ensureGisReady = useCallback(async () => {
-    if (gisReadyRef.current && window.google?.accounts) return;
+    if (gisReadyRef.current && window.google?.accounts?.oauth2) return;
     await loadScript("gis-script", "https://accounts.google.com/gsi/client");
     gisReadyRef.current = true;
   }, []);
@@ -183,37 +191,41 @@ export function useAuth() {
       return tokenInfo.accessToken;
     }
 
-    if (!auth.currentUser?.email) {
-      const ok = await signIn();
-      if (!ok || !auth.currentUser?.email) {
-        throw new Error("Please sign in with Google to access Drive.");
-      }
-    }
-
     await ensureGisReady();
 
     return new Promise((resolve, reject) => {
-      const client = window.google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope: DRIVE_SCOPE,
-        login_hint: auth.currentUser?.email || "",
-        callback: (resp) => {
-          if (resp.error || !resp.access_token) {
-            reject(new Error(resp.error || "Failed to get Drive token."));
-            return;
-          }
-          const expiresInMs = (resp.expires_in || 3600) * 1000;
-          driveTokenRef.current = {
-            accessToken: resp.access_token,
-            expiresAt: Date.now() + expiresInMs,
-          };
-          gisClientRef.current = client;
-          resolve(resp.access_token);
-        },
-      });
-      client.requestAccessToken({ prompt: "" });
+      try {
+        if (!window.google?.accounts?.oauth2) {
+          reject(new Error("Google Identity library not loaded yet."));
+          return;
+        }
+
+        const client = window.google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: DRIVE_SCOPE,
+          hint: auth.currentUser?.email || "",
+          callback: (resp) => {
+            if (resp.error || !resp.access_token) {
+              reject(new Error(resp.error_description || resp.error || "Failed to get Drive permission."));
+              return;
+            }
+            const expiresInMs = (resp.expires_in || 3600) * 1000;
+            driveTokenRef.current = {
+              accessToken: resp.access_token,
+              expiresAt: Date.now() + expiresInMs,
+            };
+            gisClientRef.current = client;
+            resolve(resp.access_token);
+          },
+        });
+
+        // Request token directly with consent or prompt
+        client.requestAccessToken({ prompt: "" });
+      } catch (err) {
+        reject(err);
+      }
     });
-  }, [ensureGisReady, signIn]);
+  }, [ensureGisReady]);
 
   const fetchWithDriveAuth = useCallback(
     async (url, options = {}, retry401 = true) => {
