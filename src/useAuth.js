@@ -166,12 +166,6 @@ export function useAuth() {
     await fbSignOut(auth);
   }, []);
 
-  const ensureGisReady = useCallback(async () => {
-    if (gisReadyRef.current && window.google?.accounts?.oauth2) return;
-    await loadScript("gis-script", "https://accounts.google.com/gsi/client");
-    gisReadyRef.current = true;
-  }, []);
-
   const ensurePickerReady = useCallback(async () => {
     if (gapiPickerReadyRef.current && window.google?.picker) return;
     await loadGapiPicker();
