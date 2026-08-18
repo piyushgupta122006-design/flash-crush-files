@@ -9,6 +9,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithCredential,
   signOut as fbSignOut,
   onAuthStateChanged,
@@ -97,6 +99,25 @@ export function useAuth() {
   const gapiPickerReadyRef = useRef(false);
 
   useEffect(() => {
+    // Check for redirect result when returning from Google login
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          if (credential?.accessToken) {
+            const tokenData = {
+              accessToken: credential.accessToken,
+              expiresAt: Date.now() + 3500 * 1000,
+            };
+            driveTokenRef.current = tokenData;
+            saveDriveToken(tokenData);
+            console.log("[FlashCrush] Drive token saved from redirect login ✓");
+          }
+          setAuthStatus("signedin");
+        }
+      })
+      .catch(() => {});
+
     // Preload GIS & GAPI scripts immediately on mount
     loadScript("gis-script", "https://accounts.google.com/gsi/client")
       .then(() => { gisReadyRef.current = true; })
@@ -135,11 +156,12 @@ export function useAuth() {
     setAuthStatus("loading");
     setAuthError(null);
 
+    const provider = new GoogleAuthProvider();
+    provider.addScope("https://www.googleapis.com/auth/drive.file");
+    provider.addScope("https://www.googleapis.com/auth/drive.readonly");
+    provider.setCustomParameters({ prompt: "select_account" });
+
     try {
-      const provider = new GoogleAuthProvider();
-      provider.addScope("https://www.googleapis.com/auth/drive.file");
-      provider.addScope("https://www.googleapis.com/auth/drive.readonly");
-      provider.setCustomParameters({ prompt: "select_account" });
       const result = await signInWithPopup(auth, provider);
       if (result?.user) {
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -162,6 +184,19 @@ export function useAuth() {
       ) {
         setAuthStatus("idle");
         return false;
+      }
+
+      // If popup is blocked by browser (e.g. Edge), automatically redirect to sign in!
+      if (err.code === "auth/popup-blocked" || err.message?.includes("popup")) {
+        console.log("[FlashCrush] Popup blocked by browser, switching to redirect login...");
+        try {
+          await signInWithRedirect(auth, provider);
+          return true;
+        } catch (redirectErr) {
+          setAuthError(redirectErr.message || "Redirect sign-in failed.");
+          setAuthStatus("error");
+          return false;
+        }
       }
 
       setAuthError(err.message || "Sign-in failed.");
