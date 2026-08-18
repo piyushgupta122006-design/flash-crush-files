@@ -106,12 +106,22 @@ export function useAuth() {
     setAuthStatus("loading");
     setAuthError(null);
 
-    // 1. Primary: Direct Firebase Popup
+    // Primary: Firebase Popup WITH Drive scopes included
     try {
       const provider = new GoogleAuthProvider();
+      provider.addScope("https://www.googleapis.com/auth/drive.file");
+      provider.addScope("https://www.googleapis.com/auth/drive.readonly");
       provider.setCustomParameters({ prompt: "select_account" });
       const result = await signInWithPopup(auth, provider);
       if (result?.user) {
+        // Extract the OAuth access token from the sign-in result
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (credential?.accessToken) {
+          driveTokenRef.current = {
+            accessToken: credential.accessToken,
+            expiresAt: Date.now() + 3500 * 1000, // ~58 minutes
+          };
+        }
         setAuthStatus("signedin");
         return true;
       }
@@ -124,7 +134,7 @@ export function useAuth() {
         return false;
       }
 
-      // 2. If popup is blocked by browser, try Google Identity Services prompt
+      // Fallback: Google Identity Services prompt (for popup-blocked)
       if (err.code === "auth/popup-blocked" || err.message?.includes("popup")) {
         try {
           await ensureGisReady();
@@ -187,14 +197,17 @@ export function useAuth() {
   const getToken = useCallback(async () => {
     const now = Date.now();
     const tokenInfo = driveTokenRef.current;
+
+    // Return cached token if it's still valid
     if (tokenInfo.accessToken && tokenInfo.expiresAt - 30_000 > now) {
       return tokenInfo.accessToken;
     }
 
+    // Token expired or missing — try GIS token client as fallback
     await ensureGisReady();
 
     if (!window.google?.accounts?.oauth2) {
-      throw new Error("Google Identity library not loaded yet.");
+      throw new Error("Google Identity library not loaded. Please sign out and sign in again.");
     }
 
     return new Promise((resolve, reject) => {
@@ -211,7 +224,6 @@ export function useAuth() {
         resolve(resp.access_token);
       };
 
-      // Reuse existing client or create a new one
       if (!gisClientRef.current) {
         gisClientRef.current = window.google.accounts.oauth2.initTokenClient({
           client_id: GOOGLE_CLIENT_ID,
@@ -219,27 +231,22 @@ export function useAuth() {
           hint: auth.currentUser?.email || "",
           callback: tokenCallback,
           error_callback: (err) => {
-            // Popup was blocked by the browser
+            // Token expired and popup blocked — user must re-sign in
             reject(new Error(
-              "Pop-up blocked! Please allow pop-ups for this site:\n" +
-              "Click the 🔒 icon in the address bar → Site settings → Pop-ups → Allow"
+              "Drive session expired. Please sign out and sign in again to refresh."
             ));
           },
         });
       } else {
-        // Update callback on existing client
         gisClientRef.current.callback = tokenCallback;
         gisClientRef.current.error_callback = (err) => {
           reject(new Error(
-            "Pop-up blocked! Please allow pop-ups for this site:\n" +
-            "Click the 🔒 icon in the address bar → Site settings → Pop-ups → Allow"
+            "Drive session expired. Please sign out and sign in again to refresh."
           ));
         };
       }
 
-      gisClientRef.current.requestAccessToken({
-        prompt: tokenInfo.accessToken ? "" : "consent",
-      });
+      gisClientRef.current.requestAccessToken({ prompt: "" });
     });
   }, [ensureGisReady]);
 
