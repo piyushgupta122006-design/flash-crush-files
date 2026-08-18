@@ -58,12 +58,40 @@ function loadGapiPicker() {
   });
 }
 
+// ── sessionStorage helpers for Drive token persistence ────────────────────────
+const DRIVE_TOKEN_KEY = "fc_drive_token";
+
+function saveDriveToken(tokenData) {
+  try {
+    sessionStorage.setItem(DRIVE_TOKEN_KEY, JSON.stringify(tokenData));
+  } catch { /* quota or private mode */ }
+}
+
+function loadDriveToken() {
+  try {
+    const raw = sessionStorage.getItem(DRIVE_TOKEN_KEY);
+    if (!raw) return { accessToken: null, expiresAt: 0 };
+    const parsed = JSON.parse(raw);
+    // Only return if not expired
+    if (parsed.accessToken && parsed.expiresAt > Date.now() + 30_000) {
+      return parsed;
+    }
+    sessionStorage.removeItem(DRIVE_TOKEN_KEY);
+  } catch { /* ignore */ }
+  return { accessToken: null, expiresAt: 0 };
+}
+
+function clearDriveTokenStorage() {
+  try { sessionStorage.removeItem(DRIVE_TOKEN_KEY); } catch { /* ignore */ }
+}
+
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [authStatus, setAuthStatus] = useState("idle");
   const [authError, setAuthError] = useState(null);
 
-  const driveTokenRef = useRef({ accessToken: null, expiresAt: 0 });
+  // Initialize from sessionStorage so token survives page refresh
+  const driveTokenRef = useRef(loadDriveToken());
   const gisClientRef = useRef(null);
   const gisReadyRef = useRef(false);
   const gapiPickerReadyRef = useRef(false);
@@ -89,6 +117,7 @@ export function useAuth() {
       } else {
         setUser(null);
         driveTokenRef.current = { accessToken: null, expiresAt: 0 };
+        clearDriveTokenStorage();
         gisClientRef.current = null;
         setAuthStatus("idle");
       }
@@ -117,10 +146,12 @@ export function useAuth() {
         // Extract the OAuth access token from the sign-in result
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if (credential?.accessToken) {
-          driveTokenRef.current = {
+          const tokenData = {
             accessToken: credential.accessToken,
             expiresAt: Date.now() + 3500 * 1000, // ~58 minutes
           };
+          driveTokenRef.current = tokenData;
+          saveDriveToken(tokenData);
         }
         setAuthStatus("signedin");
         return true;
@@ -180,6 +211,7 @@ export function useAuth() {
 
   const signOut = useCallback(async () => {
     driveTokenRef.current = { accessToken: null, expiresAt: 0 };
+    clearDriveTokenStorage();
     gisClientRef.current = null;
     await fbSignOut(auth);
   }, []);
@@ -192,6 +224,7 @@ export function useAuth() {
 
   const clearDriveToken = useCallback(() => {
     driveTokenRef.current = { accessToken: null, expiresAt: 0 };
+    clearDriveTokenStorage();
   }, []);
 
   const getToken = useCallback(async () => {
@@ -217,10 +250,12 @@ export function useAuth() {
           return;
         }
         const expiresInMs = (resp.expires_in || 3600) * 1000;
-        driveTokenRef.current = {
+        const tokenData = {
           accessToken: resp.access_token,
           expiresAt: Date.now() + expiresInMs,
         };
+        driveTokenRef.current = tokenData;
+        saveDriveToken(tokenData);
         resolve(resp.access_token);
       };
 
