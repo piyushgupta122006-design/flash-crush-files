@@ -106,9 +106,10 @@ export default function PDFCompressor({ auth }) {
   const handleDrivePick = async () => {
     setPickLoading(true);
     try {
-      await auth.pickFromDrive(["application/pdf"], (f) => handleFile(f));
-    } catch {
-      setErrorMsg("Could not import from Drive. Try again."); setStage("error");
+      const token = await auth.getToken();
+      await auth.pickFromDrive(["application/pdf"], (f) => handleFile(f), token);
+    } catch (err) {
+      setErrorMsg(err.message || "Could not import from Drive. Try again."); setStage("error");
     } finally { setPickLoading(false); }
   };
 

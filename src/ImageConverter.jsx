@@ -97,9 +97,10 @@ export default function ImageConverter({ auth }) {
   const handleDrivePick = async () => {
     setPickLoading(true);
     try {
-      await auth.pickFromDrive(ACCEPTED_TYPES, (pickedFile) => handleFile(pickedFile));
-    } catch {
-      setErrorMsg("Could not import from Drive. Try again.");
+      const token = await auth.getToken();
+      await auth.pickFromDrive(ACCEPTED_TYPES, (pickedFile) => handleFile(pickedFile), token);
+    } catch (err) {
+      setErrorMsg(err.message || "Could not import from Drive. Try again.");
       setStage("error");
     } finally {
       setPickLoading(false);

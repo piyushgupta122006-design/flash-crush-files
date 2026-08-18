@@ -130,11 +130,12 @@ export default function ImageToPDF({ auth }) {
   const handleDrivePick = async () => {
     setPickLoading(true);
     try {
+      const token = await auth.getToken();
       await auth.pickFromDrive(ACCEPTED, (pickedFile) => {
         addFiles([pickedFile]);
-      });
-    } catch {
-      setErrorMsg("Could not import from Drive. Try again.");
+      }, token);
+    } catch (err) {
+      setErrorMsg(err.message || "Could not import from Drive. Try again.");
       setStage("error");
     } finally {
       setPickLoading(false);

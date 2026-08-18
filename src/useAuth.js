@@ -193,37 +193,53 @@ export function useAuth() {
 
     await ensureGisReady();
 
+    if (!window.google?.accounts?.oauth2) {
+      throw new Error("Google Identity library not loaded yet.");
+    }
+
     return new Promise((resolve, reject) => {
-      try {
-        if (!window.google?.accounts?.oauth2) {
-          reject(new Error("Google Identity library not loaded yet."));
+      const tokenCallback = (resp) => {
+        if (resp.error || !resp.access_token) {
+          reject(new Error(resp.error_description || resp.error || "Failed to get Drive permission."));
           return;
         }
+        const expiresInMs = (resp.expires_in || 3600) * 1000;
+        driveTokenRef.current = {
+          accessToken: resp.access_token,
+          expiresAt: Date.now() + expiresInMs,
+        };
+        resolve(resp.access_token);
+      };
 
-        const client = window.google.accounts.oauth2.initTokenClient({
+      // Reuse existing client or create a new one
+      if (!gisClientRef.current) {
+        gisClientRef.current = window.google.accounts.oauth2.initTokenClient({
           client_id: GOOGLE_CLIENT_ID,
           scope: DRIVE_SCOPE,
           hint: auth.currentUser?.email || "",
-          callback: (resp) => {
-            if (resp.error || !resp.access_token) {
-              reject(new Error(resp.error_description || resp.error || "Failed to get Drive permission."));
-              return;
-            }
-            const expiresInMs = (resp.expires_in || 3600) * 1000;
-            driveTokenRef.current = {
-              accessToken: resp.access_token,
-              expiresAt: Date.now() + expiresInMs,
-            };
-            gisClientRef.current = client;
-            resolve(resp.access_token);
+          callback: tokenCallback,
+          error_callback: (err) => {
+            // Popup was blocked by the browser
+            reject(new Error(
+              "Pop-up blocked! Please allow pop-ups for this site:\n" +
+              "Click the 🔒 icon in the address bar → Site settings → Pop-ups → Allow"
+            ));
           },
         });
-
-        // Request token directly with consent or prompt
-        client.requestAccessToken({ prompt: "" });
-      } catch (err) {
-        reject(err);
+      } else {
+        // Update callback on existing client
+        gisClientRef.current.callback = tokenCallback;
+        gisClientRef.current.error_callback = (err) => {
+          reject(new Error(
+            "Pop-up blocked! Please allow pop-ups for this site:\n" +
+            "Click the 🔒 icon in the address bar → Site settings → Pop-ups → Allow"
+          ));
+        };
       }
+
+      gisClientRef.current.requestAccessToken({
+        prompt: tokenInfo.accessToken ? "" : "consent",
+      });
     });
   }, [ensureGisReady]);
 
@@ -272,8 +288,8 @@ export function useAuth() {
     return res.json();
   }, [fetchWithDriveAuth]);
 
-  const pickFromDrive = useCallback(async (mimeTypes, onFilePicked) => {
-    const token = await getToken();
+  const pickFromDrive = useCallback(async (mimeTypes, onFilePicked, preToken) => {
+    const token = preToken || await getToken();
     await ensurePickerReady();
 
     return new Promise((resolve) => {
