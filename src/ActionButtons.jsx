@@ -72,6 +72,8 @@ async function pickDriveFolder(auth) {
       const picker = new window.google.picker.PickerBuilder()
         .setOAuthToken(token)
         .setDeveloperKey(GOOGLE_API_KEY)
+        .setAppId("564511509147")
+        .setOrigin(window.location.origin)
         .setTitle("Choose a folder to save your file")
         .addView(folderView)
         .setCallback((data) => {

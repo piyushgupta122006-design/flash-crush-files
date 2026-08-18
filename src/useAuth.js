@@ -280,6 +280,8 @@ export function useAuth() {
       const picker = new window.google.picker.PickerBuilder()
         .setOAuthToken(token)
         .setDeveloperKey(GOOGLE_API_KEY)
+        .setAppId("564511509147")
+        .setOrigin(window.location.origin)
         .setTitle("Select a file from your Google Drive")
         .addView(
           new window.google.picker.DocsView()
