@@ -145,6 +145,8 @@ export function useAuth() {
       if (result?.user) {
         // Extract the OAuth access token from the sign-in result
         const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log("[FlashCrush] Sign-in credential:", credential ? "found" : "null");
+        console.log("[FlashCrush] Access token:", credential?.accessToken ? "yes (" + credential.accessToken.substring(0, 10) + "...)" : "NO");
         if (credential?.accessToken) {
           const tokenData = {
             accessToken: credential.accessToken,
@@ -152,6 +154,7 @@ export function useAuth() {
           };
           driveTokenRef.current = tokenData;
           saveDriveToken(tokenData);
+          console.log("[FlashCrush] Drive token saved ✓");
         }
         setAuthStatus("signedin");
         return true;
@@ -233,57 +236,26 @@ export function useAuth() {
 
     // Return cached token if it's still valid
     if (tokenInfo.accessToken && tokenInfo.expiresAt - 30_000 > now) {
+      console.log("[FlashCrush] Using cached Drive token, expires in", 
+        Math.round((tokenInfo.expiresAt - now) / 60000), "min");
       return tokenInfo.accessToken;
     }
 
-    // Token expired or missing — try GIS token client as fallback
-    await ensureGisReady();
-
-    if (!window.google?.accounts?.oauth2) {
-      throw new Error("Google Identity library not loaded. Please sign out and sign in again.");
+    // Token expired or missing — re-sign in using Firebase popup (works in Edge!)
+    console.log("[FlashCrush] Drive token missing/expired, requesting sign-in...");
+    const ok = await signIn();
+    if (!ok) {
+      throw new Error("Sign-in required to access Google Drive.");
     }
 
-    return new Promise((resolve, reject) => {
-      const tokenCallback = (resp) => {
-        if (resp.error || !resp.access_token) {
-          reject(new Error(resp.error_description || resp.error || "Failed to get Drive permission."));
-          return;
-        }
-        const expiresInMs = (resp.expires_in || 3600) * 1000;
-        const tokenData = {
-          accessToken: resp.access_token,
-          expiresAt: Date.now() + expiresInMs,
-        };
-        driveTokenRef.current = tokenData;
-        saveDriveToken(tokenData);
-        resolve(resp.access_token);
-      };
+    // After signIn, the token should be stored in driveTokenRef
+    if (driveTokenRef.current.accessToken) {
+      console.log("[FlashCrush] Got Drive token from sign-in ✓");
+      return driveTokenRef.current.accessToken;
+    }
 
-      if (!gisClientRef.current) {
-        gisClientRef.current = window.google.accounts.oauth2.initTokenClient({
-          client_id: GOOGLE_CLIENT_ID,
-          scope: DRIVE_SCOPE,
-          hint: auth.currentUser?.email || "",
-          callback: tokenCallback,
-          error_callback: (err) => {
-            // Token expired and popup blocked — user must re-sign in
-            reject(new Error(
-              "Drive session expired. Please sign out and sign in again to refresh."
-            ));
-          },
-        });
-      } else {
-        gisClientRef.current.callback = tokenCallback;
-        gisClientRef.current.error_callback = (err) => {
-          reject(new Error(
-            "Drive session expired. Please sign out and sign in again to refresh."
-          ));
-        };
-      }
-
-      gisClientRef.current.requestAccessToken({ prompt: "" });
-    });
-  }, [ensureGisReady]);
+    throw new Error("Could not get Drive access. Please try signing out and in again.");
+  }, [signIn]);
 
   const fetchWithDriveAuth = useCallback(
     async (url, options = {}, retry401 = true) => {
