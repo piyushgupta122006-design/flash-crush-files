@@ -55,22 +55,38 @@ function loadScript(id, src) {
 function loadGapiPicker() {
   if (window.google?.picker) return Promise.resolve();
   return new Promise((resolve) => {
-    loadScript("gapi-script", "https://apis.google.com/js/api.js")
-      .then(() => {
-        if (window.gapi?.load) {
-          try {
-            window.gapi.load("picker", {
-              callback: resolve,
-              onerror: resolve,
-            });
-          } catch {
-            resolve();
-          }
-        } else {
+    if (window.gapi?.load) {
+      try {
+        window.gapi.load("picker", resolve);
+      } catch {
+        resolve();
+      }
+      return;
+    }
+    const existing = document.getElementById("gapi-script");
+    if (existing) {
+      existing.addEventListener("load", () => {
+        try {
+          window.gapi?.load?.("picker", resolve);
+        } catch {
           resolve();
         }
-      })
-      .catch(() => resolve());
+      });
+      return;
+    }
+    const s = document.createElement("script");
+    s.id = "gapi-script";
+    s.src = "https://apis.google.com/js/api.js";
+    s.async = true;
+    s.onload = () => {
+      try {
+        window.gapi?.load?.("picker", resolve);
+      } catch {
+        resolve();
+      }
+    };
+    s.onerror = () => resolve();
+    document.head.appendChild(s);
   });
 }
 
@@ -130,14 +146,6 @@ export function useAuth() {
           setAuthStatus("signedin");
         }
       })
-      .catch(() => {});
-
-    // Preload GIS & GAPI scripts immediately on mount
-    loadScript("gis-script", "https://accounts.google.com/gsi/client")
-      .then(() => { gisReadyRef.current = true; })
-      .catch(() => {});
-    loadGapiPicker()
-      .then(() => { gapiPickerReadyRef.current = true; })
       .catch(() => {});
 
     const unsub = onAuthStateChanged(auth, (fbUser) => {
