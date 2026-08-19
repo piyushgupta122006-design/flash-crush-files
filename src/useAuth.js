@@ -1,16 +1,12 @@
 // useAuth.js
-// Two-step auth flow:
-// 1) Firebase sign-in with basic profile/email scopes only.
-// 2) Google Identity Services token for Drive scopes, only when needed.
+// Universal Google OAuth2 & Google Drive Integration
+// Works in Microsoft Edge, Brave, Google Chrome, Safari, Firefox, and Mobile browsers.
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { initializeApp, getApps } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signInWithCredential,
   signOut as fbSignOut,
   onAuthStateChanged,
@@ -31,11 +27,43 @@ const auth = getAuth(app);
 export const GOOGLE_CLIENT_ID = "564511509147-o97737rbfs6f0c2qsq9lqdmpknktfjg1.apps.googleusercontent.com";
 export const GOOGLE_API_KEY = "AIzaSyC5UBvHZyZs7n9ZRS74cMU92UZOuAGLfow";
 
-const DRIVE_SCOPE = [
+const DRIVE_SCOPES = [
+  "email",
+  "profile",
+  "openid",
   "https://www.googleapis.com/auth/drive.file",
   "https://www.googleapis.com/auth/drive.readonly",
 ].join(" ");
 
+// ── Persistent Storage Helpers ───────────────────────────────────────────────
+const AUTH_STORAGE_KEY = "fc_auth_state";
+
+function saveAuthState(state) {
+  try {
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(state));
+  } catch { /* storage fallback */ }
+}
+
+function loadAuthState() {
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && parsed.token && parsed.token.expiresAt > Date.now() + 30_000) {
+      return parsed;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+function clearAuthState() {
+  try {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    sessionStorage.removeItem("fc_drive_token");
+  } catch { /* ignore */ }
+}
+
+// ── Script Loaders ──────────────────────────────────────────────────────────
 function loadScript(id, src) {
   return new Promise((resolve, reject) => {
     if (document.getElementById(id)) {
@@ -90,141 +118,36 @@ function loadGapiPicker() {
   });
 }
 
-// ── sessionStorage helpers for Drive token persistence ────────────────────────
-const DRIVE_TOKEN_KEY = "fc_drive_token";
-
-function saveDriveToken(tokenData) {
-  try {
-    sessionStorage.setItem(DRIVE_TOKEN_KEY, JSON.stringify(tokenData));
-  } catch { /* quota or private mode */ }
-}
-
-function loadDriveToken() {
-  try {
-    const raw = sessionStorage.getItem(DRIVE_TOKEN_KEY);
-    if (!raw) return { accessToken: null, expiresAt: 0 };
-    const parsed = JSON.parse(raw);
-    // Only return if not expired
-    if (parsed.accessToken && parsed.expiresAt > Date.now() + 30_000) {
-      return parsed;
-    }
-    sessionStorage.removeItem(DRIVE_TOKEN_KEY);
-  } catch { /* ignore */ }
-  return { accessToken: null, expiresAt: 0 };
-}
-
-function clearDriveTokenStorage() {
-  try { sessionStorage.removeItem(DRIVE_TOKEN_KEY); } catch { /* ignore */ }
-}
-
 export function useAuth() {
-  const [user, setUser] = useState(null);
-  const [authStatus, setAuthStatus] = useState("idle");
+  const initialData = useRef(loadAuthState());
+  const [user, setUser] = useState(initialData.current?.user || null);
+  const [authStatus, setAuthStatus] = useState(initialData.current ? "signedin" : "idle");
   const [authError, setAuthError] = useState(null);
 
-  // Initialize from sessionStorage so token survives page refresh
-  const driveTokenRef = useRef(loadDriveToken());
-  const gisClientRef = useRef(null);
+  const driveTokenRef = useRef(initialData.current?.token || { accessToken: null, expiresAt: 0 });
   const gisReadyRef = useRef(false);
   const gapiPickerReadyRef = useRef(false);
 
+  // Restore or sync Firebase Auth state
   useEffect(() => {
-    // Check for redirect result when returning from Google login
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          if (credential?.accessToken) {
-            const tokenData = {
-              accessToken: credential.accessToken,
-              expiresAt: Date.now() + 3500 * 1000,
-            };
-            driveTokenRef.current = tokenData;
-            saveDriveToken(tokenData);
-            console.log("[FlashCrush] Drive token saved from redirect login ✓");
-          }
-          setAuthStatus("signedin");
-        }
-      })
-      .catch(() => {});
-
     const unsub = onAuthStateChanged(auth, (fbUser) => {
-      if (fbUser) {
+      if (fbUser && !user) {
         setUser({
-          name:    fbUser.displayName,
-          email:   fbUser.email,
+          name: fbUser.displayName,
+          email: fbUser.email,
           picture: fbUser.photoURL,
-          uid:     fbUser.uid,
+          uid: fbUser.uid,
         });
         setAuthStatus("signedin");
-      } else {
-        setUser(null);
-        driveTokenRef.current = { accessToken: null, expiresAt: 0 };
-        clearDriveTokenStorage();
-        gisClientRef.current = null;
-        setAuthStatus("idle");
       }
     });
     return unsub;
-  }, []);
+  }, [user]);
 
   const ensureGisReady = useCallback(async () => {
     if (gisReadyRef.current && window.google?.accounts?.oauth2) return;
     await loadScript("gis-script", "https://accounts.google.com/gsi/client");
     gisReadyRef.current = true;
-  }, []);
-
-  const signIn = useCallback(async () => {
-    setAuthStatus("loading");
-    setAuthError(null);
-
-    const provider = new GoogleAuthProvider();
-    provider.addScope("https://www.googleapis.com/auth/drive.file");
-    provider.addScope("https://www.googleapis.com/auth/drive.readonly");
-    provider.setCustomParameters({ prompt: "select_account" });
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-      if (result?.user) {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        if (credential?.accessToken) {
-          const tokenData = {
-            accessToken: credential.accessToken,
-            expiresAt: Date.now() + 3500 * 1000,
-          };
-          driveTokenRef.current = tokenData;
-          saveDriveToken(tokenData);
-          console.log("[FlashCrush] Drive token saved from sign-in ✓");
-        }
-        setAuthStatus("signedin");
-        return true;
-      }
-    } catch (err) {
-      if (
-        err.code === "auth/popup-closed-by-user" ||
-        err.code === "auth/cancelled-popup-request"
-      ) {
-        setAuthStatus("idle");
-        return false;
-      }
-
-      if (err.code === "auth/popup-blocked") {
-        setAuthError("Pop-up blocked by Edge/browser. Please click the pop-up blocker icon in your address bar (top right) and select 'Always allow' to sign in.");
-        setAuthStatus("error");
-        return false;
-      }
-
-      setAuthError(err.message || "Sign-in failed.");
-      setAuthStatus("error");
-      return false;
-    }
-  }, []);
-
-  const signOut = useCallback(async () => {
-    driveTokenRef.current = { accessToken: null, expiresAt: 0 };
-    clearDriveTokenStorage();
-    gisClientRef.current = null;
-    await fbSignOut(auth);
   }, []);
 
   const ensurePickerReady = useCallback(async () => {
@@ -233,74 +156,121 @@ export function useAuth() {
     gapiPickerReadyRef.current = true;
   }, []);
 
-  const clearDriveToken = useCallback(() => {
+  // ── Universal Google Sign-In via Google Identity Services Token Client ──────
+  const signIn = useCallback(async () => {
+    setAuthStatus("loading");
+    setAuthError(null);
+
+    try {
+      await ensureGisReady();
+
+      return new Promise((resolve) => {
+        try {
+          const client = window.google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: DRIVE_SCOPES,
+            callback: async (resp) => {
+              if (resp.error || !resp.access_token) {
+                setAuthError(resp.error_description || resp.error || "Sign-in failed.");
+                setAuthStatus("idle");
+                resolve(false);
+                return;
+              }
+
+              const expiresInMs = (resp.expires_in || 3600) * 1000;
+              const tokenData = {
+                accessToken: resp.access_token,
+                expiresAt: Date.now() + expiresInMs,
+              };
+              driveTokenRef.current = tokenData;
+
+              // Fetch User Details from Google UserInfo endpoint
+              try {
+                const infoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                  headers: { Authorization: `Bearer ${resp.access_token}` },
+                });
+                if (infoRes.ok) {
+                  const info = await infoRes.json();
+                  const userData = {
+                    name: info.name || info.given_name || "User",
+                    email: info.email,
+                    picture: info.picture,
+                    uid: info.sub,
+                  };
+                  setUser(userData);
+                  saveAuthState({ user: userData, token: tokenData });
+                  console.log("[FlashCrush] Signed in successfully as:", userData.email);
+
+                  // Optional background Firebase sync
+                  try {
+                    const cred = GoogleAuthProvider.credential(null, resp.access_token);
+                    signInWithCredential(auth, cred).catch(() => {});
+                  } catch { /* optional */ }
+                }
+              } catch (err) {
+                console.warn("[FlashCrush] Userinfo fetch warning:", err);
+              }
+
+              setAuthStatus("signedin");
+              resolve(true);
+            },
+            error_callback: (err) => {
+              setAuthError("Sign-in pop-up was blocked. Please allow popups in your browser address bar.");
+              setAuthStatus("idle");
+              resolve(false);
+            },
+          });
+
+          // Request access token with consent prompt
+          client.requestAccessToken({ prompt: "consent" });
+        } catch (initErr) {
+          setAuthError(initErr.message || "Failed to initialize Google login.");
+          setAuthStatus("idle");
+          resolve(false);
+        }
+      });
+    } catch (err) {
+      setAuthError(err.message || "Sign-in failed.");
+      setAuthStatus("idle");
+      return false;
+    }
+  }, [ensureGisReady]);
+
+  // ── Sign Out ────────────────────────────────────────────────────────────────
+  const signOut = useCallback(async () => {
     driveTokenRef.current = { accessToken: null, expiresAt: 0 };
-    clearDriveTokenStorage();
+    clearAuthState();
+    setUser(null);
+    setAuthStatus("idle");
+    try {
+      await fbSignOut(auth);
+    } catch { /* ignore */ }
   }, []);
 
+  const clearDriveToken = useCallback(() => {
+    driveTokenRef.current = { accessToken: null, expiresAt: 0 };
+    clearAuthState();
+  }, []);
+
+  // ── Get Active Token (or acquire on-demand) ──────────────────────────────────
   const getToken = useCallback(async () => {
     const now = Date.now();
     const tokenInfo = driveTokenRef.current;
 
     // 1. Return cached token if valid
     if (tokenInfo.accessToken && tokenInfo.expiresAt - 30_000 > now) {
-      console.log("[FlashCrush] Using cached Drive token, expires in", 
-        Math.round((tokenInfo.expiresAt - now) / 60000), "min");
       return tokenInfo.accessToken;
     }
 
-    // 2. If user is not logged in yet, prompt them to sign in first
-    if (!auth.currentUser) {
-      const ok = await signIn();
-      if (ok && driveTokenRef.current.accessToken) {
-        return driveTokenRef.current.accessToken;
-      }
-      throw new Error("Please sign in with Google to access Google Drive.");
+    // 2. Token expired or missing — trigger sign in
+    const ok = await signIn();
+    if (ok && driveTokenRef.current.accessToken) {
+      return driveTokenRef.current.accessToken;
     }
+    throw new Error("Please sign in with Google to access Google Drive.");
+  }, [signIn]);
 
-    // 3. User is logged in but token expired — refresh via GIS Token Client
-    await ensureGisReady();
-
-    if (!window.google?.accounts?.oauth2) {
-      const ok = await signIn();
-      if (ok && driveTokenRef.current.accessToken) {
-        return driveTokenRef.current.accessToken;
-      }
-      throw new Error("Could not load Google authentication. Please sign in again.");
-    }
-
-    return new Promise((resolve, reject) => {
-      try {
-        const client = window.google.accounts.oauth2.initTokenClient({
-          client_id: GOOGLE_CLIENT_ID,
-          scope: DRIVE_SCOPE,
-          hint: auth.currentUser?.email || "",
-          callback: (resp) => {
-            if (resp.error || !resp.access_token) {
-              reject(new Error(resp.error_description || resp.error || "Failed to get Drive permission."));
-              return;
-            }
-            const tokenData = {
-              accessToken: resp.access_token,
-              expiresAt: Date.now() + (resp.expires_in || 3600) * 1000,
-            };
-            driveTokenRef.current = tokenData;
-            saveDriveToken(tokenData);
-            console.log("[FlashCrush] Got Drive token via GIS ✓");
-            resolve(resp.access_token);
-          },
-          error_callback: (err) => {
-            reject(new Error("Drive permission popup was blocked. Please allow popups for this site."));
-          },
-        });
-
-        client.requestAccessToken({ prompt: "" });
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }, [ensureGisReady, signIn]);
-
+  // ── Authenticated Fetch helper ──────────────────────────────────────────────
   const fetchWithDriveAuth = useCallback(
     async (url, options = {}, retry401 = true) => {
       const token = await getToken();
@@ -319,11 +289,11 @@ export function useAuth() {
     [clearDriveToken, getToken]
   );
 
+  // ── Upload any document/file to Google Drive ────────────────────────────────
   const uploadToDrive = useCallback(async (blob, fileName, folderId = null) => {
-    // Build metadata - add `parents` array only when a folder was chosen.
     const metadata = {
       name: fileName,
-      mimeType: blob.type,
+      mimeType: blob.type || "application/octet-stream",
       ...(folderId ? { parents: [folderId] } : {}),
     };
 
@@ -346,22 +316,25 @@ export function useAuth() {
     return res.json();
   }, [fetchWithDriveAuth]);
 
+  // ── Pick any document/file from Google Drive ────────────────────────────────
   const pickFromDrive = useCallback(async (mimeTypes, onFilePicked, preToken) => {
     const token = preToken || await getToken();
     await ensurePickerReady();
 
     return new Promise((resolve) => {
+      const docsView = new window.google.picker.DocsView();
+      if (mimeTypes && mimeTypes.length > 0) {
+        docsView.setMimeTypes(mimeTypes.join(","));
+      }
+      docsView.setIncludeFolders(false);
+
       const picker = new window.google.picker.PickerBuilder()
         .setOAuthToken(token)
         .setDeveloperKey(GOOGLE_API_KEY)
         .setAppId("564511509147")
         .setOrigin(window.location.origin)
         .setTitle("Select a file from your Google Drive")
-        .addView(
-          new window.google.picker.DocsView()
-            .setMimeTypes(mimeTypes.join(","))
-            .setIncludeFolders(false)
-        )
+        .addView(docsView)
         .setCallback(async (data) => {
           if (data.action === window.google.picker.Action.PICKED) {
             const doc = data.docs[0];

@@ -43,11 +43,14 @@ export default function App() {
 
   // Show sign-in error prominently
   useEffect(() => {
-    if (auth.authStatus !== "error" || !auth.authError) return;
+    if (!auth.authError) {
+      setSignInError("");
+      return;
+    }
     setSignInError(auth.authError);
     const t = setTimeout(() => setSignInError(""), 10000);
     return () => clearTimeout(t);
-  }, [auth.authError, auth.authStatus]);
+  }, [auth.authError]);
 
   // Scroll to top on route change
   useEffect(() => {
