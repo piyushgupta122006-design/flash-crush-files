@@ -53,16 +53,8 @@ async function pickDriveFolder(auth) {
     try {
       const token = await auth.getToken();
 
-      // Load gapi picker if needed
-      if (!window.google?.picker) {
-        await new Promise((res, rej) => {
-          const s = document.createElement("script");
-          s.src = "https://apis.google.com/js/api.js";
-          s.onload = () => window.gapi.load("picker", res);
-          s.onerror = rej;
-          document.head.appendChild(s);
-        });
-      }
+      // Ensure picker is loaded
+      await auth.ensurePickerReady();
 
       const folderView = new window.google.picker.DocsView()
         .setMimeTypes("application/vnd.google-apps.folder")

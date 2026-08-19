@@ -53,10 +53,24 @@ function loadScript(id, src) {
 }
 
 function loadGapiPicker() {
+  if (window.google?.picker) return Promise.resolve();
   return new Promise((resolve) => {
-    loadScript("gapi-script", "https://apis.google.com/js/api.js").then(() => {
-      window.gapi.load("picker", resolve);
-    });
+    loadScript("gapi-script", "https://apis.google.com/js/api.js")
+      .then(() => {
+        if (window.gapi?.load) {
+          try {
+            window.gapi.load("picker", {
+              callback: resolve,
+              onerror: resolve,
+            });
+          } catch {
+            resolve();
+          }
+        } else {
+          resolve();
+        }
+      })
+      .catch(() => resolve());
   });
 }
 
@@ -372,5 +386,6 @@ export function useAuth() {
     clearDriveToken,
     uploadToDrive,
     pickFromDrive,
+    ensurePickerReady,
   };
 }
