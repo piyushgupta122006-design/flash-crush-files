@@ -41,11 +41,11 @@ export default function App() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Show sign-in error briefly
+  // Show sign-in error prominently
   useEffect(() => {
     if (auth.authStatus !== "error" || !auth.authError) return;
     setSignInError(auth.authError);
-    const t = setTimeout(() => setSignInError(""), 3000);
+    const t = setTimeout(() => setSignInError(""), 10000);
     return () => clearTimeout(t);
   }, [auth.authError, auth.authStatus]);
 

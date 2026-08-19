@@ -209,13 +209,13 @@ export function useAuth() {
       }
 
       if (err.code === "auth/popup-blocked") {
-        setAuthError("Popup was blocked by the browser. Please allow popups in your URL address bar.");
-        setAuthStatus("idle");
+        setAuthError("Pop-up blocked by Edge/browser. Please click the pop-up blocker icon in your address bar (top right) and select 'Always allow' to sign in.");
+        setAuthStatus("error");
         return false;
       }
 
       setAuthError(err.message || "Sign-in failed.");
-      setAuthStatus("idle");
+      setAuthStatus("error");
       return false;
     }
   }, []);
