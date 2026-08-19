@@ -208,21 +208,14 @@ export function useAuth() {
         return false;
       }
 
-      // If popup is blocked by browser (e.g. Edge), automatically redirect to sign in!
-      if (err.code === "auth/popup-blocked" || err.message?.includes("popup")) {
-        console.log("[FlashCrush] Popup blocked by browser, switching to redirect login...");
-        try {
-          await signInWithRedirect(auth, provider);
-          return true;
-        } catch (redirectErr) {
-          setAuthError(redirectErr.message || "Redirect sign-in failed.");
-          setAuthStatus("error");
-          return false;
-        }
+      if (err.code === "auth/popup-blocked") {
+        setAuthError("Popup was blocked by the browser. Please allow popups in your URL address bar.");
+        setAuthStatus("idle");
+        return false;
       }
 
       setAuthError(err.message || "Sign-in failed.");
-      setAuthStatus("error");
+      setAuthStatus("idle");
       return false;
     }
   }, []);
@@ -256,11 +249,19 @@ export function useAuth() {
       return tokenInfo.accessToken;
     }
 
-    // 2. Request token via Google Identity Services Token Client
+    // 2. If user is not logged in yet, prompt them to sign in first
+    if (!auth.currentUser) {
+      const ok = await signIn();
+      if (ok && driveTokenRef.current.accessToken) {
+        return driveTokenRef.current.accessToken;
+      }
+      throw new Error("Please sign in with Google to access Google Drive.");
+    }
+
+    // 3. User is logged in but token expired — refresh via GIS Token Client
     await ensureGisReady();
 
     if (!window.google?.accounts?.oauth2) {
-      // Fallback: try Firebase signIn
       const ok = await signIn();
       if (ok && driveTokenRef.current.accessToken) {
         return driveTokenRef.current.accessToken;
