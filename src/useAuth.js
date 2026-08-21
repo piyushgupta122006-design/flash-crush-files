@@ -32,7 +32,6 @@ const DRIVE_SCOPES = [
   "profile",
   "openid",
   "https://www.googleapis.com/auth/drive.file",
-  "https://www.googleapis.com/auth/drive.readonly",
 ].join(" ");
 
 // ── Persistent Storage Helpers ───────────────────────────────────────────────
@@ -221,8 +220,8 @@ export function useAuth() {
             },
           });
 
-          // Request access token with consent prompt
-          client.requestAccessToken({ prompt: "consent" });
+          // Request access token seamlessly without forcing repeated consent screen
+          client.requestAccessToken({ prompt: "" });
         } catch (initErr) {
           setAuthError(initErr.message || "Failed to initialize Google login.");
           setAuthStatus("idle");
