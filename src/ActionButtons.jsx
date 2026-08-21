@@ -138,117 +138,126 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           to   { opacity: 1; transform: scale(1); }
         }
         .fc-modal-card {
-          background: rgba(255,255,255,0.72);
+          background: rgba(13, 18, 36, 0.85);
           backdrop-filter: blur(28px);
           -webkit-backdrop-filter: blur(28px);
-          border: 1px solid rgba(255,255,255,0.90);
-          border-radius: 20px;
-          box-shadow: 0 20px 60px rgba(124,58,237,0.18), 0 1px 0 rgba(255,255,255,0.95) inset;
+          border: 1px solid rgba(139, 92, 246, 0.35);
+          border-radius: 24px;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(139, 92, 246, 0.25);
           width: 100%;
-          max-width: 440px;
-          padding: 28px;
-          font-family: 'Inter', -apple-system, sans-serif;
+          max-width: 460px;
+          padding: 32px;
+          font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
           position: relative;
           overflow: hidden;
         }
         .fc-modal-card::before {
           content: '';
           position: absolute; top: 0; left: 0; right: 0; height: 3px;
-          background: linear-gradient(90deg, #a855f7, #6d28d9);
-          border-radius: 20px 20px 0 0;
+          background: linear-gradient(90deg, #8b5cf6, #38bdf8, #f43f5e);
+          border-radius: 24px 24px 0 0;
         }
         .fc-modal-title {
-          font-size: 17px; font-weight: 800; color: #1a0533;
-          margin-bottom: 4px; letter-spacing: -0.3px;
-          display: flex; align-items: center; gap: 8px;
+          font-family: 'Syne', sans-serif;
+          font-size: 19px; font-weight: 800; color: #ffffff;
+          margin-bottom: 6px; letter-spacing: -0.3px;
+          display: flex; align-items: center; gap: 10px;
         }
         .fc-modal-sub {
-          font-size: 12px; color: #9b87b8; margin-bottom: 22px;
+          font-size: 13px; color: #94a3b8; margin-bottom: 24px;
         }
         .fc-label {
-          font-size: 10px; font-weight: 700; letter-spacing: 0.6px;
-          text-transform: uppercase; color: #9b87b8; margin-bottom: 6px;
+          font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+          text-transform: uppercase; color: #94a3b8; margin-bottom: 8px;
           display: block;
         }
         .fc-input {
-          width: 100%; padding: 11px 14px;
-          background: rgba(255,255,255,0.80);
-          border: 1.5px solid rgba(168,85,247,0.20);
-          border-radius: 11px;
-          font-family: 'JetBrains Mono', 'Courier New', monospace;
-          font-size: 13px; color: #1a0533;
-          outline: none; transition: border-color 0.15s;
+          width: 100%; padding: 12px 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1.5px solid rgba(255, 255, 255, 0.12);
+          border-radius: 12px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 13px; color: #ffffff;
+          outline: none; transition: all 0.2s;
           box-sizing: border-box;
         }
-        .fc-input:focus { border-color: #a855f7; }
+        .fc-input:focus {
+          border-color: #8b5cf6;
+          box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+          background: rgba(255, 255, 255, 0.08);
+        }
         .fc-folder-btn {
-          display: flex; align-items: center; gap: 8px;
-          width: 100%; padding: 11px 14px;
-          background: rgba(255,255,255,0.70);
-          border: 1.5px dashed rgba(168,85,247,0.25);
-          border-radius: 11px; cursor: pointer;
-          font-family: 'Inter', sans-serif;
-          font-size: 13px; font-weight: 500;
-          color: #7e22ce; transition: all 0.15s;
+          display: flex; align-items: center; gap: 10px;
+          width: 100%; padding: 13px 16px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1.5px dashed rgba(139, 92, 246, 0.4);
+          border-radius: 12px; cursor: pointer;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 13.5px; font-weight: 600;
+          color: #c084fc; transition: all 0.2s;
           text-align: left;
         }
         .fc-folder-btn:hover:not(:disabled) {
-          background: rgba(168,85,247,0.08);
-          border-color: #a855f7;
+          background: rgba(139, 92, 246, 0.12);
+          border-color: #38bdf8;
+          box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
         }
         .fc-folder-btn:disabled { opacity: 0.55; cursor: not-allowed; }
         .fc-folder-selected {
-          background: rgba(168,85,247,0.08);
-          border-style: solid; border-color: rgba(168,85,247,0.35);
-          color: #6d28d9;
+          background: rgba(139, 92, 246, 0.15);
+          border-style: solid; border-color: #8b5cf6;
+          color: #ffffff;
         }
         .fc-folder-hint {
-          font-size: 11px; color: #9b87b8; margin-top: 5px;
+          font-size: 12px; color: #94a3b8; margin-top: 6px;
         }
         .fc-error {
-          font-size: 12px; color: #dc2626;
-          background: #fef2f2; border: 1px solid #fca5a5;
-          border-radius: 8px; padding: 8px 12px; margin-top: 14px;
+          font-size: 12px; color: #fca5a5;
+          background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.35);
+          border-radius: 10px; padding: 10px 14px; margin-top: 16px;
         }
         .fc-actions {
-          display: flex; gap: 10px; margin-top: 22px;
+          display: flex; gap: 12px; margin-top: 26px;
         }
         .fc-btn-cancel {
-          flex: 1; padding: 12px;
-          background: rgba(255,255,255,0.60);
-          border: 1.5px solid rgba(168,85,247,0.15);
-          border-radius: 11px; cursor: pointer;
-          font-family: 'Inter', sans-serif;
-          font-size: 13px; font-weight: 600;
-          color: #7e22ce; transition: all 0.15s;
+          flex: 1; padding: 13px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1.5px solid rgba(255, 255, 255, 0.12);
+          border-radius: 12px; cursor: pointer;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 13.5px; font-weight: 700;
+          color: #cbd5e1; transition: all 0.2s;
         }
-        .fc-btn-cancel:hover { background: rgba(255,255,255,0.90); }
+        .fc-btn-cancel:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
         .fc-btn-save {
-          flex: 2; padding: 12px;
-          background: linear-gradient(135deg, #a855f7, #6d28d9);
-          border: none; border-radius: 11px; cursor: pointer;
-          font-family: 'Inter', sans-serif;
-          font-size: 13px; font-weight: 700; color: #fff;
+          flex: 2; padding: 13px;
+          background: linear-gradient(135deg, #8b5cf6, #6366f1, #06b6d4);
+          border: none; border-radius: 12px; cursor: pointer;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 13.5px; font-weight: 700; color: #fff;
           display: flex; align-items: center; justify-content: center; gap: 8px;
-          box-shadow: 0 4px 16px rgba(124,58,237,0.30);
-          transition: all 0.15s;
+          box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+          transition: all 0.2s;
         }
-        .fc-btn-save:hover { opacity: 0.90; transform: translateY(-1px); }
+        .fc-btn-save:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 0 35px rgba(168, 85, 247, 0.75);
+        }
         .fc-close-btn {
-          position: absolute; top: 16px; right: 16px;
-          background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.15);
-          border-radius: 8px; width: 30px; height: 30px;
+          position: absolute; top: 18px; right: 18px;
+          background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 10px; width: 32px; height: 32px;
           display: flex; align-items: center; justify-content: center;
-          cursor: pointer; color: #9b87b8; transition: all 0.15s;
+          cursor: pointer; color: #94a3b8; transition: all 0.2s;
         }
-        .fc-close-btn:hover { background: rgba(168,85,247,0.16); color: #7e22ce; }
-        .fc-divider { height: 1px; background: rgba(168,85,247,0.12); margin: 20px 0; }
+        .fc-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .fc-divider { height: 1px; background: rgba(255, 255, 255, 0.08); margin: 22px 0; }
         .fc-root-hint {
           display: flex; align-items: center; gap: 6px;
-          font-size: 11px; color: #9b87b8;
-          background: rgba(168,85,247,0.05);
-          border: 1px solid rgba(168,85,247,0.10);
-          border-radius: 8px; padding: 8px 10px; margin-top: 8px;
+          font-size: 12px; color: #94a3b8;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 10px; padding: 10px 12px; margin-top: 10px;
         }
       `}</style>
 
