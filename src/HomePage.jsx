@@ -401,7 +401,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: "20px" }}>
           <div style={{ background: "var(--bg-card)", border: "1px solid var(--glass-bdr)", borderRadius: "var(--radius-lg)", padding: "28px", backdropFilter: "var(--glass-blur)" }}>
             <div style={{ marginBottom: "16px" }}><IconLock /></div>
             <h4 style={{ color: "#ffffff", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>100% Client-Side Privacy</h4>
