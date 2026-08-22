@@ -454,8 +454,132 @@ body::before {
 }
 
 /* ═══════════════════════════════════════
-   HERO STATS COUNTER BAR
+   HERO LAUNCH CTA BUTTONS (CYBER-GLASS ULTRA LUXURY)
    ═══════════════════════════════════════ */
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 0 auto 56px;
+  position: relative;
+  z-index: 5;
+}
+
+/* 1. Launch Image Compressor (Holographic Violet Aurora Glow) */
+.hero-btn-image {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 45%, #06b6d4 100%);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 15px 32px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.55), 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.hero-btn-image::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-btn-image:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 45px rgba(168, 85, 247, 0.85), 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-btn-image:hover::before {
+  left: 100%;
+}
+
+/* 2. Launch PDF Compressor (Frosted Cyber-Glass with Rose Neon Glow) */
+.hero-btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(13, 18, 36, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 14px 30px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid rgba(244, 63, 94, 0.5);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 25px rgba(244, 63, 94, 0.3), 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.hero-btn-pdf::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244, 63, 94, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-btn-pdf:hover {
+  transform: translateY(-3px) scale(1.03);
+  background: rgba(244, 63, 94, 0.15);
+  border-color: #f43f5e;
+  box-shadow: 0 0 40px rgba(244, 63, 94, 0.65), 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn-pdf:hover::before {
+  left: 100%;
+}
+
+/* Common Icon Wrap & Arrow */
+.hero-btn-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.hero-btn-image:hover .hero-btn-icon-wrap,
+.hero-btn-pdf:hover .hero-btn-icon-wrap {
+  transform: scale(1.15) rotate(6deg);
+}
+
+.hero-btn-arrow {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-left: 2px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.hero-btn-image:hover .hero-btn-arrow,
+.hero-btn-pdf:hover .hero-btn-arrow {
+  transform: translateX(4px);
+}
 .hero-stats-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1407,18 +1531,19 @@ body::before {
     padding: 0 4px;
   }
 
-  /* Hero CTA buttons — stack vertically */
-  .dropzone-btn-group {
+  /* Hero CTA buttons — stack vertically on mobile */
+  .hero-cta-group {
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 30px !important;
+    gap: 12px;
+    margin-bottom: 36px;
+    width: 100%;
   }
-  .btn-primary-glow,
-  .btn-drive-glow {
+  .hero-btn-image,
+  .hero-btn-pdf {
     width: 100%;
     justify-content: center;
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    padding: 14px 20px;
+    font-size: 0.95rem;
   }
 
   /* Hero stats */

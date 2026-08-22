@@ -234,14 +234,16 @@ export default function HomePage() {
           100% free, private, and synced with your Google Drive.
         </p>
 
-        <div className="dropzone-btn-group anim d4" style={{ marginBottom: "50px" }}>
-          <button className="btn-primary-glow" onClick={() => navigate("/image")}>
-            <IconImage />
+        <div className="hero-cta-group anim d4">
+          <button className="hero-btn-image" onClick={() => navigate("/image")}>
+            <span className="hero-btn-icon-wrap"><IconImage /></span>
             <span>Launch Image Compressor</span>
+            <span className="hero-btn-arrow">→</span>
           </button>
-          <button className="btn-drive-glow" onClick={() => navigate("/pdf")}>
-            <IconPDF />
+          <button className="hero-btn-pdf" onClick={() => navigate("/pdf")}>
+            <span className="hero-btn-icon-wrap"><IconPDF /></span>
             <span>Launch PDF Compressor</span>
+            <span className="hero-btn-arrow">→</span>
           </button>
         </div>
 
