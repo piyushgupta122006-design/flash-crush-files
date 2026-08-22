@@ -369,15 +369,15 @@ export default function ImageToPDF({ auth }) {
               {/* Thumbnails list */}
               <div style={{
                 display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
-                gap: "10px", maxHeight: "260px", overflowY: "auto", padding: "4px",
-                borderRadius: "10px", background: "var(--p50)", border: "1px solid var(--border)"
+                gap: "10px", maxHeight: "260px", overflowY: "auto", padding: "8px",
+                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)"
               }}>
                 {images.map((img, idx) => (
                   <div
                     key={img.id}
                     style={{
                       position: "relative", borderRadius: "8px", overflow: "hidden",
-                      border: "1px solid var(--border2)", background: "#fff",
+                      border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)",
                       aspectRatio: "1/1", display: "flex", alignItems: "center", justifyContent: "center"
                     }}
                   >
@@ -389,8 +389,9 @@ export default function ImageToPDF({ auth }) {
                     {/* Index badge */}
                     <span style={{
                       position: "absolute", top: "4px", left: "4px",
-                      background: "rgba(0,0,0,0.65)", color: "#fff", fontSize: "10px",
-                      padding: "2px 6px", borderRadius: "100px", fontWeight: "700"
+                      background: "rgba(0,0,0,0.75)", color: "#34d399", fontSize: "10px",
+                      padding: "2px 7px", borderRadius: "100px", fontWeight: "800",
+                      fontFamily: "'JetBrains Mono', monospace"
                     }}>
                       {idx + 1}
                     </span>
@@ -403,7 +404,7 @@ export default function ImageToPDF({ auth }) {
                           style={{
                             position: "absolute", top: "4px", right: "4px",
                             width: "20px", height: "20px", borderRadius: "50%",
-                            background: "#dc2626", color: "#fff", border: "none",
+                            background: "rgba(244,63,94,0.9)", color: "#fff", border: "none",
                             fontSize: "11px", display: "flex", alignItems: "center",
                             justifyContent: "center", cursor: "pointer"
                           }}
@@ -420,7 +421,7 @@ export default function ImageToPDF({ auth }) {
                             <button
                               onClick={() => moveImage(idx, -1)}
                               style={{
-                                flex: 1, padding: "2px 0", background: "rgba(0,0,0,0.65)",
+                                flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
                                 color: "#fff", border: "none", borderRadius: "4px",
                                 fontSize: "10px", cursor: "pointer"
                               }}
@@ -433,7 +434,7 @@ export default function ImageToPDF({ auth }) {
                             <button
                               onClick={() => moveImage(idx, 1)}
                               style={{
-                                flex: 1, padding: "2px 0", background: "rgba(0,0,0,0.65)",
+                                flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
                                 color: "#fff", border: "none", borderRadius: "4px",
                                 fontSize: "10px", cursor: "pointer"
                               }}
@@ -455,61 +456,61 @@ export default function ImageToPDF({ auth }) {
           {(stage === "ready" || stage === "done") && images.length > 0 && (
             <div className="level-wrap">
               <span className="level-label">Page Layout Options</span>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: "12px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px", marginBottom: "12px" }}>
                 <div>
-                  <span style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
                     Orientation
                   </span>
                   <select
                     value={orientation}
                     onChange={(e) => setOrientation(e.target.value)}
                     style={{
-                      width: "100%", padding: "8px 10px", borderRadius: "8px",
-                      border: "1px solid var(--border2)", background: "#fff",
-                      fontSize: "12px", fontFamily: "inherit", outline: "none", color: "var(--text)"
+                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
+                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}
                   >
-                    <option value="auto">Auto-detect</option>
-                    <option value="portrait">Portrait</option>
-                    <option value="landscape">Landscape</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="auto">Auto-detect</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="portrait">Portrait</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="landscape">Landscape</option>
                   </select>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
                     Margin
                   </span>
                   <select
                     value={margin}
                     onChange={(e) => setMargin(e.target.value)}
                     style={{
-                      width: "100%", padding: "8px 10px", borderRadius: "8px",
-                      border: "1px solid var(--border2)", background: "#fff",
-                      fontSize: "12px", fontFamily: "inherit", outline: "none", color: "var(--text)"
+                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
+                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}
                   >
-                    <option value="none">No Margin</option>
-                    <option value="small">Small (15pt)</option>
-                    <option value="normal">Standard (30pt)</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="none">No Margin</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="small">Small (15pt)</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="normal">Standard (30pt)</option>
                   </select>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
                     Page Size
                   </span>
                   <select
                     value={pageSize}
                     onChange={(e) => setPageSize(e.target.value)}
                     style={{
-                      width: "100%", padding: "8px 10px", borderRadius: "8px",
-                      border: "1px solid var(--border2)", background: "#fff",
-                      fontSize: "12px", fontFamily: "inherit", outline: "none", color: "var(--text)"
+                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
+                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}
                   >
-                    <option value="a4">A4 Standard</option>
-                    <option value="fit">Fit to Image</option>
-                    <option value="letter">US Letter</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="a4">A4 Standard</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="fit">Fit to Image</option>
+                    <option style={{ background: "#0d1222", color: "#fff" }} value="letter">US Letter</option>
                   </select>
                 </div>
               </div>

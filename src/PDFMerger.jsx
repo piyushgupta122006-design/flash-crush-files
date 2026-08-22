@@ -319,24 +319,25 @@ export default function PDFMerger({ auth }) {
               {/* PDF items list */}
               <div style={{
                 display: "flex", flexDirection: "column", gap: "8px",
-                maxHeight: "260px", overflowY: "auto", padding: "4px",
-                borderRadius: "10px", background: "var(--p50)", border: "1px solid var(--border)"
+                maxHeight: "260px", overflowY: "auto", padding: "8px",
+                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)"
               }}>
                 {pdfFiles.map((item, idx) => (
                   <div
                     key={item.id}
                     style={{
-                      display: "flex", alignItems: "center", gap: "10px",
-                      background: "#fff", border: "1px solid var(--border2)",
-                      borderRadius: "9px", padding: "10px 12px"
+                      display: "flex", alignItems: "center", gap: "12px",
+                      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "var(--radius-sm)", padding: "12px 14px"
                     }}
                   >
                     {/* Index */}
                     <span style={{
                       width: "24px", height: "24px", borderRadius: "50%",
-                      background: "rgba(217,119,6,0.12)", color: "#b45309",
-                      fontSize: "11px", fontWeight: "700", display: "flex",
-                      alignItems: "center", justifyContent: "center", flexShrink: 0
+                      background: "rgba(245,158,11,0.15)", color: "#fbbf24",
+                      fontSize: "11px", fontWeight: "800", display: "flex",
+                      alignItems: "center", justifyContent: "center", flexShrink: 0,
+                      fontFamily: "'JetBrains Mono', monospace"
                     }}>
                       {idx + 1}
                     </span>
@@ -346,25 +347,25 @@ export default function PDFMerger({ auth }) {
 
                     {/* Name & Size */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: "13px", fontWeight: "600", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontSize: "13px", fontWeight: "700", color: "#ffffff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {item.file.name}
                       </div>
-                      <div style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "'JetBrains Mono', monospace" }}>
+                      <div style={{ fontSize: "11px", color: "var(--text-sub)", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
                         {fmt(item.file.size)}
                       </div>
                     </div>
 
                     {/* Reorder and Delete controls */}
                     {stage !== "merging" && stage !== "done" && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
                         <button
                           onClick={() => moveFile(idx, -1)}
                           disabled={idx === 0}
                           style={{
-                            padding: "4px 7px", background: "rgba(0,0,0,0.05)",
-                            border: "1px solid rgba(0,0,0,0.1)", borderRadius: "6px",
+                            padding: "5px 8px", background: "rgba(255,255,255,0.06)",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px",
                             fontSize: "11px", cursor: idx === 0 ? "not-allowed" : "pointer",
-                            opacity: idx === 0 ? 0.3 : 1
+                            opacity: idx === 0 ? 0.3 : 1, color: "#fff"
                           }}
                           title="Move Up"
                         >
@@ -374,10 +375,10 @@ export default function PDFMerger({ auth }) {
                           onClick={() => moveFile(idx, 1)}
                           disabled={idx === pdfFiles.length - 1}
                           style={{
-                            padding: "4px 7px", background: "rgba(0,0,0,0.05)",
-                            border: "1px solid rgba(0,0,0,0.1)", borderRadius: "6px",
+                            padding: "5px 8px", background: "rgba(255,255,255,0.06)",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px",
                             fontSize: "11px", cursor: idx === pdfFiles.length - 1 ? "not-allowed" : "pointer",
-                            opacity: idx === pdfFiles.length - 1 ? 0.3 : 1
+                            opacity: idx === pdfFiles.length - 1 ? 0.3 : 1, color: "#fff"
                           }}
                           title="Move Down"
                         >
@@ -386,9 +387,9 @@ export default function PDFMerger({ auth }) {
                         <button
                           onClick={() => removeFile(item.id)}
                           style={{
-                            padding: "4px 8px", background: "rgba(239,68,68,0.08)",
-                            border: "1px solid rgba(239,68,68,0.20)", borderRadius: "6px",
-                            color: "#dc2626", fontSize: "11px", fontWeight: "700", cursor: "pointer"
+                            padding: "5px 9px", background: "rgba(244,63,94,0.12)",
+                            border: "1px solid rgba(244,63,94,0.3)", borderRadius: "6px",
+                            color: "#fb7185", fontSize: "11px", fontWeight: "700", cursor: "pointer"
                           }}
                           title="Remove"
                         >

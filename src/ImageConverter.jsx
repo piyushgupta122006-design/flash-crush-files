@@ -204,66 +204,68 @@ export default function ImageConverter({ auth }) {
       <style>{`
         .fmt-grid {
           display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 7px;
-          margin-bottom: 6px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+          gap: 8px;
+          margin-bottom: 8px;
         }
         .fmt-btn {
-          padding: 10px 4px;
-          background: rgba(255,255,255,0.60);
-          border: 1.5px solid rgba(14,165,233,0.15);
-          border-radius: 11px;
+          padding: 12px 6px;
+          background: rgba(255,255,255,0.03);
+          border: 1.5px solid rgba(255,255,255,0.08);
+          border-radius: var(--radius-md);
           cursor: pointer;
           text-align: center;
-          transition: all 0.15s;
+          transition: all 0.2s ease;
           font-family: inherit;
           position: relative;
         }
         .fmt-btn:hover:not(:disabled) {
-          border-color: #0ea5e9;
-          background: rgba(14,165,233,0.06);
+          border-color: #38bdf8;
+          background: rgba(56,189,248,0.10);
         }
         .fmt-btn.active-convert {
-          background: rgba(14,165,233,0.10);
+          background: rgba(56,189,248,0.18);
           border-color: #38bdf8;
+          box-shadow: 0 0 20px rgba(56,189,248,0.4);
         }
         .fmt-btn.same-format {
-          opacity: 0.45;
+          opacity: 0.35;
           cursor: not-allowed;
         }
         .fmt-btn-label {
           font-size: 13px;
           font-weight: 700;
-          color: #0369a1;
+          color: #ffffff;
           display: block;
           margin-bottom: 2px;
         }
-        .fmt-btn.active-convert .fmt-btn-label { color: #0284c7; }
+        .fmt-btn.active-convert .fmt-btn-label { color: #38bdf8; }
         .fmt-btn-ext {
-          font-size: 9px;
-          font-weight: 500;
-          color: #7dd3fc;
+          font-size: 10px;
+          font-weight: 600;
+          color: #94a3b8;
           display: block;
+          font-family: 'JetBrains Mono', monospace;
         }
         .source-badge {
           display: inline-flex;
           align-items: center;
           gap: 5px;
-          background: rgba(14,165,233,0.08);
-          border: 1px solid rgba(14,165,233,0.20);
-          border-radius: 100px;
-          padding: 3px 10px;
+          background: rgba(56,189,248,0.10);
+          border: 1px solid rgba(56,189,248,0.30);
+          border-radius: var(--radius-full);
+          padding: 3px 12px;
           font-size: 11px;
-          font-weight: 600;
-          color: #0369a1;
+          font-weight: 700;
+          color: #38bdf8;
           margin-bottom: 8px;
         }
         .convert-arrow-row {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
-          margin: 12px 0;
+          gap: 12px;
+          margin: 14px 0;
           font-size: 13px;
           font-weight: 600;
           color: var(--text-sub);
@@ -271,43 +273,44 @@ export default function ImageConverter({ auth }) {
         .convert-arrow-badge {
           display: inline-flex;
           align-items: center;
-          gap: 5px;
-          background: rgba(255,255,255,0.70);
-          border: 1.5px solid rgba(14,165,233,0.25);
-          border-radius: 8px;
-          padding: 5px 12px;
+          gap: 6px;
+          background: rgba(255,255,255,0.04);
+          border: 1.5px solid rgba(255,255,255,0.1);
+          border-radius: var(--radius-sm);
+          padding: 6px 14px;
           font-size: 13px;
           font-weight: 700;
         }
-        .convert-arrow-badge.source { color: var(--text-sub); border-color: rgba(168,85,247,0.20); }
-        .convert-arrow-badge.target { color: #0284c7; border-color: rgba(14,165,233,0.30); background: rgba(14,165,233,0.06); }
+        .convert-arrow-badge.source { color: var(--text-sub); border-color: rgba(255,255,255,0.12); }
+        .convert-arrow-badge.target { color: #38bdf8; border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.12); }
         .arrow-icon {
           font-size: 16px;
-          color: var(--text-muted);
+          color: var(--cyan-neon);
         }
         .btn-compress.convert {
-          background: linear-gradient(135deg, #0ea5e9, #0369a1);
-          box-shadow: 0 4px 20px rgba(14,165,233,0.28);
+          background: linear-gradient(135deg, #0284c7, #06b6d4);
+          box-shadow: 0 0 25px rgba(6,182,212,0.4);
         }
-        .btn-compress.convert:hover { opacity: 0.90; transform: translateY(-1px); }
+        .btn-compress.convert:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 0 35px rgba(6,182,212,0.7); }
         .btn-compress.convert:disabled {
           opacity: 0.45; cursor: not-allowed; transform: none;
         }
-        .progress-pct.blue-sky { color: #0284c7; }
-        .progress-bar.sky { background: linear-gradient(90deg, #38bdf8, #0284c7); }
+        .progress-pct.blue-sky { color: #38bdf8; }
+        .progress-bar.sky { background: linear-gradient(90deg, #38bdf8, #06b6d4); }
         .result-box-convert {
           margin: 0 20px 16px;
-          background: rgba(14,165,233,0.05);
-          border: 1px solid rgba(14,165,233,0.18);
-          border-radius: 14px;
-          padding: 20px;
+          background: rgba(56,189,248,0.06);
+          border: 1px solid rgba(56,189,248,0.25);
+          border-radius: var(--radius-md);
+          padding: 24px;
+          box-shadow: 0 0 30px rgba(6,182,212,0.15);
         }
         .convert-result-formats {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
-          margin-bottom: 14px;
+          gap: 16px;
+          margin-bottom: 16px;
         }
         .convert-result-fmt {
           text-align: center;
@@ -327,13 +330,13 @@ export default function ImageConverter({ auth }) {
           letter-spacing: -0.5px;
         }
         .convert-result-fmt-name.source { color: var(--text-sub); }
-        .convert-result-fmt-name.target { color: #0284c7; }
-        .convert-arrow-big { font-size: 20px; color: var(--text-muted); margin-top: 8px; }
+        .convert-result-fmt-name.target { color: #38bdf8; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
+        .convert-arrow-big { font-size: 20px; color: var(--cyan-neon); margin-top: 8px; }
         .convert-meta-row {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 16px;
+          gap: 18px;
           flex-wrap: wrap;
         }
         .convert-meta-item {
@@ -352,52 +355,50 @@ export default function ImageConverter({ auth }) {
           font-family: 'JetBrains Mono', monospace;
           font-size: 13px;
           font-weight: 600;
-          color: var(--text);
+          color: #ffffff;
         }
         .convert-meta-divider {
           width: 1px;
           height: 28px;
-          background: rgba(14,165,233,0.15);
+          background: rgba(255,255,255,0.1);
         }
         .gif-notice {
-          font-size: 11px;
-          color: #92400e;
-          background: rgba(251,191,36,0.10);
-          border: 1px solid rgba(251,191,36,0.25);
-          border-radius: 8px;
-          padding: 7px 10px;
-          margin-top: 8px;
+          font-size: 12px;
+          color: #fcd34d;
+          background: rgba(245,158,11,0.12);
+          border: 1px solid rgba(245,158,11,0.3);
+          border-radius: var(--radius-sm);
+          padding: 8px 12px;
+          margin-top: 10px;
           text-align: center;
-        }
-        .comp-icon-badge.convert {
-          background: linear-gradient(135deg, #e0f2fe, #bae6fd);
         }
 
         .quality-grid {
           display: flex;
           gap: 8px;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
         }
         .quality-btn {
           flex: 1;
-          padding: 9px 4px;
-          background: rgba(255,255,255,0.60);
-          border: 1.5px solid rgba(14,165,233,0.12);
-          border-radius: 10px;
+          padding: 10px 6px;
+          background: rgba(255,255,255,0.03);
+          border: 1.5px solid rgba(255,255,255,0.08);
+          border-radius: var(--radius-sm);
           cursor: pointer;
           text-align: center;
           font-family: inherit;
-          transition: all 0.15s;
+          transition: all 0.2s ease;
         }
-        .quality-btn:hover { border-color: #38bdf8; background: rgba(14,165,233,0.05); }
+        .quality-btn:hover { border-color: #38bdf8; background: rgba(56,189,248,0.08); }
         .quality-btn.active-quality {
-          background: rgba(14,165,233,0.10);
+          background: rgba(56,189,248,0.18);
           border-color: #38bdf8;
+          box-shadow: 0 0 15px rgba(56,189,248,0.35);
         }
         .quality-name {
           font-size: 12px;
-          font-weight: 600;
-          color: #0369a1;
+          font-weight: 700;
+          color: #ffffff;
         }
 
         @media (max-width: 600px) {
