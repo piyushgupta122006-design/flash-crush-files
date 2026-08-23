@@ -164,6 +164,18 @@ function IconPdf2Img() {
   );
 }
 
+function IconSplit() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="2" x2="12" y2="22"/>
+      <path d="M17 8l4-4-4-4"/>
+      <path d="M7 8L3 4l4-4"/>
+      <path d="M12 12h8"/>
+      <path d="M12 12H4"/>
+    </svg>
+  );
+}
+
 function IconLock() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -418,6 +430,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Extract Images</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 7. Split & Extract PDF */}
+          <TiltCard className="tool-card" onClick={() => navigate("/split-pdf")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.25)" }}>
+                <IconSplit />
+              </div>
+              <div className="tool-card-title">Split & Extract PDF</div>
+              <p className="tool-card-desc">
+                Extract specific pages, split into individual PDFs, or chunk into groups. Visual page thumbnail selector.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>Extract Pages</span>
+                <span className="tool-tag">Split All</span>
+                <span className="tool-tag">ZIP Output</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Split PDF</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
