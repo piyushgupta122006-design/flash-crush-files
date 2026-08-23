@@ -153,6 +153,17 @@ function IconImg2Pdf() {
   );
 }
 
+function IconPdf2Img() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <circle cx="10" cy="14" r="1.5"/>
+      <polyline points="16 18 13 15 9 19"/>
+    </svg>
+  );
+}
+
 function IconLock() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -385,6 +396,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Convert Format</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 6. PDF to Images */}
+          <TiltCard className="tool-card" onClick={() => navigate("/pdf-to-img")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(6, 182, 212, 0.4)", boxShadow: "0 0 20px rgba(6, 182, 212, 0.25)" }}>
+                <IconPdf2Img />
+              </div>
+              <div className="tool-card-title">PDF to Images</div>
+              <p className="tool-card-desc">
+                Extract every page of your PDF into high-resolution JPG, PNG, or WebP images with 1-click ZIP download.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "var(--cyan-neon)", borderColor: "rgba(6,182,212,0.3)" }}>PDF → JPG/PNG</span>
+                <span className="tool-tag">1-Click ZIP</span>
+                <span className="tool-tag">Up to 300 DPI</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Extract Images</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

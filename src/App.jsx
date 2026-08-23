@@ -9,6 +9,7 @@ import ImageCompressor from "./ImageCompressor";
 import ImageConverter  from "./ImageConverter";
 import ImageToPDF      from "./ImageToPDF";
 import PDFMerger       from "./PDFMerger";
+import PDFToImage      from "./PDFToImage";
 
 function GoogleIcon() {
   return (
@@ -105,6 +106,12 @@ export default function App() {
             >
               Image to PDF
             </NavLink>
+            <NavLink
+              to="/pdf-to-img"
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+            >
+              PDF to Image
+            </NavLink>
           </div>
         </div>
 
@@ -154,13 +161,14 @@ export default function App() {
       {/* ── Routes ── */}
       <main style={{ flex: 1 }}>
         <Routes>
-          <Route path="/"          element={<HomePage auth={auth} />} />
-          <Route path="/pdf"       element={<PDFCompressor auth={auth} />} />
-          <Route path="/merge-pdf" element={<PDFMerger auth={auth} />} />
-          <Route path="/image"     element={<ImageCompressor auth={auth} />} />
-          <Route path="/convert"   element={<ImageConverter auth={auth} />} />
-          <Route path="/img2pdf"   element={<ImageToPDF auth={auth} />} />
-          <Route path="*"          element={<HomePage auth={auth} />} />
+          <Route path="/"           element={<HomePage auth={auth} />} />
+          <Route path="/pdf"        element={<PDFCompressor auth={auth} />} />
+          <Route path="/merge-pdf"  element={<PDFMerger auth={auth} />} />
+          <Route path="/image"      element={<ImageCompressor auth={auth} />} />
+          <Route path="/convert"    element={<ImageConverter auth={auth} />} />
+          <Route path="/img2pdf"    element={<ImageToPDF auth={auth} />} />
+          <Route path="/pdf-to-img" element={<PDFToImage auth={auth} />} />
+          <Route path="*"           element={<HomePage auth={auth} />} />
         </Routes>
       </main>
 
