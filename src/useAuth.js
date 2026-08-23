@@ -62,20 +62,35 @@ function clearAuthState() {
   } catch { /* ignore */ }
 }
 
-// ── Script Loaders ──────────────────────────────────────────────────────────
-function loadScript(id, src) {
+// ── Script Loaders with Retry ───────────────────────────────────────────────
+function loadScriptWithRetry(id, src, retries = 3) {
+  if (window.google?.accounts?.oauth2) return Promise.resolve();
   return new Promise((resolve, reject) => {
-    if (document.getElementById(id)) {
-      resolve();
-      return;
-    }
-    const s = document.createElement("script");
-    s.id = id;
-    s.src = src;
-    s.async = true;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
+    const attempt = (n) => {
+      if (window.google?.accounts?.oauth2) {
+        resolve();
+        return;
+      }
+      const existing = document.getElementById(id);
+      if (existing) existing.remove();
+
+      const s = document.createElement("script");
+      s.id = id;
+      s.src = src;
+      s.async = true;
+      s.onload = () => {
+        resolve();
+      };
+      s.onerror = (err) => {
+        if (n > 1) {
+          setTimeout(() => attempt(n - 1), 600);
+        } else {
+          reject(new Error("Could not connect to Google services. If you use Brave or an AdBlocker, please disable Shields or allow Google on this site."));
+        }
+      };
+      document.head.appendChild(s);
+    };
+    attempt(retries);
   });
 }
 
@@ -144,8 +159,11 @@ export function useAuth() {
   }, [user]);
 
   const ensureGisReady = useCallback(async () => {
-    if (gisReadyRef.current && window.google?.accounts?.oauth2) return;
-    await loadScript("gis-script", "https://accounts.google.com/gsi/client");
+    if (window.google?.accounts?.oauth2) {
+      gisReadyRef.current = true;
+      return;
+    }
+    await loadScriptWithRetry("gis-script", "https://accounts.google.com/gsi/client");
     gisReadyRef.current = true;
   }, []);
 
