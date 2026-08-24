@@ -16,6 +16,7 @@ import PDFSecurity     from "./PDFSecurity";
 import PDFWatermark    from "./PDFWatermark";
 import BulkImageCompressor from "./BulkImageCompressor";
 import PassportResizer     from "./PassportResizer";
+import ImageCropResize    from "./ImageCropResize";
 
 function GoogleIcon() {
   return (
@@ -44,6 +45,7 @@ const IMAGE_TOOLS = [
   { path: "/convert", label: "Image Converter", desc: "Convert between WebP, PNG, JPG, AVIF", icon: "🔄" },
   { path: "/img2pdf", label: "Image to PDF", desc: "Convert multiple photos to printable PDF", icon: "📄" },
   { path: "/passport-resizer", label: "Passport Photo", desc: "Official sizes for Passport, Visa & Govt Exams", icon: "🛂" },
+  { path: "/image-crop", label: "Crop & Resize", desc: "Aspect ratios, exact dimensions, rotate & flip", icon: "📐" },
 ];
 
 export default function App() {
@@ -333,6 +335,7 @@ export default function App() {
           <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
           <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
           <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
+          <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
       </main>

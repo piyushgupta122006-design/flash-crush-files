@@ -228,6 +228,15 @@ function IconPassport() {
   );
 }
 
+function IconCrop() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"/>
+      <path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -605,6 +614,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Resize Passport Photo</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 13. Image Crop & Resize Studio */}
+          <TiltCard className="tool-card" onClick={() => navigate("/image-crop")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(244, 63, 94, 0.4)", boxShadow: "0 0 20px rgba(244, 63, 94, 0.25)" }}>
+                <IconCrop />
+              </div>
+              <div className="tool-card-title">Image Crop & Resize</div>
+              <p className="tool-card-desc">
+                Crop to 1:1, 9:16, 16:9, scale exact dimensions, rotate, flip mirror, and export in WebP, PNG or JPG.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#fb7185", borderColor: "rgba(244,63,94,0.3)" }}>📐 Aspect Ratios</span>
+                <span className="tool-tag">📏 Exact Pixels</span>
+                <span className="tool-tag">Rotate & Flip</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Open Crop Studio</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
