@@ -176,6 +176,18 @@ function IconSplit() {
   );
 }
 
+function IconOrganize() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <path d="M14 17h7"/>
+      <path d="M17.5 14v7"/>
+    </svg>
+  );
+}
+
 function IconLock() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -452,6 +464,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Split PDF</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 8. PDF Page Organizer & Rotator */}
+          <TiltCard className="tool-card" onClick={() => navigate("/organize-pdf")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(245, 158, 11, 0.4)", boxShadow: "0 0 20px rgba(245, 158, 11, 0.25)" }}>
+                <IconOrganize />
+              </div>
+              <div className="tool-card-title">PDF Organizer & Rotator</div>
+              <p className="tool-card-desc">
+                Visually drag to reorder pages, rotate 90°/180°/270°, delete unwanted pages, and export a clean PDF.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#fbbf24", borderColor: "rgba(245,158,11,0.3)" }}>Drag & Drop</span>
+                <span className="tool-tag">Rotate</span>
+                <span className="tool-tag">Delete Pages</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Organize PDF</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

@@ -11,6 +11,7 @@ import ImageToPDF      from "./ImageToPDF";
 import PDFMerger       from "./PDFMerger";
 import PDFToImage      from "./PDFToImage";
 import SplitPDF        from "./SplitPDF";
+import PDFOrganizer    from "./PDFOrganizer";
 
 function GoogleIcon() {
   return (
@@ -119,6 +120,12 @@ export default function App() {
             >
               Split PDF
             </NavLink>
+            <NavLink
+              to="/organize-pdf"
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+            >
+              Organize
+            </NavLink>
           </div>
         </div>
 
@@ -175,8 +182,9 @@ export default function App() {
           <Route path="/convert"    element={<ImageConverter auth={auth} />} />
           <Route path="/img2pdf"    element={<ImageToPDF auth={auth} />} />
           <Route path="/pdf-to-img" element={<PDFToImage auth={auth} />} />
-          <Route path="/split-pdf"  element={<SplitPDF auth={auth} />} />
-          <Route path="*"           element={<HomePage auth={auth} />} />
+          <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
+          <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
+          <Route path="*"              element={<HomePage auth={auth} />} />
         </Routes>
       </main>
 
