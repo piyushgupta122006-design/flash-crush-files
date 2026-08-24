@@ -521,24 +521,24 @@ export default function HomePage() {
             </div>
           </TiltCard>
 
-          {/* 10. PDF Watermark & Page Numbers */}
+          {/* 10. PDF Watermark & Remover */}
           <TiltCard className="tool-card" onClick={() => navigate("/pdf-watermark")}>
             <div>
               <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(236, 72, 153, 0.4)", boxShadow: "0 0 20px rgba(236, 72, 153, 0.25)" }}>
                 <IconWatermark />
               </div>
-              <div className="tool-card-title">Watermark & Numbers</div>
+              <div className="tool-card-title">Watermark & Remover</div>
               <p className="tool-card-desc">
-                Stamp custom text watermarks, angle, opacity, colors, and add page numbers with instant live preview.
+                Stamp custom text watermarks & page numbers, or cleanly erase unwanted watermarks and stamps with live preview.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#f472b6", borderColor: "rgba(236,72,153,0.3)" }}>🏷️ Watermark</span>
-                <span className="tool-tag">🔢 Page Numbers</span>
-                <span className="tool-tag">Live Preview</span>
+                <span className="tool-tag" style={{ color: "#f472b6", borderColor: "rgba(236,72,153,0.3)" }}>🏷️ Add</span>
+                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>🧹 Remove</span>
+                <span className="tool-tag">🔢 Numbers</span>
               </div>
             </div>
             <div className="tool-card-cta">
-              <span>Stamp PDF</span>
+              <span>Open Watermark Studio</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
