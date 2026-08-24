@@ -13,6 +13,7 @@ import PDFToImage      from "./PDFToImage";
 import SplitPDF        from "./SplitPDF";
 import PDFOrganizer    from "./PDFOrganizer";
 import PDFSecurity     from "./PDFSecurity";
+import PDFWatermark    from "./PDFWatermark";
 
 function GoogleIcon() {
   return (
@@ -133,6 +134,12 @@ export default function App() {
             >
               Security
             </NavLink>
+            <NavLink
+              to="/pdf-watermark"
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+            >
+              Watermark
+            </NavLink>
           </div>
         </div>
 
@@ -192,6 +199,7 @@ export default function App() {
           <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
           <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
           <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
+          <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
           <Route path="*"              element={<HomePage auth={auth} />} />
         </Routes>
       </main>

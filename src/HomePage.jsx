@@ -197,6 +197,15 @@ function IconLock() {
   );
 }
 
+function IconWatermark() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ec4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -508,6 +517,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Open Security Tool</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 10. PDF Watermark & Page Numbers */}
+          <TiltCard className="tool-card" onClick={() => navigate("/pdf-watermark")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(236, 72, 153, 0.4)", boxShadow: "0 0 20px rgba(236, 72, 153, 0.25)" }}>
+                <IconWatermark />
+              </div>
+              <div className="tool-card-title">Watermark & Numbers</div>
+              <p className="tool-card-desc">
+                Stamp custom text watermarks, angle, opacity, colors, and add page numbers with instant live preview.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#f472b6", borderColor: "rgba(236,72,153,0.3)" }}>🏷️ Watermark</span>
+                <span className="tool-tag">🔢 Page Numbers</span>
+                <span className="tool-tag">Live Preview</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Stamp PDF</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
