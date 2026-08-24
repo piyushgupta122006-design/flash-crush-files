@@ -490,6 +490,28 @@ export default function HomePage() {
             </div>
           </TiltCard>
 
+          {/* 9. PDF Password Protect & Unlock */}
+          <TiltCard className="tool-card" onClick={() => navigate("/pdf-security")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(56, 189, 248, 0.4)", boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)" }}>
+                <IconLock />
+              </div>
+              <div className="tool-card-title">PDF Lock & Unlock</div>
+              <p className="tool-card-desc">
+                Remove passwords from locked PDFs or add password protection. Auto-detects locked files instantly.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#38bdf8", borderColor: "rgba(56,189,248,0.3)" }}>🔓 Unlock</span>
+                <span className="tool-tag">🔒 Protect</span>
+                <span className="tool-tag">Auto-Detect</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Open Security Tool</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
         </div>
       </section>
 

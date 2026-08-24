@@ -12,6 +12,7 @@ import PDFMerger       from "./PDFMerger";
 import PDFToImage      from "./PDFToImage";
 import SplitPDF        from "./SplitPDF";
 import PDFOrganizer    from "./PDFOrganizer";
+import PDFSecurity     from "./PDFSecurity";
 
 function GoogleIcon() {
   return (
@@ -126,6 +127,12 @@ export default function App() {
             >
               Organize
             </NavLink>
+            <NavLink
+              to="/pdf-security"
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+            >
+              Security
+            </NavLink>
           </div>
         </div>
 
@@ -184,6 +191,7 @@ export default function App() {
           <Route path="/pdf-to-img" element={<PDFToImage auth={auth} />} />
           <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
           <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
+          <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
           <Route path="*"              element={<HomePage auth={auth} />} />
         </Routes>
       </main>
