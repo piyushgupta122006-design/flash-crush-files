@@ -15,6 +15,7 @@ import PDFOrganizer    from "./PDFOrganizer";
 import PDFSecurity     from "./PDFSecurity";
 import PDFWatermark    from "./PDFWatermark";
 import BulkImageCompressor from "./BulkImageCompressor";
+import PassportResizer     from "./PassportResizer";
 
 function GoogleIcon() {
   return (
@@ -42,6 +43,7 @@ const IMAGE_TOOLS = [
   { path: "/bulk-compress", label: "Bulk Compressor", desc: "Batch compress 20–50+ photos to ZIP", icon: "📦" },
   { path: "/convert", label: "Image Converter", desc: "Convert between WebP, PNG, JPG, AVIF", icon: "🔄" },
   { path: "/img2pdf", label: "Image to PDF", desc: "Convert multiple photos to printable PDF", icon: "📄" },
+  { path: "/passport-resizer", label: "Passport Photo", desc: "Official sizes for Passport, Visa & Govt Exams", icon: "🛂" },
 ];
 
 export default function App() {
@@ -329,8 +331,9 @@ export default function App() {
           <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
           <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
           <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
-          <Route path="/bulk-compress" element={<BulkImageCompressor auth={auth} />} />
-          <Route path="*"              element={<HomePage auth={auth} />} />
+          <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
+          <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
+          <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
       </main>
 

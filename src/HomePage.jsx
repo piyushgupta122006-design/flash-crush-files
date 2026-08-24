@@ -216,6 +216,18 @@ function IconBulk() {
   );
 }
 
+function IconPassport() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2"/>
+      <circle cx="9" cy="10" r="2"/>
+      <path d="M15 8h2"/>
+      <path d="M15 12h2"/>
+      <path d="M7 16h10"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -571,6 +583,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Batch Compress</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 12. Passport & Govt Exam Photo Resizer */}
+          <TiltCard className="tool-card" onClick={() => navigate("/passport-resizer")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(59, 130, 246, 0.4)", boxShadow: "0 0 20px rgba(59, 130, 246, 0.25)" }}>
+                <IconPassport />
+              </div>
+              <div className="tool-card-title">Passport & Exam Photo</div>
+              <p className="tool-card-desc">
+                Crop to official India, US Visa, SSC & Govt Exam specs, align with face oval guide, and generate 4×6 print sheets.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#60a5fa", borderColor: "rgba(59,130,246,0.3)" }}>🛂 Passport & Visa</span>
+                <span className="tool-tag">📝 Govt Exam</span>
+                <span className="tool-tag">4×6 Print Sheet</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Resize Passport Photo</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
