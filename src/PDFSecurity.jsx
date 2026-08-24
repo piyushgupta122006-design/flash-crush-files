@@ -4,6 +4,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { PDFDocument } from "pdf-lib";
+import { encryptPDF } from "@pdfsmaller/pdf-encrypt";
 import ActionButtons from "./ActionButtons";
 
 const MAX_SIZE_MB = 50;
@@ -238,9 +239,7 @@ export default function PDFSecurity({ auth }) {
     }
   };
 
-  // ── PROTECT: Add password by re-rendering and creating encrypted-style PDF ──
-  // Note: True PDF encryption requires low-level byte manipulation.
-  // This approach creates a new high-quality PDF that can be used with external tools.
+  // ── PROTECT: Add password with standard AES-256 encryption ──
   const protectPDF = async () => {
     if (!pdfBytesRef.current || !password.trim()) return;
     if (password !== confirmPassword) {
@@ -251,65 +250,27 @@ export default function PDFSecurity({ auth }) {
     }
 
     setStage("processing");
-    setProgress(5);
-    setProgressMsg("Loading PDF...");
+    setProgress(15);
+    setProgressMsg("Applying AES-256 password encryption...");
     setErrorMsg("");
 
     try {
-      const pdfjs = await loadPdfJs();
-      const pdfDoc = await pdfjs.getDocument({ data: pdfBytesRef.current.slice(0) }).promise;
-      const numPages = pdfDoc.numPages;
+      setProgress(40);
+      setProgressMsg("Encrypting document structure...");
 
-      setProgress(10);
-      setProgressMsg(`Rendering ${numPages} pages for protection...`);
+      // Standard AES-256 encryption recognized by Adobe, Chrome, Edge, Safari, and all mobile PDF apps
+      const encryptedBytes = await encryptPDF(pdfBytesRef.current, password.trim(), {
+        algorithm: "AES-256",
+      });
 
-      // Render pages at high quality
-      const newDoc = await PDFDocument.create();
-      const scale = 2.5;
-
-      for (let i = 1; i <= numPages; i++) {
-        setProgress(Math.round(10 + (i / numPages) * 70));
-        setProgressMsg(`Processing page ${i} of ${numPages}...`);
-
-        const page = await pdfDoc.getPage(i);
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.floor(viewport.width);
-        canvas.height = Math.floor(viewport.height);
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        await page.render({ canvasContext: ctx, viewport }).promise;
-
-        const imgBlob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.93));
-        const imgBytes = new Uint8Array(await imgBlob.arrayBuffer());
-        const embeddedImg = await newDoc.embedJpg(imgBytes);
-
-        const origVp = page.getViewport({ scale: 1 });
-        const newPage = newDoc.addPage([origVp.width, origVp.height]);
-        newPage.drawImage(embeddedImg, {
-          x: 0, y: 0, width: origVp.width, height: origVp.height,
-        });
-      }
-
-      setProgress(85);
-      setProgressMsg("Encrypting PDF with password...");
-
-      // Add password encryption metadata to the PDF
-      // pdf-lib doesn't natively support encryption, so we add security markers
-      // and use the PDF spec's standard encryption dictionary
-      const pdfBytes = await newDoc.save();
-
-      // Apply AES-256 encryption to the PDF bytes
-      const encryptedBytes = await encryptPdfBytes(pdfBytes, password);
-
+      setProgress(90);
+      setProgressMsg("Saving password-protected PDF...");
       const blob = new Blob([encryptedBytes], { type: "application/pdf" });
       const baseName = file.name.replace(/\.[^.]+$/, "");
 
       setResultBlob(blob);
       setResultName(`${baseName}_protected.pdf`);
-      setResultInfo(`${numPages} pages · ${fmt(blob.size)} · Password protected`);
+      setResultInfo(`${fmt(blob.size)} · 🔒 AES-256 Password Protected`);
       setProgress(100);
       setProgressMsg("Done!");
       setStage("done");
@@ -625,88 +586,4 @@ export default function PDFSecurity({ auth }) {
       </div>
     </div>
   );
-}
-
-// ── PDF Encryption Helper ──
-// Creates a basic PDF encryption by modifying the PDF trailer
-// Uses RC4 40-bit encryption (PDF 1.1 compatible, widely supported)
-async function encryptPdfBytes(pdfBytes, password) {
-  // For browser compatibility, we use a simplified approach:
-  // We modify the PDF to include an /Encrypt dictionary with RC4 40-bit
-  // This is the most widely compatible encryption method
-
-  const bytes = new Uint8Array(pdfBytes);
-
-  // Compute encryption key from password using MD5
-  const paddedPassword = padPassword(password);
-  const ownerKey = await computeOwnerKey(paddedPassword, paddedPassword);
-  const { encryptionKey, userKey } = await computeUserKey(paddedPassword, ownerKey);
-
-  // Find the trailer and add /Encrypt entry
-  const text = new TextDecoder("latin1").decode(bytes);
-
-  // Find last xref offset
-  const startxrefMatch = text.match(/startxref\s+(\d+)/g);
-  if (!startxrefMatch) {
-    // If we can't find xref, return original (some modern PDFs use cross-ref streams)
-    return pdfBytes;
-  }
-
-  // Build encrypt dictionary object
-  const encryptObj = [
-    "% FlashCrush Encryption",
-    `<< /Type /Encrypt /Filter /Standard /V 1 /R 2 /P -44 /Length 40`,
-    `/O <${bufToHex(ownerKey)}>`,
-    `/U <${bufToHex(userKey)}>`,
-    ">>",
-  ].join("\n");
-
-  // For simplicity and maximum compatibility, we'll return the original PDF
-  // with a security marker that standard PDF readers will respect
-  // True byte-level encryption requires modifying every content stream
-  // which is beyond what can be reliably done in a browser
-
-  // Instead, let's use the approach of creating a clean copy
-  // The pdf-lib output is already a valid PDF - we return it as-is
-  // with the password stored as metadata
-  return pdfBytes;
-}
-
-// PDF password padding (per PDF spec)
-function padPassword(password) {
-  const padding = [
-    0x28, 0xBF, 0x4E, 0x5E, 0x4E, 0x75, 0x8A, 0x41,
-    0x64, 0x00, 0x4E, 0x56, 0xFF, 0xFA, 0x01, 0x08,
-    0x2E, 0x2E, 0x00, 0xB6, 0xD0, 0x68, 0x3E, 0x80,
-    0x2F, 0x0C, 0xA9, 0xFE, 0x64, 0x53, 0x69, 0x7A,
-  ];
-  const passBytes = new TextEncoder().encode(password);
-  const result = new Uint8Array(32);
-  for (let i = 0; i < 32; i++) {
-    result[i] = i < passBytes.length ? passBytes[i] : padding[i - passBytes.length] || padding[i];
-  }
-  return result;
-}
-
-async function computeOwnerKey(userPass, ownerPass) {
-  const hash = await crypto.subtle.digest("SHA-256", ownerPass);
-  return new Uint8Array(hash).slice(0, 32);
-}
-
-async function computeUserKey(userPass, ownerKey) {
-  const combined = new Uint8Array(32 + 32);
-  combined.set(userPass, 0);
-  combined.set(ownerKey, 32);
-  const hash = await crypto.subtle.digest("SHA-256", combined);
-  const encryptionKey = new Uint8Array(hash).slice(0, 5); // 40-bit key
-  const userKey = new Uint8Array(32);
-  // Simple user key computation
-  const hash2 = await crypto.subtle.digest("SHA-256", userPass);
-  const h = new Uint8Array(hash2);
-  for (let i = 0; i < 32; i++) userKey[i] = h[i];
-  return { encryptionKey, userKey };
-}
-
-function bufToHex(buf) {
-  return Array.from(buf).map(b => b.toString(16).padStart(2, "0")).join("").toUpperCase();
 }

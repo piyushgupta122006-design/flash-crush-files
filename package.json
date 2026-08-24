@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@pdfsmaller/pdf-encrypt": "^1.2.0",
     "firebase": "^10.12.0",
     "jszip": "^3.10.1",
     "pdf-lib": "^1.17.1",
