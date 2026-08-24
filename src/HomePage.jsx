@@ -206,6 +206,16 @@ function IconWatermark() {
   );
 }
 
+function IconBulk() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+      <line x1="12" y1="22.08" x2="12" y2="12"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -539,6 +549,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Open Watermark Studio</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 11. Bulk Image Compressor */}
+          <TiltCard className="tool-card" onClick={() => navigate("/bulk-compress")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(16, 185, 129, 0.4)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.25)" }}>
+                <IconBulk />
+              </div>
+              <div className="tool-card-title">Bulk Image Compressor</div>
+              <p className="tool-card-desc">
+                Compress 20–50+ images at once with target KB size mode, instant savings stats, and 1-click .ZIP archive download.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#34d399", borderColor: "rgba(16,185,129,0.3)" }}>📦 Bulk ZIP</span>
+                <span className="tool-tag">🎯 Target KB</span>
+                <span className="tool-tag">Multi-Upload</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Batch Compress</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

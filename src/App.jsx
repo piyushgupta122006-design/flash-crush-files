@@ -14,6 +14,7 @@ import SplitPDF        from "./SplitPDF";
 import PDFOrganizer    from "./PDFOrganizer";
 import PDFSecurity     from "./PDFSecurity";
 import PDFWatermark    from "./PDFWatermark";
+import BulkImageCompressor from "./BulkImageCompressor";
 
 function GoogleIcon() {
   return (
@@ -140,6 +141,12 @@ export default function App() {
             >
               Watermark
             </NavLink>
+            <NavLink
+              to="/bulk-compress"
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+            >
+              Bulk Compress
+            </NavLink>
           </div>
         </div>
 
@@ -200,6 +207,7 @@ export default function App() {
           <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
           <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
           <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
+          <Route path="/bulk-compress" element={<BulkImageCompressor auth={auth} />} />
           <Route path="*"              element={<HomePage auth={auth} />} />
         </Routes>
       </main>
