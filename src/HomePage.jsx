@@ -245,6 +245,20 @@ function IconSparkles() {
   );
 }
 
+function IconQR() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+      <rect x="14" y="14" width="3" height="3"/>
+      <rect x="18" y="14" width="3" height="3"/>
+      <rect x="14" y="18" width="3" height="3"/>
+      <rect x="18" y="18" width="3" height="3"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -666,6 +680,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Remove Background</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 15. QR Code Studio */}
+          <TiltCard className="tool-card" onClick={() => navigate("/qr-studio")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(6, 182, 212, 0.4)", boxShadow: "0 0 20px rgba(6, 182, 212, 0.25)" }}>
+                <IconQR />
+              </div>
+              <div className="tool-card-title">Custom QR Studio</div>
+              <p className="tool-card-desc">
+                Generate high-res QR codes with cyber gradients, custom dot shapes, center logos, Wi-Fi login, vCard & UPI.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#38bdf8", borderColor: "rgba(6,182,212,0.3)" }}>📱 Gradients & Logos</span>
+                <span className="tool-tag">📶 Wi-Fi & vCard</span>
+                <span className="tool-tag">SVG / PNG HD</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Open QR Studio</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

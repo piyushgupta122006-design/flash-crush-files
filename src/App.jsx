@@ -18,6 +18,7 @@ import BulkImageCompressor from "./BulkImageCompressor";
 import PassportResizer     from "./PassportResizer";
 import ImageCropResize    from "./ImageCropResize";
 import BackgroundRemover  from "./BackgroundRemover";
+import QRCodeStudio       from "./QRCodeStudio";
 
 function GoogleIcon() {
   return (
@@ -48,6 +49,7 @@ const IMAGE_TOOLS = [
   { path: "/passport-resizer", label: "Passport Photo", desc: "Official sizes for Passport, Visa & Govt Exams", icon: "🛂" },
   { path: "/image-crop", label: "Crop & Resize", desc: "Aspect ratios, exact dimensions, rotate & flip", icon: "📐" },
   { path: "/bg-remover", label: "AI BG Remover", desc: "100% in-browser on-device background remover", icon: "🤖" },
+  { path: "/qr-studio", label: "QR Studio", desc: "Custom colors, gradients, center logo & vCard", icon: "📱" },
 ];
 
 export default function App() {
@@ -339,6 +341,7 @@ export default function App() {
           <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
           <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
           <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
+          <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
       </main>
