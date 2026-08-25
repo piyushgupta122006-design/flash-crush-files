@@ -237,6 +237,14 @@ function IconCrop() {
   );
 }
 
+function IconSparkles() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -636,6 +644,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Open Crop Studio</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 14. AI Background Remover */}
+          <TiltCard className="tool-card" onClick={() => navigate("/bg-remover")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.25)" }}>
+                <IconSparkles />
+              </div>
+              <div className="tool-card-title">AI Background Remover</div>
+              <p className="tool-card-desc">
+                Erase photo backgrounds in 1-click using 100% on-device AI. Replace with studio backdrops, colors & soft shadow.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>🤖 100% Local AI</span>
+                <span className="tool-tag">🏁 Transparent PNG</span>
+                <span className="tool-tag">Studio Shadow</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Remove Background</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
