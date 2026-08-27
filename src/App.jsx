@@ -19,6 +19,8 @@ import PassportResizer     from "./PassportResizer";
 import ImageCropResize    from "./ImageCropResize";
 import BackgroundRemover  from "./BackgroundRemover";
 import QRCodeStudio       from "./QRCodeStudio";
+import LocalHistory       from "./LocalHistory";
+import { getAllHistoryRecords } from "./historyDB";
 
 function GoogleIcon() {
   return (
@@ -61,6 +63,8 @@ export default function App() {
   const [showPdfMenu, setShowPdfMenu] = useState(false);
   const [showImgMenu, setShowImgMenu] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [showHistoryDrawer, setShowHistoryDrawer] = useState(false);
+  const [historyCount, setHistoryCount] = useState(0);
   const [signInError, setSignInError] = useState("");
 
   const menuRef = useRef(null);
@@ -72,6 +76,17 @@ export default function App() {
   // Check active category for glow highlighting
   const isPdfActive = PDF_TOOLS.some(t => t.path === location.pathname);
   const isImgActive = IMAGE_TOOLS.some(t => t.path === location.pathname);
+
+  // Update history count
+  useEffect(() => {
+    const updateCount = async () => {
+      const records = await getAllHistoryRecords();
+      setHistoryCount(records.length);
+    };
+    updateCount();
+    window.addEventListener("flashcrush:history-updated", updateCount);
+    return () => window.removeEventListener("flashcrush:history-updated", updateCount);
+  }, []);
 
   // Close menus on outside click
   useEffect(() => {
@@ -259,6 +274,31 @@ export default function App() {
             </div>
           )}
 
+          {/* Local Offline History Drawer Button */}
+          <button
+            type="button"
+            className="nav-history-btn"
+            onClick={() => setShowHistoryDrawer(true)}
+            title="Local Offline History (IndexedDB)"
+            style={{
+              display: "flex", alignItems: "center", gap: "6px",
+              background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "10px", padding: "7px 12px", color: "#fff", fontSize: "12px", fontWeight: 700,
+              cursor: "pointer", transition: "all 0.2s"
+            }}
+          >
+            <span>🕒</span>
+            <span className="history-text-full">History</span>
+            {historyCount > 0 && (
+              <span style={{
+                background: "#8b5cf6", color: "#fff", fontSize: "10px", fontWeight: 800,
+                padding: "1px 6px", borderRadius: "10px"
+              }}>
+                {historyCount}
+              </span>
+            )}
+          </button>
+
           {/* Mobile Hamburger Button */}
           <button
             type="button"
@@ -342,9 +382,13 @@ export default function App() {
           <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
           <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
           <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
+          <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
       </main>
+
+      {/* ── Offline Local History Drawer ── */}
+      <LocalHistory auth={auth} isOpen={showHistoryDrawer} onClose={() => setShowHistoryDrawer(false)} />
 
       {/* ── Footer ── */}
       <footer className="site-footer">

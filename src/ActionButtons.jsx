@@ -4,6 +4,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { GOOGLE_API_KEY } from "./useAuth.js";
+import { addHistoryRecord } from "./historyDB.js";
 
 function DriveIcon({ size = 15 }) {
   return (
@@ -336,13 +337,28 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
 }
 
 // ── Main ActionButtons component ──────────────────────────────────────────────
-export default function ActionButtons({ blob, fileName, onReset, auth }) {
+export default function ActionButtons({ blob, fileName, onReset, auth, toolName, origSize }) {
   const [driveStatus, setDriveStatus] = useState("idle"); // idle|modal|uploading|success|error
   const [driveLink,   setDriveLink]   = useState(null);
   const [driveError,  setDriveError]  = useState(null);
   const [shared,      setShared]      = useState(false);
+  const recordedRef = useRef(false);
 
   const isSignedIn = auth.authStatus === "signedin";
+
+  // Auto-record to local IndexedDB once when blob is ready
+  useEffect(() => {
+    if (blob && fileName && !recordedRef.current) {
+      recordedRef.current = true;
+      addHistoryRecord({
+        tool: toolName || (fileName.endsWith(".pdf") ? "PDF Studio" : "Image Studio"),
+        fileName,
+        blob,
+        newSize: blob.size,
+        origSize: origSize || 0,
+      });
+    }
+  }, [blob, fileName, toolName, origSize]);
 
   // ── Download ───────────────────────────────────────────────────────────────
   const handleDownload = () => {

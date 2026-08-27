@@ -259,6 +259,15 @@ function IconQR() {
   );
 }
 
+function IconHistory() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline points="12 6 12 12 16 14"/>
+    </svg>
+  );
+}
+
 function IconBolt() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -702,6 +711,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Open QR Studio</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 16. Offline Local History */}
+          <TiltCard className="tool-card" onClick={() => navigate("/history")}>
+            <div>
+              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(139, 92, 246, 0.4)", boxShadow: "0 0 20px rgba(139, 92, 246, 0.25)" }}>
+                <IconHistory />
+              </div>
+              <div className="tool-card-title">Offline Local History</div>
+              <p className="tool-card-desc">
+                View, re-download, or export past compressed PDFs, images, and QR codes stored 100% privately in IndexedDB.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(139,92,246,0.3)" }}>🕒 IndexedDB</span>
+                <span className="tool-tag">100% Private</span>
+                <span className="tool-tag">Zero Server Logs</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>View History</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
