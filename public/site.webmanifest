@@ -1,14 +1,52 @@
 {
-  "name": "Flash Crush-Files",
-  "short_name": "Flash Crush-Files",
-  "description": "Free browser-based PDF and image compressor",
+  "name": "FlashCrush — Extreme Client-Side File Studio",
+  "short_name": "FlashCrush",
+  "description": "100% Client-Side PDF Compressor, Merge, Split, Security, Watermark, Bulk Image Compressor, Passport Resizer, Crop Studio, AI BG Remover & QR Studio.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f8f4ff",
-  "theme_color": "#a855f7",
-  "orientation": "portrait-primary",
+  "background_color": "#06080e",
+  "theme_color": "#8b5cf6",
+  "orientation": "any",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ],
-  "categories": ["utilities", "productivity"]
+  "shortcuts": [
+    {
+      "name": "PDF Compressor",
+      "short_name": "PDF",
+      "url": "/pdf",
+      "description": "Extreme in-browser PDF size reduction"
+    },
+    {
+      "name": "Bulk Image Compressor",
+      "short_name": "Bulk",
+      "url": "/bulk-compress",
+      "description": "Batch compress 50+ photos to ZIP"
+    },
+    {
+      "name": "Passport Photo Resizer",
+      "short_name": "Passport",
+      "url": "/passport-resizer",
+      "description": "Official passport & exam photo sizing"
+    },
+    {
+      "name": "AI Background Remover",
+      "short_name": "BG Remover",
+      "url": "/bg-remover",
+      "description": "100% on-device AI background removal"
+    },
+    {
+      "name": "QR Code Studio",
+      "short_name": "QR Studio",
+      "url": "/qr-studio",
+      "description": "Custom gradient & logo QR generator"
+    }
+  ],
+  "categories": ["productivity", "utilities", "photo"]
 }

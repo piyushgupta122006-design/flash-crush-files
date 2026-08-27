@@ -21,6 +21,7 @@ import BackgroundRemover  from "./BackgroundRemover";
 import QRCodeStudio       from "./QRCodeStudio";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
+import { usePWA }         from "./usePWA";
 
 function GoogleIcon() {
   return (
@@ -56,6 +57,7 @@ const IMAGE_TOOLS = [
 
 export default function App() {
   const auth = useAuth();
+  const pwa = usePWA();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -125,7 +127,18 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div className="site-layout">
+      {/* ── Offline Status Banner ── */}
+      {!pwa.isOnline && (
+        <div style={{
+          background: "linear-gradient(90deg, #d97706, #b45309)", color: "#ffffff",
+          fontSize: "12px", fontWeight: 700, padding: "6px 16px", textAlign: "center",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100
+        }}>
+          <span>⚡ Offline Mode Active</span>
+          <span style={{ opacity: 0.9 }}>— 100% of tools work locally in your browser without internet.</span>
+        </div>
+      )}
 
       {/* ── Floating glass navbar ── */}
       <nav className="navbar anim-fade d0">
@@ -274,6 +287,26 @@ export default function App() {
             </div>
           )}
 
+          {/* Install PWA App Button */}
+          {pwa.canInstall && (
+            <button
+              type="button"
+              className="nav-install-btn"
+              onClick={pwa.installApp}
+              title="Install FlashCrush as Native App"
+              style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                background: "linear-gradient(135deg, rgba(168,85,247,0.25), rgba(6,182,212,0.25))",
+                border: "1px solid rgba(168,85,247,0.5)",
+                borderRadius: "10px", padding: "7px 12px", color: "#fff", fontSize: "12px", fontWeight: 700,
+                cursor: "pointer", transition: "all 0.2s"
+              }}
+            >
+              <span>📲</span>
+              <span className="install-text-full">Install App</span>
+            </button>
+          )}
+
           {/* Local Offline History Drawer Button */}
           <button
             type="button"
@@ -329,8 +362,33 @@ export default function App() {
               className={({ isActive }) => `mobile-nav-item${isActive ? " active" : ""}`}
               onClick={() => setMobileNavOpen(false)}
             >
-              <span>🏠 Home</span>
+              <span>🏠</span> Home
             </NavLink>
+
+            {/* Mobile History Link */}
+            <div
+              className="mobile-nav-item"
+              onClick={() => { setShowHistoryDrawer(true); setMobileNavOpen(false); }}
+              style={{ cursor: "pointer", display: "flex", justifyContent: "space-between" }}
+            >
+              <span><span>🕒</span> Local History</span>
+              {historyCount > 0 && (
+                <span style={{ background: "#8b5cf6", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: "10px" }}>
+                  {historyCount}
+                </span>
+              )}
+            </div>
+
+            {/* Mobile Install App Button */}
+            {pwa.canInstall && (
+              <div
+                className="mobile-nav-item"
+                onClick={() => { pwa.installApp(); setMobileNavOpen(false); }}
+                style={{ cursor: "pointer", color: "#38bdf8", fontWeight: 800 }}
+              >
+                <span>📲</span> Install FlashCrush App
+              </div>
+            )}
 
             <div className="mobile-nav-section-title">📄 PDF Tools</div>
             <div className="mobile-nav-grid">
