@@ -1,5 +1,5 @@
-// FlashCrush Service Worker — 100% Offline PWA & Asset Caching
-const CACHE_NAME = "flashcrush-cache-v1";
+// FlashCrush Service Worker v2 — Complete Offline PWA Caching for Desktop & Mobile
+const CACHE_NAME = "flashcrush-cache-v2";
 
 const PRECACHE_ASSETS = [
   "/",
@@ -8,16 +8,17 @@ const PRECACHE_ASSETS = [
   "/site.webmanifest",
 ];
 
-// Install: Precache shell
+// Install: Precache shell assets and activate immediately
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_ASSETS);
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
-// Activate: Clean up old caches
+// Activate: Clean up old cache versions and claim all clients
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -32,56 +33,80 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch: Stale-while-revalidate for local assets & fonts; network-first for external APIs
+// Fetch Strategy:
+// 1. Navigation requests: Network-first with instant fallback to cached /index.html
+// 2. Static assets (JS chunks, CSS, WASM, fonts): Cache-first with background revalidation
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Skip non-GET requests and chrome-extension/drive upload endpoints
-  if (req.method !== "GET" || url.protocol.startsWith("chrome") || url.hostname.includes("googleapis.com")) {
+  // Ignore non-GET, Google Drive upload/API endpoints, and browser extensions
+  if (
+    req.method !== "GET" ||
+    url.protocol.startsWith("chrome") ||
+    url.protocol.startsWith("edge") ||
+    url.hostname.includes("googleapis.com") ||
+    url.hostname.includes("accounts.google.com")
+  ) {
     return;
   }
 
-  // Navigation requests (HTML pages)
+  // 1. HTML Navigation Requests (Page reloads & direct URL navigation)
   if (req.mode === "navigate") {
     event.respondWith(
-      fetch(req).catch(() => {
-        return caches.match("/index.html") || caches.match("/");
-      })
+      fetch(req)
+        .then((networkRes) => {
+          if (networkRes && networkRes.status === 200) {
+            const clone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          }
+          return networkRes;
+        })
+        .catch(async () => {
+          // OFFLINE: Return cached index.html or root
+          const cachedIndex = await caches.match("/index.html");
+          if (cachedIndex) return cachedIndex;
+          const cachedRoot = await caches.match("/");
+          if (cachedRoot) return cachedRoot;
+          return caches.match(req);
+        })
     );
     return;
   }
 
-  // Static Assets (JS, CSS, Fonts, Images)
+  // 2. Static Resources (Vite JS bundles, CSS, WASM, Fonts, SVGs)
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) {
-        // Return cached and fetch in background to update
-        fetch(req).then((networkRes) => {
-          if (networkRes && networkRes.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, networkRes));
-          }
-        }).catch(() => {});
+        // Return cached asset immediately and update cache in background
+        fetch(req)
+          .then((networkRes) => {
+            if (networkRes && networkRes.status === 200) {
+              caches.open(CACHE_NAME).then((cache) => cache.put(req, networkRes));
+            }
+          })
+          .catch(() => {});
         return cached;
       }
 
-      // Not in cache: fetch from network and cache
-      return fetch(req).then((networkRes) => {
-        if (!networkRes || networkRes.status !== 200 || networkRes.type !== "basic") {
+      // Not in cache yet: Fetch from network and save to cache
+      return fetch(req)
+        .then((networkRes) => {
+          if (networkRes && (networkRes.status === 200 || networkRes.type === "opaque")) {
+            const resClone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          }
           return networkRes;
-        }
-        const resClone = networkRes.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
-        return networkRes;
-      }).catch(() => {
-        // Offline fallback for images
-        if (req.headers.get("accept")?.includes("image")) {
-          return new Response(
-            '<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#1e293b"/></svg>',
-            { headers: { "Content-Type": "image/svg+xml" } }
-          );
-        }
-      });
+        })
+        .catch(() => {
+          // Offline fallback for images
+          if (req.headers.get("accept")?.includes("image")) {
+            return new Response(
+              '<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#0f172a"/></svg>',
+              { headers: { "Content-Type": "image/svg+xml" } }
+            );
+          }
+        });
     })
   );
 });

@@ -1,4 +1,4 @@
-// usePWA.js — Service Worker Registration, Install Prompt, and Online/Offline State
+// usePWA.js — Robust Service Worker Registration, Install Prompt, and Online/Offline State
 import { useState, useEffect } from "react";
 
 export function usePWA() {
@@ -8,22 +8,31 @@ export function usePWA() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
-    // 1. Check if already installed
+    // 1. Check if running in standalone mode (installed PWA)
     if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
       setIsInstalled(true);
     }
 
-    // 2. Register Service Worker in production / supported environments
+    // 2. Register Service Worker reliably across all devices (Desktop PC & Mobile)
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/sw.js")
+      const registerSW = () => {
+        navigator.serviceWorker
+          .register("/sw.js")
           .then((reg) => {
-            console.log("FlashCrush Service Worker registered successfully:", reg.scope);
+            console.log("FlashCrush Service Worker active on:", reg.scope);
+            // Check for updates
+            reg.update().catch(() => {});
           })
           .catch((err) => {
-            console.warn("Service Worker registration failed:", err);
+            console.warn("Service Worker registration error:", err);
           });
-      });
+      };
+
+      if (document.readyState === "complete") {
+        registerSW();
+      } else {
+        window.addEventListener("load", registerSW);
+      }
     }
 
     // 3. Listen for PWA Install Prompt
