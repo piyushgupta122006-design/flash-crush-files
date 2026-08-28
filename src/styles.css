@@ -465,27 +465,91 @@ body::before {
 }
 
 @media (max-width: 860px) {
+  .navbar {
+    top: 8px !important;
+    width: calc(100% - 16px) !important;
+    max-width: calc(100% - 16px) !important;
+    margin: 0 auto !important;
+    padding: 6px 10px !important;
+    gap: 8px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+  }
   .desktop-nav {
     display: none !important;
   }
   .mobile-hamburger-btn {
     display: flex !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+    flex-shrink: 0 !important;
   }
   .nav-install-btn {
     display: none !important;
   }
+  .btn-nav-signin {
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+    gap: 5px !important;
+  }
   .btn-nav-signin .signin-text-full {
-    display: none;
+    display: none !important;
   }
   .btn-nav-signin .signin-text-short {
-    display: inline;
+    display: inline !important;
   }
   .history-text-full {
     display: none !important;
   }
   .nav-history-btn {
-    padding: 6px 10px !important;
+    padding: 6px 8px !important;
+    gap: 3px !important;
+    font-size: 11px !important;
+    flex-shrink: 0 !important;
+  }
+  .nav-user {
+    padding: 2px 6px 2px 2px !important;
     gap: 4px !important;
+    flex-shrink: 0 !important;
+  }
+  .nav-avatar {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .navbar-left {
+    gap: 6px !important;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+  .navbar-right {
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .navbar-logo {
+    font-size: 1.0rem !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar {
+    width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
+    padding: 5px 8px !important;
+    gap: 6px !important;
+  }
+  .navbar-logo {
+    font-size: 0.92rem !important;
+    gap: 4px !important;
+  }
+  .btn-nav-signin {
+    padding: 5px 8px !important;
+    font-size: 0.74rem !important;
+  }
+  .nav-history-btn {
+    padding: 5px 6px !important;
   }
 }
 
