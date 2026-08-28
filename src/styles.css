@@ -471,11 +471,21 @@ body::before {
   .mobile-hamburger-btn {
     display: flex !important;
   }
+  .nav-install-btn {
+    display: none !important;
+  }
   .btn-nav-signin .signin-text-full {
     display: none;
   }
   .btn-nav-signin .signin-text-short {
     display: inline;
+  }
+  .history-text-full {
+    display: none !important;
+  }
+  .nav-history-btn {
+    padding: 6px 10px !important;
+    gap: 4px !important;
   }
 }
 
@@ -1687,22 +1697,34 @@ body::before {
     max-width: 100vw;
   }
 
+  .site-layout {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .navbar {
-    top: 0;
-    margin: 0;
-    padding: 8px 14px;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    border-top: none;
+    top: 10px;
+    width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    padding: 7px 12px;
+    border-radius: 18px;
+    box-sizing: border-box;
     position: sticky;
   }
   .navbar-links {
     display: none;
   }
-  .navbar-logo {
-    font-size: 1.1rem;
+  .navbar-left {
     gap: 8px;
+  }
+  .navbar-right {
+    gap: 6px;
+  }
+  .navbar-logo {
+    font-size: 1.05rem;
+    gap: 6px;
   }
 
   /* Sign-in button: show short text on mobile */
