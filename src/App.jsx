@@ -22,6 +22,7 @@ import QRCodeStudio       from "./QRCodeStudio";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
+import { useTheme }       from "./useTheme";
 
 function GoogleIcon() {
   return (
@@ -58,12 +59,14 @@ const IMAGE_TOOLS = [
 export default function App() {
   const auth = useAuth();
   const pwa = usePWA();
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [showMenu, setShowMenu] = useState(false);
   const [showPdfMenu, setShowPdfMenu] = useState(false);
   const [showImgMenu, setShowImgMenu] = useState(false);
+  const [showThemeMenu, setShowThemeMenu] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [showHistoryDrawer, setShowHistoryDrawer] = useState(false);
   const [historyCount, setHistoryCount] = useState(0);
@@ -72,6 +75,7 @@ export default function App() {
   const menuRef = useRef(null);
   const pdfMenuRef = useRef(null);
   const imgMenuRef = useRef(null);
+  const themeMenuRef = useRef(null);
 
   const isSignedIn = auth.authStatus === "signedin";
 
@@ -102,6 +106,9 @@ export default function App() {
       if (imgMenuRef.current && !imgMenuRef.current.contains(e.target)) {
         setShowImgMenu(false);
       }
+      if (themeMenuRef.current && !themeMenuRef.current.contains(e.target)) {
+        setShowThemeMenu(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -123,6 +130,7 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "instant" });
     setShowPdfMenu(false);
     setShowImgMenu(false);
+    setShowThemeMenu(false);
     setMobileNavOpen(false);
   }, [location.pathname]);
 
@@ -320,6 +328,51 @@ export default function App() {
             )}
           </button>
 
+          {/* Theme Toggle Dropdown */}
+          <div className="nav-theme-wrap" ref={themeMenuRef}>
+            <button
+              type="button"
+              className="nav-theme-btn"
+              onClick={() => setShowThemeMenu(m => !m)}
+              title={`Theme: ${theme === "system" ? "System Default" : theme === "dark" ? "Dark Mode" : "Light Mode"}`}
+            >
+              <span>{theme === "light" ? "☀️" : theme === "dark" ? "🌙" : "💻"}</span>
+              <span className="theme-text-full">
+                {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "Auto"}
+              </span>
+              <span className="nav-chevron">{showThemeMenu ? "▲" : "▼"}</span>
+            </button>
+
+            {showThemeMenu && (
+              <div className="nav-theme-dropdown">
+                <button
+                  type="button"
+                  className={`nav-theme-option${theme === "light" ? " active" : ""}`}
+                  onClick={() => { setTheme("light"); setShowThemeMenu(false); }}
+                >
+                  <span>☀️</span>
+                  <span>Light Mode</span>
+                </button>
+                <button
+                  type="button"
+                  className={`nav-theme-option${theme === "dark" ? " active" : ""}`}
+                  onClick={() => { setTheme("dark"); setShowThemeMenu(false); }}
+                >
+                  <span>🌙</span>
+                  <span>Dark Mode</span>
+                </button>
+                <button
+                  type="button"
+                  className={`nav-theme-option${theme === "system" ? " active" : ""}`}
+                  onClick={() => { setTheme("system"); setShowThemeMenu(false); }}
+                >
+                  <span>💻</span>
+                  <span>System (Auto)</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Mobile Hamburger Button */}
           <button
             type="button"
@@ -352,6 +405,39 @@ export default function App() {
             >
               <span>🏠</span> Home
             </NavLink>
+
+            {/* Mobile Theme Selector */}
+            <div style={{ marginTop: "4px", marginBottom: "4px" }}>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-sub)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px", paddingLeft: "4px" }}>
+                Theme Mode
+              </div>
+              <div className="mobile-theme-segment">
+                <button
+                  type="button"
+                  className={`mobile-theme-btn${theme === "light" ? " active" : ""}`}
+                  onClick={() => setTheme("light")}
+                >
+                  <span style={{ fontSize: "16px" }}>☀️</span>
+                  <span>Light</span>
+                </button>
+                <button
+                  type="button"
+                  className={`mobile-theme-btn${theme === "dark" ? " active" : ""}`}
+                  onClick={() => setTheme("dark")}
+                >
+                  <span style={{ fontSize: "16px" }}>🌙</span>
+                  <span>Dark</span>
+                </button>
+                <button
+                  type="button"
+                  className={`mobile-theme-btn${theme === "system" ? " active" : ""}`}
+                  onClick={() => setTheme("system")}
+                >
+                  <span style={{ fontSize: "16px" }}>💻</span>
+                  <span>Auto</span>
+                </button>
+              </div>
+            </div>
 
             {/* Mobile History Link */}
             <div
