@@ -139,126 +139,128 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           to   { opacity: 1; transform: scale(1); }
         }
         .fc-modal-card {
-          background: rgba(13, 18, 36, 0.85);
-          backdrop-filter: blur(28px);
-          -webkit-backdrop-filter: blur(28px);
-          border: 1px solid rgba(139, 92, 246, 0.35);
-          border-radius: 24px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(139, 92, 246, 0.25);
+          background: #FFFFFF;
+          border: 3px solid #1a1a1a;
+          border-radius: 16px;
+          box-shadow: 8px 8px 0px #1a1a1a;
           width: 100%;
           max-width: 460px;
           padding: 32px;
-          font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+          font-family: 'DM Sans', -apple-system, sans-serif;
           position: relative;
           overflow: hidden;
         }
         .fc-modal-card::before {
           content: '';
-          position: absolute; top: 0; left: 0; right: 0; height: 3px;
-          background: linear-gradient(90deg, #8b5cf6, #38bdf8, #f43f5e);
-          border-radius: 24px 24px 0 0;
+          position: absolute; top: 0; left: 0; right: 0; height: 6px;
+          background: #FF6B9D;
+          border-radius: 16px 16px 0 0;
         }
         .fc-modal-title {
-          font-family: 'Syne', sans-serif;
-          font-size: 19px; font-weight: 800; color: #ffffff;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 20px; font-weight: 700; color: #1a1a1a;
           margin-bottom: 6px; letter-spacing: -0.3px;
           display: flex; align-items: center; gap: 10px;
         }
         .fc-modal-sub {
-          font-size: 13px; color: #94a3b8; margin-bottom: 24px;
+          font-size: 13px; color: #525252; margin-bottom: 24px;
         }
         .fc-label {
           font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
-          text-transform: uppercase; color: #94a3b8; margin-bottom: 8px;
+          text-transform: uppercase; color: #525252; margin-bottom: 8px;
           display: block;
         }
         .fc-input {
           width: 100%; padding: 12px 16px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1.5px solid rgba(255, 255, 255, 0.12);
-          border-radius: 12px;
+          background: #FFFBEB;
+          border: 2px solid #1a1a1a;
+          border-radius: 8px;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 13px; color: #ffffff;
-          outline: none; transition: all 0.2s;
+          font-size: 13px; color: #1a1a1a;
+          outline: none; transition: all 0.15s;
           box-sizing: border-box;
         }
         .fc-input:focus {
-          border-color: #8b5cf6;
-          box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-          background: rgba(255, 255, 255, 0.08);
+          border-color: #1a1a1a;
+          box-shadow: 3px 3px 0px #1a1a1a;
+          background: #FFFFFF;
         }
         .fc-folder-btn {
           display: flex; align-items: center; gap: 10px;
           width: 100%; padding: 13px 16px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1.5px dashed rgba(139, 92, 246, 0.4);
-          border-radius: 12px; cursor: pointer;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 13.5px; font-weight: 600;
-          color: #c084fc; transition: all 0.2s;
+          background: #FDF2F8;
+          border: 2px dashed #1a1a1a;
+          border-radius: 8px; cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 13.5px; font-weight: 700;
+          color: #1a1a1a; transition: all 0.15s;
           text-align: left;
         }
         .fc-folder-btn:hover:not(:disabled) {
-          background: rgba(139, 92, 246, 0.12);
-          border-color: #38bdf8;
-          box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+          background: #FFD93D;
+          border-style: solid;
+          box-shadow: 3px 3px 0px #1a1a1a;
         }
         .fc-folder-btn:disabled { opacity: 0.55; cursor: not-allowed; }
         .fc-folder-selected {
-          background: rgba(139, 92, 246, 0.15);
-          border-style: solid; border-color: #8b5cf6;
-          color: #ffffff;
+          background: #D8B4FE;
+          border-style: solid; border-color: #1a1a1a;
+          color: #1a1a1a;
+          box-shadow: 3px 3px 0px #1a1a1a;
         }
         .fc-folder-hint {
-          font-size: 12px; color: #94a3b8; margin-top: 6px;
+          font-size: 12px; color: #525252; margin-top: 6px;
         }
         .fc-error {
-          font-size: 12px; color: #fca5a5;
-          background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.35);
-          border-radius: 10px; padding: 10px 14px; margin-top: 16px;
+          font-size: 12px; color: #B91C1C;
+          background: #FEF2F2; border: 2px solid #1a1a1a;
+          border-radius: 8px; padding: 10px 14px; margin-top: 16px;
+          box-shadow: 3px 3px 0px #1a1a1a;
         }
         .fc-actions {
           display: flex; gap: 12px; margin-top: 26px;
         }
         .fc-btn-cancel {
           flex: 1; padding: 13px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1.5px solid rgba(255, 255, 255, 0.12);
-          border-radius: 12px; cursor: pointer;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          background: #FFFFFF;
+          border: 2px solid #1a1a1a;
+          border-radius: 8px; cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
           font-size: 13.5px; font-weight: 700;
-          color: #cbd5e1; transition: all 0.2s;
+          color: #1a1a1a; transition: all 0.15s;
+          box-shadow: 3px 3px 0px #1a1a1a;
         }
-        .fc-btn-cancel:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+        .fc-btn-cancel:hover { background: #F3F4F6; transform: translate(-1px, -1px); box-shadow: 4px 4px 0px #1a1a1a; }
         .fc-btn-save {
           flex: 2; padding: 13px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1, #06b6d4);
-          border: none; border-radius: 12px; cursor: pointer;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 13.5px; font-weight: 700; color: #fff;
+          background: #FF6B9D;
+          border: 2px solid #1a1a1a; border-radius: 8px; cursor: pointer;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 13.5px; font-weight: 700; color: #FFFFFF;
           display: flex; align-items: center; justify-content: center; gap: 8px;
-          box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
-          transition: all 0.2s;
+          box-shadow: 3px 3px 0px #1a1a1a;
+          transition: all 0.15s;
         }
         .fc-btn-save:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 0 35px rgba(168, 85, 247, 0.75);
+          transform: translate(-2px, -2px);
+          box-shadow: 5px 5px 0px #1a1a1a;
         }
         .fc-close-btn {
           position: absolute; top: 18px; right: 18px;
-          background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 10px; width: 32px; height: 32px;
+          background: #FEE2E2; border: 2px solid #1a1a1a;
+          border-radius: 8px; width: 32px; height: 32px;
           display: flex; align-items: center; justify-content: center;
-          cursor: pointer; color: #94a3b8; transition: all 0.2s;
+          cursor: pointer; color: #1a1a1a; transition: all 0.15s;
+          box-shadow: 2px 2px 0px #1a1a1a;
         }
-        .fc-close-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
-        .fc-divider { height: 1px; background: rgba(255, 255, 255, 0.08); margin: 22px 0; }
+        .fc-close-btn:hover { background: #EF4444; color: #fff; transform: translate(-1px, -1px); }
+        .fc-divider { height: 2px; background: #e5e5e5; margin: 22px 0; }
         .fc-root-hint {
           display: flex; align-items: center; gap: 6px;
-          font-size: 12px; color: #94a3b8;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 10px; padding: 10px 12px; margin-top: 10px;
+          font-size: 12px; color: #525252;
+          background: #FEF3C7;
+          border: 2px solid #1a1a1a;
+          border-radius: 8px; padding: 10px 12px; margin-top: 10px;
         }
       `}</style>
 

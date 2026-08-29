@@ -539,7 +539,7 @@ export default function PDFToImage({ auth }) {
           onClick={() => setPreviewModal(null)}
           style={{
             position: "fixed", inset: 0, zIndex: 3000,
-            background: "rgba(0,0,0,0.88)", backdropFilter: "blur(10px)",
+            background: "rgba(0,0,0,0.6)",
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
             padding: "20px"
           }}
@@ -548,7 +548,7 @@ export default function PDFToImage({ auth }) {
             <img
               src={previewModal.url}
               alt={`Page ${previewModal.pageNum}`}
-              style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "12px", boxShadow: "0 0 40px rgba(0,0,0,0.9)" }}
+              style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "12px", border: "3px solid #1a1a1a", boxShadow: "8px 8px 0px #1a1a1a" }}
             />
             <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
               <button

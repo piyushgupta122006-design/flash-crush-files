@@ -120,19 +120,19 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
       {/* Header Banner */}
       <div style={{
-        padding: "20px", background: "linear-gradient(135deg, rgba(139,92,246,0.12), rgba(6,182,212,0.12))",
-        border: "1px solid rgba(139,92,246,0.25)", borderRadius: "16px", marginBottom: "20px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.5)"
+        padding: "20px", background: "#FFFFFF",
+        border: "3px solid #1a1a1a", borderRadius: "12px", marginBottom: "20px",
+        boxShadow: "4px 4px 0px #1a1a1a"
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
               <span style={{ fontSize: "1.4rem" }}>🕒</span>
-              <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#fff", margin: 0 }}>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.3rem", fontWeight: 700, color: "#1a1a1a", margin: 0 }}>
                 Local Offline History
               </h2>
             </div>
-            <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>
+            <p style={{ fontSize: "12px", color: "#525252", margin: 0 }}>
               🔒 100% Private in IndexedDB · Kept strictly inside your browser · Never uploaded to any cloud server.
             </p>
           </div>
@@ -141,8 +141,9 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
             <button
               onClick={() => setConfirmClear(true)}
               style={{
-                padding: "6px 12px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)",
-                borderRadius: "8px", color: "#f87171", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                padding: "6px 12px", background: "#FEE2E2", border: "2px solid #1a1a1a",
+                borderRadius: "8px", color: "#B91C1C", fontSize: "11px", fontWeight: 700, cursor: "pointer",
+                boxShadow: "2px 2px 0px #1a1a1a"
               }}
             >
               🗑️ Clear All
@@ -152,17 +153,17 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
         {/* Stats Row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px", marginTop: "16px" }}>
-          <div style={{ padding: "10px 14px", background: "rgba(0,0,0,0.3)", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", display: "block" }}>Files Processed</span>
-            <strong style={{ fontSize: "1.2rem", color: "#38bdf8", fontFamily: "'JetBrains Mono', monospace" }}>{stats.count}</strong>
+          <div style={{ padding: "10px 14px", background: "#F0F9FF", borderRadius: "8px", border: "2px solid #1a1a1a" }}>
+            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Files Processed</span>
+            <strong style={{ fontSize: "1.2rem", color: "#0284C7", fontFamily: "'JetBrains Mono', monospace" }}>{stats.count}</strong>
           </div>
-          <div style={{ padding: "10px 14px", background: "rgba(0,0,0,0.3)", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", display: "block" }}>Disk Space Saved</span>
-            <strong style={{ fontSize: "1.2rem", color: "#34d399", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalSavedBytes)}</strong>
+          <div style={{ padding: "10px 14px", background: "#ECFDF5", borderRadius: "8px", border: "2px solid #1a1a1a" }}>
+            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Disk Space Saved</span>
+            <strong style={{ fontSize: "1.2rem", color: "#059669", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalSavedBytes)}</strong>
           </div>
-          <div style={{ padding: "10px 14px", background: "rgba(0,0,0,0.3)", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", display: "block" }}>Total Output Size</span>
-            <strong style={{ fontSize: "1.2rem", color: "#c084fc", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalProcessedBytes)}</strong>
+          <div style={{ padding: "10px 14px", background: "#FAF5FF", borderRadius: "8px", border: "2px solid #1a1a1a" }}>
+            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Total Output Size</span>
+            <strong style={{ fontSize: "1.2rem", color: "#7C3AED", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalProcessedBytes)}</strong>
           </div>
         </div>
       </div>
@@ -175,8 +176,9 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
-            flex: 1, minWidth: "180px", padding: "8px 14px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: "8px", color: "#fff", fontSize: "12px", outline: "none"
+            flex: 1, minWidth: "180px", padding: "9px 14px", background: "#FFFFFF", border: "2px solid #1a1a1a",
+            borderRadius: "8px", color: "#1a1a1a", fontSize: "12px", outline: "none",
+            boxShadow: "2px 2px 0px #1a1a1a"
           }}
         />
 
@@ -191,10 +193,12 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
               key={f.id}
               onClick={() => setFilterType(f.id)}
               style={{
-                padding: "6px 12px", fontSize: "11px", fontWeight: 700,
-                background: filterType === f.id ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
-                border: filterType === f.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "8px", color: filterType === f.id ? "#38bdf8" : "#94a3b8", cursor: "pointer"
+                padding: "7px 12px", fontSize: "11px", fontWeight: 700,
+                background: filterType === f.id ? "#FFD93D" : "#FFFFFF",
+                border: "2px solid #1a1a1a",
+                borderRadius: "8px", color: "#1a1a1a", cursor: "pointer",
+                boxShadow: filterType === f.id ? "2px 2px 0px #1a1a1a" : "none",
+                transform: filterType === f.id ? "translate(-1px, -1px)" : "none"
               }}
             >
               {f.label}
@@ -206,11 +210,11 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
       {/* History Items List */}
       {filtered.length === 0 ? (
         <div style={{
-          textAlign: "center", padding: "48px 20px", background: "rgba(255,255,255,0.02)",
-          border: "1px dashed rgba(255,255,255,0.1)", borderRadius: "14px", color: "#94a3b8"
+          textAlign: "center", padding: "48px 20px", background: "#FFFFFF",
+          border: "2px dashed #1a1a1a", borderRadius: "12px", color: "#525252"
         }}>
           <div style={{ fontSize: "2.4rem", marginBottom: "10px" }}>🗄️</div>
-          <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff", marginBottom: "4px" }}>
+          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px", fontFamily: "'Space Grotesk', sans-serif" }}>
             No History Items Yet
           </div>
           <div style={{ fontSize: "12px", maxWidth: "340px", margin: "0 auto" }}>
@@ -224,8 +228,9 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
               key={item.id}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "12px 16px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: "12px", gap: "14px", flexWrap: "wrap", transition: "all 0.2s"
+                padding: "12px 16px", background: "#FFFFFF", border: "2px solid #1a1a1a",
+                borderRadius: "12px", gap: "14px", flexWrap: "wrap", transition: "all 0.15s",
+                boxShadow: "3px 3px 0px #1a1a1a"
               }}
             >
               {/* Left: Thumbnail & Info */}
@@ -234,11 +239,12 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
                   <img
                     src={item.thumbnail}
                     alt=""
-                    style={{ width: "42px", height: "42px", objectFit: "cover", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.12)" }}
+                    style={{ width: "42px", height: "42px", objectFit: "cover", borderRadius: "8px", border: "2px solid #1a1a1a" }}
                   />
                 ) : (
                   <div style={{
-                    width: "42px", height: "42px", borderRadius: "8px", background: "rgba(255,255,255,0.05)",
+                    width: "42px", height: "42px", borderRadius: "8px", background: "#FEF3C7",
+                    border: "2px solid #1a1a1a",
                     display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem"
                   }}>
                     {getToolIcon(item.tool)}
@@ -246,14 +252,14 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
                 )}
 
                 <div>
-                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff", maxWidth: "260px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a", maxWidth: "260px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {item.fileName}
                   </div>
                   <div style={{ display: "flex", gap: "8px", alignItems: "center", marginTop: "2px" }}>
-                    <span style={{ fontSize: "10px", padding: "1px 6px", background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: "4px", color: "#c084fc", fontWeight: 700 }}>
+                    <span style={{ fontSize: "10px", padding: "1px 6px", background: "#D8B4FE", border: "1px solid #1a1a1a", borderRadius: "4px", color: "#1a1a1a", fontWeight: 700 }}>
                       {item.tool}
                     </span>
-                    <span style={{ fontSize: "11px", color: "#94a3b8" }}>{timeAgo(item.timestamp)}</span>
+                    <span style={{ fontSize: "11px", color: "#737373" }}>{timeAgo(item.timestamp)}</span>
                   </div>
                 </div>
               </div>
@@ -261,11 +267,11 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
               {/* Middle: Size & Savings */}
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", fontWeight: 800, color: "#38bdf8" }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", fontWeight: 700, color: "#0284C7" }}>
                     {fmt(item.newSize)}
                   </div>
                   {item.origSize > 0 && item.origSize !== item.newSize && (
-                    <div style={{ fontSize: "10px", color: "#94a3b8", textDecoration: "line-through" }}>
+                    <div style={{ fontSize: "10px", color: "#737373", textDecoration: "line-through" }}>
                       {fmt(item.origSize)}
                     </div>
                   )}
@@ -273,8 +279,8 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
                 {item.savingsPct > 0 && (
                   <span style={{
-                    fontSize: "10px", fontWeight: 800, padding: "2px 6px", borderRadius: "6px",
-                    background: "rgba(16,185,129,0.2)", border: "1px solid rgba(16,185,129,0.4)", color: "#34d399"
+                    fontSize: "10px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px",
+                    background: "#6EE7B7", border: "1px solid #1a1a1a", color: "#1a1a1a"
                   }}>
                     -{item.savingsPct}%
                   </span>
@@ -286,8 +292,9 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
                 <button
                   onClick={() => handleDownload(item)}
                   style={{
-                    padding: "6px 12px", background: "rgba(56,189,248,0.15)", border: "1px solid rgba(56,189,248,0.3)",
-                    borderRadius: "8px", color: "#38bdf8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                    padding: "6px 12px", background: "#6EE7B7", border: "2px solid #1a1a1a",
+                    borderRadius: "8px", color: "#1a1a1a", fontSize: "11px", fontWeight: 700, cursor: "pointer",
+                    boxShadow: "2px 2px 0px #1a1a1a"
                   }}
                   title="Re-Download to Device"
                 >
@@ -297,8 +304,9 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
                 <button
                   onClick={() => handleDriveUpload(item)}
                   style={{
-                    padding: "6px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "8px", color: "#cbd5e1", fontSize: "11px", cursor: "pointer"
+                    padding: "6px 8px", background: "#FFFFFF", border: "2px solid #1a1a1a",
+                    borderRadius: "8px", color: "#1a1a1a", fontSize: "11px", cursor: "pointer",
+                    boxShadow: "2px 2px 0px #1a1a1a"
                   }}
                   title="Save to Google Drive"
                 >
@@ -308,8 +316,8 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
                 <button
                   onClick={(e) => handleDelete(item.id, e)}
                   style={{
-                    padding: "6px 8px", background: "none", border: "none",
-                    color: "#94a3b8", fontSize: "12px", cursor: "pointer", transition: "color 0.2s"
+                    padding: "6px 8px", background: "#FEE2E2", border: "2px solid #1a1a1a", borderRadius: "8px",
+                    color: "#1a1a1a", fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.15s"
                   }}
                   title="Delete from local history"
                 >
@@ -324,30 +332,30 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
       {/* Confirmation Modal for Clear All */}
       {confirmClear && (
         <div style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(6px)",
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
           display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px"
         }}>
           <div style={{
-            background: "#0f172a", border: "1px solid rgba(239,68,68,0.4)", borderRadius: "16px",
-            padding: "24px", maxWidth: "380px", width: "100%", textAlign: "center", boxShadow: "0 20px 50px rgba(0,0,0,0.8)"
+            background: "#FFFFFF", border: "3px solid #1a1a1a", borderRadius: "16px",
+            padding: "24px", maxWidth: "380px", width: "100%", textAlign: "center", boxShadow: "8px 8px 0px #1a1a1a"
           }}>
             <div style={{ fontSize: "2rem", marginBottom: "10px" }}>🗑️</div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: "#fff", marginBottom: "8px" }}>
+            <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#1a1a1a", marginBottom: "8px", fontFamily: "'Space Grotesk', sans-serif" }}>
               Clear All Local History?
             </div>
-            <p style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "20px" }}>
+            <p style={{ fontSize: "12px", color: "#525252", marginBottom: "20px" }}>
               This will permanently delete all {records.length} saved local files from your browser&apos;s IndexedDB storage.
             </p>
             <div style={{ display: "flex", gap: "10px" }}>
               <button
                 onClick={() => setConfirmClear(false)}
-                style={{ flex: 1, padding: "8px", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#fff", fontWeight: 700, cursor: "pointer" }}
+                style={{ flex: 1, padding: "9px", background: "#FFFFFF", border: "2px solid #1a1a1a", borderRadius: "8px", color: "#1a1a1a", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleClearAll}
-                style={{ flex: 1, padding: "8px", background: "#ef4444", border: "none", borderRadius: "8px", color: "#fff", fontWeight: 700, cursor: "pointer" }}
+                style={{ flex: 1, padding: "9px", background: "#EF4444", border: "2px solid #1a1a1a", borderRadius: "8px", color: "#fff", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
               >
                 Yes, Clear All
               </button>
@@ -379,21 +387,21 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
   return (
     <div style={{
-      position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)",
+      position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
       display: "flex", justifyContent: "flex-end", zIndex: 999
     }}>
       <div style={{
-        width: "100%", maxWidth: "560px", height: "100%", background: "#090d16",
-        borderLeft: "1px solid rgba(255,255,255,0.1)", padding: "24px 20px", overflowY: "auto",
-        boxShadow: "-10px 0 40px rgba(0,0,0,0.8)", boxSizing: "border-box"
+        width: "100%", maxWidth: "560px", height: "100%", background: "#FFFBEB",
+        borderLeft: "3px solid #1a1a1a", padding: "24px 20px", overflowY: "auto",
+        boxShadow: "-8px 0 0px #1a1a1a", boxSizing: "border-box"
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+          <span style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", textTransform: "uppercase", letterSpacing: "0.08em", background: "#FFD93D", border: "2px solid #1a1a1a", padding: "4px 8px", borderRadius: "6px" }}>
             IndexedDB File Drawer
           </span>
           <button
             onClick={onClose}
-            style={{ width: "28px", height: "28px", borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "none", color: "#fff", cursor: "pointer" }}
+            style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#FEE2E2", border: "2px solid #1a1a1a", color: "#1a1a1a", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
           >
             ✕
           </button>

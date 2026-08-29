@@ -1,4 +1,4 @@
-// HomePage.jsx — Cyber-Glass Dark Luxury & Holographic Prism UI
+// HomePage.jsx — Neo-Brutalism UI
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,32 +36,10 @@ function useScrollReveal(ref) {
   }, []);
 }
 
-/* ── Interactive 3D Holographic Tilt Card ── */
+/* ── Simple Brutal Card wrapper (no 3D tilt) ── */
 function TiltCard({ children, className, onClick }) {
-  const ref = useRef(null);
-
-  const onMove = (e) => {
-    const r = ref.current.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width - 0.5) * 14;
-    const y = ((e.clientY - r.top) / r.height - 0.5) * -14;
-    ref.current.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) translateY(-8px)`;
-  };
-
-  const onLeave = () => {
-    if (ref.current) {
-      ref.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-    }
-  };
-
   return (
-    <div
-      ref={ref}
-      className={className}
-      onClick={onClick}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{ transition: "transform 0.15s ease-out, box-shadow 0.3s ease" }}
-    >
+    <div className={className} onClick={onClick}>
       {children}
     </div>
   );
@@ -298,19 +276,12 @@ function IconArrowRight() {
 export function LogoMark({ size = 28 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className="logo-glow-mark">
-      <rect width="32" height="32" rx="9" fill="url(#lg_logo)"/>
-      <path d="M10 8h8l4 4v12a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="white" fillOpacity="0.25"/>
-      <path d="M18 8l4 4h-3a1 1 0 0 1-1-1V8z" fill="white" fillOpacity="0.6"/>
-      <path d="M13 17.5l-2 2m0 0h2m-2 0v-2" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M19 14.5l2-2m0 0h-2m2 0v2" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      <line x1="14" y1="18" x2="18" y2="14" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeOpacity="0.8"/>
-      <defs>
-        <linearGradient id="lg_logo" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#8b5cf6"/>
-          <stop offset="0.5" stopColor="#6366f1"/>
-          <stop offset="1" stopColor="#06b6d4"/>
-        </linearGradient>
-      </defs>
+      <rect width="32" height="32" rx="6" fill="#FF6B9D" stroke="#1a1a1a" strokeWidth="2.5"/>
+      <path d="M10 8h8l4 4v12a1 1 0 0 1-1 1H10a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="white" fillOpacity="0.5"/>
+      <path d="M18 8l4 4h-3a1 1 0 0 1-1-1V8z" fill="white" fillOpacity="0.8"/>
+      <path d="M13 17.5l-2 2m0 0h2m-2 0v-2" stroke="#1a1a1a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M19 14.5l2-2m0 0h-2m2 0v2" stroke="#1a1a1a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="14" y1="18" x2="18" y2="14" stroke="#1a1a1a" strokeWidth="1.8" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -377,10 +348,10 @@ export default function HomePage() {
       {/* ══ 5 TOOLS DECK ══ */}
       <section style={{ maxWidth: "1180px", margin: "0 auto", padding: "0 20px" }}>
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cyan-neon)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+          <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
             The Complete Toolkit
           </div>
-          <h2 style={{ fontFamily: "'Syne', sans-serif", fontSize: "2.2rem", fontWeight: 800, color: "#ffffff" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "2.2rem", fontWeight: 700, color: "var(--text-main)" }}>
             Select Your Tool
           </h2>
         </div>
@@ -390,7 +361,7 @@ export default function HomePage() {
           {/* 1. PDF Compressor */}
           <TiltCard className="tool-card" onClick={() => navigate("/pdf")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(244, 63, 94, 0.4)", boxShadow: "0 0 20px rgba(244, 63, 94, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconPDF />
               </div>
               <div className="tool-card-title">PDF Compressor</div>
@@ -398,7 +369,7 @@ export default function HomePage() {
                 Shrink bulky PDF files by up to 80% with lossless clarity. Supports Low, Medium, High &amp; Custom DPI compression.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#fb7185", borderColor: "rgba(244,63,94,0.3)" }}>.PDF</span>
+                <span className="tool-tag">.PDF</span>
                 <span className="tool-tag">Up to 30 MB</span>
                 <span className="tool-tag">Smart Fallback</span>
               </div>
@@ -412,7 +383,7 @@ export default function HomePage() {
           {/* 2. PDF Merger */}
           <TiltCard className="tool-card" onClick={() => navigate("/merge-pdf")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(245, 158, 11, 0.4)", boxShadow: "0 0 20px rgba(245, 158, 11, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconMerge />
               </div>
               <div className="tool-card-title">PDF Merger</div>
@@ -420,7 +391,7 @@ export default function HomePage() {
                 Combine multiple PDF files into one clean document. Drag and reorder pages effortlessly before merging.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#fcd34d", borderColor: "rgba(245,158,11,0.3)" }}>Multi-PDF</span>
+                <span className="tool-tag">Multi-PDF</span>
                 <span className="tool-tag">Drag &amp; Drop</span>
                 <span className="tool-tag">Fast Merge</span>
               </div>
@@ -434,7 +405,7 @@ export default function HomePage() {
           {/* 3. Image Compressor */}
           <TiltCard className="tool-card" onClick={() => navigate("/image")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(192, 132, 252, 0.4)", boxShadow: "0 0 20px rgba(192, 132, 252, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconImage />
               </div>
               <div className="tool-card-title">Image Compressor</div>
@@ -442,7 +413,7 @@ export default function HomePage() {
                 Compress JPG, PNG, and WebP images. Set custom target file sizes (e.g. exactly 50 KB) with live comparison.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(192,132,252,0.3)" }}>JPG / PNG / WebP</span>
+                <span className="tool-tag">JPG / PNG / WebP</span>
                 <span className="tool-tag">Exact KB Target</span>
               </div>
             </div>
@@ -455,7 +426,7 @@ export default function HomePage() {
           {/* 4. Image to PDF */}
           <TiltCard className="tool-card" onClick={() => navigate("/img2pdf")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(16, 185, 129, 0.4)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconImg2Pdf />
               </div>
               <div className="tool-card-title">Image to PDF</div>
@@ -463,7 +434,7 @@ export default function HomePage() {
                 Convert one or multiple images into a professional PDF document. Custom margins, page orientation, and A4 fit.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#34d399", borderColor: "rgba(16,185,129,0.3)" }}>Multi-Image</span>
+                <span className="tool-tag">Multi-Image</span>
                 <span className="tool-tag">A4 &amp; Letter</span>
                 <span className="tool-tag">Instant</span>
               </div>
@@ -477,7 +448,7 @@ export default function HomePage() {
           {/* 5. Image Converter */}
           <TiltCard className="tool-card" onClick={() => navigate("/convert")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(56, 189, 248, 0.4)", boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconConvert />
               </div>
               <div className="tool-card-title">Image Converter</div>
@@ -485,7 +456,7 @@ export default function HomePage() {
                 Convert between JPG, PNG, WebP, AVIF, SVG, BMP, and GIF with adjustable quality and instant download.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#38bdf8", borderColor: "rgba(56,189,248,0.3)" }}>All Formats</span>
+                <span className="tool-tag">All Formats</span>
                 <span className="tool-tag">Lossless Mode</span>
               </div>
             </div>
@@ -498,7 +469,7 @@ export default function HomePage() {
           {/* 6. PDF to Images */}
           <TiltCard className="tool-card" onClick={() => navigate("/pdf-to-img")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(6, 182, 212, 0.4)", boxShadow: "0 0 20px rgba(6, 182, 212, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconPdf2Img />
               </div>
               <div className="tool-card-title">PDF to Images</div>
@@ -506,7 +477,7 @@ export default function HomePage() {
                 Extract every page of your PDF into high-resolution JPG, PNG, or WebP images with 1-click ZIP download.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "var(--cyan-neon)", borderColor: "rgba(6,182,212,0.3)" }}>PDF → JPG/PNG</span>
+                <span className="tool-tag">PDF → JPG/PNG</span>
                 <span className="tool-tag">1-Click ZIP</span>
                 <span className="tool-tag">Up to 300 DPI</span>
               </div>
@@ -520,7 +491,7 @@ export default function HomePage() {
           {/* 7. Split & Extract PDF */}
           <TiltCard className="tool-card" onClick={() => navigate("/split-pdf")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconSplit />
               </div>
               <div className="tool-card-title">Split & Extract PDF</div>
@@ -528,7 +499,7 @@ export default function HomePage() {
                 Extract specific pages, split into individual PDFs, or chunk into groups. Visual page thumbnail selector.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>Extract Pages</span>
+                <span className="tool-tag">Extract Pages</span>
                 <span className="tool-tag">Split All</span>
                 <span className="tool-tag">ZIP Output</span>
               </div>
@@ -542,7 +513,7 @@ export default function HomePage() {
           {/* 8. PDF Page Organizer & Rotator */}
           <TiltCard className="tool-card" onClick={() => navigate("/organize-pdf")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(245, 158, 11, 0.4)", boxShadow: "0 0 20px rgba(245, 158, 11, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconOrganize />
               </div>
               <div className="tool-card-title">PDF Organizer & Rotator</div>
@@ -550,7 +521,7 @@ export default function HomePage() {
                 Visually drag to reorder pages, rotate 90°/180°/270°, delete unwanted pages, and export a clean PDF.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#fbbf24", borderColor: "rgba(245,158,11,0.3)" }}>Drag & Drop</span>
+                <span className="tool-tag">Drag & Drop</span>
                 <span className="tool-tag">Rotate</span>
                 <span className="tool-tag">Delete Pages</span>
               </div>
@@ -564,7 +535,7 @@ export default function HomePage() {
           {/* 9. PDF Password Protect & Unlock */}
           <TiltCard className="tool-card" onClick={() => navigate("/pdf-security")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(56, 189, 248, 0.4)", boxShadow: "0 0 20px rgba(56, 189, 248, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconLock />
               </div>
               <div className="tool-card-title">PDF Lock & Unlock</div>
@@ -572,7 +543,7 @@ export default function HomePage() {
                 Remove passwords from locked PDFs or add password protection. Auto-detects locked files instantly.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#38bdf8", borderColor: "rgba(56,189,248,0.3)" }}>🔓 Unlock</span>
+                <span className="tool-tag">🔓 Unlock</span>
                 <span className="tool-tag">🔒 Protect</span>
                 <span className="tool-tag">Auto-Detect</span>
               </div>
@@ -586,7 +557,7 @@ export default function HomePage() {
           {/* 10. PDF Watermark & Remover */}
           <TiltCard className="tool-card" onClick={() => navigate("/pdf-watermark")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(236, 72, 153, 0.4)", boxShadow: "0 0 20px rgba(236, 72, 153, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconWatermark />
               </div>
               <div className="tool-card-title">Watermark & Remover</div>
@@ -594,8 +565,8 @@ export default function HomePage() {
                 Stamp custom text watermarks & page numbers, or cleanly erase unwanted watermarks and stamps with live preview.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#f472b6", borderColor: "rgba(236,72,153,0.3)" }}>🏷️ Add</span>
-                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>🧹 Remove</span>
+                <span className="tool-tag">🏷️ Add</span>
+                <span className="tool-tag">🧹 Remove</span>
                 <span className="tool-tag">🔢 Numbers</span>
               </div>
             </div>
@@ -608,7 +579,7 @@ export default function HomePage() {
           {/* 11. Bulk Image Compressor */}
           <TiltCard className="tool-card" onClick={() => navigate("/bulk-compress")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(16, 185, 129, 0.4)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconBulk />
               </div>
               <div className="tool-card-title">Bulk Image Compressor</div>
@@ -616,7 +587,7 @@ export default function HomePage() {
                 Compress 20–50+ images at once with target KB size mode, instant savings stats, and 1-click .ZIP archive download.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#34d399", borderColor: "rgba(16,185,129,0.3)" }}>📦 Bulk ZIP</span>
+                <span className="tool-tag">📦 Bulk ZIP</span>
                 <span className="tool-tag">🎯 Target KB</span>
                 <span className="tool-tag">Multi-Upload</span>
               </div>
@@ -630,7 +601,7 @@ export default function HomePage() {
           {/* 12. Passport & Govt Exam Photo Resizer */}
           <TiltCard className="tool-card" onClick={() => navigate("/passport-resizer")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(59, 130, 246, 0.4)", boxShadow: "0 0 20px rgba(59, 130, 246, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconPassport />
               </div>
               <div className="tool-card-title">Passport & Exam Photo</div>
@@ -638,7 +609,7 @@ export default function HomePage() {
                 Crop to official India, US Visa, SSC & Govt Exam specs, align with face oval guide, and generate 4×6 print sheets.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#60a5fa", borderColor: "rgba(59,130,246,0.3)" }}>🛂 Passport & Visa</span>
+                <span className="tool-tag">🛂 Passport & Visa</span>
                 <span className="tool-tag">📝 Govt Exam</span>
                 <span className="tool-tag">4×6 Print Sheet</span>
               </div>
@@ -652,7 +623,7 @@ export default function HomePage() {
           {/* 13. Image Crop & Resize Studio */}
           <TiltCard className="tool-card" onClick={() => navigate("/image-crop")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(244, 63, 94, 0.4)", boxShadow: "0 0 20px rgba(244, 63, 94, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconCrop />
               </div>
               <div className="tool-card-title">Image Crop & Resize</div>
@@ -660,7 +631,7 @@ export default function HomePage() {
                 Crop to 1:1, 9:16, 16:9, scale exact dimensions, rotate, flip mirror, and export in WebP, PNG or JPG.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#fb7185", borderColor: "rgba(244,63,94,0.3)" }}>📐 Aspect Ratios</span>
+                <span className="tool-tag">📐 Aspect Ratios</span>
                 <span className="tool-tag">📏 Exact Pixels</span>
                 <span className="tool-tag">Rotate & Flip</span>
               </div>
@@ -674,7 +645,7 @@ export default function HomePage() {
           {/* 14. AI Background Remover */}
           <TiltCard className="tool-card" onClick={() => navigate("/bg-remover")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconSparkles />
               </div>
               <div className="tool-card-title">AI Background Remover</div>
@@ -682,7 +653,7 @@ export default function HomePage() {
                 Erase photo backgrounds in 1-click using 100% on-device AI. Replace with studio backdrops, colors & soft shadow.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(168,85,247,0.3)" }}>🤖 100% Local AI</span>
+                <span className="tool-tag">🤖 100% Local AI</span>
                 <span className="tool-tag">🏁 Transparent PNG</span>
                 <span className="tool-tag">Studio Shadow</span>
               </div>
@@ -696,7 +667,7 @@ export default function HomePage() {
           {/* 15. QR Code Studio */}
           <TiltCard className="tool-card" onClick={() => navigate("/qr-studio")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(6, 182, 212, 0.4)", boxShadow: "0 0 20px rgba(6, 182, 212, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconQR />
               </div>
               <div className="tool-card-title">Custom QR Studio</div>
@@ -704,7 +675,7 @@ export default function HomePage() {
                 Generate high-res QR codes with cyber gradients, custom dot shapes, center logos, Wi-Fi login, vCard & UPI.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#38bdf8", borderColor: "rgba(6,182,212,0.3)" }}>📱 Gradients & Logos</span>
+                <span className="tool-tag">📱 Gradients & Logos</span>
                 <span className="tool-tag">📶 Wi-Fi & vCard</span>
                 <span className="tool-tag">SVG / PNG HD</span>
               </div>
@@ -718,7 +689,7 @@ export default function HomePage() {
           {/* 16. Offline Local History */}
           <TiltCard className="tool-card" onClick={() => navigate("/history")}>
             <div>
-              <div className="tool-card-icon-wrap" style={{ borderColor: "rgba(139, 92, 246, 0.4)", boxShadow: "0 0 20px rgba(139, 92, 246, 0.25)" }}>
+              <div className="tool-card-icon-wrap">
                 <IconHistory />
               </div>
               <div className="tool-card-title">Offline Local History</div>
@@ -726,7 +697,7 @@ export default function HomePage() {
                 View, re-download, or export past compressed PDFs, images, and QR codes stored 100% privately in IndexedDB.
               </p>
               <div className="tool-card-tags">
-                <span className="tool-tag" style={{ color: "#c084fc", borderColor: "rgba(139,92,246,0.3)" }}>🕒 IndexedDB</span>
+                <span className="tool-tag">🕒 IndexedDB</span>
                 <span className="tool-tag">100% Private</span>
                 <span className="tool-tag">Zero Server Logs</span>
               </div>
@@ -743,7 +714,7 @@ export default function HomePage() {
       {/* ══ WHY FLASHCRUSH ══ */}
       <section style={{ maxWidth: "1000px", margin: "0 auto 80px", padding: "0 20px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: "1.8rem", fontWeight: 800, color: "#ffffff" }}>
+          <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--text-main)" }}>
             Engineered for Pure Performance
           </h3>
           <p style={{ color: "var(--text-sub)", fontSize: "0.95rem", marginTop: "6px" }}>
@@ -752,25 +723,25 @@ export default function HomePage() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: "20px" }}>
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--glass-bdr)", borderRadius: "var(--radius-lg)", padding: "28px", backdropFilter: "var(--glass-blur)" }}>
+          <div style={{ background: "#F0F9FF", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
             <div style={{ marginBottom: "16px" }}><IconLock /></div>
-            <h4 style={{ color: "#ffffff", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>100% Client-Side Privacy</h4>
+            <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>100% Client-Side Privacy</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
               All processing executes locally in your browser sandbox. Your confidential files never touch any external server.
             </p>
           </div>
 
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--glass-bdr)", borderRadius: "var(--radius-lg)", padding: "28px", backdropFilter: "var(--glass-blur)" }}>
+          <div style={{ background: "#FFFBEB", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
             <div style={{ marginBottom: "16px" }}><IconBolt /></div>
-            <h4 style={{ color: "#ffffff", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Quantum WebAssembly</h4>
+            <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Blazing Fast Engine</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
               Leverages high-speed WebAssembly and HTML5 Canvas pipelines to process large multi-megabyte files in milliseconds.
             </p>
           </div>
 
-          <div style={{ background: "var(--bg-card)", border: "1px solid var(--glass-bdr)", borderRadius: "var(--radius-lg)", padding: "28px", backdropFilter: "var(--glass-blur)" }}>
+          <div style={{ background: "#FAF5FF", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
             <div style={{ marginBottom: "16px" }}><IconCloud /></div>
-            <h4 style={{ color: "#ffffff", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Google Drive Cloud Sync</h4>
+            <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Google Drive Cloud Sync</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
               Seamlessly import documents from your Google Drive and save your optimized files directly to any custom Drive folder.
             </p>

@@ -1,4 +1,4 @@
-// App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer
+// App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer (Neo-Brutalism)
 import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import "./styles.css";
@@ -131,12 +131,13 @@ export default function App() {
       {/* ── Offline Status Banner ── */}
       {!pwa.isOnline && (
         <div style={{
-          background: "linear-gradient(90deg, #d97706, #b45309)", color: "#ffffff",
+          background: "var(--brutal-yellow)", color: "var(--text-main)",
           fontSize: "12px", fontWeight: 700, padding: "6px 16px", textAlign: "center",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100
+          display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100,
+          borderBottom: "3px solid #1a1a1a"
         }}>
           <span>⚡ Offline Mode Active</span>
-          <span style={{ opacity: 0.9 }}>— 100% of tools work locally in your browser without internet.</span>
+          <span style={{ opacity: 0.8 }}>— 100% of tools work locally in your browser without internet.</span>
         </div>
       )}
 
@@ -146,7 +147,7 @@ export default function App() {
           {/* Logo */}
           <div className="navbar-logo" onClick={() => navigate("/")}>
             <LogoMark size={28} />
-            <span>Flash<span style={{ color: "var(--p500)" }}>Crush</span></span>
+            <span>Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
           </div>
 
           {/* Desktop Categorized Navigation Links */}
@@ -294,13 +295,6 @@ export default function App() {
               className="nav-install-btn"
               onClick={pwa.installApp}
               title="Install FlashCrush as Native App"
-              style={{
-                display: "flex", alignItems: "center", gap: "6px",
-                background: "linear-gradient(135deg, rgba(168,85,247,0.25), rgba(6,182,212,0.25))",
-                border: "1px solid rgba(168,85,247,0.5)",
-                borderRadius: "10px", padding: "7px 12px", color: "#fff", fontSize: "12px", fontWeight: 700,
-                cursor: "pointer", transition: "all 0.2s"
-              }}
             >
               <span>📲</span>
               <span className="install-text-full">Install App</span>
@@ -313,19 +307,13 @@ export default function App() {
             className="nav-history-btn"
             onClick={() => setShowHistoryDrawer(true)}
             title="Local Offline History (IndexedDB)"
-            style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "10px", padding: "7px 12px", color: "#fff", fontSize: "12px", fontWeight: 700,
-              cursor: "pointer", transition: "all 0.2s"
-            }}
           >
             <span>🕒</span>
             <span className="history-text-full">History</span>
             {historyCount > 0 && (
               <span style={{
-                background: "#8b5cf6", color: "#fff", fontSize: "10px", fontWeight: 800,
-                padding: "1px 6px", borderRadius: "10px"
+                background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800,
+                padding: "1px 6px", borderRadius: "6px"
               }}>
                 {historyCount}
               </span>
@@ -351,7 +339,7 @@ export default function App() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
               <div className="navbar-logo" onClick={() => { navigate("/"); setMobileNavOpen(false); }}>
                 <LogoMark size={24} />
-                <span>Flash<span style={{ color: "var(--p500)" }}>Crush</span></span>
+                <span>Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
               </div>
               <button className="close-btn" onClick={() => setMobileNavOpen(false)}>✕</button>
             </div>
@@ -373,7 +361,7 @@ export default function App() {
             >
               <span><span>🕒</span> Local History</span>
               {historyCount > 0 && (
-                <span style={{ background: "#8b5cf6", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: "10px" }}>
+                <span style={{ background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: "6px" }}>
                   {historyCount}
                 </span>
               )}
@@ -384,7 +372,7 @@ export default function App() {
               <div
                 className="mobile-nav-item"
                 onClick={() => { pwa.installApp(); setMobileNavOpen(false); }}
-                style={{ cursor: "pointer", color: "#38bdf8", fontWeight: 800 }}
+                style={{ cursor: "pointer", color: "var(--text-main)", fontWeight: 800 }}
               >
                 <span>📲</span> Install FlashCrush App
               </div>

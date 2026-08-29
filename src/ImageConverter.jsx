@@ -210,40 +210,44 @@ export default function ImageConverter({ auth }) {
         }
         .fmt-btn {
           padding: 12px 6px;
-          background: rgba(255,255,255,0.03);
-          border: 1.5px solid rgba(255,255,255,0.08);
-          border-radius: var(--radius-md);
+          background: #FFFFFF;
+          border: 2px solid #1a1a1a;
+          border-radius: 8px;
           cursor: pointer;
           text-align: center;
-          transition: all 0.2s ease;
+          transition: all 0.15s ease;
           font-family: inherit;
           position: relative;
+          box-shadow: 2px 2px 0px #1a1a1a;
         }
         .fmt-btn:hover:not(:disabled) {
-          border-color: #38bdf8;
-          background: rgba(56,189,248,0.10);
+          background: #FEF3C7;
+          transform: translate(-1px, -1px);
+          box-shadow: 3px 3px 0px #1a1a1a;
         }
         .fmt-btn.active-convert {
-          background: rgba(56,189,248,0.18);
-          border-color: #38bdf8;
-          box-shadow: 0 0 20px rgba(56,189,248,0.4);
+          background: #7DD3FC;
+          border-color: #1a1a1a;
+          box-shadow: 3px 3px 0px #1a1a1a;
+          transform: translate(-1px, -1px);
         }
         .fmt-btn.same-format {
-          opacity: 0.35;
+          opacity: 0.4;
           cursor: not-allowed;
+          box-shadow: none;
         }
         .fmt-btn-label {
           font-size: 13px;
           font-weight: 700;
-          color: #ffffff;
+          color: #1a1a1a;
           display: block;
           margin-bottom: 2px;
         }
-        .fmt-btn.active-convert .fmt-btn-label { color: #38bdf8; }
+        .fmt-btn.active-convert .fmt-btn-label { color: #1a1a1a; }
         .fmt-btn-ext {
           font-size: 10px;
           font-weight: 600;
-          color: #94a3b8;
+          color: #525252;
           display: block;
           font-family: 'JetBrains Mono', monospace;
         }
@@ -251,14 +255,15 @@ export default function ImageConverter({ auth }) {
           display: inline-flex;
           align-items: center;
           gap: 5px;
-          background: rgba(56,189,248,0.10);
-          border: 1px solid rgba(56,189,248,0.30);
-          border-radius: var(--radius-full);
+          background: #FEF3C7;
+          border: 2px solid #1a1a1a;
+          border-radius: 6px;
           padding: 3px 12px;
           font-size: 11px;
           font-weight: 700;
-          color: #38bdf8;
+          color: #1a1a1a;
           margin-bottom: 8px;
+          box-shadow: 2px 2px 0px #1a1a1a;
         }
         .convert-arrow-row {
           display: flex;
@@ -267,43 +272,50 @@ export default function ImageConverter({ auth }) {
           gap: 12px;
           margin: 14px 0;
           font-size: 13px;
-          font-weight: 600;
-          color: var(--text-sub);
+          font-weight: 700;
+          color: #1a1a1a;
         }
         .convert-arrow-badge {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: rgba(255,255,255,0.04);
-          border: 1.5px solid rgba(255,255,255,0.1);
-          border-radius: var(--radius-sm);
+          background: #FFFFFF;
+          border: 2px solid #1a1a1a;
+          border-radius: 6px;
           padding: 6px 14px;
           font-size: 13px;
           font-weight: 700;
+          box-shadow: 2px 2px 0px #1a1a1a;
         }
-        .convert-arrow-badge.source { color: var(--text-sub); border-color: rgba(255,255,255,0.12); }
-        .convert-arrow-badge.target { color: #38bdf8; border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.12); }
+        .convert-arrow-badge.source { color: #525252; }
+        .convert-arrow-badge.target { color: #1a1a1a; background: #7DD3FC; }
         .arrow-icon {
           font-size: 16px;
-          color: var(--cyan-neon);
+          color: #1a1a1a;
+          font-weight: 800;
         }
         .btn-compress.convert {
-          background: linear-gradient(135deg, #0284c7, #06b6d4);
-          box-shadow: 0 0 25px rgba(6,182,212,0.4);
+          background: #1a1a1a;
+          color: #FFFFFF;
+          box-shadow: 4px 4px 0px #1a1a1a;
         }
-        .btn-compress.convert:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 0 35px rgba(6,182,212,0.7); }
+        .btn-compress.convert:hover {
+          background: #374151;
+          transform: translate(-2px, -2px);
+          box-shadow: 6px 6px 0px #1a1a1a;
+        }
         .btn-compress.convert:disabled {
-          opacity: 0.45; cursor: not-allowed; transform: none;
+          opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;
         }
-        .progress-pct.blue-sky { color: #38bdf8; }
-        .progress-bar.sky { background: linear-gradient(90deg, #38bdf8, #06b6d4); }
+        .progress-pct.blue-sky { color: #0284C7; }
+        .progress-bar.sky { background: #7DD3FC; }
         .result-box-convert {
           margin: 0 20px 16px;
-          background: rgba(56,189,248,0.06);
-          border: 1px solid rgba(56,189,248,0.25);
-          border-radius: var(--radius-md);
+          background: #F0F9FF;
+          border: 2px solid #1a1a1a;
+          border-radius: 12px;
           padding: 24px;
-          box-shadow: 0 0 30px rgba(6,182,212,0.15);
+          box-shadow: 4px 4px 0px #1a1a1a;
         }
         .convert-result-formats {
           display: flex;
@@ -320,7 +332,7 @@ export default function ImageConverter({ auth }) {
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          color: var(--text-muted);
+          color: #525252;
           margin-bottom: 4px;
           display: block;
         }
@@ -328,10 +340,11 @@ export default function ImageConverter({ auth }) {
           font-size: 22px;
           font-weight: 800;
           letter-spacing: -0.5px;
+          color: #1a1a1a;
         }
-        .convert-result-fmt-name.source { color: var(--text-sub); }
-        .convert-result-fmt-name.target { color: #38bdf8; text-shadow: 0 0 15px rgba(56,189,248,0.5); }
-        .convert-arrow-big { font-size: 20px; color: var(--cyan-neon); margin-top: 8px; }
+        .convert-result-fmt-name.source { color: #525252; }
+        .convert-result-fmt-name.target { color: #0284C7; }
+        .convert-arrow-big { font-size: 20px; color: #1a1a1a; margin-top: 8px; }
         .convert-meta-row {
           display: flex;
           align-items: center;
