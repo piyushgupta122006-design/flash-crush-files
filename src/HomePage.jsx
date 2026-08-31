@@ -237,6 +237,17 @@ function IconQR() {
   );
 }
 
+function IconSearch() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0891b2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      <line x1="8" y1="11" x2="14" y2="11"/>
+      <line x1="11" y1="8" x2="11" y2="14"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -686,7 +697,29 @@ export default function HomePage() {
             </div>
           </TiltCard>
 
-          {/* 16. Offline Local History */}
+          {/* 16. OCR Text Extractor */}
+          <TiltCard className="tool-card" onClick={() => navigate("/ocr")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconSearch />
+              </div>
+              <div className="tool-card-title">OCR Text Extractor</div>
+              <p className="tool-card-desc">
+                Extract editable text from scanned PDFs, photos &amp; screenshots using 100% in-browser AI-powered OCR.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">🔍 PDF &amp; Image</span>
+                <span className="tool-tag">12+ Languages</span>
+                <span className="tool-tag">.TXT / .DOC / .JSON</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Extract Text</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 17. Offline Local History */}
           <TiltCard className="tool-card" onClick={() => navigate("/history")}>
             <div>
               <div className="tool-card-icon-wrap">

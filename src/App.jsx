@@ -19,6 +19,7 @@ import PassportResizer     from "./PassportResizer";
 import ImageCropResize    from "./ImageCropResize";
 import BackgroundRemover  from "./BackgroundRemover";
 import QRCodeStudio       from "./QRCodeStudio";
+import PDFImageOCR        from "./PDFImageOCR";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
@@ -43,6 +44,7 @@ const PDF_TOOLS = [
   { path: "/organize-pdf", label: "Organize & Rotate", desc: "Visual drag & drop page reorder", icon: "🔄" },
   { path: "/pdf-security", label: "Lock & Unlock", desc: "AES-256 password protection & unlock", icon: "🔐" },
   { path: "/pdf-watermark", label: "Watermark & Numbers", desc: "Add or remove watermarks & numbering", icon: "🏷️" },
+  { path: "/ocr", label: "OCR Text Extract", desc: "Extract text from scanned PDFs & photos", icon: "🔍" },
 ];
 
 const IMAGE_TOOLS = [
@@ -54,6 +56,7 @@ const IMAGE_TOOLS = [
   { path: "/image-crop", label: "Crop & Resize", desc: "Aspect ratios, exact dimensions, rotate & flip", icon: "📐" },
   { path: "/bg-remover", label: "AI BG Remover", desc: "100% in-browser on-device background remover", icon: "🤖" },
   { path: "/qr-studio", label: "QR Studio", desc: "Custom colors, gradients, center logo & vCard", icon: "📱" },
+  { path: "/ocr", label: "Image OCR", desc: "Extract text from photos & screenshots", icon: "🔍" },
 ];
 
 export default function App() {
@@ -514,6 +517,7 @@ export default function App() {
           <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
           <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
           <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
+          <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
