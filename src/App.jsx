@@ -20,6 +20,7 @@ import ImageCropResize    from "./ImageCropResize";
 import BackgroundRemover  from "./BackgroundRemover";
 import QRCodeStudio       from "./QRCodeStudio";
 import PDFImageOCR        from "./PDFImageOCR";
+import PDFSignStudio      from "./PDFSignStudio";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
@@ -45,6 +46,7 @@ const PDF_TOOLS = [
   { path: "/pdf-security", label: "Lock & Unlock", desc: "AES-256 password protection & unlock", icon: "🔐" },
   { path: "/pdf-watermark", label: "Watermark & Numbers", desc: "Add or remove watermarks & numbering", icon: "🏷️" },
   { path: "/ocr", label: "OCR Text Extract", desc: "Extract text from scanned PDFs & photos", icon: "🔍" },
+  { path: "/sign-pdf", label: "PDF E-Sign Studio", desc: "Draw, type, or upload signatures & stamps", icon: "✍️" },
 ];
 
 const IMAGE_TOOLS = [
@@ -518,6 +520,7 @@ export default function App() {
           <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
           <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
           <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
+          <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>

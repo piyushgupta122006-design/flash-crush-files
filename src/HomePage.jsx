@@ -248,6 +248,17 @@ function IconSearch() {
   );
 }
 
+function IconPen() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+      <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+      <path d="M2 2l7.586 7.586"/>
+      <circle cx="11" cy="11" r="2"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -715,6 +726,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Extract Text</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 17. PDF E-Sign Studio */}
+          <TiltCard className="tool-card" onClick={() => navigate("/sign-pdf")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconPen />
+              </div>
+              <div className="tool-card-title">PDF E-Sign Studio</div>
+              <p className="tool-card-desc">
+                Sign PDFs privately. Draw, type, or upload signatures. Add date and status stamps anywhere on the page.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">✍️ Draw/Type</span>
+                <span className="tool-tag">📅 Stamps</span>
+                <span className="tool-tag">Drag & Drop</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Sign PDF</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
