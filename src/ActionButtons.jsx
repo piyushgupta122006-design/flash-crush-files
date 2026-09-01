@@ -339,44 +339,57 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
 }
 
 // ── Main ActionButtons component ──────────────────────────────────────────────
-export default function ActionButtons({ blob, fileName, onReset, auth, toolName, origSize }) {
+export default function ActionButtons({
+  blob,
+  resultBlob,
+  fileName,
+  outputFileName,
+  onReset,
+  auth,
+  toolName,
+  origSize,
+  resultMime
+}) {
+  const activeBlob = blob || resultBlob;
+  const activeFileName = fileName || outputFileName || "processed-file";
+
   const [driveStatus, setDriveStatus] = useState("idle"); // idle|modal|uploading|success|error
   const [driveLink,   setDriveLink]   = useState(null);
   const [driveError,  setDriveError]  = useState(null);
   const [shared,      setShared]      = useState(false);
   const recordedRef = useRef(false);
 
-  const isSignedIn = auth.authStatus === "signedin";
+  const isSignedIn = auth?.authStatus === "signedin";
 
   // Auto-record to local IndexedDB once when blob is ready
   useEffect(() => {
-    if (blob && fileName && !recordedRef.current) {
+    if (activeBlob && activeFileName && !recordedRef.current) {
       recordedRef.current = true;
       addHistoryRecord({
-        tool: toolName || (fileName.endsWith(".pdf") ? "PDF Studio" : "Image Studio"),
-        fileName,
-        blob,
-        newSize: blob.size,
+        tool: toolName || (activeFileName.endsWith(".pdf") ? "PDF Studio" : "Image Studio"),
+        fileName: activeFileName,
+        blob: activeBlob,
+        newSize: activeBlob.size,
         origSize: origSize || 0,
       });
     }
-  }, [blob, fileName, toolName, origSize]);
+  }, [activeBlob, activeFileName, toolName, origSize]);
 
   // ── Download ───────────────────────────────────────────────────────────────
   const handleDownload = () => {
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
+    if (!activeBlob) return;
+    const url = URL.createObjectURL(activeBlob);
     const a   = document.createElement("a");
-    a.href = url; a.download = fileName;
+    a.href = url; a.download = activeFileName;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 3000);
   };
 
   // ── Open Drive modal (or sign-in first) ────────────────────────────────────
   const handleDriveClick = async () => {
-    if (!blob) return;
+    if (!activeBlob) return;
     if (!isSignedIn) {
-      await auth.signIn();
+      await auth?.signIn?.();
       return;
     }
     setDriveStatus("modal");
@@ -388,7 +401,7 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
     setDriveStatus("uploading");
     setDriveError(null);
     try {
-      const result = await auth.uploadToDrive(blob, editedName, folderId);
+      const result = await auth.uploadToDrive(activeBlob, editedName, folderId);
       setDriveLink(result.webViewLink);
       setDriveStatus("success");
     } catch (err) {
@@ -399,23 +412,84 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
 
   // ── Share ──────────────────────────────────────────────────────────────────
   const handleShare = async () => {
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    if (navigator.share) {
-      try { await navigator.share({ title: "Compressed file", text: fileName, url }); } catch {}
-    } else {
-      await navigator.clipboard.writeText(window.location.href).catch(() => {});
-      setShared(true);
-      setTimeout(() => setShared(false), 2500);
+    if (!activeBlob) return;
+
+    // Detect MIME type (from blob or extension fallback)
+    let mimeType = activeBlob.type || resultMime;
+    if (!mimeType || mimeType === "application/octet-stream") {
+      if (activeFileName.endsWith(".pdf")) mimeType = "application/pdf";
+      else if (activeFileName.endsWith(".png")) mimeType = "image/png";
+      else if (activeFileName.endsWith(".jpg") || activeFileName.endsWith(".jpeg")) mimeType = "image/jpeg";
+      else if (activeFileName.endsWith(".webp")) mimeType = "image/webp";
+      else if (activeFileName.endsWith(".zip")) mimeType = "application/zip";
+      else if (activeFileName.endsWith(".txt")) mimeType = "text/plain";
+      else if (activeFileName.endsWith(".json")) mimeType = "application/json";
+      else mimeType = "application/octet-stream";
     }
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
+
+    // 1. Native Web Share API Level 2 (Direct File Share)
+    if (typeof navigator !== "undefined" && navigator.canShare && typeof File !== "undefined") {
+      try {
+        const fileObj = new File([activeBlob], activeFileName, { type: mimeType });
+        if (navigator.canShare({ files: [fileObj] })) {
+          await navigator.share({
+            files: [fileObj],
+            title: activeFileName,
+            text: `Processed with FlashCrush (${activeFileName})`,
+          });
+          setShared("shared");
+          setTimeout(() => setShared(false), 3000);
+          return;
+        }
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return; // User dismissed share dialog
+        }
+      }
+    }
+
+    // 2. Fallback: Image Clipboard Copy
+    if (mimeType.startsWith("image/") && navigator.clipboard && typeof ClipboardItem !== "undefined") {
+      try {
+        let pngBlob = activeBlob;
+        if (mimeType !== "image/png") {
+          const bitmap = await createImageBitmap(activeBlob);
+          const canvas = document.createElement("canvas");
+          canvas.width = bitmap.width;
+          canvas.height = bitmap.height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(bitmap, 0, 0);
+          pngBlob = await new Promise(r => canvas.toBlob(r, "image/png"));
+        }
+        if (pngBlob) {
+          await navigator.clipboard.write([
+            new ClipboardItem({ "image/png": pngBlob })
+          ]);
+          setShared("copied-image");
+          setTimeout(() => setShared(false), 3000);
+          return;
+        }
+      } catch (e) {
+        // Clipboard write failed, proceed to link fallback
+      }
+    }
+
+    // 3. Fallback: Copy link
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShared("copied-link");
+      setTimeout(() => setShared(false), 3000);
+    } catch {
+      setShared("copied-link");
+      setTimeout(() => setShared(false), 3000);
+    }
   };
 
   const driveButtonLabel = () => {
     if (!isSignedIn)                  return "Sign in to Save to Drive";
     if (driveStatus === "uploading")  return "Uploading…";
     if (driveStatus === "success")    return "Saved to Drive ✓";
-    const name = auth.user?.name?.split(" ")[0] || auth.user?.email?.split("@")[0] || "your account";
+    const name = auth?.user?.name?.split(" ")[0] || auth?.user?.email?.split("@")[0] || "your account";
     return `Save to Drive  ·  ${name}`;
   };
 
@@ -423,14 +497,21 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
     driveStatus === "uploading" ||
     driveStatus === "success"   ||
     driveStatus === "modal"     ||
-    auth.authStatus === "loading";
+    auth?.authStatus === "loading";
+
+  const getShareButtonLabel = () => {
+    if (shared === "shared") return "✓ Shared successfully!";
+    if (shared === "copied-image") return "✓ Image copied to clipboard!";
+    if (shared === "copied-link" || shared === true) return "✓ Link copied!";
+    return "↗ Share file";
+  };
 
   return (
     <>
       {/* Pre-upload modal */}
       {driveStatus === "modal" && (
         <DriveUploadModal
-          initialFileName={fileName}
+          initialFileName={activeFileName}
           auth={auth}
           onConfirm={handleModalConfirm}
           onClose={() => setDriveStatus("idle")}
@@ -451,7 +532,7 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
           style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
         >
           <DriveIcon />
-          {auth.authStatus === "loading" ? "Signing in…" : driveButtonLabel()}
+          {auth?.authStatus === "loading" ? "Signing in…" : driveButtonLabel()}
           {isSignedIn && driveStatus === "idle" && (
             <span style={{ marginLeft: "auto", opacity: 0.50 }}>
               <EditIcon />
@@ -462,7 +543,7 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
         {/* Drive feedback */}
         {driveStatus === "success" && driveLink && (
           <div className="drive-feedback success">
-            ✓ Saved to {auth.user?.email || "your Drive"}!{" "}
+            ✓ Saved to {auth?.user?.email || "your Drive"}!{" "}
             <a href={driveLink} target="_blank" rel="noopener noreferrer"
               style={{ color: "inherit", fontWeight: 700 }}>
               Open in Drive →
@@ -483,7 +564,7 @@ export default function ActionButtons({ blob, fileName, onReset, auth, toolName,
 
         {/* Share */}
         <button className={`btn-share${shared ? " shared" : ""}`} onClick={handleShare}>
-          {shared ? "✓ Link copied!" : "↗ Share file"}
+          {getShareButtonLabel()}
         </button>
 
         {/* Reset */}

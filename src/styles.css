@@ -1920,6 +1920,14 @@ body::before {
   box-shadow: var(--shadow-sm);
 }
 
+.btn-share.shared {
+  background: var(--brutal-mint) !important;
+  color: #1a1a1a !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 2px 2px 0 var(--border-color);
+  font-weight: 700;
+}
+
 .drive-feedback {
   font-size: 0.82rem;
   padding: 10px 14px;
