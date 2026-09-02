@@ -22,6 +22,7 @@ import QRCodeStudio       from "./QRCodeStudio";
 import PDFImageOCR        from "./PDFImageOCR";
 import PDFSignStudio      from "./PDFSignStudio";
 import ImageUpscaler      from "./ImageUpscaler";
+import SVGVectorizer      from "./SVGVectorizer";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
@@ -61,6 +62,7 @@ const IMAGE_TOOLS = [
   { path: "/qr-studio", label: "QR Studio", desc: "Custom colors, gradients, center logo & vCard", icon: "📱" },
   { path: "/ocr", label: "Image OCR", desc: "Extract text from photos & screenshots", icon: "🔍" },
   { path: "/upscaler", label: "AI Image Upscaler", desc: "2x & 4x super-resolution enhancer", icon: "✨" },
+  { path: "/vectorize", label: "SVG Vectorizer", desc: "Convert PNG/JPG to scalable vector SVG", icon: "📐" },
 ];
 
 export default function App() {
@@ -524,6 +526,7 @@ export default function App() {
           <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
           <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
           <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
+          <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>

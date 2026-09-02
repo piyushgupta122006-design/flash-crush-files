@@ -259,6 +259,20 @@ function IconPen() {
   );
 }
 
+function IconVector() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="6" height="6" rx="1"/>
+      <rect x="15" y="3" width="6" height="6" rx="1"/>
+      <rect x="15" y="15" width="6" height="6" rx="1"/>
+      <rect x="3" y="15" width="6" height="6" rx="1"/>
+      <path d="M6 9v6"/>
+      <path d="M9 6h6"/>
+      <path d="M15 9l-6 6"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -770,6 +784,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Upscale Image</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 19. SVG Vectorizer */}
+          <TiltCard className="tool-card" onClick={() => navigate("/vectorize")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconVector />
+              </div>
+              <div className="tool-card-title">SVG Vectorizer</div>
+              <p className="tool-card-desc">
+                Convert raster PNG, JPG &amp; WebP into crisp, infinitely scalable vector SVG paths with live code export.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">📐 PNG → SVG</span>
+                <span className="tool-tag">🎨 Presets</span>
+                <span className="tool-tag">📋 Code Copy</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Vectorize Image</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
