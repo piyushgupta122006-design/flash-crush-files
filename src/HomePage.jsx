@@ -752,6 +752,28 @@ export default function HomePage() {
             </div>
           </TiltCard>
 
+          {/* 18. AI Image Upscaler */}
+          <TiltCard className="tool-card" onClick={() => navigate("/upscaler")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconSparkles />
+              </div>
+              <div className="tool-card-title">AI Image Upscaler</div>
+              <p className="tool-card-desc">
+                Enhance low-resolution photos &amp; graphics with 2x &amp; 4x AI super-resolution and live before/after slider.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">✨ 2x / 4x HD</span>
+                <span className="tool-tag">🤖 On-Device AI</span>
+                <span className="tool-tag">Split Slider</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Upscale Image</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
           {/* 17. Offline Local History */}
           <TiltCard className="tool-card" onClick={() => navigate("/history")}>
             <div>

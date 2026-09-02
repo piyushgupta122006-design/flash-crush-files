@@ -21,6 +21,7 @@ import BackgroundRemover  from "./BackgroundRemover";
 import QRCodeStudio       from "./QRCodeStudio";
 import PDFImageOCR        from "./PDFImageOCR";
 import PDFSignStudio      from "./PDFSignStudio";
+import ImageUpscaler      from "./ImageUpscaler";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
@@ -59,6 +60,7 @@ const IMAGE_TOOLS = [
   { path: "/bg-remover", label: "AI BG Remover", desc: "100% in-browser on-device background remover", icon: "🤖" },
   { path: "/qr-studio", label: "QR Studio", desc: "Custom colors, gradients, center logo & vCard", icon: "📱" },
   { path: "/ocr", label: "Image OCR", desc: "Extract text from photos & screenshots", icon: "🔍" },
+  { path: "/upscaler", label: "AI Image Upscaler", desc: "2x & 4x super-resolution enhancer", icon: "✨" },
 ];
 
 export default function App() {
@@ -521,6 +523,7 @@ export default function App() {
           <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
           <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
           <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
+          <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
