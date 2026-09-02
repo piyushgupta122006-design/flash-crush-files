@@ -24,6 +24,7 @@ import PDFSignStudio      from "./PDFSignStudio";
 import ImageUpscaler      from "./ImageUpscaler";
 import SVGVectorizer      from "./SVGVectorizer";
 import EXIFCleaner        from "./EXIFCleaner";
+import CrushDrop          from "./CrushDrop";
 import LocalHistory       from "./LocalHistory";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
@@ -65,6 +66,7 @@ const IMAGE_TOOLS = [
   { path: "/upscaler", label: "AI Image Upscaler", desc: "2x & 4x super-resolution enhancer", icon: "✨" },
   { path: "/vectorize", label: "SVG Vectorizer", desc: "Convert PNG/JPG to scalable vector SVG", icon: "📐" },
   { path: "/exif-cleaner", label: "EXIF Privacy Cleaner", desc: "View & strip photo location & camera data", icon: "🛡️" },
+  { path: "/drop", label: "CrushDrop P2P", desc: "AirDrop files directly between devices", icon: "🌐" },
 ];
 
 export default function App() {
@@ -530,6 +532,7 @@ export default function App() {
           <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
           <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
           <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
+          <Route path="/drop"              element={<CrushDrop auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>

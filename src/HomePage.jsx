@@ -281,6 +281,19 @@ function IconShield() {
   );
 }
 
+function IconNetwork() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="5" r="3"/>
+      <circle cx="5" cy="19" r="3"/>
+      <circle cx="19" cy="19" r="3"/>
+      <line x1="7.5" y1="17.5" x2="10.5" y2="7.5"/>
+      <line x1="16.5" y1="17.5" x2="13.5" y2="7.5"/>
+      <line x1="7" y1="19" x2="17" y2="19"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -836,6 +849,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Clean Image</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 21. CrushDrop P2P */}
+          <TiltCard className="tool-card" onClick={() => navigate("/drop")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconNetwork />
+              </div>
+              <div className="tool-card-title">CrushDrop P2P</div>
+              <p className="tool-card-desc">
+                AirDrop files directly between any two devices. 100% P2P WebRTC transfer. Zero server limits.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">🌐 WebRTC</span>
+                <span className="tool-tag">🚀 No Limits</span>
+                <span className="tool-tag">AirDrop</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Share Files</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>
