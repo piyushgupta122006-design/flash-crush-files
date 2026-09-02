@@ -273,6 +273,14 @@ function IconVector() {
   );
 }
 
+function IconShield() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -806,6 +814,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Vectorize Image</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 20. EXIF Privacy Cleaner */}
+          <TiltCard className="tool-card" onClick={() => navigate("/exif-cleaner")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconShield />
+              </div>
+              <div className="tool-card-title">EXIF Privacy Cleaner</div>
+              <p className="tool-card-desc">
+                View &amp; strip hidden GPS locations, camera metadata, and date stamps from photos for 100% privacy.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">🛡️ Strip GPS</span>
+                <span className="tool-tag">📸 Camera Data</span>
+                <span className="tool-tag">100% Private</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Clean Image</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

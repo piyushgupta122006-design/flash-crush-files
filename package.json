@@ -12,6 +12,7 @@
     "@imgly/background-removal": "^1.7.0",
     "@pdfsmaller/pdf-encrypt": "^1.2.0",
     "@upscalerjs/default-model": "^1.0.0",
+    "exifreader": "^4.44.0",
     "firebase": "^10.12.0",
     "imagetracerjs": "^1.2.6",
     "jszip": "^3.10.1",
