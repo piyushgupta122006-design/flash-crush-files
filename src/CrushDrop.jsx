@@ -63,23 +63,9 @@ export default function CrushDrop() {
           { urls: "stun:stun.l.google.com:19302" },
           { urls: "stun:stun1.l.google.com:19302" },
           { urls: "stun:stun2.l.google.com:19302" },
-          { urls: "stun:stun.cloudflare.com:3478" },
-          { urls: "stun:openrelay.metered.ca:80" },
-          {
-            urls: "turn:openrelay.metered.ca:80",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-          },
-          {
-            urls: "turn:openrelay.metered.ca:443",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-          },
-          {
-            urls: "turn:openrelay.metered.ca:443?transport=tcp",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-          }
+          { urls: "stun:stun3.l.google.com:19302" },
+          { urls: "stun:stun4.l.google.com:19302" },
+          { urls: "stun:stun.cloudflare.com:3478" }
         ]
       }
     });
@@ -105,7 +91,11 @@ export default function CrushDrop() {
 
     p.on("error", (err) => {
       console.error("Peer error:", err);
-      setConnStatus(`Connection Error: ${err.type}`);
+      if (err.type === "peer-unavailable") {
+        setConnStatus(`⚠️ Sender (${targetPeerId}) not found or offline.`);
+      } else {
+        setConnStatus(`Connection Error: ${err.type}`);
+      }
     });
 
     setPeer(p);
@@ -140,9 +130,14 @@ export default function CrushDrop() {
     if (conn.peerConnection) {
       conn.peerConnection.oniceconnectionstatechange = () => {
         const state = conn.peerConnection.iceConnectionState;
-        if (state === "failed" || state === "disconnected") {
-          setConnStatus(`⚠️ Network state: ${state}.`);
+        console.log("[CrushDrop] ICE State:", state);
+        if (state === "connected" || state === "completed") {
+          markConnected();
+        } else if (state === "failed") {
+          setConnStatus("⚠️ Direct connection failed. Please tap Retry.");
           setIsConnected(false);
+        } else if (state === "checking") {
+          setConnStatus("🔄 Establishing secure P2P link...");
         }
       };
     }

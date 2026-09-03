@@ -1,5 +1,5 @@
-// FlashCrush Service Worker v2 — Complete Offline PWA Caching for Desktop & Mobile
-const CACHE_NAME = "flashcrush-cache-v2";
+// FlashCrush Service Worker v3 — Complete Offline PWA Caching for Desktop & Mobile
+const CACHE_NAME = "flashcrush-cache-v3";
 
 const PRECACHE_ASSETS = [
   "/",
