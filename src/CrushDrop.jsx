@@ -26,6 +26,7 @@ export default function CrushDrop() {
   const [peer, setPeer] = useState(null);
   const [myId, setMyId] = useState("");
   const [connection, setConnection] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
   const [connStatus, setConnStatus] = useState("Initializing...");
   
   // Sender UI State
@@ -56,7 +57,31 @@ export default function CrushDrop() {
     const newId = isReceiver ? generateId() : generateId();
     
     const p = new Peer(newId, {
-      debug: 1
+      debug: 1,
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun1.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" },
+          { urls: "stun:stun.cloudflare.com:3478" },
+          { urls: "stun:openrelay.metered.ca:80" },
+          {
+            urls: "turn:openrelay.metered.ca:80",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+          },
+          {
+            urls: "turn:openrelay.metered.ca:443",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+          },
+          {
+            urls: "turn:openrelay.metered.ca:443?transport=tcp",
+            username: "openrelayproject",
+            credential: "openrelayproject"
+          }
+        ]
+      }
     });
 
     p.on("open", (id) => {
@@ -95,9 +120,32 @@ export default function CrushDrop() {
   const setupConnection = (conn) => {
     setConnection(conn);
     
-    conn.on("open", () => {
+    const markConnected = () => {
+      setIsConnected(true);
       setConnStatus("🟢 Connected securely P2P!");
+    };
+
+    if (conn.open) {
+      markConnected();
+    } else {
+      conn.on("open", markConnected);
+    }
+
+    conn.on("error", (err) => {
+      console.error("Connection error:", err);
+      setConnStatus(`⚠️ Connection error: ${err.message || err.type || "failed"}`);
+      setIsConnected(false);
     });
+
+    if (conn.peerConnection) {
+      conn.peerConnection.oniceconnectionstatechange = () => {
+        const state = conn.peerConnection.iceConnectionState;
+        if (state === "failed" || state === "disconnected") {
+          setConnStatus(`⚠️ Network state: ${state}.`);
+          setIsConnected(false);
+        }
+      };
+    }
 
     conn.on("data", (data) => {
       if (typeof data === "string") {
@@ -154,12 +202,13 @@ export default function CrushDrop() {
 
     conn.on("close", () => {
       setConnStatus("🔴 Connection closed.");
+      setIsConnected(false);
       setConnection(null);
     });
   };
 
   const connectToPeer = (p, targetId) => {
-    const conn = p.connect(targetId, { reliable: true });
+    const conn = p.connect(targetId);
     setupConnection(conn);
   };
 
@@ -247,13 +296,36 @@ export default function CrushDrop() {
         </div>
 
         {/* Status Bar */}
-        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: connection ? "var(--brutal-mint)" : "var(--bg-main)", transition: "all 0.3s" }}>
+        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: isConnected ? "var(--brutal-mint)" : "var(--bg-main)", transition: "all 0.3s", border: "3px solid #000" }}>
           <div style={{ fontWeight: 800, fontSize: "1.05rem" }}>{connStatus}</div>
           {myId && <div style={{ fontWeight: 700, fontSize: "0.85rem", opacity: 0.7 }}>My ID: {myId}</div>}
         </div>
 
+        {/* Receiver Connecting State */}
+        {isReceiver && !isConnected && (
+          <div className="comp-card" style={{ padding: "32px", textAlign: "center", marginBottom: "24px" }}>
+            <div className="spinner" style={{ margin: "0 auto 16px" }}></div>
+            <h3 style={{ fontSize: "1.25rem", fontWeight: 800, marginBottom: "8px" }}>Connecting to Sender...</h3>
+            <p style={{ color: "var(--text-sub)", fontWeight: 600, marginBottom: "20px" }}>
+              Pairing via WebRTC STUN/TURN direct channel ({targetPeerId})
+            </p>
+            <button
+              className="btn-reset"
+              style={{ padding: "10px 20px", background: "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "2px solid #000" }}
+              onClick={() => {
+                if (peer && targetPeerId) {
+                  setConnStatus(`Retrying connection to ${targetPeerId}...`);
+                  connectToPeer(peer, targetPeerId);
+                }
+              }}
+            >
+              🔄 Retry Connection
+            </button>
+          </div>
+        )}
+
         {/* Sender Mode UI */}
-        {!isReceiver && !connection && (
+        {!isReceiver && !isConnected && (
           <div className="comp-card" style={{ padding: "32px", textAlign: "center" }}>
             <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "16px" }}>Share this link or scan QR to connect</h3>
             
@@ -279,7 +351,7 @@ export default function CrushDrop() {
         )}
 
         {/* Connected UI (Sender & Receiver) */}
-        {connection && (
+        {isConnected && (
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             
             {/* Sending Dropzone */}

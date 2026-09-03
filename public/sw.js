@@ -46,7 +46,9 @@ self.addEventListener("fetch", (event) => {
     url.protocol.startsWith("chrome") ||
     url.protocol.startsWith("edge") ||
     url.hostname.includes("googleapis.com") ||
-    url.hostname.includes("accounts.google.com")
+    url.hostname.includes("accounts.google.com") ||
+    url.hostname.includes("peerjs.com") ||
+    url.hostname.includes("metered.ca")
   ) {
     return;
   }
@@ -68,7 +70,9 @@ self.addEventListener("fetch", (event) => {
           if (cachedIndex) return cachedIndex;
           const cachedRoot = await caches.match("/");
           if (cachedRoot) return cachedRoot;
-          return caches.match(req);
+          const matched = await caches.match(req);
+          if (matched) return matched;
+          return new Response("Offline", { status: 503, statusText: "Service Unavailable" });
         })
     );
     return;
