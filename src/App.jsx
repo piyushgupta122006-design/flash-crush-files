@@ -27,6 +27,8 @@ import EXIFCleaner        from "./EXIFCleaner";
 import CrushDrop          from "./CrushDrop";
 import LocalHistory       from "./LocalHistory";
 import CommandPalette   from "./CommandPalette";
+import ClipboardPasteModal from "./ClipboardPasteModal";
+import { setPendingFile, consumePendingFile } from "./clipboardStore";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
 import { useTheme }       from "./useTheme";
@@ -86,6 +88,8 @@ export default function App() {
   const [historyCount, setHistoryCount] = useState(0);
   const [signInError, setSignInError] = useState("");
   const [showCmdPalette, setShowCmdPalette] = useState(false);
+  const [clipboardFile, setClipboardFile] = useState(null);
+  const [pasteToast, setPasteToast] = useState("");
 
   const menuRef = useRef(null);
   const pdfMenuRef = useRef(null);
@@ -140,6 +144,74 @@ export default function App() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Global Clipboard Paste (Ctrl+V) listener
+  useEffect(() => {
+    function handlePaste(e) {
+      // Ignore if user is typing in an input or textarea
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
+      if (activeTag === "input" || activeTag === "textarea" || document.activeElement?.isContentEditable) {
+        return;
+      }
+
+      const files = e.clipboardData?.files;
+      if (!files || files.length === 0) return;
+
+      const file = files[0];
+      const isImage = file.type?.startsWith("image/") || file.name?.match(/\.(jpe?g|png|webp|avif|bmp|svg)$/i);
+      const isPdf = file.type === "application/pdf" || file.name?.match(/\.pdf$/i);
+
+      if (!isImage && !isPdf) return;
+
+      e.preventDefault();
+
+      // If active tool already has a file input, inject directly!
+      const currentFileInput = document.querySelector('main input[type="file"]:not([disabled])');
+      if (currentFileInput && location.pathname !== "/") {
+        try {
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          currentFileInput.files = dt.files;
+          currentFileInput.dispatchEvent(new Event("change", { bubbles: true }));
+          setPasteToast(`📋 Pasted into active tool!`);
+          setTimeout(() => setPasteToast(""), 3000);
+          return;
+        } catch {
+          // Fallback to modal if injection fails
+        }
+      }
+
+      // Otherwise, open the Clipboard Quick Action Modal
+      setClipboardFile(file);
+    }
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [location.pathname]);
+
+  // Inject pending file after navigating to chosen tool
+  useEffect(() => {
+    const pending = consumePendingFile();
+    if (!pending) return;
+
+    const timer = setTimeout(() => {
+      const fileInput = document.querySelector('main input[type="file"]:not([disabled])');
+      if (fileInput) {
+        try {
+          const dt = new DataTransfer();
+          dt.items.add(pending);
+          fileInput.files = dt.files;
+          fileInput.dispatchEvent(new Event("change", { bubbles: true }));
+          setPasteToast(`📋 Loaded pasted file into tool!`);
+          setTimeout(() => setPasteToast(""), 3000);
+        } catch {
+          // Silent ignore
+        }
+      }
+    }, 180);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   // Show sign-in error prominently
   useEffect(() => {
@@ -577,6 +649,23 @@ export default function App() {
         canInstall={pwa.canInstall}
         installApp={pwa.installApp}
       />
+
+      {/* ── Clipboard Paste Modal & Toast ── */}
+      <ClipboardPasteModal
+        file={clipboardFile}
+        onClose={() => setClipboardFile(null)}
+        onSelectTool={(targetPath) => {
+          setPendingFile(clipboardFile);
+          setClipboardFile(null);
+          navigate(targetPath);
+        }}
+      />
+
+      {pasteToast && (
+        <div className="clipboard-toast">
+          <span>{pasteToast}</span>
+        </div>
+      )}
 
       {/* ── Footer ── */}
       <footer className="site-footer">
