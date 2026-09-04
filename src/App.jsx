@@ -26,6 +26,7 @@ import SVGVectorizer      from "./SVGVectorizer";
 import EXIFCleaner        from "./EXIFCleaner";
 import CrushDrop          from "./CrushDrop";
 import LocalHistory       from "./LocalHistory";
+import CommandPalette   from "./CommandPalette";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
 import { useTheme }       from "./useTheme";
@@ -84,6 +85,7 @@ export default function App() {
   const [showHistoryDrawer, setShowHistoryDrawer] = useState(false);
   const [historyCount, setHistoryCount] = useState(0);
   const [signInError, setSignInError] = useState("");
+  const [showCmdPalette, setShowCmdPalette] = useState(false);
 
   const menuRef = useRef(null);
   const pdfMenuRef = useRef(null);
@@ -125,6 +127,18 @@ export default function App() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Global shortcut for Command Palette (Ctrl+K or Cmd+K)
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setShowCmdPalette(prev => !prev);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Show sign-in error prominently
@@ -321,6 +335,18 @@ export default function App() {
               <span className="install-text-full">Install App</span>
             </button>
           )}
+
+          {/* Quick Command Palette (Ctrl+K) */}
+          <button
+            type="button"
+            className="nav-cmd-btn"
+            onClick={() => setShowCmdPalette(true)}
+            title="Quick Search & Tools (Ctrl + K)"
+          >
+            <span>🔍</span>
+            <span className="cmd-text-full">Search</span>
+            <kbd className="cmd-kbd-badge">Ctrl K</kbd>
+          </button>
 
           {/* Local Offline History Drawer Button */}
           <button
@@ -540,6 +566,17 @@ export default function App() {
 
       {/* ── Offline Local History Drawer ── */}
       <LocalHistory auth={auth} isOpen={showHistoryDrawer} onClose={() => setShowHistoryDrawer(false)} />
+
+      {/* ── Command Palette (Ctrl+K) ── */}
+      <CommandPalette
+        isOpen={showCmdPalette}
+        onClose={() => setShowCmdPalette(false)}
+        onOpenHistory={() => setShowHistoryDrawer(true)}
+        theme={theme}
+        setTheme={setTheme}
+        canInstall={pwa.canInstall}
+        installApp={pwa.installApp}
+      />
 
       {/* ── Footer ── */}
       <footer className="site-footer">
