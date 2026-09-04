@@ -239,6 +239,7 @@ export default function CommandPalette({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
   const listRef = useRef(null);
+  const modalRef = useRef(null);
   const navigate = useNavigate();
 
   // Reset query and selected index on open
@@ -249,6 +250,33 @@ export default function CommandPalette({
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
+
+  // Prevent background scrolling when Command Palette is open
+  useEffect(() => {
+    if (isOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [isOpen]);
+
+  // Click or tap outside modal to close immediately
+  useEffect(() => {
+    if (!isOpen) return;
+    function handlePointerDown(e) {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        onClose();
+      }
+    }
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, [isOpen, onClose]);
 
   // Build filtered list
   const filteredCommands = ALL_COMMANDS.filter(cmd => {
@@ -318,6 +346,7 @@ export default function CommandPalette({
   return (
     <div className="cmd-overlay" onClick={onClose}>
       <div
+        ref={modalRef}
         className="cmd-modal"
         onClick={e => e.stopPropagation()}
         role="dialog"

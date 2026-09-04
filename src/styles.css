@@ -2735,6 +2735,8 @@ body::before {
   justify-content: center;
   padding: 12vh 16px 24px;
   animation: cmdFadeIn 0.15s ease-out;
+  overscroll-behavior: contain;
+  overflow-y: auto;
 }
 
 @keyframes cmdFadeIn {
@@ -2822,6 +2824,7 @@ body::before {
 .cmd-results-list {
   max-height: 380px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 8px;
   display: flex;
   flex-direction: column;
