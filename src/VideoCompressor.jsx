@@ -345,6 +345,7 @@ export default function VideoCompressor({ auth }) {
       setResultBlob(compressedBlob);
       setResultUrl(outUrl);
       setStage("done");
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
       // Save to local offline history
       addHistoryRecord({
@@ -398,66 +399,79 @@ export default function VideoCompressor({ auth }) {
   }, [fileUrl, resultUrl]);
 
   return (
-    <div className="tool-page-layout">
-      {/* ── Top Header ── */}
-      <div className="tool-header">
-        <button type="button" className="btn-back" onClick={() => navigate("/")}>
-          ← Back
-        </button>
-        <div className="tool-header-title">
-          <span className="tool-badge-pill">🎬 In-Browser Wasm/Canvas</span>
-          <h1>Video &amp; Audio Compressor</h1>
-          <p className="tool-header-subtitle">
-            100% on-device video compression. WhatsApp &amp; Discord 16MB auto-fit, resolution scaling &amp; trim. Zero server uploads.
-          </p>
-        </div>
+    <div className="compressor-page">
+      {/* ── Top Bar ── */}
+      <div className="tool-page-bar">
+        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
+        <span className="tool-page-title">🎬 Video &amp; Audio Compressor</span>
       </div>
 
-      <div className="tool-main-content">
-        {/* ── Drop Zone (Idle / Error) ── */}
-        {stage === "idle" && (
-          <div
-            className="dropzone-box"
-            onClick={() => fileInputRef.current?.click()}
-            onDragOver={e => e.preventDefault()}
-            onDrop={e => {
-              e.preventDefault();
-              if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
-            }}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="video/*,audio/*,.mp4,.webm,.mov,.mkv,.avi,.mp3,.wav"
-              hidden
-              onChange={e => {
-                if (e.target.files?.[0]) handleFile(e.target.files[0]);
-              }}
-            />
-            <div className="dropzone-icon">🎬</div>
-            <div className="dropzone-title">Drop your Video or Audio here to Compress</div>
-            <div className="dropzone-subtitle">
-              Supports MP4, WebM, MOV, MP3, WAV · Max 500 MB · 100% Client-Side Processing
+      <div className="compressor-wrap" style={{ maxWidth: "1100px" }}>
+        {/* ── Header (When no file is selected) ── */}
+        {!file && (
+          <div className="comp-header">
+            <div className="comp-title-row">
+              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>🎬</div>
+              <h1 className="comp-title">Video &amp; Audio Compressor</h1>
             </div>
-            <div className="dropzone-actions">
-              <button type="button" className="btn-browse">
-                📂 Browse File
-              </button>
-              {auth?.authStatus === "signedin" && (
+            <p className="comp-sub">
+              100% on-device video compression. WhatsApp &amp; Discord 16MB auto-fit, resolution scaling &amp; trim. Zero server uploads.
+            </p>
+          </div>
+        )}
+
+        {/* ── Drop Zone (When idle or error) ── */}
+        {!file && (
+          <div className="comp-card">
+            <div
+              className="drop-zone"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={e => e.preventDefault()}
+              onDrop={e => {
+                e.preventDefault();
+                if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
+              }}
+            >
+              <span className="drop-icon">🎬</span>
+              <div className="drop-main">Drop Video or Audio Here to Compress</div>
+              <div className="drop-sub">Supports MP4, WebM, MOV, MP3, WAV · Max 500 MB · 100% Local Processing</div>
+              <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "16px", flexWrap: "wrap" }}>
                 <button
                   type="button"
-                  className="btn-drive-pick"
-                  onClick={e => { e.stopPropagation(); handleDrivePick(); }}
+                  className="drop-btn"
+                  onClick={e => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
                 >
-                  <span>📁</span> Pick from Drive
+                  Browse Video
                 </button>
-              )}
+                {auth?.authStatus === "signedin" && (
+                  <button
+                    type="button"
+                    className="drop-btn"
+                    style={{ background: "#fff" }}
+                    onClick={e => { e.stopPropagation(); handleDrivePick(); }}
+                  >
+                    📁 Pick from Drive
+                  </button>
+                )}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*,audio/*,.mp4,.webm,.mov,.mkv,.avi,.mp3,.wav"
+                style={{ display: "none" }}
+                onChange={e => {
+                  if (e.target.files?.[0]) handleFile(e.target.files[0]);
+                }}
+              />
             </div>
           </div>
         )}
 
-        {/* ── Ready / Compressing / Done State ── */}
-        {stage !== "idle" && file && (
+        {/* ── Ready / Compressing State ── */}
+        {file && (stage === "ready" || stage === "compressing") && (
           <div className="vc-workspace-card">
             {/* Top Info Bar */}
             <div className="vc-info-bar">
@@ -486,7 +500,7 @@ export default function VideoCompressor({ auth }) {
 
             {/* Main Split: Left Player / Right Settings */}
             <div className="vc-split-grid">
-              {/* Left Column: Video Preview */}
+              {/* Left Column: Video Preview & Trimming */}
               <div className="vc-player-col">
                 <div className="vc-video-container">
                   <video
@@ -672,50 +686,89 @@ export default function VideoCompressor({ auth }) {
               </div>
             </div>
 
-            {/* ── Compression Completed Result Card ── */}
-            {stage === "done" && resultBlob && (
-              <div className="vc-result-card anim-pop">
-                <div className="vc-result-header">
-                  <div className="vc-result-title">
-                    <span>🎉 Compression Complete!</span>
-                    <div className="vc-result-badges">
-                      <span className="vc-badge-saved">
-                        Saved {Math.max(0, Math.round(((file.size - resultBlob.size) / file.size) * 100))}%
-                      </span>
-                      <span className="vc-badge-new">
-                        {formatBytes(file.size)} ➔ {formatBytes(resultBlob.size)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn-download-video"
-                    onClick={handleDownload}
-                  >
-                    💾 Download Compressed Video ({formatBytes(resultBlob.size)})
-                  </button>
-                </div>
-
-                {/* Result Video Player */}
-                <div className="vc-result-player-wrap">
-                  <video
-                    ref={resultVideoRef}
-                    src={resultUrl}
-                    controls
-                    autoPlay
-                    className="vc-result-video"
-                  />
-                </div>
-              </div>
-            )}
-
             {/* Error Message */}
             {errorMsg && (
               <div className="vc-error-banner">
                 <span>⚠️ {errorMsg}</span>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ── Dedicated Compression Completed Screen (At Top!) ── */}
+        {file && stage === "done" && resultBlob && (
+          <div className="vc-workspace-card anim-pop">
+            <div className="vc-result-header-box">
+              <div className="vc-result-title-row">
+                <div className="vc-result-icon">🎉</div>
+                <div>
+                  <h2 className="vc-result-heading">Video Compression Complete!</h2>
+                  <div className="vc-result-subtext">{file.name}</div>
+                </div>
+              </div>
+
+              {/* Big Saved Stats Summary Grid */}
+              <div className="vc-stats-summary-grid">
+                <div className="vc-stat-card">
+                  <span className="vc-stat-label">Original Size</span>
+                  <span className="vc-stat-val-orig">{formatBytes(file.size)}</span>
+                </div>
+                <div className="vc-stat-arrow">➔</div>
+                <div className="vc-stat-card">
+                  <span className="vc-stat-label">Compressed Size</span>
+                  <span className="vc-stat-val-new">{formatBytes(resultBlob.size)}</span>
+                </div>
+                <div className="vc-stat-card vc-stat-card-highlight">
+                  <span className="vc-stat-label">Space Saved</span>
+                  <span className="vc-stat-val-saved">
+                    {Math.max(0, Math.round(((file.size - resultBlob.size) / file.size) * 100))}% OFF
+                  </span>
+                </div>
+              </div>
+
+              {/* Primary & Secondary Action Buttons */}
+              <div className="vc-result-actions-row">
+                <button
+                  type="button"
+                  className="btn-download-video-large"
+                  onClick={handleDownload}
+                >
+                  💾 Download Compressed Video ({formatBytes(resultBlob.size)})
+                </button>
+                <button
+                  type="button"
+                  className="vc-btn-secondary"
+                  onClick={() => setStage("ready")}
+                >
+                  ⚙️ Adjust Settings &amp; Re-compress
+                </button>
+                <button
+                  type="button"
+                  className="vc-btn-secondary"
+                  onClick={() => {
+                    setFile(null);
+                    setResultBlob(null);
+                    setStage("idle");
+                  }}
+                >
+                  ➕ Compress Another Video
+                </button>
+              </div>
+            </div>
+
+            {/* Compressed Video Player Preview */}
+            <div className="vc-result-player-container">
+              <div className="vc-result-player-label">🎬 Compressed Video Preview:</div>
+              <div className="vc-result-player-wrap">
+                <video
+                  ref={resultVideoRef}
+                  src={resultUrl}
+                  controls
+                  autoPlay
+                  className="vc-result-video"
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>
