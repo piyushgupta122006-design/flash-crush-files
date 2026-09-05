@@ -34,12 +34,18 @@ const PDF_ACTIONS = [
   { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
 ];
 
+const VIDEO_ACTIONS = [
+  { path: "/video-compress", label: "Compress Video / Audio", icon: "🎬", desc: "Compress MP4/WebM with WhatsApp 16MB preset" },
+  { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
+];
+
 export default function ClipboardPasteModal({ file, onClose, onSelectTool }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const modalRef = useRef(null);
 
   const isImage = file?.type?.startsWith("image/") || file?.name?.match(/\.(jpe?g|png|webp|avif|bmp|svg)$/i);
   const isPdf = file?.type === "application/pdf" || file?.name?.match(/\.pdf$/i);
+  const isVideo = file?.type?.startsWith("video/") || file?.type?.startsWith("audio/") || file?.name?.match(/\.(mp4|webm|mov|mkv|avi|mp3|wav)$/i);
 
   // Generate image preview
   useEffect(() => {
@@ -94,7 +100,7 @@ export default function ClipboardPasteModal({ file, onClose, onSelectTool }) {
 
   if (!file) return null;
 
-  const actions = isImage ? IMAGE_ACTIONS : isPdf ? PDF_ACTIONS : [];
+  const actions = isVideo ? VIDEO_ACTIONS : isImage ? IMAGE_ACTIONS : isPdf ? PDF_ACTIONS : [];
 
   return (
     <div className="clipboard-modal-overlay" onClick={onClose}>

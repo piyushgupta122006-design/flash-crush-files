@@ -294,6 +294,21 @@ function IconNetwork() {
   );
 }
 
+function IconVideo() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e11d48" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+      <line x1="7" y1="2" x2="7" y2="22"/>
+      <line x1="17" y1="2" x2="17" y2="22"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <line x1="2" y1="7" x2="7" y2="7"/>
+      <line x1="2" y1="17" x2="7" y2="17"/>
+      <line x1="17" y1="17" x2="22" y2="17"/>
+      <line x1="17" y1="7" x2="22" y2="7"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -871,6 +886,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Share Files</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 22. Video & Audio Compressor */}
+          <TiltCard className="tool-card" onClick={() => navigate("/video-compress")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconVideo />
+              </div>
+              <div className="tool-card-title">Video Compressor</div>
+              <p className="tool-card-desc">
+                Compress MP4, WebM &amp; MOV videos and audio on-device. WhatsApp 16MB auto-fit, resolution scaling &amp; trim.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">🎬 WhatsApp 16MB</span>
+                <span className="tool-tag">⚡ 100% Local</span>
+                <span className="tool-tag">No Limits</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Compress Video</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

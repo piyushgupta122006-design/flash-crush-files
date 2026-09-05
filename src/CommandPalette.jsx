@@ -195,6 +195,15 @@ const ALL_COMMANDS = [
     path: "/drop",
     keywords: ["airdrop", "p2p", "transfer", "share", "drop", "send", "receive", "webrtc", "direct", "wifi"]
   },
+  {
+    id: "video-compress",
+    label: "Video & Audio Compressor",
+    desc: "Compress MP4/WebM videos and audio with WhatsApp/Discord 16MB presets",
+    category: "MEDIA",
+    icon: "🎬",
+    path: "/video-compress",
+    keywords: ["video", "compress", "mp4", "webm", "audio", "whatsapp", "discord", "16mb", "clip", "trim", "movie", "shrink"]
+  },
 
   // ── System Quick Actions ──
   {
