@@ -54,6 +54,7 @@ export default function VideoCompressor({ auth }) {
   const [preset, setPreset] = useState("whatsapp"); // "whatsapp" | "extreme" | "balanced" | "high" | "custom"
   const [targetRes, setTargetRes] = useState("720p"); // "original" | "1080p" | "720p" | "480p" | "360p"
   const [videoBitrateKbps, setVideoBitrateKbps] = useState(1200);
+  const [origBitrateKbps, setOrigBitrateKbps] = useState(1200);
   const [audioBitrateKbps, setAudioBitrateKbps] = useState(96);
   const [muteAudio, setMuteAudio] = useState(false);
 
@@ -114,12 +115,28 @@ export default function VideoCompressor({ auth }) {
       setOrigWidth(w);
       setOrigHeight(h);
 
-      // Auto-configure WhatsApp 16MB preset bitrate
+      // Calculate baseline original bitrate (kbps)
+      const calculatedOrigKbps = Math.max(100, Math.round((f.size * 8) / (dur * 1000)));
+      setOrigBitrateKbps(calculatedOrigKbps);
+
+      // Auto-configure WhatsApp preset:
+      // If file is already <= 14.5MB, target 60% of original bitrate to guarantee compression!
+      // If file is > 14.5MB, target budget to fit in 14.5MB
       if (dur > 0) {
-        // Target ~14.5MB video budget (in bits)
-        const targetBits = 14.5 * 8 * 1024 * 1024;
-        const autoKbps = Math.min(2400, Math.max(300, Math.floor((targetBits / dur) / 1000)));
-        setVideoBitrateKbps(autoKbps);
+        let autoKbps;
+        if (f.size > 14.5 * 1024 * 1024) {
+          const targetBits = 14.2 * 8 * 1024 * 1024;
+          const budgetKbps = Math.floor((targetBits / dur) / 1000);
+          autoKbps = Math.min(budgetKbps, Math.floor(calculatedOrigKbps * 0.70));
+        } else {
+          autoKbps = Math.min(1200, Math.max(120, Math.floor(calculatedOrigKbps * 0.60)));
+        }
+        setVideoBitrateKbps(Math.max(100, autoKbps));
+      }
+
+      // If video has small resolution (<= 480p), don't default targetRes to 720p
+      if (h <= 480) {
+        setTargetRes("original");
       }
 
       setStage("ready");
@@ -147,28 +164,38 @@ export default function VideoCompressor({ auth }) {
   const applyPreset = (pKey) => {
     setPreset(pKey);
     const dur = Math.max(1, trimEnd - trimStart || duration || 1);
+    const baseKbps = origBitrateKbps > 0 ? origBitrateKbps : (file?.size ? Math.round((file.size * 8) / (dur * 1000)) : 1200);
 
     if (pKey === "whatsapp") {
-      setTargetRes("720p");
-      const targetBits = 14.5 * 8 * 1024 * 1024;
-      const autoKbps = Math.min(2400, Math.max(300, Math.floor((targetBits / dur) / 1000)));
+      setTargetRes(origHeight > 720 ? "720p" : "original");
+      let autoKbps;
+      if (file && file.size > 14.5 * 1024 * 1024) {
+        const targetBits = 14.2 * 8 * 1024 * 1024;
+        const budgetKbps = Math.floor((targetBits / dur) / 1000);
+        autoKbps = Math.min(budgetKbps, Math.floor(baseKbps * 0.70));
+      } else {
+        autoKbps = Math.min(1200, Math.max(120, Math.floor(baseKbps * 0.60)));
+      }
+      setVideoBitrateKbps(Math.max(100, autoKbps));
+      setAudioBitrateKbps(64);
+      setMuteAudio(false);
+    } else if (pKey === "extreme") {
+      setTargetRes(origHeight > 480 ? "480p" : "original");
+      const autoKbps = Math.min(500, Math.max(100, Math.floor(baseKbps * 0.35)));
+      setVideoBitrateKbps(autoKbps);
+      setAudioBitrateKbps(48);
+      setMuteAudio(false);
+    } else if (pKey === "balanced") {
+      setTargetRes(origHeight > 720 ? "720p" : "original");
+      const autoKbps = Math.min(1200, Math.max(180, Math.floor(baseKbps * 0.55)));
       setVideoBitrateKbps(autoKbps);
       setAudioBitrateKbps(96);
       setMuteAudio(false);
-    } else if (pKey === "extreme") {
-      setTargetRes("480p");
-      setVideoBitrateKbps(650);
-      setAudioBitrateKbps(64);
-      setMuteAudio(false);
-    } else if (pKey === "balanced") {
-      setTargetRes("720p");
-      setVideoBitrateKbps(1400);
-      setAudioBitrateKbps(128);
-      setMuteAudio(false);
     } else if (pKey === "high") {
       setTargetRes("original");
-      setVideoBitrateKbps(2800);
-      setAudioBitrateKbps(160);
+      const autoKbps = Math.min(2200, Math.max(250, Math.floor(baseKbps * 0.75)));
+      setVideoBitrateKbps(autoKbps);
+      setAudioBitrateKbps(128);
       setMuteAudio(false);
     }
   };
@@ -260,7 +287,13 @@ export default function VideoCompressor({ auth }) {
       // Determine supported mimeType and target bitrate
       const bestMime = getBestVideoMimeType();
       setResultMime(bestMime);
-      const targetBps = Math.max(200000, videoBitrateKbps * 1000);
+
+      // Safety guard: For compression presets, never exceed 75% of original bitrate
+      let effectiveKbps = videoBitrateKbps;
+      if (preset !== "custom" && origBitrateKbps > 100) {
+        effectiveKbps = Math.min(videoBitrateKbps, Math.floor(origBitrateKbps * 0.75));
+      }
+      const targetBps = Math.max(80000, effectiveKbps * 1000);
       const audioBps = muteAudio ? 0 : audioBitrateKbps * 1000;
 
       const recorder = new MediaRecorder(canvasStream, {
@@ -625,15 +658,25 @@ export default function VideoCompressor({ auth }) {
 
                     {/* Bitrate */}
                     <div className="vc-field">
-                      <label>Video Bitrate: <strong>{videoBitrateKbps} kbps</strong></label>
+                      <label>
+                        Video Bitrate: <strong>{videoBitrateKbps} kbps</strong>
+                        {origBitrateKbps > 0 && (
+                          <span className="vc-bitrate-orig-hint">
+                            (Original: ~{origBitrateKbps} kbps)
+                          </span>
+                        )}
+                      </label>
                       <input
                         type="range"
-                        min="300"
+                        min="100"
                         max="4000"
-                        step="100"
+                        step="50"
                         value={videoBitrateKbps}
                         className="vc-range-slider"
-                        onChange={e => setVideoBitrateKbps(Number(e.target.value))}
+                        onChange={e => {
+                          setVideoBitrateKbps(Number(e.target.value));
+                          setPreset("custom");
+                        }}
                         disabled={stage === "compressing"}
                       />
                     </div>
@@ -718,13 +761,27 @@ export default function VideoCompressor({ auth }) {
                   <span className="vc-stat-label">Compressed Size</span>
                   <span className="vc-stat-val-new">{formatBytes(resultBlob.size)}</span>
                 </div>
-                <div className="vc-stat-card vc-stat-card-highlight">
-                  <span className="vc-stat-label">Space Saved</span>
-                  <span className="vc-stat-val-saved">
-                    {Math.max(0, Math.round(((file.size - resultBlob.size) / file.size) * 100))}% OFF
-                  </span>
-                </div>
+                {resultBlob.size < file.size ? (
+                  <div className="vc-stat-card vc-stat-card-highlight">
+                    <span className="vc-stat-label">Space Saved</span>
+                    <span className="vc-stat-val-saved">
+                      {Math.round(((file.size - resultBlob.size) / file.size) * 100)}% OFF
+                    </span>
+                  </div>
+                ) : (
+                  <div className="vc-stat-card vc-stat-card-warn">
+                    <span className="vc-stat-label">Status</span>
+                    <span className="vc-stat-val-warn">Already Optimized</span>
+                  </div>
+                )}
               </div>
+
+              {/* Notice if output was not smaller */}
+              {resultBlob.size >= file.size && (
+                <div className="vc-warn-inline-note">
+                  ℹ️ Note: The original video was already heavily compressed. Try re-compressing with a lower bitrate.
+                </div>
+              )}
 
               {/* Primary & Secondary Action Buttons */}
               <div className="vc-result-actions-row">
@@ -735,6 +792,20 @@ export default function VideoCompressor({ auth }) {
                 >
                   💾 Download Compressed Video ({formatBytes(resultBlob.size)})
                 </button>
+                {resultBlob.size >= file.size && (
+                  <button
+                    type="button"
+                    className="vc-btn-secondary"
+                    style={{ background: "#fef08a", borderColor: "#1a1a1a" }}
+                    onClick={() => {
+                      setVideoBitrateKbps(prev => Math.max(80, Math.floor(prev * 0.5)));
+                      setPreset("custom");
+                      setStage("ready");
+                    }}
+                  >
+                    ⚡ Halve Bitrate &amp; Retry
+                  </button>
+                )}
                 <button
                   type="button"
                   className="vc-btn-secondary"

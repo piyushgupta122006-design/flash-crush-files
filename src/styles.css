@@ -3903,7 +3903,33 @@ body::before {
   color: var(--text-main);
 }
 
+.vc-stat-card-warn {
+  background: #fef2f2 !important;
+  border-color: #ef4444 !important;
+  box-shadow: 2px 2px 0px #1a1a1a !important;
+}
 
+.vc-stat-val-warn {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #dc2626;
+  margin-top: 3px;
+}
 
+.vc-bitrate-orig-hint {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
 
-
+.vc-warn-inline-note {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b45309;
+  background: #fef3c7;
+  border: 1.5px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  text-align: center;
+}
