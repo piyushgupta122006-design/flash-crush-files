@@ -3965,6 +3965,9 @@ body::before {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
+  .scanner-viewport-box {
+    aspect-ratio: 3/4;
+  }
 }
 
 .scanner-viewport-box {

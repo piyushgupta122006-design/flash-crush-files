@@ -234,11 +234,18 @@ export default function DocumentScanner({ auth }) {
   const snapCurrentFrame = () => {
     if (!videoRef.current) return;
     const video = videoRef.current;
+    const fullW = video.videoWidth || 1280;
+    const fullH = video.videoHeight || 720;
+    // Crop to match the guide box (88% width, 86% height, centered)
+    const cropW = Math.round(fullW * 0.88);
+    const cropH = Math.round(fullH * 0.86);
+    const cropX = Math.round((fullW - cropW) / 2);
+    const cropY = Math.round((fullH - cropH) / 2);
     const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth || 1280;
-    canvas.height = video.videoHeight || 720;
+    canvas.width = cropW;
+    canvas.height = cropH;
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
     const originalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
     addPageFromDataUrl(originalDataUrl);
