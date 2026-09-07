@@ -309,6 +309,15 @@ function IconVideo() {
   );
 }
 
+function IconScanner() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+      <circle cx="12" cy="13" r="4"/>
+    </svg>
+  );
+}
+
 function IconHistory() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -908,6 +917,28 @@ export default function HomePage() {
             </div>
             <div className="tool-card-cta">
               <span>Compress Video</span>
+              <div className="tool-card-cta-arrow"><IconArrowRight /></div>
+            </div>
+          </TiltCard>
+
+          {/* 23. Document Scanner (CamScanner) */}
+          <TiltCard className="tool-card" onClick={() => navigate("/scan-pdf")}>
+            <div>
+              <div className="tool-card-icon-wrap">
+                <IconScanner />
+              </div>
+              <div className="tool-card-title">Doc Scanner (Camera)</div>
+              <p className="tool-card-desc">
+                Scan documents, notes &amp; receipts with your camera or photos. Magic B&amp;W filter, multi-page capture &amp; 1-click clean PDF export.
+              </p>
+              <div className="tool-card-tags">
+                <span className="tool-tag">📷 Cam to PDF</span>
+                <span className="tool-tag">⚡ Magic Clean</span>
+                <span className="tool-tag">Multi-Page</span>
+              </div>
+            </div>
+            <div className="tool-card-cta">
+              <span>Scan Document</span>
               <div className="tool-card-cta-arrow"><IconArrowRight /></div>
             </div>
           </TiltCard>

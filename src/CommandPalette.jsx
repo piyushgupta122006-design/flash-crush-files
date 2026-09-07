@@ -23,6 +23,15 @@ const ALL_COMMANDS = [
     keywords: ["merge", "combine", "join", "concat", "multiple", "unite"]
   },
   {
+    id: "doc-scanner",
+    label: "Doc Scanner (Camera to PDF)",
+    desc: "Scan physical documents, notes & receipts directly into clean PDF",
+    category: "PDF",
+    icon: "📷",
+    path: "/scan-pdf",
+    keywords: ["scan", "camera", "camscanner", "document", "notes", "receipt", "scanner", "paper", "photo to pdf"]
+  },
+  {
     id: "pdf-split",
     label: "Split & Extract PDF",
     desc: "Extract custom page ranges or split all pages into a ZIP",

@@ -27,6 +27,7 @@ import EXIFCleaner        from "./EXIFCleaner";
 import CrushDrop          from "./CrushDrop";
 import LocalHistory       from "./LocalHistory";
 import VideoCompressor   from "./VideoCompressor";
+import DocumentScanner  from "./DocumentScanner";
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
 import { setPendingFile, consumePendingFile } from "./clipboardStore";
@@ -55,6 +56,7 @@ const PDF_TOOLS = [
   { path: "/pdf-watermark", label: "Watermark & Numbers", desc: "Add or remove watermarks & numbering", icon: "🏷️" },
   { path: "/ocr", label: "OCR Text Extract", desc: "Extract text from scanned PDFs & photos", icon: "🔍" },
   { path: "/sign-pdf", label: "PDF E-Sign Studio", desc: "Draw, type, or upload signatures & stamps", icon: "✍️" },
+  { path: "/scan-pdf", label: "Doc Scanner (Camera)", desc: "Scan documents & notes directly to PDF", icon: "📷" },
 ];
 
 const IMAGE_TOOLS = [
@@ -634,6 +636,7 @@ export default function App() {
           <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
           <Route path="/drop"              element={<CrushDrop auth={auth} />} />
           <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
+          <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
           <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
           <Route path="*"                  element={<HomePage auth={auth} />} />
         </Routes>
