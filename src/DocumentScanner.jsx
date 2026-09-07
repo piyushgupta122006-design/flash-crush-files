@@ -152,19 +152,30 @@ export default function DocumentScanner({ auth }) {
 
       const constraints = {
         video: {
-          facingMode: { ideal: facing },
+          facingMode: facing ? { ideal: facing } : { ideal: "environment" },
           width: { ideal: 1920 },
           height: { ideal: 1080 }
         },
         audio: false
       };
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch {
+        // Mobile portrait fallback: if rigid 1080p landscape constraint is rejected
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: facing || "environment" } },
+          audio: false
+        });
+      }
       streamRef.current = stream;
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play().catch((e) => console.warn("Video play error:", e));
+        };
       }
       setCameraActive(true);
     } catch (err) {
@@ -201,7 +212,17 @@ export default function DocumentScanner({ auth }) {
     }
   };
 
-  // Cleanup camera stream on unmount
+  // Sync camera stream to video element whenever cameraActive toggles
+  useEffect(() => {
+    if (cameraActive && videoRef.current && streamRef.current) {
+      if (videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+      }
+      videoRef.current.play().catch(() => {});
+    }
+  }, [cameraActive]);
+
+  // Start camera on mount & cleanup on unmount
   useEffect(() => {
     startCamera();
     return () => {
@@ -501,27 +522,30 @@ export default function DocumentScanner({ auth }) {
             {/* Left Column: Camera / Live Viewport */}
             <div className="scanner-camera-column">
               <div className="scanner-viewport-box">
-                {cameraActive ? (
-                  <div className="scanner-video-container">
-                    <video
-                      ref={videoRef}
-                      className="scanner-live-video"
-                      autoPlay
-                      playsInline
-                      muted
-                    />
-                    {/* Viewfinder Guide Overlay */}
-                    <div className="scanner-viewfinder-overlay">
-                      <div className="scanner-guide-box">
-                        <span className="scanner-corner tl" />
-                        <span className="scanner-corner tr" />
-                        <span className="scanner-corner bl" />
-                        <span className="scanner-corner br" />
-                        <div className="scanner-guide-text">Align Document Inside Frame</div>
-                      </div>
+                <div
+                  className="scanner-video-container"
+                  style={{ display: cameraActive ? "block" : "none" }}
+                >
+                  <video
+                    ref={videoRef}
+                    className="scanner-live-video"
+                    autoPlay
+                    playsInline
+                    muted
+                  />
+                  {/* Viewfinder Guide Overlay */}
+                  <div className="scanner-viewfinder-overlay">
+                    <div className="scanner-guide-box">
+                      <span className="scanner-corner tl" />
+                      <span className="scanner-corner tr" />
+                      <span className="scanner-corner bl" />
+                      <span className="scanner-corner br" />
+                      <div className="scanner-guide-text">Align Document Inside Frame</div>
                     </div>
                   </div>
-                ) : (
+                </div>
+
+                {!cameraActive && (
                   <div className="scanner-camera-off-box">
                     <div style={{ fontSize: "2.8rem", marginBottom: "12px" }}>📷</div>
                     <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>Camera is currently inactive</div>
