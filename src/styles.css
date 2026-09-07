@@ -3938,6 +3938,10 @@ body::before {
    DOCUMENT SCANNER (CAMSCANNER TO PDF)
    ══════════════════════════════════════════════════ */
 .scanner-workspace-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--bg-card);
   border: 3px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -3947,13 +3951,19 @@ body::before {
 
 .scanner-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
+  width: 100%;
+  min-width: 0;
 }
 
 @media (max-width: 820px) {
+  .scanner-workspace-card {
+    padding: 16px 12px;
+  }
   .scanner-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 }
 
@@ -4106,9 +4116,12 @@ body::before {
   box-shadow: 3px 3px 0px var(--border-color);
 }
 
+.scanner-camera-column,
 .scanner-preview-column {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  width: 100%;
 }
 
 .scanner-preview-header {
@@ -4219,6 +4232,10 @@ body::before {
 }
 
 .scanner-bottom-section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin-top: 24px;
   padding-top: 18px;
   border-top: 2.5px solid var(--border-color);
@@ -4247,7 +4264,22 @@ body::before {
   display: flex;
   gap: 12px;
   overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
   padding: 6px 2px 14px 2px;
+}
+
+.scanner-thumbnail-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scanner-thumbnail-strip::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
 }
 
 .scanner-thumb-card {
