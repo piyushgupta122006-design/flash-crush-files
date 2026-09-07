@@ -607,7 +607,6 @@ export default function DocumentScanner({ auth }) {
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
-                    capture="environment"
                     multiple
                     style={{ display: "none" }}
                     onChange={handleFileUpload}
