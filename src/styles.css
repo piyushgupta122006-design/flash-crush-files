@@ -3968,6 +3968,49 @@ body::before {
   .scanner-viewport-box {
     aspect-ratio: 3/4;
   }
+  .scanner-active-image-wrap {
+    aspect-ratio: 3/4;
+    padding: 6px;
+  }
+  .scanner-controls-bar {
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .scanner-shutter-btn {
+    padding: 10px 22px;
+    font-size: 0.92rem;
+    box-shadow: 3px 3px 0px #1a1a1a;
+  }
+  .scanner-icon-btn, .scanner-action-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    box-shadow: 1.5px 1.5px 0px var(--border-color);
+  }
+  .scanner-filter-pills {
+    gap: 6px;
+  }
+  .scanner-filter-pill {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    box-shadow: 1.5px 1.5px 0px var(--border-color);
+  }
+  .scanner-thumb-card {
+    flex: 0 0 68px;
+    height: 90px;
+  }
+  .scanner-thumb-add-tile {
+    flex: 0 0 68px;
+    height: 90px;
+  }
+  .scanner-btn-export-pdf {
+    padding: 12px 20px;
+    font-size: 0.92rem;
+    box-shadow: 3px 3px 0px #1a1a1a;
+  }
+  .scanner-bottom-section {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
 }
 
 .scanner-viewport-box {
