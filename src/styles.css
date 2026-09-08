@@ -2199,26 +2199,32 @@ body::before {
     margin-bottom: 18px;
   }
 
-  /* Dropzone on tool pages */
-  .dropzone-wrap {
-    padding: 0 12px;
-    margin-bottom: 28px;
-  }
-  .dropzone {
-    padding: 36px 16px;
-  }
-  .dropzone-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
+  /* Tool Headers & Dropzone */
+  .comp-header {
     margin-bottom: 16px;
   }
-  .dropzone-title {
-    font-size: 1.15rem;
+  .drop-zone {
+    padding: 32px 16px;
+    margin: 16px 12px;
   }
-  .dropzone-sub {
-    font-size: 0.82rem;
-    margin-bottom: 20px;
+  .drop-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  .drop-main {
+    font-size: 1.1rem;
+  }
+  .drop-sub {
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+  .drop-btn-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .drop-btn, .drop-btn-drive {
+    width: 100%;
+    justify-content: center;
   }
 
   /* Controls card */
