@@ -397,7 +397,7 @@ export default function BulkImageCompressor({ auth }) {
               {/* Presets Grid */}
               <div style={{ marginBottom: "16px" }}>
                 <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Compression Preset</span>
-                <div className="level-grid" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
+                <div className="level-grid">
                   {PRESETS.map((p) => (
                     <button
                       key={p.id}
@@ -581,7 +581,7 @@ export default function BulkImageCompressor({ auth }) {
 
               <div style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(180px, 100%), 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(120px, 100%), 1fr))",
                 gap: "12px", maxHeight: "420px", overflowY: "auto", padding: "6px",
                 borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)",
                 border: "1px solid rgba(255,255,255,0.06)"

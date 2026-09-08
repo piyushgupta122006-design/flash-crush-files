@@ -2251,6 +2251,13 @@ body::before {
     margin: 0 12px 20px;
     padding: 24px 16px;
   }
+  .result-grid {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .result-arrow {
+    transform: rotate(90deg);
+  }
   .result-metrics-bar {
     flex-direction: column;
     gap: 8px;
