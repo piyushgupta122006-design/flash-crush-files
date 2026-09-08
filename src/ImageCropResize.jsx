@@ -555,7 +555,7 @@ export default function ImageCropResize({ auth }) {
               </div>
 
               {/* Two Column Layout: Tools Sidebar (Left) vs Interactive Crop Canvas (Right) */}
-              <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: "20px", alignItems: "start" }}>
+              <div className="studio-split-layout">
 
                 {/* Left Sidebar: Resize & Transform Controls */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>

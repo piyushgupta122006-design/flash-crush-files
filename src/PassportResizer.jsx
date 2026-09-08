@@ -695,7 +695,7 @@ export default function PassportResizer({ auth }) {
               </div>
 
               {/* Two Column Layout: Editor Controls (Left) vs Interactive Alignment Canvas (Right) */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", alignItems: "start" }}>
+              <div className="passport-split-layout">
 
                 {/* Left Column: Fine Tuning Controls */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
