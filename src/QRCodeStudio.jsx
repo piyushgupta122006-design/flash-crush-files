@@ -432,7 +432,7 @@ export default function QRCodeStudio({ auth }) {
           </div>
 
           {/* Two Column Layout: Editor (Left) vs Real-Time Canvas (Right) */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: "24px", alignItems: "start" }}>
+          <div className="studio-split-layout">
 
             {/* Left Column: Content Inputs & Customization */}
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -506,7 +506,7 @@ export default function QRCodeStudio({ auth }) {
 
                 {/* vCard */}
                 {qrType === "vcard" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Full Name</label>
                       <input type="text" placeholder="Piyush Gupta" value={vcardName} onChange={(e) => setVcardName(e.target.value)}
@@ -548,7 +548,7 @@ export default function QRCodeStudio({ auth }) {
 
                 {/* UPI Payment */}
                 {qrType === "upi" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "8px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>UPI ID / VPA</label>
                       <input type="text" placeholder="username@okhdfcbank" value={upiVpa} onChange={(e) => setUpiVpa(e.target.value)}
