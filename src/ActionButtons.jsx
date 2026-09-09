@@ -262,6 +262,10 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           border: 2px solid #1a1a1a;
           border-radius: 8px; padding: 10px 12px; margin-top: 10px;
         }
+        @media (max-width: 480px) {
+          .fc-modal-card { padding: 20px; }
+          .fc-actions { flex-direction: column; }
+        }
       `}</style>
 
       <div className="fc-modal-card">
