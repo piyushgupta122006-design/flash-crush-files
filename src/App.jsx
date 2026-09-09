@@ -258,7 +258,7 @@ export default function App() {
           {/* Logo */}
           <div className="navbar-logo" onClick={() => navigate("/")}>
             <LogoMark size={28} />
-            <span>Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
+            <span className="nav-logo-text">Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
           </div>
 
           {/* Desktop Categorized Navigation Links */}

@@ -2122,6 +2122,18 @@ body::before {
     font-size: 0.78rem;
   }
 
+  /* Surgical Fix: Hide keyboard shortcut badge on touch devices */
+  .cmd-kbd-badge {
+    display: none;
+  }
+
+  /* Hide logo text on extremely narrow screens to prevent overlap with right controls */
+  @media (max-width: 400px) {
+    .nav-logo-text {
+      display: none;
+    }
+  }
+
   /* Hero */
   .hero {
     padding: 30px 16px 24px;
