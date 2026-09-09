@@ -449,7 +449,7 @@ export default function BackgroundRemover({ auth }) {
               </div>
 
               {/* Studio Grid: Controls Left, Live Composited Canvas Right */}
-              <div style={{ display: "grid", gridTemplateColumns: "300px 1fr", gap: "20px", alignItems: "start" }}>
+              <div className="studio-split-layout">
 
                 {/* Left Controls */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>

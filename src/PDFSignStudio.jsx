@@ -674,7 +674,7 @@ export default function PDFSignStudio({ auth }) {
                         <div key={c} onClick={() => setPenColor(c)} style={{ width: "24px", height: "24px", background: c, borderRadius: "50%", cursor: "pointer", border: penColor === c ? "3px solid #f59e0b" : "2px solid #000" }} />
                       ))}
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "10px" }}>
                     {[
                       { label: "Caveat", val: "40px 'Caveat', cursive" },
                       { label: "Dancing Script", val: "40px 'Dancing Script', cursive" },

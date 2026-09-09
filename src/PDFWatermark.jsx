@@ -757,7 +757,7 @@ export default function PDFWatermark({ auth }) {
               {mainAction === "add" && (
                 <>
                   {/* Mode Sub-Toggles */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "16px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: "8px", marginBottom: "16px" }}>
                     <button
                       type="button"
                       onClick={() => { setToolTab("both"); setEnableWatermark(true); setEnablePageNum(true); }}
@@ -788,7 +788,7 @@ export default function PDFWatermark({ auth }) {
 
               {/* ── SECTION 2: IF MAIN ACTION == REMOVE WATERMARK ── */}
               {mainAction === "remove" && (
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", marginBottom: "16px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: "8px", marginBottom: "16px" }}>
                   <button
                     type="button"
                     onClick={() => setRemoveMethod("faint")}
@@ -820,7 +820,7 @@ export default function PDFWatermark({ auth }) {
               )}
 
               {/* ── Two Column Layout: Settings on Left, Live Preview on Right ── */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+              <div className="passport-split-layout">
 
                 {/* Left Column: Settings Controls */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>

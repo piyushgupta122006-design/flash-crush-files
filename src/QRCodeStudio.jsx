@@ -583,7 +583,7 @@ export default function QRCodeStudio({ auth }) {
                   3. Color Themes & Gradients
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", marginBottom: "12px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: "6px", marginBottom: "12px" }}>
                   {COLOR_THEMES.map(th => (
                     <button
                       key={th.id}
@@ -630,7 +630,7 @@ export default function QRCodeStudio({ auth }) {
 
                 {/* Dot Shapes */}
                 <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Module Dot Shape</label>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", marginBottom: "12px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(60px, 1fr))", gap: "6px", marginBottom: "12px" }}>
                   {[
                     { id: "rounded", label: "Rounded" },
                     { id: "dots", label: "Dots (Circle)" },

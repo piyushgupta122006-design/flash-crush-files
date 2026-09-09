@@ -485,7 +485,7 @@ export default function ImageUpscaler({ auth }) {
                   <label style={{ display: "block", fontWeight: 800, marginBottom: "8px", fontSize: "0.95rem" }}>
                     Upscale Multiplier:
                   </label>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
                     <button
                       type="button"
                       className={`btn-reset ${scaleFactor === 2 ? "active" : ""}`}
@@ -524,7 +524,7 @@ export default function ImageUpscaler({ auth }) {
                   <label style={{ display: "block", fontWeight: 800, marginBottom: "8px", fontSize: "0.95rem" }}>
                     Neural Patch Tiling:
                   </label>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
                     <button
                       type="button"
                       className={`btn-reset ${patchSize === 64 ? "active" : ""}`}
