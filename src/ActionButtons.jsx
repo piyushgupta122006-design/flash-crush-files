@@ -139,10 +139,10 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           to   { opacity: 1; transform: scale(1); }
         }
         .fc-modal-card {
-          background: #FFFFFF;
-          border: 3px solid #1a1a1a;
+          background: var(--bg-card);
+          border: var(--border);
           border-radius: 16px;
-          box-shadow: 8px 8px 0px #1a1a1a;
+          box-shadow: var(--shadow);
           width: 100%;
           max-width: 460px;
           padding: 32px;
@@ -158,46 +158,46 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
         }
         .fc-modal-title {
           font-family: 'Space Grotesk', sans-serif;
-          font-size: 20px; font-weight: 700; color: #1a1a1a;
+          font-size: 20px; font-weight: 700; color: var(--text-main);
           margin-bottom: 6px; letter-spacing: -0.3px;
           display: flex; align-items: center; gap: 10px;
         }
         .fc-modal-sub {
-          font-size: 13px; color: #525252; margin-bottom: 24px;
+          font-size: 13px; color: var(--text-sub); margin-bottom: 24px;
         }
         .fc-label {
           font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
-          text-transform: uppercase; color: #525252; margin-bottom: 8px;
+          text-transform: uppercase; color: var(--text-sub); margin-bottom: 8px;
           display: block;
         }
         .fc-input {
           width: 100%; padding: 12px 16px;
-          background: #FFFBEB;
-          border: 2px solid #1a1a1a;
+          background: var(--bg-surface);
+          border: var(--border-thin);
           border-radius: 8px;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 13px; color: #1a1a1a;
+          font-size: 13px; color: var(--text-main);
           outline: none; transition: all 0.15s;
           box-sizing: border-box;
         }
         .fc-input:focus {
-          border-color: #1a1a1a;
-          box-shadow: 3px 3px 0px #1a1a1a;
-          background: #FFFFFF;
+          border-color: var(--border-color);
+          box-shadow: 3px 3px 0px var(--border-color);
+          background: var(--bg-main);
         }
         .fc-folder-btn {
           display: flex; align-items: center; gap: 10px;
           width: 100%; padding: 13px 16px;
-          background: #FDF2F8;
-          border: 2px dashed #1a1a1a;
+          background: var(--bg-surface);
+          border: 2px dashed var(--border-color);
           border-radius: 8px; cursor: pointer;
           font-family: 'DM Sans', sans-serif;
           font-size: 13.5px; font-weight: 700;
-          color: #1a1a1a; transition: all 0.15s;
+          color: var(--text-main); transition: all 0.15s;
           text-align: left;
         }
         .fc-folder-btn:hover:not(:disabled) {
-          background: #FFD93D;
+          background: var(--brutal-yellow);
           border-style: solid;
           box-shadow: 3px 3px 0px #1a1a1a;
         }

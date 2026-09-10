@@ -291,7 +291,7 @@ export default function CrushDrop() {
         </div>
 
         {/* Status Bar */}
-        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: isConnected ? "var(--brutal-mint)" : "var(--bg-main)", transition: "all 0.3s", border: "3px solid #000" }}>
+        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: isConnected ? "var(--brutal-mint)" : "var(--bg-main)", transition: "all 0.3s", border: "var(--border)" }}>
           <div style={{ fontWeight: 800, fontSize: "1.05rem" }}>{connStatus}</div>
           {myId && <div style={{ fontWeight: 700, fontSize: "0.85rem", opacity: 0.7 }}>My ID: {myId}</div>}
         </div>
@@ -306,7 +306,7 @@ export default function CrushDrop() {
             </p>
             <button
               className="btn-reset"
-              style={{ padding: "10px 20px", background: "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "2px solid #000" }}
+              style={{ padding: "10px 20px", background: "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }}
               onClick={() => {
                 if (peer && targetPeerId) {
                   setConnStatus(`Retrying connection to ${targetPeerId}...`);
@@ -325,7 +325,7 @@ export default function CrushDrop() {
             <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "16px" }}>Share this link or scan QR to connect</h3>
             
             {qrCodeUrl && (
-              <img src={qrCodeUrl} alt="QR Code" style={{ border: "4px solid #000", borderRadius: "12px", marginBottom: "20px" }} />
+              <img src={qrCodeUrl} alt="QR Code" style={{ border: "var(--border)", borderRadius: "12px", marginBottom: "20px", width: "100%", maxWidth: "220px" }} />
             )}
             
             <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
@@ -333,9 +333,9 @@ export default function CrushDrop() {
                 type="text" 
                 readOnly 
                 value={shareLink} 
-                style={{ width: "100%", maxWidth: "400px", padding: "12px", border: "3px solid #000", borderRadius: "8px", fontWeight: 700 }}
+                style={{ width: "100%", maxWidth: "400px", padding: "12px", border: "var(--border)", borderRadius: "8px", fontWeight: 700, background: "var(--bg-surface)", color: "var(--text-main)" }}
               />
-              <button className="btn-reset" style={{ padding: "0 20px", background: copied ? "var(--brutal-mint)" : "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "3px solid #000" }} onClick={copyLink}>
+              <button className="btn-reset" style={{ padding: "0 20px", background: copied ? "var(--brutal-mint)" : "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }} onClick={copyLink}>
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
@@ -379,7 +379,7 @@ export default function CrushDrop() {
                   <span>{formatBytes(fileToSend.size)}</span>
                 </div>
                 
-                <div style={{ width: "100%", height: "16px", background: "#fff", border: "2px solid #000", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
+                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
                   <div style={{ width: `${transferProgress}%`, height: "100%", background: "var(--brutal-yellow)", transition: "width 0.1s" }}></div>
                 </div>
 
@@ -389,7 +389,7 @@ export default function CrushDrop() {
                 </div>
 
                 {transferProgress === 0 && (
-                  <button className="btn-compress" style={{ width: "100%", marginTop: "16px", padding: "12px", background: "#000", color: "#fff" }} onClick={sendFile}>
+                  <button className="btn-compress" style={{ width: "100%", marginTop: "16px", padding: "12px", background: "var(--text-main)", color: "var(--bg-main)" }} onClick={sendFile}>
                     🚀 Send Now
                   </button>
                 )}
@@ -404,7 +404,7 @@ export default function CrushDrop() {
                   <span>{formatBytes(incomingFile.size)}</span>
                 </div>
                 
-                <div style={{ width: "100%", height: "16px", background: "#fff", border: "2px solid #000", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
+                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
                   <div style={{ width: `${incomingFile.progress}%`, height: "100%", background: "var(--brutal-mint)", transition: "width 0.1s" }}></div>
                 </div>
 
@@ -418,7 +418,7 @@ export default function CrushDrop() {
                     href={downloadReadyUrl}
                     download={downloadReadyName}
                     className="btn-compress"
-                    style={{ display: "block", textAlign: "center", width: "100%", marginTop: "16px", padding: "12px", background: "#000", color: "#fff", textDecoration: "none" }}
+                    style={{ display: "block", textAlign: "center", width: "100%", marginTop: "16px", padding: "12px", background: "var(--text-main)", color: "var(--bg-main)", textDecoration: "none" }}
                   >
                     💾 Save Received File
                   </a>
