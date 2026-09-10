@@ -134,6 +134,46 @@ body::before {
   display: none;
 }
 
+/* ── Premium Global Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-surface);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-sub);
+}
+
+/* ── A11y Focus Outlines ── */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 3px solid var(--brutal-yellow);
+  outline-offset: 3px;
+}
+[data-theme="dark"] button:focus-visible, [data-theme="dark"] a:focus-visible, [data-theme="dark"] input:focus-visible {
+  outline: 3px solid var(--brutal-mint);
+}
+
+/* ── Tactile Button Click States (Micro-interactions) ── */
+.tool-card:active, 
+.back-btn:active, 
+.drop-btn:active, 
+.drop-btn-drive:active, 
+.btn-download:active, 
+.btn-drive-upload:active, 
+.btn-reset:active,
+.fc-btn-save:active,
+.fc-btn-cancel:active {
+  transform: scale(0.97) !important;
+  box-shadow: 1px 1px 0px var(--border-color) !important;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
