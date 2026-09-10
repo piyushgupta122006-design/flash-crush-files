@@ -1381,6 +1381,25 @@ body::before {
   border: 2px solid #e5e5e5;
 }
 
+/* Mobile: Compress the tool-page-bar, buttons, and title for narrow screens */
+@media (max-width: 768px) {
+  .tool-page-bar {
+    padding: 7px 12px;
+    margin-bottom: 16px;
+  }
+  .back-btn {
+    padding: 4px 10px;
+    font-size: 0.76rem;
+  }
+  .tool-page-title {
+    font-size: 0.85rem;
+  }
+  .tool-page-meta {
+    font-size: 0.68rem;
+    padding: 3px 7px;
+  }
+}
+
 /* ── Compressor Wrap & Header ── */
 .compressor-wrap {
   width: 100%;
