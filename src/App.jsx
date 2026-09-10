@@ -245,7 +245,7 @@ export default function App() {
           background: "var(--brutal-yellow)", color: "var(--text-main)",
           fontSize: "12px", fontWeight: 700, padding: "6px 16px", textAlign: "center",
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100,
-          borderBottom: "3px solid #1a1a1a"
+          borderBottom: "var(--border)"
         }}>
           <span>⚡ Offline Mode Active</span>
           <span style={{ opacity: 0.8 }}>— 100% of tools work locally in your browser without internet.</span>

@@ -980,7 +980,7 @@ export default function HomePage() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: "20px" }}>
-          <div style={{ background: "#F0F9FF", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
+          <div style={{ background: "var(--bg-card)", border: "var(--border)", borderRadius: "16px", padding: "28px", boxShadow: "var(--shadow)" }}>
             <div style={{ marginBottom: "16px" }}><IconLock /></div>
             <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>100% Client-Side Privacy</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
@@ -988,7 +988,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div style={{ background: "#FFFBEB", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
+          <div style={{ background: "var(--bg-card)", border: "var(--border)", borderRadius: "16px", padding: "28px", boxShadow: "var(--shadow)" }}>
             <div style={{ marginBottom: "16px" }}><IconBolt /></div>
             <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Blazing Fast Engine</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
@@ -996,7 +996,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div style={{ background: "#FAF5FF", border: "3px solid #1a1a1a", borderRadius: "16px", padding: "28px", boxShadow: "5px 5px 0px #1a1a1a" }}>
+          <div style={{ background: "var(--bg-card)", border: "var(--border)", borderRadius: "16px", padding: "28px", boxShadow: "var(--shadow)" }}>
             <div style={{ marginBottom: "16px" }}><IconCloud /></div>
             <h4 style={{ color: "var(--text-main)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "8px" }}>Google Drive Cloud Sync</h4>
             <p style={{ color: "var(--text-sub)", fontSize: "0.88rem", lineHeight: 1.6 }}>
