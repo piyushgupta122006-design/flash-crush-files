@@ -2127,11 +2127,11 @@ body::before {
     display: none;
   }
 
-  /* Hide logo text on extremely narrow screens to prevent overlap with right controls */
-  @media (max-width: 400px) {
-    .nav-logo-text {
-      display: none;
-    }
+  /* Surgical Fix: Hide redundant desktop buttons on mobile top bar (they are in the drawer) */
+  .nav-install-btn,
+  .nav-history-btn,
+  .nav-theme-wrap {
+    display: none;
   }
 
   /* Hero */
