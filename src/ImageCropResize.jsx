@@ -726,10 +726,11 @@ export default function ImageCropResize({ auth }) {
                   }}>
                     <canvas
                       ref={canvasRef}
-                      onMouseDown={handleCanvasMouseDown}
-                      onMouseMove={handleCanvasMouseMove}
-                      onMouseUp={handleCanvasMouseUp}
-                      style={{ maxWidth: "100%", maxHeight: "420px", objectFit: "contain", borderRadius: "4px", boxShadow: "0 5px 25px rgba(0,0,0,0.8)" }}
+                      onPointerDown={handleCanvasMouseDown}
+                      onPointerMove={handleCanvasMouseMove}
+                      onPointerUp={handleCanvasMouseUp}
+                      onPointerLeave={handleCanvasMouseUp}
+                      style={{ touchAction: "none", maxWidth: "100%", maxHeight: "420px", objectFit: "contain", borderRadius: "4px", boxShadow: "0 5px 25px rgba(0,0,0,0.8)" }}
                     />
                   </div>
 
