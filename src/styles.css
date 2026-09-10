@@ -12,9 +12,9 @@
 }
 
 :root {
-  /* Core Backgrounds */
-  --bg-void:        #FFFBEB;
-  --bg-surface:     #FEF3C7;
+  /* Core Backgrounds — Premium Slate White */
+  --bg-void:        #F8FAFC;
+  --bg-surface:     #F1F5F9;
   --bg-card:        #FFFFFF;
   --bg-card-hover:  #FFFFFF;
   --bg-card-solid:  #FFFFFF;
@@ -30,19 +30,19 @@
   --brutal-lime:    #BEF264;
 
   /* Typography Colors */
-  --text-main:      #1a1a1a;
-  --text-sub:       #525252;
-  --text-muted:     #737373;
-  --text-dim:       #a3a3a3;
+  --text-main:      #0F172A;
+  --text-sub:       #475569;
+  --text-muted:     #64748B;
+  --text-dim:       #94A3B8;
 
-  /* Borders & Shadows */
-  --border-color:   #1a1a1a;
-  --border:         3px solid #1a1a1a;
-  --border-thin:    2px solid #1a1a1a;
-  --shadow:         5px 5px 0px #1a1a1a;
-  --shadow-sm:      3px 3px 0px #1a1a1a;
-  --shadow-lg:      8px 8px 0px #1a1a1a;
-  --shadow-hover:   8px 8px 0px #1a1a1a;
+  /* Borders & Shadows — Softer Slate Black */
+  --border-color:   #0F172A;
+  --border:         3px solid #0F172A;
+  --border-thin:    2px solid #0F172A;
+  --shadow:         5px 5px 0px #0F172A;
+  --shadow-sm:      3px 3px 0px #0F172A;
+  --shadow-lg:      8px 8px 0px #0F172A;
+  --shadow-hover:   8px 8px 0px #0F172A;
 
   /* Radii — slightly rounded, not pills */
   --radius-sm:      8px;
@@ -65,12 +65,12 @@
    DARK NEO-BRUTALISM THEME TOKENS
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="dark"] {
-  /* Core Dark Backgrounds */
-  --bg-void:        #121214;
-  --bg-surface:     #1e1e24;
-  --bg-card:        #18181b;
-  --bg-card-hover:  #23232a;
-  --bg-card-solid:  #18181b;
+  /* Core Dark Backgrounds — Deep Slate */
+  --bg-void:        #0F172A;
+  --bg-surface:     #0B1121;
+  --bg-card:        #1E293B;
+  --bg-card-hover:  #263347;
+  --bg-card-solid:  #1E293B;
 
   /* Brutalist Accent Palette - Enhanced Vibrancy in Dark Mode */
   --brutal-pink:    #FB7185;
@@ -83,19 +83,19 @@
   --brutal-lime:    #A3E635;
 
   /* Typography Colors */
-  --text-main:      #F4F4F5;
-  --text-sub:       #A1A1AA;
-  --text-muted:     #71717A;
-  --text-dim:       #52525B;
+  --text-main:      #F1F5F9;
+  --text-sub:       #94A3B8;
+  --text-muted:     #64748B;
+  --text-dim:       #475569;
 
-  /* Borders & Shadows */
-  --border-color:   #F4F4F5;
-  --border:         3px solid #F4F4F5;
-  --border-thin:    2px solid #F4F4F5;
-  --shadow:         5px 5px 0px #000000;
-  --shadow-sm:      3px 3px 0px #000000;
-  --shadow-lg:      8px 8px 0px #000000;
-  --shadow-hover:   8px 8px 0px #000000;
+  /* Borders & Shadows — Slate 600, deep pitch shadow */
+  --border-color:   #475569;
+  --border:         3px solid #475569;
+  --border-thin:    2px solid #475569;
+  --shadow:         5px 5px 0px #020617;
+  --shadow-sm:      3px 3px 0px #020617;
+  --shadow-lg:      8px 8px 0px #020617;
+  --shadow-hover:   8px 8px 0px #020617;
 
   /* Legacy compat in Dark Mode */
   --cyan-neon:      #22D3EE;
