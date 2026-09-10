@@ -1384,19 +1384,25 @@ body::before {
 /* Mobile: Compress the tool-page-bar, buttons, and title for narrow screens */
 @media (max-width: 768px) {
   .tool-page-bar {
-    padding: 7px 12px;
+    padding: 6px 8px;
+    gap: 6px;
     margin-bottom: 16px;
   }
   .back-btn {
     padding: 4px 10px;
     font-size: 0.76rem;
+    white-space: nowrap;
   }
   .tool-page-title {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
+    flex: 1;
+    text-align: center;
+    line-height: 1.15;
   }
   .tool-page-meta {
-    font-size: 0.68rem;
-    padding: 3px 7px;
+    font-size: 0.6rem;
+    padding: 3px 5px;
+    white-space: nowrap;
   }
 }
 
