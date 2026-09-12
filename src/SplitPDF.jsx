@@ -434,7 +434,7 @@ export default function SplitPDF({ auth }) {
                 style={{
                   width: "100%", padding: "12px 16px", boxSizing: "border-box",
                   background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                  borderRadius: "12px", fontFamily: "'JetBrains Mono', monospace",
+                  borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "14px", color: "#fff", outline: "none",
                 }}
                 onFocus={(e) => { e.target.style.borderColor = "#8b5cf6"; e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.3)"; }}
@@ -461,7 +461,7 @@ export default function SplitPDF({ auth }) {
                   style={{
                     width: "80px", padding: "12px 16px", textAlign: "center",
                     background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: "12px", fontFamily: "'JetBrains Mono', monospace",
+                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "14px", color: "#fff", outline: "none",
                   }}
                 />
@@ -482,11 +482,11 @@ export default function SplitPDF({ auth }) {
                 <div style={{ display: "flex", gap: "8px" }}>
                   <button onClick={selectAll} style={{
                     padding: "4px 10px", background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)",
-                    borderRadius: "8px", color: "#c084fc", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                    borderRadius: 'var(--radius-full)', color: "#c084fc", fontSize: "11px", fontWeight: 700, cursor: "pointer"
                   }}>Select All</button>
                   <button onClick={deselectAll} style={{
                     padding: "4px 10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "8px", color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                    borderRadius: 'var(--radius-full)', color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
                   }}>Clear</button>
                 </div>
               </div>
@@ -509,7 +509,7 @@ export default function SplitPDF({ auth }) {
                       style={{
                         position: "relative", cursor: "pointer",
                         border: isSelected ? "2px solid #8b5cf6" : "2px solid transparent",
-                        borderRadius: "8px", overflow: "hidden",
+                        borderRadius: 'var(--radius-full)', overflow: "hidden",
                         opacity: isSelected ? 1 : 0.45,
                         transition: "all 0.15s ease",
                         background: "rgba(0,0,0,0.3)",
@@ -522,7 +522,7 @@ export default function SplitPDF({ auth }) {
                         background: isSelected ? "rgba(139,92,246,0.9)" : "rgba(0,0,0,0.7)",
                         color: "#fff", fontSize: "9px", fontWeight: 800,
                         fontFamily: "'JetBrains Mono', monospace",
-                        padding: "1px 6px", borderRadius: "4px"
+                        padding: "1px 6px", borderRadius: 'var(--radius-full)'
                       }}>{t.pageNum}</span>
                       {isSelected && (
                         <span style={{

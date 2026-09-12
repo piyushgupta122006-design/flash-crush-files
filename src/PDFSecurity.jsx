@@ -422,7 +422,7 @@ export default function PDFSecurity({ auth }) {
                   style={{
                     width: "100%", padding: "14px 50px 14px 16px", boxSizing: "border-box",
                     background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: "12px", fontFamily: "'JetBrains Mono', monospace",
+                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "14px", color: "#fff", outline: "none",
                   }}
                   onFocus={(e) => { e.target.style.borderColor = "#38bdf8"; e.target.style.boxShadow = "0 0 20px rgba(56,189,248,0.3)"; }}
@@ -452,7 +452,7 @@ export default function PDFSecurity({ auth }) {
                   style={{
                     width: "100%", padding: "14px 50px 14px 16px", boxSizing: "border-box",
                     background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: "12px", fontFamily: "'JetBrains Mono', monospace",
+                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "14px", color: "#fff", outline: "none",
                   }}
                   onFocus={(e) => { e.target.style.borderColor = "#8b5cf6"; e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.3)"; }}
@@ -476,7 +476,7 @@ export default function PDFSecurity({ auth }) {
                   width: "100%", padding: "14px 16px", boxSizing: "border-box",
                   background: "rgba(255,255,255,0.05)",
                   border: `1.5px solid ${confirmPassword && confirmPassword !== password ? "rgba(244,63,94,0.5)" : "rgba(255,255,255,0.12)"}`,
-                  borderRadius: "12px", fontFamily: "'JetBrains Mono', monospace",
+                  borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                   fontSize: "14px", color: "#fff", outline: "none",
                 }}
                 onKeyDown={(e) => { if (e.key === "Enter" && canExecute) protectPDF(); }}
@@ -498,7 +498,7 @@ export default function PDFSecurity({ auth }) {
                   <div style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
                     {[1, 2, 3, 4].map(level => (
                       <div key={level} style={{
-                        flex: 1, height: "4px", borderRadius: "2px",
+                        flex: 1, height: "4px", borderRadius: 'var(--radius-full)',
                         background: password.length >= level * 3
                           ? level <= 1 ? "#f87171" : level <= 2 ? "#fbbf24" : level <= 3 ? "#34d399" : "#06b6d4"
                           : "rgba(255,255,255,0.1)",

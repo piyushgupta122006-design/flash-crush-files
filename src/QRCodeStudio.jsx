@@ -440,7 +440,7 @@ export default function QRCodeStudio({ auth }) {
               {/* Dynamic Content Input Box */}
               <div style={{
                 padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px"
+                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px" }}>
                   2. Enter Content ({qrType.toUpperCase()})
@@ -457,7 +457,7 @@ export default function QRCodeStudio({ auth }) {
                       placeholder="https://yourwebsite.com"
                       style={{
                         width: "100%", padding: "10px 14px", background: "#0f172a", border: "1.5px solid rgba(56,189,248,0.3)",
-                        borderRadius: "8px", color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", outline: "none", boxSizing: "border-box"
+                        borderRadius: 'var(--radius-full)', color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", outline: "none", boxSizing: "border-box"
                       }}
                     />
                   </div>
@@ -473,7 +473,7 @@ export default function QRCodeStudio({ auth }) {
                         value={wifiSsid}
                         onChange={(e) => setWifiSsid(e.target.value)}
                         placeholder="Home / Office Wi-Fi"
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }}
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
                       />
                     </div>
                     <div>
@@ -483,14 +483,14 @@ export default function QRCodeStudio({ auth }) {
                         value={wifiPass}
                         onChange={(e) => setWifiPass(e.target.value)}
                         placeholder="Wi-Fi Password"
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }}
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
                       />
                     </div>
                     <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                       <select
                         value={wifiAuth}
                         onChange={(e) => setWifiAuth(e.target.value)}
-                        style={{ padding: "6px 10px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none" }}
+                        style={{ padding: "6px 10px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }}
                       >
                         <option value="WPA">WPA / WPA2</option>
                         <option value="WEP">WEP</option>
@@ -510,22 +510,22 @@ export default function QRCodeStudio({ auth }) {
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Full Name</label>
                       <input type="text" placeholder="Piyush Gupta" value={vcardName} onChange={(e) => setVcardName(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Phone Number</label>
                       <input type="tel" placeholder="+91 9876543210" value={vcardPhone} onChange={(e) => setVcardPhone(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Email</label>
                       <input type="email" placeholder="hello@company.com" value={vcardEmail} onChange={(e) => setVcardEmail(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Company / Org</label>
                       <input type="text" placeholder="Design Studio" value={vcardOrg} onChange={(e) => setVcardOrg(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                   </div>
                 )}
@@ -536,12 +536,12 @@ export default function QRCodeStudio({ auth }) {
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Phone Number (with country code)</label>
                       <input type="tel" placeholder="+919876543210" value={waPhone} onChange={(e) => setWaPhone(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Pre-filled Message (Optional)</label>
                       <input type="text" placeholder="Hi, I would like to inquire about..." value={waMsg} onChange={(e) => setWaMsg(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                   </div>
                 )}
@@ -552,12 +552,12 @@ export default function QRCodeStudio({ auth }) {
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>UPI ID / VPA</label>
                       <input type="text" placeholder="username@okhdfcbank" value={upiVpa} onChange={(e) => setUpiVpa(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", color: "#94a3b8" }}>Amount (Optional ₹)</label>
                       <input type="number" placeholder="500" value={upiAmount} onChange={(e) => setUpiAmount(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
                     </div>
                   </div>
                 )}
@@ -569,7 +569,7 @@ export default function QRCodeStudio({ auth }) {
                     placeholder="Enter any text, note, crypto wallet address..."
                     value={plainText}
                     onChange={(e) => setPlainText(e.target.value)}
-                    style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }}
+                    style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
                   />
                 )}
               </div>
@@ -577,7 +577,7 @@ export default function QRCodeStudio({ auth }) {
               {/* 3. Color Themes & Gradients */}
               <div style={{
                 padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px"
+                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 800, color: "#a855f7", textTransform: "uppercase", marginBottom: "10px" }}>
                   3. Color Themes & Gradients
@@ -593,7 +593,7 @@ export default function QRCodeStudio({ auth }) {
                         padding: "8px 6px",
                         background: selectedTheme === th.id ? "rgba(168,85,247,0.25)" : "rgba(255,255,255,0.04)",
                         border: selectedTheme === th.id ? "1.5px solid #a855f7" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "8px", color: selectedTheme === th.id ? "#c084fc" : "#cbd5e1",
+                        borderRadius: 'var(--radius-full)', color: selectedTheme === th.id ? "#c084fc" : "#cbd5e1",
                         fontSize: "11px", fontWeight: 700, cursor: "pointer",
                       }}
                     >
@@ -622,7 +622,7 @@ export default function QRCodeStudio({ auth }) {
               {/* 4. Shapes & Center Logo */}
               <div style={{
                 padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px"
+                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
               }}>
                 <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "10px" }}>
                   4. QR Dot Shapes & Center Logo
@@ -645,7 +645,7 @@ export default function QRCodeStudio({ auth }) {
                         padding: "6px", fontSize: "10px", fontWeight: 700,
                         background: dotShape === s.id ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.04)",
                         border: dotShape === s.id ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "6px", color: dotShape === s.id ? "#34d399" : "#94a3b8", cursor: "pointer"
+                        borderRadius: 'var(--radius-full)', color: dotShape === s.id ? "#34d399" : "#94a3b8", cursor: "pointer"
                       }}
                     >
                       {s.label}
@@ -672,7 +672,7 @@ export default function QRCodeStudio({ auth }) {
                         padding: "5px 10px", fontSize: "11px", fontWeight: 700,
                         background: logoType === lg.id ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
                         border: logoType === lg.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "6px", color: logoType === lg.id ? "#38bdf8" : "#94a3b8", cursor: "pointer"
+                        borderRadius: 'var(--radius-full)', color: logoType === lg.id ? "#38bdf8" : "#94a3b8", cursor: "pointer"
                       }}
                     >
                       {lg.label}
@@ -685,7 +685,7 @@ export default function QRCodeStudio({ auth }) {
                       padding: "5px 10px", fontSize: "11px", fontWeight: 700,
                       background: logoType === "custom" ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
                       border: logoType === "custom" ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "6px", color: logoType === "custom" ? "#38bdf8" : "#94a3b8", cursor: "pointer"
+                      borderRadius: 'var(--radius-full)', color: logoType === "custom" ? "#38bdf8" : "#94a3b8", cursor: "pointer"
                     }}
                   >
                     <input ref={logoInputRef} type="file" accept="image/*" hidden onChange={handleLogoUpload} />
@@ -704,7 +704,7 @@ export default function QRCodeStudio({ auth }) {
                 <select
                   value={resolution}
                   onChange={(e) => setResolution(Number(e.target.value))}
-                  style={{ padding: "4px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
+                  style={{ padding: "4px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
                 >
                   <option value={512}>512 × 512 px</option>
                   <option value={1024}>1024 × 1024 px (HD)</option>
@@ -715,12 +715,12 @@ export default function QRCodeStudio({ auth }) {
               {/* Canvas Container */}
               <div style={{
                 width: "100%", minHeight: "360px", display: "flex", alignItems: "center", justifyContent: "center",
-                background: "#080c16", borderRadius: "16px", border: "1.5px solid rgba(139, 92, 246, 0.35)",
+                background: "#080c16", borderRadius: 'var(--radius-full)', border: "1.5px solid rgba(139, 92, 246, 0.35)",
                 boxShadow: "0 15px 35px rgba(0,0,0,0.6)", padding: "20px", boxSizing: "border-box"
               }}>
                 <canvas
                   ref={canvasRef}
-                  style={{ maxWidth: "100%", maxHeight: "340px", objectFit: "contain", borderRadius: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.8)" }}
+                  style={{ maxWidth: "100%", maxHeight: "340px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 10px 30px rgba(0,0,0,0.8)" }}
                 />
               </div>
 
@@ -731,7 +731,7 @@ export default function QRCodeStudio({ auth }) {
                   onClick={copyToClipboard}
                   style={{
                     flex: 1, padding: "10px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "10px", color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
+                    borderRadius: 'var(--radius-full)', color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
                   }}
                 >
                   {copied ? "✅ Copied to Clipboard!" : "📋 Copy Image"}
@@ -741,7 +741,7 @@ export default function QRCodeStudio({ auth }) {
                   onClick={downloadSVG}
                   style={{
                     flex: 1, padding: "10px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "10px", color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
+                    borderRadius: 'var(--radius-full)', color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
                   }}
                 >
                   📐 Download SVG (Vector)

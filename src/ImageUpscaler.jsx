@@ -61,10 +61,10 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
           <span>🔍</span> Interactive Before / After Comparison
         </h3>
         <div style={{ display: "flex", gap: "10px", fontSize: "0.85rem", fontWeight: 700 }}>
-          <span style={{ background: "var(--brutal-yellow)", padding: "4px 8px", borderRadius: "6px", border: "2px solid #000" }}>
+          <span style={{ background: "var(--m3-yellow)", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
             Original: {origDims.w}×{origDims.h}
           </span>
-          <span style={{ background: "var(--brutal-mint)", padding: "4px 8px", borderRadius: "6px", border: "2px solid #000" }}>
+          <span style={{ background: "var(--m3-mint)", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
             Upscaled: {newDims.w}×{newDims.h}
           </span>
         </div>
@@ -79,8 +79,8 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
           maxHeight: "520px",
           minHeight: "260px",
           overflow: "hidden",
-          borderRadius: "12px",
-          border: "3px solid #1a1a1a",
+          borderRadius: 'var(--radius-full)',
+          border: 'none',
           boxShadow: "6px 6px 0px #1a1a1a",
           cursor: "col-resize",
           userSelect: "none",
@@ -139,11 +139,11 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
           background: "rgba(0,0,0,0.85)",
           color: "#fff",
           padding: "4px 10px",
-          borderRadius: "6px",
+          borderRadius: 'var(--radius-full)',
           fontSize: "12px",
           fontWeight: 800,
           letterSpacing: "0.05em",
-          border: "2px solid #fff",
+          border: 'none',
           pointerEvents: "none"
         }}>
           ORIGINAL
@@ -153,14 +153,14 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
           position: "absolute",
           top: "14px",
           right: "14px",
-          background: "var(--brutal-yellow)",
+          background: "var(--m3-yellow)",
           color: "#000",
           padding: "4px 10px",
-          borderRadius: "6px",
+          borderRadius: 'var(--radius-full)',
           fontSize: "12px",
           fontWeight: 800,
           letterSpacing: "0.05em",
-          border: "2px solid #000",
+          border: 'none',
           pointerEvents: "none"
         }}>
           ✨ AI UPSCALED
@@ -191,8 +191,8 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
               width: "38px",
               height: "38px",
               borderRadius: "50%",
-              background: "var(--brutal-pink)",
-              border: "3px solid #1a1a1a",
+              background: "var(--m3-pink)",
+              border: 'none',
               boxShadow: "2px 2px 0px #000",
               display: "flex",
               alignItems: "center",
@@ -403,7 +403,7 @@ export default function ImageUpscaler({ auth }) {
         {!file && (
           <div className="comp-header">
             <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>✨</div>
+              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>✨</div>
               <h1 className="comp-title">AI Image Upscaler</h1>
             </div>
             <p className="comp-sub">
@@ -449,7 +449,7 @@ export default function ImageUpscaler({ auth }) {
                   <img
                     src={previewSrc}
                     alt="Preview"
-                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "8px", border: "2px solid #000" }}
+                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
                   />
                   <div>
                     <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>{file.name}</div>
@@ -466,7 +466,7 @@ export default function ImageUpscaler({ auth }) {
               </div>
 
               {isOversized && (
-                <div style={{ marginTop: "14px", padding: "10px 14px", background: "var(--brutal-yellow)", border: "2px solid #000", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 700 }}>
+                <div style={{ marginTop: "14px", padding: "10px 14px", background: "var(--m3-yellow)", border: 'none', borderRadius: 'var(--radius-full)', fontSize: "0.85rem", fontWeight: 700 }}>
                   ⚠️ Large input resolution ({origDims.w}×{origDims.h}px). Tiling (patch size 64) is enabled to ensure smooth in-browser WebGL processing without GPU memory overflow.
                 </div>
               )}
@@ -491,9 +491,9 @@ export default function ImageUpscaler({ auth }) {
                       className={`btn-reset ${scaleFactor === 2 ? "active" : ""}`}
                       style={{
                         padding: "12px",
-                        background: scaleFactor === 2 ? "var(--brutal-sky)" : "var(--bg-main)",
+                        background: scaleFactor === 2 ? "var(--m3-sky)" : "var(--bg-main)",
                         fontWeight: 800,
-                        border: "2px solid #000"
+                        border: 'none'
                       }}
                       onClick={() => setScaleFactor(2)}
                       disabled={processing}
@@ -506,10 +506,10 @@ export default function ImageUpscaler({ auth }) {
                       className={`btn-reset ${scaleFactor === 4 ? "active" : ""}`}
                       style={{
                         padding: "12px",
-                        background: scaleFactor === 4 ? "var(--brutal-pink)" : "var(--bg-main)",
+                        background: scaleFactor === 4 ? "var(--m3-pink)" : "var(--bg-main)",
                         color: scaleFactor === 4 ? "#fff" : "inherit",
                         fontWeight: 800,
-                        border: "2px solid #000"
+                        border: 'none'
                       }}
                       onClick={() => setScaleFactor(4)}
                       disabled={processing}
@@ -530,9 +530,9 @@ export default function ImageUpscaler({ auth }) {
                       className={`btn-reset ${patchSize === 64 ? "active" : ""}`}
                       style={{
                         padding: "12px",
-                        background: patchSize === 64 ? "var(--brutal-mint)" : "var(--bg-main)",
+                        background: patchSize === 64 ? "var(--m3-mint)" : "var(--bg-main)",
                         fontWeight: 800,
-                        border: "2px solid #000"
+                        border: 'none'
                       }}
                       onClick={() => setPatchSize(64)}
                       disabled={processing}
@@ -545,9 +545,9 @@ export default function ImageUpscaler({ auth }) {
                       className={`btn-reset ${patchSize === 128 ? "active" : ""}`}
                       style={{
                         padding: "12px",
-                        background: patchSize === 128 ? "var(--brutal-yellow)" : "var(--bg-main)",
+                        background: patchSize === 128 ? "var(--m3-yellow)" : "var(--bg-main)",
                         fontWeight: 800,
-                        border: "2px solid #000"
+                        border: 'none'
                       }}
                       onClick={() => setPatchSize(128)}
                       disabled={processing}
@@ -566,12 +566,12 @@ export default function ImageUpscaler({ auth }) {
                     <span>{statusMsg}</span>
                     <span>{progress}%</span>
                   </div>
-                  <div style={{ width: "100%", height: "16px", background: "#e5e7eb", borderRadius: "8px", border: "2px solid #000", overflow: "hidden" }}>
+                  <div style={{ width: "100%", height: "16px", background: "#e5e7eb", borderRadius: 'var(--radius-full)', border: 'none', overflow: "hidden" }}>
                     <div
                       style={{
                         width: `${progress}%`,
                         height: "100%",
-                        background: "var(--brutal-pink)",
+                        background: "var(--m3-pink)",
                         transition: "width 0.2s ease",
                       }}
                     />
@@ -613,9 +613,9 @@ export default function ImageUpscaler({ auth }) {
             className="error-banner"
             style={{
               background: "#FEE2E2",
-              border: "3px solid #1a1a1a",
+              border: 'none',
               padding: "14px",
-              borderRadius: "10px",
+              borderRadius: 'var(--radius-full)',
               color: "#B91C1C",
               fontWeight: "bold",
               marginTop: "20px",

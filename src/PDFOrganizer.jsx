@@ -389,12 +389,12 @@ export default function PDFOrganizer({ auth }) {
                 {deletedCount > 0 && (
                   <button onClick={undoAllDeletes} style={{
                     padding: "5px 12px", background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)",
-                    borderRadius: "8px", color: "#34d399", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                    borderRadius: 'var(--radius-full)', color: "#34d399", fontSize: "11px", fontWeight: 700, cursor: "pointer"
                   }}>↩ Undo All Deletes</button>
                 )}
                 <button onClick={resetAllRotations} style={{
                   padding: "5px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "8px", color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
+                  borderRadius: 'var(--radius-full)', color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
                 }}>Reset Rotations</button>
               </div>
             </div>
@@ -411,7 +411,7 @@ export default function PDFOrganizer({ auth }) {
                 gridTemplateColumns: "repeat(auto-fill, minmax(min(130px, 100%), 1fr))",
                 gap: "12px", maxHeight: "480px", overflowY: "auto", padding: "8px",
                 borderRadius: "var(--radius-md)", background: "#FFFBEB",
-                border: "2px solid #1a1a1a"
+                border: 'none'
               }}>
                 {pages.map((p, idx) => (
                   <div
@@ -423,7 +423,7 @@ export default function PDFOrganizer({ auth }) {
                     style={{
                       position: "relative",
                       border: dragOverIdx === idx ? "2px solid #FF6B9D" : p.deleted ? "2px solid #EF4444" : "2px solid #1a1a1a",
-                      borderRadius: "8px",
+                      borderRadius: 'var(--radius-full)',
                       overflow: "hidden",
                       opacity: p.deleted ? 0.4 : dragIdx === idx ? 0.5 : 1,
                       transition: "all 0.15s ease",
@@ -455,9 +455,9 @@ export default function PDFOrganizer({ auth }) {
                       position: "absolute", top: "5px", left: "5px",
                       background: p.deleted ? "#EF4444" : "#FFD93D",
                       color: p.deleted ? "#FFFFFF" : "#1a1a1a",
-                      border: "1px solid #1a1a1a",
+                      border: 'none',
                       fontSize: "10px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace",
-                      padding: "2px 6px", borderRadius: "4px",
+                      padding: "2px 6px", borderRadius: 'var(--radius-full)',
                     }}>
                       {p.deleted ? "DEL" : `#${idx + 1}`}
                     </span>
@@ -466,9 +466,9 @@ export default function PDFOrganizer({ auth }) {
                     <span style={{
                       position: "absolute", top: "5px", right: "5px",
                       background: "#FFFFFF", color: "#525252",
-                      border: "1px solid #1a1a1a",
+                      border: 'none',
                       fontSize: "9px", fontWeight: 700, fontFamily: "'JetBrains Mono', monospace",
-                      padding: "2px 5px", borderRadius: "4px",
+                      padding: "2px 5px", borderRadius: 'var(--radius-full)',
                     }}>
                       P{p.pageNum}
                     </span>
@@ -478,9 +478,9 @@ export default function PDFOrganizer({ auth }) {
                       <span style={{
                         position: "absolute", bottom: "38px", right: "5px",
                         background: "#D8B4FE", color: "#1a1a1a",
-                        border: "1px solid #1a1a1a",
+                        border: 'none',
                         fontSize: "9px", fontWeight: 800, padding: "2px 6px",
-                        borderRadius: "4px",
+                        borderRadius: 'var(--radius-full)',
                       }}>
                         {p.rotation}°
                       </span>
@@ -497,7 +497,7 @@ export default function PDFOrganizer({ auth }) {
                       <button onClick={() => movePage(idx, -1)} disabled={idx === 0 || p.deleted}
                         title="Move Left"
                         style={{
-                          width: "24px", height: "24px", borderRadius: "4px", border: "1px solid #1a1a1a",
+                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
                           background: "#F3F4F6", color: "#1a1a1a",
                           cursor: idx === 0 || p.deleted ? "not-allowed" : "pointer",
                           fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
@@ -508,7 +508,7 @@ export default function PDFOrganizer({ auth }) {
                       <button onClick={() => rotatePage(p.id, -90)} disabled={p.deleted}
                         title="Rotate Left 90°"
                         style={{
-                          width: "24px", height: "24px", borderRadius: "4px", border: "1px solid #1a1a1a",
+                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
                           background: "#D8B4FE", color: "#1a1a1a",
                           cursor: p.deleted ? "not-allowed" : "pointer",
                           fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
@@ -518,7 +518,7 @@ export default function PDFOrganizer({ auth }) {
                       <button onClick={() => rotatePage(p.id, 90)} disabled={p.deleted}
                         title="Rotate Right 90°"
                         style={{
-                          width: "24px", height: "24px", borderRadius: "4px", border: "1px solid #1a1a1a",
+                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
                           background: "#D8B4FE", color: "#1a1a1a",
                           cursor: p.deleted ? "not-allowed" : "pointer",
                           fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
@@ -528,7 +528,7 @@ export default function PDFOrganizer({ auth }) {
                       <button onClick={() => movePage(idx, 1)} disabled={idx === pages.length - 1 || p.deleted}
                         title="Move Right"
                         style={{
-                          width: "24px", height: "24px", borderRadius: "4px", border: "1px solid #1a1a1a",
+                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
                           background: "#F3F4F6", color: "#1a1a1a",
                           cursor: idx === pages.length - 1 || p.deleted ? "not-allowed" : "pointer",
                           fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
@@ -539,7 +539,7 @@ export default function PDFOrganizer({ auth }) {
                       <button onClick={() => deletePage(p.id)}
                         title={p.deleted ? "Restore Page" : "Delete Page"}
                         style={{
-                          width: "24px", height: "24px", borderRadius: "4px", border: "1px solid #1a1a1a",
+                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
                           background: p.deleted ? "#6EE7B7" : "#FEE2E2",
                           color: "#1a1a1a", cursor: "pointer",
                           fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",

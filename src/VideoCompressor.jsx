@@ -444,7 +444,7 @@ export default function VideoCompressor({ auth }) {
         {!file && (
           <div className="comp-header">
             <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>🎬</div>
+              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>🎬</div>
               <h1 className="comp-title">Video &amp; Audio Compressor</h1>
             </div>
             <p className="comp-sub">

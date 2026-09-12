@@ -208,7 +208,7 @@ function DraggableElement({ el, updateElement, removeElement }) {
         style={{
           position: "absolute", top: "-12px", right: "-12px", background: "#ff4444", color: "#fff",
           width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center",
-          justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold", border: "2px solid #000",
+          justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold", border: 'none',
           zIndex: 20
         }}
       >
@@ -221,7 +221,7 @@ function DraggableElement({ el, updateElement, removeElement }) {
         onPointerDown={handleResizeDown}
         style={{
           position: "absolute", bottom: "-8px", right: "-8px", width: "16px", height: "16px",
-          background: "#0891b2", borderRadius: "50%", cursor: "nwse-resize", border: "2px solid #000",
+          background: "#0891b2", borderRadius: "50%", cursor: "nwse-resize", border: 'none',
           zIndex: 20
         }}
       />
@@ -510,7 +510,7 @@ export default function PDFSignStudio({ auth }) {
         {!file && (
           <div className="comp-header">
             <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>✍️</div>
+              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>✍️</div>
               <h1 className="comp-title">Digital E-Sign Studio</h1>
             </div>
             <p className="comp-sub">
@@ -547,7 +547,7 @@ export default function PDFSignStudio({ auth }) {
         )}
 
         {error && (
-          <div className="error-banner" style={{ background: "#FEE2E2", border: "2px solid #1a1a1a", padding: "12px", borderRadius: "8px", color: "#B91C1C", fontWeight: "bold", marginTop: "20px" }}>
+          <div className="error-banner" style={{ background: "#FEE2E2", border: 'none', padding: "12px", borderRadius: 'var(--radius-full)', color: "#B91C1C", fontWeight: "bold", marginTop: "20px" }}>
             ⚠ {error}
           </div>
         )}
@@ -577,7 +577,7 @@ export default function PDFSignStudio({ auth }) {
               </div>
 
               <div className="comp-card" style={{ padding: "16px" }}>
-                <button className="btn-compress" style={{ width: "100%", background: "var(--brutal-sky)" }} onClick={exportPDF}>
+                <button className="btn-compress" style={{ width: "100%", background: "var(--m3-sky)" }} onClick={exportPDF}>
                   💾 Finish & Save PDF
                 </button>
               </div>
@@ -585,7 +585,7 @@ export default function PDFSignStudio({ auth }) {
             </div>
 
             {/* Right Side: PDF Viewer & Thumbnail Strip */}
-            <div className="sign-pdf-area" style={{ flex: 1, minWidth: "300px", display: "flex", flexDirection: "column", gap: "12px", background: "var(--bg-surface)", padding: "16px", borderRadius: "12px", border: "var(--border-thin)" }}>
+            <div className="sign-pdf-area" style={{ flex: 1, minWidth: "300px", display: "flex", flexDirection: "column", gap: "12px", background: "var(--bg-surface)", padding: "16px", borderRadius: 'var(--radius-full)', border: "var(--border-thin)" }}>
               
               {/* Thumbnails */}
               <div style={{ display: "flex", gap: "10px", overflowX: "auto", paddingBottom: "10px", borderBottom: "2px solid var(--border-color)" }}>
@@ -594,8 +594,8 @@ export default function PDFSignStudio({ auth }) {
                        onClick={() => setSelectedPage(p.pageNum)}
                        style={{ 
                          width: "60px", height: "80px", flexShrink: 0, cursor: "pointer", 
-                         border: selectedPage === p.pageNum ? "3px solid var(--brutal-sky)" : "2px solid var(--border-color)",
-                         borderRadius: "4px", overflow: "hidden", position: "relative",
+                         border: selectedPage === p.pageNum ? "3px solid var(--m3-sky)" : "2px solid var(--border-color)",
+                         borderRadius: 'var(--radius-full)', overflow: "hidden", position: "relative",
                          opacity: selectedPage === p.pageNum ? 1 : 0.6
                        }}>
                     <img src={p.dataUrl} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
@@ -605,8 +605,8 @@ export default function PDFSignStudio({ auth }) {
               </div>
 
               {/* Active Page Canvas Area */}
-              <div style={{ flex: 1, display: "flex", justifyContent: "center", overflow: "auto", background: "var(--bg-main)", padding: "20px", borderRadius: "8px" }}>
-                <div style={{ position: "relative", boxShadow: "var(--shadow-lg)", border: "1px solid #ccc", background: "#fff", alignSelf: "flex-start" }}>
+              <div style={{ flex: 1, display: "flex", justifyContent: "center", overflow: "auto", background: "var(--bg-main)", padding: "20px", borderRadius: 'var(--radius-full)' }}>
+                <div style={{ position: "relative", boxShadow: "var(--shadow-lg)", border: 'none', background: "#fff", alignSelf: "flex-start" }}>
                   {pdfPages.find(p => p.pageNum === selectedPage) && (
                     <div id={`pdf-page-${selectedPage}`} style={{ position: "relative", width: "100%", maxWidth: "800px" }}>
                       <img 
@@ -640,9 +640,9 @@ export default function PDFSignStudio({ auth }) {
 
               {/* Tabs */}
               <div style={{ display: "flex", gap: "8px", marginBottom: "16px", borderBottom: "2px solid var(--border-color)", paddingBottom: "8px" }}>
-                <button className={`btn-reset ${signTab === "draw" ? "active" : ""}`} style={{ background: signTab === "draw" ? "var(--brutal-yellow)" : "", padding: "6px 16px", color: signTab === "draw" ? "#000" : "" }} onClick={() => setSignTab("draw")}>✍️ Draw</button>
-                <button className={`btn-reset ${signTab === "type" ? "active" : ""}`} style={{ background: signTab === "type" ? "var(--brutal-sky)" : "", padding: "6px 16px", color: signTab === "type" ? "#000" : "" }} onClick={() => setSignTab("type")}>⌨️ Type</button>
-                <button className={`btn-reset ${signTab === "upload" ? "active" : ""}`} style={{ background: signTab === "upload" ? "var(--brutal-mint)" : "", padding: "6px 16px", color: signTab === "upload" ? "#000" : "" }} onClick={() => setSignTab("upload")}>📷 Upload</button>
+                <button className={`btn-reset ${signTab === "draw" ? "active" : ""}`} style={{ background: signTab === "draw" ? "var(--m3-yellow)" : "", padding: "6px 16px", color: signTab === "draw" ? "#000" : "" }} onClick={() => setSignTab("draw")}>✍️ Draw</button>
+                <button className={`btn-reset ${signTab === "type" ? "active" : ""}`} style={{ background: signTab === "type" ? "var(--m3-sky)" : "", padding: "6px 16px", color: signTab === "type" ? "#000" : "" }} onClick={() => setSignTab("type")}>⌨️ Type</button>
+                <button className={`btn-reset ${signTab === "upload" ? "active" : ""}`} style={{ background: signTab === "upload" ? "var(--m3-mint)" : "", padding: "6px 16px", color: signTab === "upload" ? "#000" : "" }} onClick={() => setSignTab("upload")}>📷 Upload</button>
               </div>
 
               {/* Draw Tab */}
@@ -659,7 +659,7 @@ export default function PDFSignStudio({ auth }) {
                   <canvas 
                     ref={canvasRef} 
                     width={500} height={200} 
-                    style={{ width: "100%", border: "2px solid var(--border-color)", borderRadius: "8px", background: "#fff", touchAction: "none", cursor: "crosshair" }}
+                    style={{ width: "100%", border: 'none', borderRadius: 'var(--radius-full)', background: "#fff", touchAction: "none", cursor: "crosshair" }}
                     onPointerDown={startDraw} onPointerMove={draw} onPointerUp={endDraw} onPointerOut={endDraw}
                   />
                 </div>
@@ -668,7 +668,7 @@ export default function PDFSignStudio({ auth }) {
               {/* Type Tab */}
               {signTab === "type" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  <input type="text" value={typeText} onChange={e => setTypeText(e.target.value)} placeholder="Type your name..." style={{ padding: "12px", fontSize: "1.1rem", border: "2px solid var(--border-color)", borderRadius: "8px", background: "var(--bg-main)", color: "var(--text-main)" }} />
+                  <input type="text" value={typeText} onChange={e => setTypeText(e.target.value)} placeholder="Type your name..." style={{ padding: "12px", fontSize: "1.1rem", border: 'none', borderRadius: 'var(--radius-full)', background: "var(--bg-main)", color: "var(--text-main)" }} />
                   <div style={{ display: "flex", gap: "8px" }}>
                      {["#000000", "#1a365d", "#b91c1c"].map(c => (
                         <div key={c} onClick={() => setPenColor(c)} style={{ width: "24px", height: "24px", background: c, borderRadius: "50%", cursor: "pointer", border: penColor === c ? "3px solid #f59e0b" : "2px solid #000" }} />
@@ -681,7 +681,7 @@ export default function PDFSignStudio({ auth }) {
                       { label: "Pacifico", val: "30px 'Pacifico', cursive" },
                       { label: "Serif", val: "italic bold 40px 'Georgia', serif" }
                     ].map(f => (
-                      <button key={f.label} onClick={() => setTypeFont(f.val)} style={{ padding: "16px", border: typeFont === f.val ? "3px solid var(--brutal-yellow)" : "2px solid var(--border-color)", borderRadius: "8px", background: "#fff", fontSize: "1.5rem", fontFamily: f.val.split("px ")[1] || "inherit", color: penColor, cursor: "pointer" }}>
+                      <button key={f.label} onClick={() => setTypeFont(f.val)} style={{ padding: "16px", border: typeFont === f.val ? "3px solid var(--m3-yellow)" : "2px solid var(--border-color)", borderRadius: 'var(--radius-full)', background: "#fff", fontSize: "1.5rem", fontFamily: f.val.split("px ")[1] || "inherit", color: penColor, cursor: "pointer" }}>
                         {typeText || "Signature"}
                       </button>
                     ))}
@@ -691,14 +691,14 @@ export default function PDFSignStudio({ auth }) {
 
               {/* Upload Tab */}
               {signTab === "upload" && (
-                <div style={{ textAlign: "center", padding: "20px", border: "2px dashed var(--border-color)", borderRadius: "8px" }}>
+                <div style={{ textAlign: "center", padding: "20px", border: "2px dashed var(--border-color)", borderRadius: 'var(--radius-full)' }}>
                   <input type="file" accept="image/png, image/jpeg" onChange={e => {
                     const f = e.target.files[0];
                     if (f) setUploadImg(URL.createObjectURL(f));
                   }} style={{ marginBottom: "16px" }} />
                   {uploadImg && (
                     <div style={{ marginTop: "16px" }}>
-                      <img src={uploadImg} style={{ maxHeight: "120px", border: "2px solid #000", borderRadius: "8px" }} alt="uploaded signature" />
+                      <img src={uploadImg} style={{ maxHeight: "120px", border: 'none', borderRadius: 'var(--radius-full)' }} alt="uploaded signature" />
                       <label style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "12px", fontWeight: "bold" }}>
                         <input type="checkbox" checked={removeBg} onChange={e => setRemoveBg(e.target.checked)} />
                         Remove White Background

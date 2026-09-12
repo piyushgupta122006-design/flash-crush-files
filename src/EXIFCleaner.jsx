@@ -208,7 +208,7 @@ export default function EXIFCleaner({ auth }) {
         {!file && (
           <div className="comp-header">
             <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>🛡️</div>
+              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>🛡️</div>
               <h1 className="comp-title">EXIF Cleaner &amp; Viewer</h1>
             </div>
             <p className="comp-sub">
@@ -264,7 +264,7 @@ export default function EXIFCleaner({ auth }) {
                   <img
                     src={previewSrc}
                     alt="Original"
-                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "8px", border: "2px solid #000" }}
+                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
                   />
                   <div>
                     <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>{file.name}</div>
@@ -287,7 +287,7 @@ export default function EXIFCleaner({ auth }) {
                 {/* Location / GPS Data */}
                 <div className="comp-card" style={{ padding: "20px", background: hasGPS ? "#FEE2E2" : "var(--bg-main)", borderColor: hasGPS ? "#B91C1C" : "#000" }}>
                   <h3 style={{ fontSize: "1.15rem", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    📍 GPS Location {hasGPS && <span style={{ fontSize: "0.75rem", background: "#B91C1C", color: "#fff", padding: "4px 8px", borderRadius: "6px" }}>CRITICAL WARNING</span>}
+                    📍 GPS Location {hasGPS && <span style={{ fontSize: "0.75rem", background: "#B91C1C", color: "#fff", padding: "4px 8px", borderRadius: 'var(--radius-full)' }}>CRITICAL WARNING</span>}
                   </h3>
                   {hasGPS ? (
                     <div>
@@ -299,7 +299,7 @@ export default function EXIFCleaner({ auth }) {
                         target="_blank"
                         rel="noreferrer"
                         className="btn-reset"
-                        style={{ background: "#B91C1C", color: "#fff", padding: "6px 12px", borderRadius: "6px", fontSize: "0.85rem", fontWeight: 700, border: "2px solid #000", textDecoration: "none", display: "inline-block" }}
+                        style={{ background: "#B91C1C", color: "#fff", padding: "6px 12px", borderRadius: 'var(--radius-full)', fontSize: "0.85rem", fontWeight: 700, border: 'none', textDecoration: "none", display: "inline-block" }}
                       >
                         🗺️ View on Google Maps
                       </a>
@@ -310,7 +310,7 @@ export default function EXIFCleaner({ auth }) {
                 </div>
 
                 {/* Camera / Device Info */}
-                <div className="comp-card" style={{ padding: "20px", background: hasCamera ? "var(--brutal-yellow)" : "var(--bg-main)" }}>
+                <div className="comp-card" style={{ padding: "20px", background: hasCamera ? "var(--m3-yellow)" : "var(--bg-main)" }}>
                   <h3 style={{ fontSize: "1.15rem", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
                     📸 Camera &amp; Lens
                   </h3>
@@ -334,11 +334,11 @@ export default function EXIFCleaner({ auth }) {
 
             {/* Raw Dump (Collapsible) */}
             {hasExif && metadata && (
-              <details style={{ background: "var(--bg-main)", padding: "16px", borderRadius: "12px", border: "3px solid #1a1a1a", boxShadow: "4px 4px 0 #1a1a1a" }}>
+              <details style={{ background: "var(--bg-main)", padding: "16px", borderRadius: 'var(--radius-full)', border: 'none', boxShadow: "4px 4px 0 #1a1a1a" }}>
                 <summary style={{ fontWeight: 800, cursor: "pointer", fontSize: "1.05rem" }}>
                   📂 View All Raw Metadata Tags ({Object.keys(metadata).length})
                 </summary>
-                <div style={{ marginTop: "14px", maxHeight: "300px", overflowY: "auto", fontSize: "0.8rem", background: "#f1f1f1", padding: "12px", borderRadius: "6px", border: "1px solid #ddd" }}>
+                <div style={{ marginTop: "14px", maxHeight: "300px", overflowY: "auto", fontSize: "0.8rem", background: "#f1f1f1", padding: "12px", borderRadius: 'var(--radius-full)', border: 'none' }}>
                   <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
                     <tbody>
                       {Object.keys(metadata).map((key) => {
@@ -378,7 +378,7 @@ export default function EXIFCleaner({ auth }) {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "10px",
-                  background: "var(--brutal-pink)",
+                  background: "var(--m3-pink)",
                   color: "#fff",
                 }}
                 onClick={scrubMetadata}
@@ -397,9 +397,9 @@ export default function EXIFCleaner({ auth }) {
             className="error-banner"
             style={{
               background: "#FEE2E2",
-              border: "3px solid #1a1a1a",
+              border: 'none',
               padding: "14px",
-              borderRadius: "10px",
+              borderRadius: 'var(--radius-full)',
               color: "#B91C1C",
               fontWeight: "bold",
               marginTop: "20px",

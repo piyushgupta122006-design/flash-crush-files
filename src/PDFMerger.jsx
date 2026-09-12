@@ -296,7 +296,7 @@ export default function PDFMerger({ auth }) {
                       onClick={() => addMoreRef.current?.click()}
                       style={{
                         padding: "5px 12px", background: "rgba(217,119,6,0.08)",
-                        border: "1px solid rgba(217,119,6,0.25)", borderRadius: "8px",
+                        border: "1px solid rgba(217,119,6,0.25)", borderRadius: 'var(--radius-full)',
                         color: "#d97706", fontSize: "12px", fontWeight: "600", cursor: "pointer"
                       }}
                     >
@@ -306,7 +306,7 @@ export default function PDFMerger({ auth }) {
                       onClick={reset}
                       style={{
                         padding: "5px 10px", background: "rgba(239,68,68,0.08)",
-                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: "8px",
+                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: 'var(--radius-full)',
                         color: "#dc2626", fontSize: "12px", fontWeight: "600", cursor: "pointer"
                       }}
                     >
@@ -363,7 +363,7 @@ export default function PDFMerger({ auth }) {
                           disabled={idx === 0}
                           style={{
                             padding: "5px 8px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
                             fontSize: "11px", cursor: idx === 0 ? "not-allowed" : "pointer",
                             opacity: idx === 0 ? 0.3 : 1, color: "#fff"
                           }}
@@ -376,7 +376,7 @@ export default function PDFMerger({ auth }) {
                           disabled={idx === pdfFiles.length - 1}
                           style={{
                             padding: "5px 8px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
                             fontSize: "11px", cursor: idx === pdfFiles.length - 1 ? "not-allowed" : "pointer",
                             opacity: idx === pdfFiles.length - 1 ? 0.3 : 1, color: "#fff"
                           }}
@@ -388,7 +388,7 @@ export default function PDFMerger({ auth }) {
                           onClick={() => removeFile(item.id)}
                           style={{
                             padding: "5px 9px", background: "rgba(244,63,94,0.12)",
-                            border: "1px solid rgba(244,63,94,0.3)", borderRadius: "6px",
+                            border: "1px solid rgba(244,63,94,0.3)", borderRadius: 'var(--radius-full)',
                             color: "#fb7185", fontSize: "11px", fontWeight: "700", cursor: "pointer"
                           }}
                           title="Remove"

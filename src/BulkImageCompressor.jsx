@@ -417,7 +417,7 @@ export default function BulkImageCompressor({ auth }) {
               <div style={{
                 display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px",
                 padding: "14px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "12px", marginBottom: "16px"
+                borderRadius: 'var(--radius-full)', marginBottom: "16px"
               }}>
                 {/* Target KB Input (If in target mode) */}
                 {preset === "target" && (
@@ -434,7 +434,7 @@ export default function BulkImageCompressor({ auth }) {
                         onChange={(e) => setTargetKb(Math.max(10, Number(e.target.value)))}
                         style={{
                           width: "90px", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                          border: "1.5px solid #10b981", borderRadius: "8px", color: "#fff",
+                          border: "1.5px solid #10b981", borderRadius: 'var(--radius-full)', color: "#fff",
                           fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", outline: "none",
                         }}
                       />
@@ -453,7 +453,7 @@ export default function BulkImageCompressor({ auth }) {
                     onChange={(e) => setOutputFormat(e.target.value)}
                     style={{
                       width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: "8px",
+                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
                       color: "#fff", fontSize: "12px", outline: "none",
                     }}
                   >
@@ -473,7 +473,7 @@ export default function BulkImageCompressor({ auth }) {
                     onChange={(e) => setMaxWidthOption(Number(e.target.value))}
                     style={{
                       width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: "8px",
+                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
                       color: "#fff", fontSize: "12px", outline: "none",
                     }}
                   >
@@ -502,7 +502,7 @@ export default function BulkImageCompressor({ auth }) {
                   onClick={clearAll}
                   style={{
                     padding: "14px 18px", background: "rgba(244,63,94,0.12)", border: "1px solid rgba(244,63,94,0.3)",
-                    borderRadius: "14px", color: "#f87171", fontWeight: 700, fontSize: "13px", cursor: "pointer",
+                    borderRadius: 'var(--radius-full)', color: "#f87171", fontWeight: 700, fontSize: "13px", cursor: "pointer",
                   }}
                   title="Clear all uploaded images"
                 >
@@ -599,7 +599,7 @@ export default function BulkImageCompressor({ auth }) {
                         position: "relative",
                         background: "rgba(255,255,255,0.04)",
                         border: isDone ? "1.5px solid rgba(16,185,129,0.4)" : "1.5px solid rgba(255,255,255,0.08)",
-                        borderRadius: "10px", overflow: "hidden", display: "flex", flexDirection: "column",
+                        borderRadius: 'var(--radius-full)', overflow: "hidden", display: "flex", flexDirection: "column",
                       }}
                     >
                       {/* Image Preview */}
@@ -652,7 +652,7 @@ export default function BulkImageCompressor({ auth }) {
                         <div style={{ marginTop: "6px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           {isDone ? (
                             <span style={{
-                              padding: "2px 6px", borderRadius: "4px",
+                              padding: "2px 6px", borderRadius: 'var(--radius-full)',
                               background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)",
                               color: "#34d399", fontSize: "9px", fontWeight: 800
                             }}>

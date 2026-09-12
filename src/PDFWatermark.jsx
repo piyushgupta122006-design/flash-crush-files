@@ -831,7 +831,7 @@ export default function PDFWatermark({ auth }) {
                       padding: "14px",
                       background: "rgba(255, 255, 255, 0.03)",
                       border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: "14px",
+                      borderRadius: 'var(--radius-full)',
                     }}>
                       <div style={{ fontSize: "12px", fontWeight: 800, color: "#f472b6", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
                         <span>🏷️</span> Watermark Text
@@ -845,7 +845,7 @@ export default function PDFWatermark({ auth }) {
                         style={{
                           width: "100%", padding: "10px 14px", boxSizing: "border-box",
                           background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)",
-                          borderRadius: "10px", fontFamily: "'JetBrains Mono', monospace",
+                          borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
                           fontSize: "13px", color: "#fff", outline: "none", marginBottom: "10px",
                         }}
                       />
@@ -859,7 +859,7 @@ export default function PDFWatermark({ auth }) {
                             style={{
                               padding: "3px 8px", background: wmText === txt ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)",
                               border: wmText === txt ? "1px solid #ec4899" : "1px solid rgba(255,255,255,0.1)",
-                              borderRadius: "6px", color: wmText === txt ? "#f472b6" : "#94a3b8",
+                              borderRadius: 'var(--radius-full)', color: wmText === txt ? "#f472b6" : "#94a3b8",
                               fontSize: "10px", fontWeight: 700, cursor: "pointer",
                             }}
                           >
@@ -927,7 +927,7 @@ export default function PDFWatermark({ auth }) {
                       padding: "14px",
                       background: "rgba(255, 255, 255, 0.03)",
                       border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: "14px",
+                      borderRadius: 'var(--radius-full)',
                     }}>
                       <div style={{ fontSize: "12px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
                         <span>🔢</span> Page Numbering
@@ -939,7 +939,7 @@ export default function PDFWatermark({ auth }) {
                         onChange={(e) => setNumFormat(e.target.value)}
                         style={{
                           width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                          border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: "10px",
+                          border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
                           color: "#fff", fontSize: "12px", outline: "none", marginBottom: "10px",
                         }}
                       >
@@ -966,7 +966,7 @@ export default function PDFWatermark({ auth }) {
                             style={{
                               padding: "6px", background: numPosition === pos.id ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
                               border: numPosition === pos.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                              borderRadius: "6px", color: numPosition === pos.id ? "#38bdf8" : "#94a3b8",
+                              borderRadius: 'var(--radius-full)', color: numPosition === pos.id ? "#38bdf8" : "#94a3b8",
                               fontSize: "10px", fontWeight: 700, cursor: "pointer",
                             }}
                           >
@@ -993,7 +993,7 @@ export default function PDFWatermark({ auth }) {
                       padding: "14px",
                       background: "rgba(255, 255, 255, 0.03)",
                       border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: "14px",
+                      borderRadius: 'var(--radius-full)',
                     }}>
                       {removeMethod === "faint" && (
                         <>
@@ -1035,7 +1035,7 @@ export default function PDFWatermark({ auth }) {
                                   flex: 1, padding: "5px 4px",
                                   background: cleanSensitivity === p.val ? "rgba(168,85,247,0.25)" : "rgba(255,255,255,0.05)",
                                   border: cleanSensitivity === p.val ? "1px solid #a855f7" : "1px solid rgba(255,255,255,0.1)",
-                                  borderRadius: "6px", color: cleanSensitivity === p.val ? "#c084fc" : "#94a3b8",
+                                  borderRadius: 'var(--radius-full)', color: cleanSensitivity === p.val ? "#c084fc" : "#94a3b8",
                                   fontSize: "10px", fontWeight: 700, cursor: "pointer",
                                 }}
                               >
@@ -1070,7 +1070,7 @@ export default function PDFWatermark({ auth }) {
                                   padding: "8px 12px", textAlign: "left",
                                   background: stampRegion === r.id ? "rgba(56,189,248,0.2)" : "rgba(255,255,255,0.04)",
                                   border: stampRegion === r.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                                  borderRadius: "8px", color: stampRegion === r.id ? "#38bdf8" : "#cbd5e1",
+                                  borderRadius: 'var(--radius-full)', color: stampRegion === r.id ? "#38bdf8" : "#cbd5e1",
                                   fontSize: "11px", fontWeight: 700, cursor: "pointer",
                                 }}
                               >
@@ -1100,7 +1100,7 @@ export default function PDFWatermark({ auth }) {
                                 style={{
                                   padding: "4px 8px", background: removeKeyword === kw ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.05)",
                                   border: removeKeyword === kw ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.1)",
-                                  borderRadius: "6px", color: removeKeyword === kw ? "#34d399" : "#94a3b8",
+                                  borderRadius: 'var(--radius-full)', color: removeKeyword === kw ? "#34d399" : "#94a3b8",
                                   fontSize: "10px", fontWeight: 700, cursor: "pointer",
                                 }}
                               >
@@ -1129,7 +1129,7 @@ export default function PDFWatermark({ auth }) {
                             setPreviewPage(p);
                           }}
                           disabled={previewPage <= 1}
-                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "4px", color: "#fff", fontSize: "10px", cursor: previewPage <= 1 ? "not-allowed" : "pointer" }}
+                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "10px", cursor: previewPage <= 1 ? "not-allowed" : "pointer" }}
                         >
                           ◀ Prev
                         </button>
@@ -1140,7 +1140,7 @@ export default function PDFWatermark({ auth }) {
                             setPreviewPage(p);
                           }}
                           disabled={previewPage >= totalPages}
-                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "4px", color: "#fff", fontSize: "10px", cursor: previewPage >= totalPages ? "not-allowed" : "pointer" }}
+                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "10px", cursor: previewPage >= totalPages ? "not-allowed" : "pointer" }}
                         >
                           Next ▶
                         </button>
@@ -1152,13 +1152,13 @@ export default function PDFWatermark({ auth }) {
                   <div style={{
                     width: "100%", maxHeight: "380px", overflow: "hidden",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#0a0a0a", borderRadius: "12px",
+                    background: "#0a0a0a", borderRadius: 'var(--radius-full)',
                     border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
                     padding: "8px", boxSizing: "border-box"
                   }}>
                     <canvas
                       ref={previewCanvasRef}
-                      style={{ maxWidth: "100%", maxHeight: "360px", objectFit: "contain", borderRadius: "6px" }}
+                      style={{ maxWidth: "100%", maxHeight: "360px", objectFit: "contain", borderRadius: 'var(--radius-full)' }}
                     />
                   </div>
                 </div>

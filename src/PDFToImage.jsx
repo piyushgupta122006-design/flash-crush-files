@@ -488,7 +488,7 @@ export default function PDFToImage({ auth }) {
                           fontWeight: "800",
                           fontFamily: "'JetBrains Mono', monospace",
                           padding: "2px 8px",
-                          borderRadius: "100px"
+                          borderRadius: 'var(--radius-full)'
                         }}>
                           Page {p.pageNum}
                         </span>
@@ -504,9 +504,9 @@ export default function PDFToImage({ auth }) {
                           style={{
                             padding: "4px 8px",
                             background: "rgba(6, 182, 212, 0.15)",
-                            border: "1px solid var(--cyan-neon)",
+                            border: 'none',
                             color: "#38bdf8",
-                            borderRadius: "6px",
+                            borderRadius: 'var(--radius-full)',
                             fontSize: "11px",
                             fontWeight: "700",
                             cursor: "pointer",
@@ -548,7 +548,7 @@ export default function PDFToImage({ auth }) {
             <img
               src={previewModal.url}
               alt={`Page ${previewModal.pageNum}`}
-              style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "12px", border: "3px solid #1a1a1a", boxShadow: "8px 8px 0px #1a1a1a" }}
+              style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: 'var(--radius-full)', border: 'none', boxShadow: "8px 8px 0px #1a1a1a" }}
             />
             <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
               <button

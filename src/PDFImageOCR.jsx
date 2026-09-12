@@ -401,7 +401,7 @@ export default function PDFImageOCR({ auth }) {
       <div className="compressor-wrap">
         <div className="comp-header">
           <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ background: "var(--brutal-sky)" }}>🔍</div>
+            <div className="comp-icon-badge" style={{ background: "var(--m3-sky)" }}>🔍</div>
             <h1 className="comp-title">PDF & Image OCR</h1>
           </div>
           <p className="comp-sub">
@@ -439,7 +439,7 @@ export default function PDFImageOCR({ auth }) {
         )}
 
         {error && (
-          <div style={{ background: "#FEE2E2", border: "2px solid #1a1a1a", borderRadius: "10px", padding: "12px 18px", marginTop: "16px", color: "#B91C1C", fontWeight: 700, maxWidth: "680px", width: "100%", boxShadow: "3px 3px 0px #1a1a1a" }}>
+          <div style={{ background: "#FEE2E2", border: 'none', borderRadius: 'var(--radius-full)', padding: "12px 18px", marginTop: "16px", color: "#B91C1C", fontWeight: 700, maxWidth: "680px", width: "100%", boxShadow: "3px 3px 0px #1a1a1a" }}>
             ⚠️ {error}
           </div>
         )}
@@ -487,7 +487,7 @@ export default function PDFImageOCR({ auth }) {
                   <button
                     type="button"
                     className="btn-compress"
-                    style={{ width: "auto", padding: "10px 24px", fontSize: "0.88rem", background: "var(--brutal-lavender)", color: "#1a1a1a" }}
+                    style={{ width: "auto", padding: "10px 24px", fontSize: "0.88rem", background: "var(--m3-lavender)", color: "#1a1a1a" }}
                     onClick={runOCRAllPages}
                     disabled={processing}
                   >
@@ -558,7 +558,7 @@ export default function PDFImageOCR({ auth }) {
                 <div className="ocr-text-header">
                   <span>📝 Extracted Text</span>
                   {ocrDone && (
-                    <span className="ocr-confidence-badge" style={{ background: confidence >= 80 ? "var(--brutal-mint)" : confidence >= 50 ? "var(--brutal-yellow)" : "var(--brutal-coral)" }}>
+                    <span className="ocr-confidence-badge" style={{ background: confidence >= 80 ? "var(--m3-mint)" : confidence >= 50 ? "var(--m3-yellow)" : "var(--m3-coral)" }}>
                       {confidence}% Confidence
                     </span>
                   )}
@@ -583,7 +583,7 @@ export default function PDFImageOCR({ auth }) {
             {/* ── Export Actions ── */}
             {ocrDone && ocrText.trim() && (
               <div className="ocr-export-bar">
-                <button type="button" className="ocr-export-btn" onClick={copyToClipboard} style={{ background: copied ? "var(--brutal-mint)" : "var(--bg-surface)" }}>
+                <button type="button" className="ocr-export-btn" onClick={copyToClipboard} style={{ background: copied ? "var(--m3-mint)" : "var(--bg-surface)" }}>
                   {copied ? "✅ Copied!" : "📋 Copy Text"}
                 </button>
                 <button type="button" className="ocr-export-btn" onClick={downloadTxt}>

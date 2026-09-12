@@ -282,7 +282,7 @@ export default function CrushDrop() {
         {/* Header */}
         <div className="comp-header" style={{ marginBottom: "20px" }}>
           <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>🌐</div>
+            <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>🌐</div>
             <h1 className="comp-title">CrushDrop</h1>
           </div>
           <p className="comp-sub">
@@ -291,7 +291,7 @@ export default function CrushDrop() {
         </div>
 
         {/* Status Bar */}
-        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: isConnected ? "var(--brutal-mint)" : "var(--bg-main)", transition: "all 0.3s", border: "var(--border)" }}>
+        <div className="comp-card" style={{ padding: "16px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: isConnected ? "var(--m3-mint)" : "var(--bg-main)", transition: "all 0.3s", border: "var(--border)" }}>
           <div style={{ fontWeight: 800, fontSize: "1.05rem" }}>{connStatus}</div>
           {myId && <div style={{ fontWeight: 700, fontSize: "0.85rem", opacity: 0.7 }}>My ID: {myId}</div>}
         </div>
@@ -306,7 +306,7 @@ export default function CrushDrop() {
             </p>
             <button
               className="btn-reset"
-              style={{ padding: "10px 20px", background: "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }}
+              style={{ padding: "10px 20px", background: "var(--m3-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }}
               onClick={() => {
                 if (peer && targetPeerId) {
                   setConnStatus(`Retrying connection to ${targetPeerId}...`);
@@ -325,7 +325,7 @@ export default function CrushDrop() {
             <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "16px" }}>Share this link or scan QR to connect</h3>
             
             {qrCodeUrl && (
-              <img src={qrCodeUrl} alt="QR Code" style={{ border: "var(--border)", borderRadius: "12px", marginBottom: "20px", width: "100%", maxWidth: "220px" }} />
+              <img src={qrCodeUrl} alt="QR Code" style={{ border: "var(--border)", borderRadius: 'var(--radius-full)', marginBottom: "20px", width: "100%", maxWidth: "220px" }} />
             )}
             
             <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
@@ -333,9 +333,9 @@ export default function CrushDrop() {
                 type="text" 
                 readOnly 
                 value={shareLink} 
-                style={{ width: "100%", maxWidth: "400px", padding: "12px", border: "var(--border)", borderRadius: "8px", fontWeight: 700, background: "var(--bg-surface)", color: "var(--text-main)" }}
+                style={{ width: "100%", maxWidth: "400px", padding: "12px", border: "var(--border)", borderRadius: 'var(--radius-full)', fontWeight: 700, background: "var(--bg-surface)", color: "var(--text-main)" }}
               />
-              <button className="btn-reset" style={{ padding: "0 20px", background: copied ? "var(--brutal-mint)" : "var(--brutal-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }} onClick={copyLink}>
+              <button className="btn-reset" style={{ padding: "0 20px", background: copied ? "var(--m3-mint)" : "var(--m3-yellow)", color: "#000", fontWeight: 800, border: "var(--border)" }} onClick={copyLink}>
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
@@ -373,14 +373,14 @@ export default function CrushDrop() {
 
             {/* Outgoing File Progress */}
             {fileToSend && (
-              <div className="comp-card" style={{ padding: "20px", background: "var(--brutal-sky)" }}>
+              <div className="comp-card" style={{ padding: "20px", background: "var(--m3-sky)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", fontWeight: 800 }}>
                   <span>Sending: {fileToSend.name}</span>
                   <span>{formatBytes(fileToSend.size)}</span>
                 </div>
                 
-                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
-                  <div style={{ width: `${transferProgress}%`, height: "100%", background: "var(--brutal-yellow)", transition: "width 0.1s" }}></div>
+                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: 'var(--radius-full)', overflow: "hidden", marginBottom: "12px" }}>
+                  <div style={{ width: `${transferProgress}%`, height: "100%", background: "var(--m3-yellow)", transition: "width 0.1s" }}></div>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: "0.9rem" }}>
@@ -398,14 +398,14 @@ export default function CrushDrop() {
 
             {/* Incoming File Progress */}
             {incomingFile && (
-              <div className="comp-card" style={{ padding: "20px", background: "var(--brutal-yellow)" }}>
+              <div className="comp-card" style={{ padding: "20px", background: "var(--m3-yellow)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", fontWeight: 800 }}>
                   <span>Receiving: {incomingFile.name}</span>
                   <span>{formatBytes(incomingFile.size)}</span>
                 </div>
                 
-                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
-                  <div style={{ width: `${incomingFile.progress}%`, height: "100%", background: "var(--brutal-mint)", transition: "width 0.1s" }}></div>
+                <div style={{ width: "100%", height: "16px", background: "var(--bg-surface)", border: "var(--border)", borderRadius: 'var(--radius-full)', overflow: "hidden", marginBottom: "12px" }}>
+                  <div style={{ width: `${incomingFile.progress}%`, height: "100%", background: "var(--m3-mint)", transition: "width 0.1s" }}></div>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: "0.9rem" }}>

@@ -197,7 +197,7 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           text-align: left;
         }
         .fc-folder-btn:hover:not(:disabled) {
-          background: var(--brutal-yellow);
+          background: var(--m3-yellow);
           border-style: solid;
           box-shadow: 3px 3px 0px #1a1a1a;
         }

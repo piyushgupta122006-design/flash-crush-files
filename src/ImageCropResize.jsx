@@ -563,7 +563,7 @@ export default function ImageCropResize({ auth }) {
                   {/* Dimension Resizer Box */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px", display: "flex", justifyContent: "space-between" }}>
                       <span>Exact Dimensions (Pixels)</span>
@@ -583,7 +583,7 @@ export default function ImageCropResize({ auth }) {
                           type="number"
                           value={outWidth}
                           onChange={(e) => handleWidthChange(e.target.value)}
-                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }}
+                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
                         />
                       </div>
                       <div>
@@ -592,7 +592,7 @@ export default function ImageCropResize({ auth }) {
                           type="number"
                           value={outHeight}
                           onChange={(e) => handleHeightChange(e.target.value)}
-                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", outline: "none", boxSizing: "border-box" }}
+                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
                         />
                       </div>
                     </div>
@@ -608,7 +608,7 @@ export default function ImageCropResize({ auth }) {
                             flex: 1, padding: "4px", fontSize: "10px", fontWeight: 700,
                             background: scalePercent === pct ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
                             border: scalePercent === pct ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: "6px", color: scalePercent === pct ? "#38bdf8" : "#94a3b8",
+                            borderRadius: 'var(--radius-full)', color: scalePercent === pct ? "#38bdf8" : "#94a3b8",
                             cursor: "pointer",
                           }}
                         >
@@ -621,7 +621,7 @@ export default function ImageCropResize({ auth }) {
                   {/* Rotate & Flip Box */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#f472b6", textTransform: "uppercase", marginBottom: "10px" }}>
                       Rotate & Flip
@@ -631,21 +631,21 @@ export default function ImageCropResize({ auth }) {
                       <button
                         type="button"
                         onClick={() => setRotation(r => (r - 90 + 360) % 360)}
-                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", fontSize: "11px", cursor: "pointer" }}
+                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", cursor: "pointer" }}
                       >
                         ↺ -90°
                       </button>
                       <button
                         type="button"
                         onClick={() => setRotation(r => (r + 90) % 360)}
-                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", fontSize: "11px", cursor: "pointer" }}
+                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", cursor: "pointer" }}
                       >
                         ↻ +90°
                       </button>
                       <button
                         type="button"
                         onClick={() => setFlipH(!flipH)}
-                        style={{ flex: 1, padding: "6px", background: flipH ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: flipH ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
+                        style={{ flex: 1, padding: "6px", background: flipH ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: flipH ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
                         title="Flip Horizontal (Mirror)"
                       >
                         🪞 Flip H
@@ -653,7 +653,7 @@ export default function ImageCropResize({ auth }) {
                       <button
                         type="button"
                         onClick={() => setFlipV(!flipV)}
-                        style={{ flex: 1, padding: "6px", background: flipV ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: flipV ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
+                        style={{ flex: 1, padding: "6px", background: flipV ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: flipV ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
                         title="Flip Vertical"
                       >
                         ↕ Flip V
@@ -673,7 +673,7 @@ export default function ImageCropResize({ auth }) {
                   {/* Output Format & Quality */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "10px" }}>
                       Output Format & Quality
@@ -685,7 +685,7 @@ export default function ImageCropResize({ auth }) {
                         <select
                           value={format}
                           onChange={(e) => setFormat(e.target.value)}
-                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
+                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
                         >
                           <option value="image/webp">WebP (Best)</option>
                           <option value="image/png">PNG (Lossless)</option>
@@ -720,7 +720,7 @@ export default function ImageCropResize({ auth }) {
                   <div style={{
                     width: "100%", minHeight: "380px", overflow: "hidden",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#080c16", borderRadius: "14px",
+                    background: "#080c16", borderRadius: 'var(--radius-full)',
                     border: "1.5px solid rgba(139, 92, 246, 0.3)", boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
                     padding: "16px", boxSizing: "border-box", cursor: isDraggingHandle.current ? "crosshair" : "default"
                   }}>
@@ -730,7 +730,7 @@ export default function ImageCropResize({ auth }) {
                       onPointerMove={handleCanvasMouseMove}
                       onPointerUp={handleCanvasMouseUp}
                       onPointerLeave={handleCanvasMouseUp}
-                      style={{ touchAction: "none", maxWidth: "100%", maxHeight: "420px", objectFit: "contain", borderRadius: "4px", boxShadow: "0 5px 25px rgba(0,0,0,0.8)" }}
+                      style={{ touchAction: "none", maxWidth: "100%", maxHeight: "420px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 5px 25px rgba(0,0,0,0.8)" }}
                     />
                   </div>
 

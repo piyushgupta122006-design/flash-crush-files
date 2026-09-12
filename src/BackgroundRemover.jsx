@@ -380,7 +380,7 @@ export default function BackgroundRemover({ auth }) {
           {stage === "loaded" && (
             <div style={{ padding: "0 20px 20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
               <div style={{
-                maxHeight: "340px", overflow: "hidden", borderRadius: "14px",
+                maxHeight: "340px", overflow: "hidden", borderRadius: 'var(--radius-full)',
                 border: "1px solid rgba(255,255,255,0.1)", marginBottom: "18px", boxShadow: "0 10px 30px rgba(0,0,0,0.6)"
               }}>
                 <img src={origUrl} alt="" style={{ maxWidth: "100%", maxHeight: "320px", objectFit: "contain", display: "block" }} />
@@ -458,7 +458,7 @@ export default function BackgroundRemover({ auth }) {
                   {bgChoice === "custom-color" && (
                     <div style={{
                       padding: "12px", background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                     }}>
                       <label style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", display: "block", marginBottom: "6px" }}>
                         Pick Backdrop Color
@@ -476,7 +476,7 @@ export default function BackgroundRemover({ auth }) {
                           onChange={(e) => setCustomBgColor(e.target.value)}
                           style={{
                             flex: 1, padding: "6px 10px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: "6px", color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", outline: "none"
+                            borderRadius: 'var(--radius-full)', color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", outline: "none"
                           }}
                         />
                       </div>
@@ -486,7 +486,7 @@ export default function BackgroundRemover({ auth }) {
                   {/* Studio Effects */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#a855f7", textTransform: "uppercase", marginBottom: "10px" }}>
                       Studio Lighting & Shadow
@@ -503,7 +503,7 @@ export default function BackgroundRemover({ auth }) {
                         <select
                           value={exportFormat}
                           onChange={(e) => setExportFormat(e.target.value)}
-                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
+                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
                         >
                           <option value="image/png">PNG (High Quality)</option>
                           <option value="image/webp">WebP (Compact)</option>
@@ -519,7 +519,7 @@ export default function BackgroundRemover({ auth }) {
                   <div style={{
                     width: "100%", minHeight: "380px", overflow: "hidden",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    borderRadius: "14px", border: "1.5px solid rgba(168, 85, 247, 0.35)",
+                    borderRadius: 'var(--radius-full)', border: "1.5px solid rgba(168, 85, 247, 0.35)",
                     boxShadow: "0 15px 35px rgba(0,0,0,0.6)", padding: "16px", boxSizing: "border-box",
                     background: bgChoice === "transparent"
                       ? "repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 20px 20px"
@@ -527,7 +527,7 @@ export default function BackgroundRemover({ auth }) {
                   }}>
                     <canvas
                       ref={canvasRef}
-                      style={{ maxWidth: "100%", maxHeight: "400px", objectFit: "contain", borderRadius: "6px" }}
+                      style={{ maxWidth: "100%", maxHeight: "400px", objectFit: "contain", borderRadius: 'var(--radius-full)' }}
                     />
                   </div>
                 </div>

@@ -242,7 +242,7 @@ export default function App() {
       {/* ── Offline Status Banner ── */}
       {!pwa.isOnline && (
         <div style={{
-          background: "var(--brutal-yellow)", color: "var(--text-main)",
+          background: "var(--m3-yellow)", color: "var(--text-main)",
           fontSize: "12px", fontWeight: 700, padding: "6px 16px", textAlign: "center",
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100,
           borderBottom: "var(--border)"
@@ -258,7 +258,7 @@ export default function App() {
           {/* Logo */}
           <div className="navbar-logo" onClick={() => navigate("/")}>
             <LogoMark size={28} />
-            <span className="nav-logo-text">Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
+            <span className="nav-logo-text">Flash<span style={{ color: "var(--m3-pink)" }}>Crush</span></span>
           </div>
 
           {/* Desktop Categorized Navigation Links */}
@@ -436,7 +436,7 @@ export default function App() {
             {historyCount > 0 && (
               <span style={{
                 background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800,
-                padding: "1px 6px", borderRadius: "6px"
+                padding: "1px 6px", borderRadius: 'var(--radius-full)'
               }}>
                 {historyCount}
               </span>
@@ -507,7 +507,7 @@ export default function App() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
               <div className="navbar-logo" onClick={() => { navigate("/"); setMobileNavOpen(false); }}>
                 <LogoMark size={24} />
-                <span>Flash<span style={{ color: "var(--brutal-pink)" }}>Crush</span></span>
+                <span>Flash<span style={{ color: "var(--m3-pink)" }}>Crush</span></span>
               </div>
               <button className="close-btn" onClick={() => setMobileNavOpen(false)}>✕</button>
             </div>
@@ -562,7 +562,7 @@ export default function App() {
             >
               <span><span>🕒</span> Local History</span>
               {historyCount > 0 && (
-                <span style={{ background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: "6px" }}>
+                <span style={{ background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: 'var(--radius-full)' }}>
                   {historyCount}
                 </span>
               )}

@@ -270,7 +270,7 @@ export default function SVGVectorizer({ auth }) {
         {!file && (
           <div className="comp-header">
             <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--brutal-yellow)" }}>📐</div>
+              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>📐</div>
               <h1 className="comp-title">SVG Vectorizer &amp; Tracer</h1>
             </div>
             <p className="comp-sub">
@@ -326,7 +326,7 @@ export default function SVGVectorizer({ auth }) {
                   <img
                     src={previewSrc}
                     alt="Original"
-                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "8px", border: "2px solid #000" }}
+                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
                   />
                   <div>
                     <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>{file.name}</div>
@@ -358,7 +358,7 @@ export default function SVGVectorizer({ auth }) {
                     style={{
                       padding: "14px",
                       textAlign: "left",
-                      background: selectedPreset === p.id ? "var(--brutal-yellow)" : "var(--bg-main)",
+                      background: selectedPreset === p.id ? "var(--m3-yellow)" : "var(--bg-main)",
                       color: selectedPreset === p.id ? "#000" : "inherit",
                       border: selectedPreset === p.id ? "3px solid #000" : "2px solid var(--border-color)",
                       display: "flex",
@@ -475,7 +475,7 @@ export default function SVGVectorizer({ auth }) {
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "10px",
-                    background: "var(--brutal-yellow)",
+                    background: "var(--m3-yellow)",
                     color: "#000",
                   }}
                   onClick={runVectorize}
@@ -494,9 +494,9 @@ export default function SVGVectorizer({ auth }) {
             className="error-banner"
             style={{
               background: "#FEE2E2",
-              border: "3px solid #1a1a1a",
+              border: 'none',
               padding: "14px",
-              borderRadius: "10px",
+              borderRadius: 'var(--radius-full)',
               color: "#B91C1C",
               fontWeight: "bold",
               marginTop: "20px",
@@ -521,7 +521,7 @@ export default function SVGVectorizer({ auth }) {
                     className={`btn-reset ${activeTab === "preview" ? "active" : ""}`}
                     style={{
                       padding: "8px 16px",
-                      background: activeTab === "preview" ? "var(--brutal-yellow)" : "",
+                      background: activeTab === "preview" ? "var(--m3-yellow)" : "",
                       color: activeTab === "preview" ? "#000" : "",
                       fontWeight: 800,
                     }}
@@ -535,7 +535,7 @@ export default function SVGVectorizer({ auth }) {
                     className={`btn-reset ${activeTab === "code" ? "active" : ""}`}
                     style={{
                       padding: "8px 16px",
-                      background: activeTab === "code" ? "var(--brutal-sky)" : "",
+                      background: activeTab === "code" ? "var(--m3-sky)" : "",
                       color: activeTab === "code" ? "#000" : "",
                       fontWeight: 800,
                     }}
@@ -546,10 +546,10 @@ export default function SVGVectorizer({ auth }) {
                 </div>
 
                 <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.85rem", fontWeight: 700, background: "var(--brutal-mint)", padding: "4px 8px", borderRadius: "6px", border: "2px solid #000" }}>
+                  <span style={{ fontSize: "0.85rem", fontWeight: 700, background: "var(--m3-mint)", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
                     SVG Size: {formatBytes(svgBlob.size)}
                   </span>
-                  <span style={{ fontSize: "0.85rem", fontWeight: 700, background: "var(--brutal-pink)", color: "#fff", padding: "4px 8px", borderRadius: "6px", border: "2px solid #000" }}>
+                  <span style={{ fontSize: "0.85rem", fontWeight: 700, background: "var(--m3-pink)", color: "#fff", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
                     ∞ Infinite Scalability
                   </span>
                 </div>
@@ -573,8 +573,8 @@ export default function SVGVectorizer({ auth }) {
                       maxHeight: "560px",
                       overflow: "auto",
                       background: "repeating-conic-gradient(#e5e7eb 0% 25%, #fff 0% 50%) 50% / 20px 20px",
-                      border: "3px solid #1a1a1a",
-                      borderRadius: "10px",
+                      border: 'none',
+                      borderRadius: 'var(--radius-full)',
                       padding: "20px",
                       display: "flex",
                       alignItems: "center",
@@ -606,10 +606,10 @@ export default function SVGVectorizer({ auth }) {
                       className="btn-reset"
                       style={{
                         padding: "6px 14px",
-                        background: copiedCode ? "var(--brutal-mint)" : "var(--brutal-yellow)",
+                        background: copiedCode ? "var(--m3-mint)" : "var(--m3-yellow)",
                         color: "#000",
                         fontWeight: 800,
-                        border: "2px solid #000",
+                        border: 'none',
                       }}
                       onClick={copySvgCode}
                     >
@@ -626,8 +626,8 @@ export default function SVGVectorizer({ auth }) {
                       fontFamily: "monospace",
                       fontSize: "0.82rem",
                       padding: "14px",
-                      borderRadius: "8px",
-                      border: "2px solid var(--border-color)",
+                      borderRadius: 'var(--radius-full)',
+                      border: 'none',
                       background: "var(--bg-main)",
                       color: "var(--text-main)",
                       resize: "vertical",

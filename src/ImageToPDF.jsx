@@ -346,7 +346,7 @@ export default function ImageToPDF({ auth }) {
                       onClick={() => addMoreRef.current?.click()}
                       style={{
                         padding: "5px 12px", background: "rgba(22,163,74,0.08)",
-                        border: "1px solid rgba(22,163,74,0.25)", borderRadius: "8px",
+                        border: "1px solid rgba(22,163,74,0.25)", borderRadius: 'var(--radius-full)',
                         color: "#16a34a", fontSize: "12px", fontWeight: "600", cursor: "pointer"
                       }}
                     >
@@ -356,7 +356,7 @@ export default function ImageToPDF({ auth }) {
                       onClick={reset}
                       style={{
                         padding: "5px 10px", background: "rgba(239,68,68,0.08)",
-                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: "8px",
+                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: 'var(--radius-full)',
                         color: "#dc2626", fontSize: "12px", fontWeight: "600", cursor: "pointer"
                       }}
                     >
@@ -376,7 +376,7 @@ export default function ImageToPDF({ auth }) {
                   <div
                     key={img.id}
                     style={{
-                      position: "relative", borderRadius: "8px", overflow: "hidden",
+                      position: "relative", borderRadius: 'var(--radius-full)', overflow: "hidden",
                       border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)",
                       aspectRatio: "1/1", display: "flex", alignItems: "center", justifyContent: "center"
                     }}
@@ -390,7 +390,7 @@ export default function ImageToPDF({ auth }) {
                     <span style={{
                       position: "absolute", top: "4px", left: "4px",
                       background: "rgba(0,0,0,0.75)", color: "#34d399", fontSize: "10px",
-                      padding: "2px 7px", borderRadius: "100px", fontWeight: "800",
+                      padding: "2px 7px", borderRadius: 'var(--radius-full)', fontWeight: "800",
                       fontFamily: "'JetBrains Mono', monospace"
                     }}>
                       {idx + 1}
@@ -422,7 +422,7 @@ export default function ImageToPDF({ auth }) {
                               onClick={() => moveImage(idx, -1)}
                               style={{
                                 flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
-                                color: "#fff", border: "none", borderRadius: "4px",
+                                color: "#fff", border: "none", borderRadius: 'var(--radius-full)',
                                 fontSize: "10px", cursor: "pointer"
                               }}
                               title="Move back"
@@ -435,7 +435,7 @@ export default function ImageToPDF({ auth }) {
                               onClick={() => moveImage(idx, 1)}
                               style={{
                                 flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
-                                color: "#fff", border: "none", borderRadius: "4px",
+                                color: "#fff", border: "none", borderRadius: 'var(--radius-full)',
                                 fontSize: "10px", cursor: "pointer"
                               }}
                               title="Move forward"
@@ -465,7 +465,7 @@ export default function ImageToPDF({ auth }) {
                     value={orientation}
                     onChange={(e) => setOrientation(e.target.value)}
                     style={{
-                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
                       border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
                       fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}
@@ -484,7 +484,7 @@ export default function ImageToPDF({ auth }) {
                     value={margin}
                     onChange={(e) => setMargin(e.target.value)}
                     style={{
-                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
                       border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
                       fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}
@@ -503,7 +503,7 @@ export default function ImageToPDF({ auth }) {
                     value={pageSize}
                     onChange={(e) => setPageSize(e.target.value)}
                     style={{
-                      width: "100%", padding: "10px 12px", borderRadius: "10px",
+                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
                       border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
                       fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
                     }}

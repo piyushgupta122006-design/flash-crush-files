@@ -488,8 +488,8 @@ export default function ImageConverter({ auth }) {
             <>
               {preview && (
                 <div style={{
-                  margin: "20px 20px 0", borderRadius: "10px", overflow: "hidden",
-                  border: "1px solid var(--border)", maxHeight: "180px",
+                  margin: "20px 20px 0", borderRadius: 'var(--radius-full)', overflow: "hidden",
+                  border: 'none', maxHeight: "180px",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: "repeating-conic-gradient(rgba(168,85,247,0.06) 0% 25%, transparent 0% 50%) 0 0 / 16px 16px",
                 }}>

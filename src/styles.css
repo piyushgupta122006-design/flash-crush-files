@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════════════════
-   NEO-BRUTALISM DESIGN SYSTEM — FLASHCRUSH
-   Bold borders · Offset shadows · Bright pastels · Chunky type
+   MATERIAL DESIGN 3 SYSTEM — FLASHCRUSH
+   Soft shapes · Tonal palettes · Subtle elevation
    ═══════════════════════════════════════════════════════════════ */
 
 *, *::before, *::after {
@@ -12,100 +12,111 @@
 }
 
 :root {
-  /* Core Backgrounds — Premium Slate White */
-  --bg-void:        #F8FAFC;
-  --bg-surface:     #F1F5F9;
-  --bg-card:        #FFFFFF;
-  --bg-card-hover:  #FFFFFF;
-  --bg-card-solid:  #FFFFFF;
+  /* Core Backgrounds — True Material 3 Light */
+  --bg-void:        #FEFBFF; /* Background */
+  --bg-surface:     #F4F0F4; /* Surface Variant / Container */
+  --bg-card:        #FDF8FD; /* Surface */
+  --bg-card-hover:  #F4F0F4; /* Surface Variant */
+  --bg-card-solid:  #FDF8FD; /* Surface */
 
-  /* Brutalist Accent Palette */
-  --brutal-pink:    #FF6B9D;
-  --brutal-yellow:  #FFD93D;
-  --brutal-lavender:#D8B4FE;
-  --brutal-mint:    #6EE7B7;
-  --brutal-coral:   #FCA5A5;
-  --brutal-sky:     #7DD3FC;
-  --brutal-orange:  #FB923C;
-  --brutal-lime:    #BEF264;
+  /* M3 Accent Palette (Mapped from brutal variables to M3 Roles) */
+  --m3-pink:    #CDEBC2; /* Tertiary Container */
+  --m3-yellow:  #FFDEA5; /* Primary Container */
+  --m3-lavender:#F6DFBB; /* Secondary Container */
+  --m3-mint:    #E9F4E5; /* Light Green */
+  --m3-coral:   #FFD8E4; /* Error Container */
+  --m3-sky:     #D3E4FF; /* Blue Container */
+  --m3-orange:  #FFDCC2; /* Orange Container */
+  --m3-lime:    #E2EED9; /* Lime Container */
 
-  /* Typography Colors */
-  --text-main:      #0F172A;
-  --text-sub:       #475569;
-  --text-muted:     #64748B;
-  --text-dim:       #94A3B8;
+  /* Typography Colors - M3 Light */
+  --text-main:      #1B1B1E; /* On Surface */
+  --text-sub:       #45464F; /* On Surface Variant */
+  --text-muted:     #767680; /* Outline */
+  --text-dim:       #8F909A; /* Outline Variant */
 
-  /* Borders & Shadows — Softer Slate Black */
-  --border-color:   #0F172A;
-  --border:         3px solid #0F172A;
-  --border-thin:    2px solid #0F172A;
-  --shadow:         5px 5px 0px #0F172A;
-  --shadow-sm:      3px 3px 0px #0F172A;
-  --shadow-lg:      8px 8px 0px #0F172A;
-  --shadow-hover:   8px 8px 0px #0F172A;
+  /* M3 Typography Scale */
+  --font-display:   'Outfit', sans-serif;
+  --font-headline:  'Outfit', sans-serif;
+  --font-title:     'Outfit', sans-serif;
+  --font-label:     'Roboto', sans-serif;
+  --font-body:      'Roboto', -apple-system, sans-serif;
 
-  /* Radii — slightly rounded, not pills */
+  /* Borders & Shadows — True Material 3 Elevation */
+  --border-color:   #E4E1E6; /* Outline Variant */
+  --border: none;
+  --border-thin:    1px solid var(--border-color);
+  
+  /* M3 Elevations (1 to 5) */
+  --shadow:         0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15); /* Elevation 1 */
+  --shadow-sm:      0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15); /* Elevation 1 */
+  --shadow-md:      0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15); /* Elevation 2 */
+  --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15); /* Elevation 3 */
+  --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15); /* Elevation 4 */
+
+  /* Radii — Material 3 */
   --radius-sm:      8px;
-  --radius-md:      12px;
-  --radius-lg:      16px;
-  --radius-full:    12px;
+  --radius-md:      16px;
+  --radius-lg:      24px;
+  --radius-full:    9999px;
 
-  /* Legacy compat tokens (used by inline styles in components) */
-  --cyan-neon:      #0891B2;
-  --violet-neon:    #7C3AED;
-  --rose-neon:      #E11D48;
-  --emerald-neon:   #059669;
-  --amber-neon:     #D97706;
-  --p400:           #A78BFA;
-  --p500:           #7C3AED;
-  --p600:           #6D28D9;
+  /* Legacy compat tokens */
+  --cyan-neon:      #006874;
+  --violet-neon:    #65558F;
+  --rose-neon:      #B3261E;
+  --emerald-neon:   #006D36;
+  --amber-neon:     #7A5700;
+  --p400:           #7D5260;
+  --p500:           #6750A4;
+  --p600:           #4F378B;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DARK NEO-BRUTALISM THEME TOKENS
+   DARK THEME TOKENS - True Material 3 Dark
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="dark"] {
-  /* Core Dark Backgrounds — Deep Slate */
-  --bg-void:        #0F172A;
-  --bg-surface:     #0B1121;
-  --bg-card:        #1E293B;
-  --bg-card-hover:  #263347;
-  --bg-card-solid:  #1E293B;
+  /* Core Dark Backgrounds — M3 Dark */
+  --bg-void:        #1B1B1E; /* Background */
+  --bg-surface:     #45464F; /* Surface Variant */
+  --bg-card:        #131316; /* Surface */
+  --bg-card-hover:  #202024; /* Surface + Elevation 1 */
+  --bg-card-solid:  #131316;
 
-  /* Brutalist Accent Palette - Enhanced Vibrancy in Dark Mode */
-  --brutal-pink:    #FB7185;
-  --brutal-yellow:  #FBBF24;
-  --brutal-lavender:#C084FC;
-  --brutal-mint:    #34D399;
-  --brutal-coral:   #F87171;
-  --brutal-sky:     #38BDF8;
-  --brutal-orange:  #FB923C;
-  --brutal-lime:    #A3E635;
+  /* M3 Accent Palette - Mapped */
+  --m3-pink:    #344D2F; /* Tertiary Container */
+  --m3-yellow:  #5C4100; /* Primary Container */
+  --m3-lavender:#53452A; /* Secondary Container */
+  --m3-mint:    #1E3616; /* Green */
+  --m3-coral:   #93000A; /* Error Container */
+  --m3-sky:     #004A77; /* Blue */
+  --m3-orange:  #703800; /* Orange */
+  --m3-lime:    #354E15; /* Lime */
 
-  /* Typography Colors */
-  --text-main:      #F1F5F9;
-  --text-sub:       #94A3B8;
-  --text-muted:     #64748B;
-  --text-dim:       #475569;
+  /* Typography Colors - M3 Dark */
+  --text-main:      #E4E1E6; /* On Surface */
+  --text-sub:       #C6C5D0; /* On Surface Variant */
+  --text-muted:     #90909A; /* Outline */
+  --text-dim:       #767680; /* Outline Variant */
 
-  /* Borders & Shadows — Slate 600, deep pitch shadow */
-  --border-color:   #475569;
-  --border:         3px solid #475569;
-  --border-thin:    2px solid #475569;
-  --shadow:         5px 5px 0px #020617;
-  --shadow-sm:      3px 3px 0px #020617;
-  --shadow-lg:      8px 8px 0px #020617;
-  --shadow-hover:   8px 8px 0px #020617;
+  /* Borders & Shadows — M3 Dark Elevation */
+  --border-color:   #45464F; /* Outline Variant */
+  --border: none;
+  --border-thin:    1px solid var(--border-color);
+  --shadow:         0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --shadow-sm:      0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --shadow-md:      0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+  --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15);
 
   /* Legacy compat in Dark Mode */
-  --cyan-neon:      #22D3EE;
-  --violet-neon:    #A78BFA;
-  --rose-neon:      #FB7185;
-  --emerald-neon:   #34D399;
-  --amber-neon:     #FBBF24;
-  --p400:           #C084FC;
-  --p500:           #A855F7;
-  --p600:           #9333EA;
+  --cyan-neon:      #4FD8E9;
+  --violet-neon:    #D0BCFF;
+  --rose-neon:      #F2B8B5;
+  --emerald-neon:   #6DD58C;
+  --amber-neon:     #FABD00;
+  --p400:           #EFB8C8;
+  --p500:           #D0BCFF;
+  --p600:           #EADDFF;
 }
 
 html {
@@ -118,7 +129,7 @@ html[data-theme="dark"] {
 }
 
 body {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--bg-void);
   background-image: none;
   background-attachment: fixed;
@@ -145,7 +156,7 @@ body::before {
 ::-webkit-scrollbar-thumb {
   background: var(--text-muted);
   border-radius: var(--radius-full);
-  border: 2px solid var(--bg-surface);
+  border: none;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-sub);
@@ -153,11 +164,11 @@ body::before {
 
 /* ── A11y Focus Outlines ── */
 button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 3px solid var(--brutal-yellow);
+  outline: none;
   outline-offset: 3px;
 }
 [data-theme="dark"] button:focus-visible, [data-theme="dark"] a:focus-visible, [data-theme="dark"] input:focus-visible {
-  outline: 3px solid var(--brutal-mint);
+  outline: none;
 }
 
 /* ── Tactile Button Click States (Micro-interactions) ── */
@@ -170,8 +181,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .btn-reset:active,
 .fc-btn-save:active,
 .fc-btn-cancel:active {
-  transform: scale(0.97) !important;
-  box-shadow: 1px 1px 0px var(--border-color) !important;
+  transform: scale(0.98) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .sr-only {
@@ -243,7 +254,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .d7 { animation-delay: 560ms; }
 
 /* ═══════════════════════════════════════
-   NEO-BRUTALIST NAVBAR
+   MATERIAL NAVBAR
    ═══════════════════════════════════════ */
 .navbar {
   position: sticky;
@@ -255,7 +266,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: var(--bg-card);
   border: var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -274,7 +285,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 1.25rem;
   letter-spacing: -0.02em;
@@ -304,7 +315,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   gap: 4px;
   background: transparent;
   padding: 4px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: none;
 }
 
@@ -314,7 +325,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-weight: 600;
   color: var(--text-sub);
   padding: 7px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   transition: all 0.2s ease;
   position: relative;
   border: 2px solid transparent;
@@ -328,8 +339,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .nav-link.active {
   color: #ffffff;
-  background: var(--brutal-pink);
-  border: 2px solid var(--border-color);
+  background: var(--m3-pink);
+  border: none;
   box-shadow: var(--shadow-sm);
 }
 
@@ -348,7 +359,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-weight: 600;
   color: var(--text-sub);
   padding: 7px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -362,8 +373,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .nav-dropdown-trigger.active {
   color: #ffffff;
-  background: var(--brutal-pink);
-  border: 2px solid var(--border-color);
+  background: var(--m3-pink);
+  border: none;
   box-shadow: var(--shadow-sm);
 }
 
@@ -377,18 +388,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border: var(--border);
   border-radius: var(--radius-lg);
   padding: 16px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   z-index: 1100;
   animation: navMenuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes navMenuFadeIn {
-  from { opacity: 0; transform: translate(-50%, -8px) scale(0.96); }
-  to   { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  from { opacity: 0; transform: none scale(0.96); }
+  to   { opacity: 1; transform: none scale(1); }
 }
 
 .nav-category-header {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -420,12 +431,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .nav-category-item:hover {
   background: var(--bg-surface);
   border-color: var(--border-color);
-  transform: translate(-2px, -2px);
+  
   box-shadow: var(--shadow-sm);
 }
 
 .nav-category-item.active-item {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
@@ -439,7 +450,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   justify-content: center;
   background: var(--bg-surface);
-  border-radius: 6px;
+  border-radius: 16px;
 }
 
 .nav-cat-label {
@@ -463,12 +474,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 /* Mobile Hamburger & Drawer */
 .mobile-hamburger-btn {
   display: none;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border: var(--border-thin);
   color: var(--text-main);
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   font-size: 18px;
   align-items: center;
   justify-content: center;
@@ -478,8 +489,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .mobile-hamburger-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .mobile-nav-overlay {
@@ -506,7 +517,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .mobile-nav-section-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -544,10 +555,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .mobile-nav-item.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: var(--text-main);
   font-weight: 700;
-  border: 2px solid var(--border-color);
+  border: none;
   box-shadow: var(--shadow-sm);
 }
 
@@ -559,27 +570,27 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     margin: 0 auto !important;
     padding: 6px 10px !important;
     gap: 8px !important;
-    border-radius: var(--radius-md) !important;
+    border-radius: var(--radius-full) !important;
     box-sizing: border-box !important;
   }
   .desktop-nav {
     display: none !important;
   }
-  .mobile-hamburger-btn {
-    display: flex !important;
+  .mobile-hamburger-btn {display: flex !important;
     width: 32px !important;
     height: 32px !important;
     font-size: 16px !important;
     flex-shrink: 0 !important;
-  }
-  .nav-install-btn {
-    display: none !important;
-  }
-  .btn-nav-signin {
-    padding: 6px 10px !important;
+  border-radius: var(--radius-full);
+}
+  .nav-install-btn {display: none !important;
+  border-radius: var(--radius-full);
+}
+  .btn-nav-signin {padding: 6px 10px !important;
     font-size: 0.78rem !important;
     gap: 5px !important;
-  }
+  border-radius: var(--radius-full);
+}
   .btn-nav-signin .signin-text-full {
     display: none !important;
   }
@@ -592,18 +603,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   .theme-text-full {
     display: none !important;
   }
-  .nav-history-btn {
-    padding: 6px 8px !important;
+  .nav-history-btn {padding: 6px 8px !important;
     gap: 3px !important;
     font-size: 11px !important;
     flex-shrink: 0 !important;
-  }
-  .nav-theme-btn {
-    padding: 6px 8px !important;
+  border-radius: var(--radius-full);
+}
+  .nav-theme-btn {padding: 6px 8px !important;
     gap: 3px !important;
     font-size: 12px !important;
     flex-shrink: 0 !important;
-  }
+  border-radius: var(--radius-full);
+}
   .nav-user {
     padding: 2px 6px 2px 2px !important;
     gap: 4px !important;
@@ -640,16 +651,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     font-size: 0.92rem !important;
     gap: 4px !important;
   }
-  .btn-nav-signin {
-    padding: 5px 8px !important;
+  .btn-nav-signin {padding: 5px 8px !important;
     font-size: 0.74rem !important;
-  }
-  .nav-history-btn {
-    padding: 5px 6px !important;
-  }
-  .nav-theme-btn {
-    padding: 5px 6px !important;
-  }
+  border-radius: var(--radius-full);
+}
+  .nav-history-btn {padding: 5px 6px !important;
+  border-radius: var(--radius-full);
+}
+  .nav-theme-btn {padding: 5px 6px !important;
+  border-radius: var(--radius-full);
+}
 }
 
 .navbar-right {
@@ -662,11 +673,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   gap: 9px;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: var(--text-main);
   border: var(--border-thin);
   padding: 8px 18px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.86rem;
   font-weight: 700;
   cursor: pointer;
@@ -676,8 +687,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .btn-nav-signin:hover {
   background: #FFC107;
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-nav-signin:disabled {
@@ -693,15 +704,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 4px 12px 4px 4px;
   background: var(--bg-card);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.15s ease;
   box-shadow: var(--shadow-sm);
 }
 
 .nav-user:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-avatar {
@@ -709,7 +720,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   height: 32px;
   border-radius: var(--radius-sm);
   object-fit: cover;
-  border: 2px solid var(--border-color);
+  border: none;
 }
 
 .nav-chevron {
@@ -724,9 +735,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 250px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 16px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   z-index: 1001;
 }
 
@@ -754,7 +765,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--brutal-coral);
+  background: var(--m3-coral);
   border: var(--border-thin);
   color: var(--text-main);
   padding: 9px 14px;
@@ -769,8 +780,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .nav-dropdown-logout:hover {
   background: #EF4444;
   color: #fff;
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-signin-error {
@@ -781,9 +792,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border: var(--border-thin);
   color: #B91C1C;
   padding: 10px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.82rem;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   white-space: normal;
   max-width: 320px;
   z-index: 1002;
@@ -794,11 +805,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--brutal-mint);
+  background: var(--m3-mint);
   color: var(--text-main);
   border: var(--border-thin);
   padding: 7px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -807,19 +818,19 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .nav-install-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-history-btn {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: var(--brutal-lavender);
+  background: var(--m3-lavender);
   color: var(--text-main);
   border: var(--border-thin);
   padding: 7px 12px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -828,8 +839,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .nav-history-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 /* Theme Toggle Button & Dropdown Menu */
@@ -845,7 +856,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   color: var(--text-main);
   border: var(--border-thin);
   padding: 7px 11px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
@@ -856,9 +867,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .nav-theme-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  background: var(--m3-yellow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-theme-dropdown {
@@ -868,9 +879,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 175px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 6px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   z-index: 1200;
   display: flex;
   flex-direction: column;
@@ -899,11 +910,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .nav-theme-option:hover {
   background: var(--bg-surface);
   border-color: var(--border-color);
-  transform: translate(-1px, -1px);
+  
 }
 
 .nav-theme-option.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: #1a1a1a;
   border-color: var(--border-color);
   box-shadow: 2px 2px 0px var(--border-color);
@@ -917,7 +928,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 6px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   margin-top: 4px;
   margin-bottom: 8px;
 }
@@ -929,7 +940,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   justify-content: center;
   gap: 4px;
   padding: 8px 4px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   background: transparent;
   border: 2px solid transparent;
   font-size: 0.76rem;
@@ -946,7 +957,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .mobile-theme-btn.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: #1a1a1a;
   border-color: var(--border-color);
   box-shadow: 2px 2px 0px var(--border-color);
@@ -969,9 +980,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   gap: 8px;
   padding: 8px 20px;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -985,13 +996,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--brutal-pink);
-  border: 1px solid var(--border-color);
+  background: var(--m3-pink);
+  border: none;
   animation: pulseGlow 2s infinite;
 }
 
 .hero-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(2.6rem, 5.5vw, 4.4rem);
   font-weight: 700;
   line-height: 1.12;
@@ -1001,14 +1012,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .hero-title-gradient {
-  color: var(--brutal-pink);
+  color: var(--m3-pink);
   background: none;
   -webkit-background-clip: unset;
   -webkit-text-fill-color: unset;
   background-clip: unset;
   animation: none;
   text-decoration: underline;
-  text-decoration-color: var(--brutal-yellow);
+  text-decoration-color: var(--m3-yellow);
   text-decoration-thickness: 6px;
   text-underline-offset: 4px;
 }
@@ -1040,18 +1051,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   color: #FFFFFF;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   padding: 15px 32px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: var(--border);
   cursor: pointer;
   transition: all 0.15s ease;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
   text-decoration: none;
@@ -1062,8 +1073,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .hero-btn-image:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-lg);
+  
+  box-shadow: var(--shadow-md);
 }
 
 .hero-btn-image:hover::before {
@@ -1075,18 +1086,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: var(--text-main);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   padding: 14px 30px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: var(--border);
   cursor: pointer;
   transition: all 0.15s ease;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
   text-decoration: none;
@@ -1099,15 +1110,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .hero-btn-pdf:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-lg);
+  
+  box-shadow: var(--shadow-md);
 }
 
 /* Common Icon Wrap & Arrow */
 .hero-btn-icon-wrap {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.25);
   border: 2px solid rgba(0, 0, 0, 0.2);
   display: flex;
@@ -1118,21 +1129,21 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .hero-btn-image:hover .hero-btn-icon-wrap,
-.hero-btn-pdf:hover .hero-btn-icon-wrap {
-  transform: rotate(-8deg) scale(1.1);
+.hero-btn-pdf:hover .hero-btn-icon-wrap {transform: rotate(-8deg) scale(1.1);
+  border-radius: var(--radius-full);
 }
 
-.hero-btn-arrow {
-  font-size: 1.1rem;
+.hero-btn-arrow {font-size: 1.1rem;
   font-weight: 800;
   margin-left: 2px;
   transition: transform 0.2s ease;
   display: inline-block;
+  border-radius: var(--radius-full);
 }
 
 .hero-btn-image:hover .hero-btn-arrow,
-.hero-btn-pdf:hover .hero-btn-arrow {
-  transform: translateX(4px);
+.hero-btn-pdf:hover .hero-btn-arrow {transform: translateX(4px);
+  border-radius: var(--radius-full);
 }
 
 .hero-stats-bar {
@@ -1145,7 +1156,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: var(--bg-card);
   border: var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-item {
@@ -1156,7 +1167,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .stat-num {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--text-main);
@@ -1200,7 +1211,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   cursor: pointer;
   transition: all 0.15s ease;
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Remove holographic border trail */
@@ -1209,8 +1220,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .tool-card:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: var(--shadow-lg);
+  
+  box-shadow: var(--shadow-md);
 }
 
 .tool-card:hover::before {
@@ -1276,7 +1287,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .tool-card-icon-wrap {
   width: 58px;
   height: 58px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1293,7 +1304,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .tool-card-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-main);
@@ -1318,10 +1329,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .tool-tag {
   font-size: 0.72rem;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   padding: 4px 10px;
-  background: var(--brutal-yellow);
-  border: 2px solid var(--border-color);
+  background: var(--m3-yellow);
+  border: none;
   border-radius: var(--radius-sm);
   color: var(--text-main) !important;
 }
@@ -1347,7 +1358,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   justify-content: center;
   font-size: 0.9rem;
   transition: transform 0.15s ease;
-  border: 2px solid var(--border-color);
+  border: none;
 }
 
 .tool-card-cta-arrow svg {
@@ -1379,7 +1390,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 10px 18px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1388,7 +1399,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border: var(--border-thin);
   color: var(--text-main);
   padding: 6px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
@@ -1398,13 +1409,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .back-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-2px, -2px);
+  background: var(--m3-yellow);
+  
   box-shadow: var(--shadow-sm);
 }
 
 .tool-page-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-main);
@@ -1412,13 +1423,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .tool-page-meta {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 0.78rem;
   color: var(--text-sub);
   background: var(--bg-surface);
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  border: 2px solid #e5e5e5;
+  border: none;
 }
 
 /* Mobile: Compress the tool-page-bar, buttons, and title for narrow screens */
@@ -1428,11 +1439,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     gap: 6px;
     margin-bottom: 16px;
   }
-  .back-btn {
-    padding: 4px 10px;
+  .back-btn {padding: 4px 10px;
     font-size: 0.76rem;
     white-space: nowrap;
-  }
+  border-radius: var(--radius-full);
+}
   .tool-page-title {
     font-size: 0.78rem;
     flex: 1;
@@ -1475,25 +1486,25 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border: var(--border-thin);
   box-shadow: var(--shadow-sm);
 }
 
 .comp-icon-badge.pdf {
-  background: var(--brutal-coral);
+  background: var(--m3-coral);
 }
 
 .comp-icon-badge.img {
-  background: var(--brutal-lavender);
+  background: var(--m3-lavender);
 }
 
 .comp-icon-badge.convert {
-  background: var(--brutal-sky);
+  background: var(--m3-sky);
 }
 
 .comp-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(1.7rem, 4vw, 2.3rem);
   font-weight: 700;
   color: var(--text-main);
@@ -1512,7 +1523,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: var(--bg-card);
   border: var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   width: 100%;
   max-width: 680px;
   overflow: hidden;
@@ -1525,7 +1536,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 6px;
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
@@ -1534,7 +1545,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 48px 24px;
   text-align: center;
   border: 3px dashed var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   margin: 20px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1544,9 +1555,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .drop-zone:hover, .drop-zone.dragging {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border-style: solid;
-  transform: translate(-2px, -2px);
+  
   box-shadow: var(--shadow-sm);
 }
 
@@ -1558,7 +1569,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .drop-main {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
@@ -1571,22 +1582,22 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   margin-bottom: 22px;
 }
 
-.drop-btn-row {
-  display: flex;
+.drop-btn-row {display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  border-radius: var(--radius-full);
 }
 
 .drop-btn {
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   color: #FFFFFF;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 700;
   padding: 11px 22px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: var(--border-thin);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1594,19 +1605,19 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .drop-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .drop-btn-drive {
   background: var(--bg-card);
   color: var(--text-main);
   border: var(--border-thin);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 700;
   padding: 10px 20px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1618,8 +1629,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .drop-btn-drive:hover:not(:disabled) {
   background: var(--bg-surface);
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .drop-btn-drive:disabled {
@@ -1636,7 +1647,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   margin: 20px 20px 0;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
 }
 
 .file-icon {
@@ -1658,19 +1669,19 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .file-size {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 0.78rem;
   color: var(--text-sub);
   margin-top: 2px;
 }
 
 .close-btn {
-  background: var(--brutal-coral);
+  background: var(--m3-coral);
   border: var(--border-thin);
   color: var(--text-main);
   width: 28px;
   height: 28px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1683,7 +1694,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .close-btn:hover {
   background: #EF4444;
   color: #fff;
-  transform: translate(-1px, -1px);
+  
   box-shadow: var(--shadow-sm);
 }
 
@@ -1713,7 +1724,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .level-btn {
   background: var(--bg-card);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 14px 10px;
   text-align: center;
   cursor: pointer;
@@ -1729,24 +1740,24 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .level-btn:hover {
   background: var(--bg-surface);
-  transform: translate(-2px, -2px);
+  
   box-shadow: var(--shadow-sm);
 }
 
 .level-btn.active-pdf {
-  background: var(--brutal-coral);
+  background: var(--m3-coral);
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
 .level-btn.active-img {
-  background: var(--brutal-lavender);
+  background: var(--m3-lavender);
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
 .level-btn.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
@@ -1773,21 +1784,21 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 100%;
   background: var(--text-main);
   color: var(--bg-card);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 700;
   padding: 14px 24px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: var(--border);
   cursor: pointer;
   transition: all 0.15s ease;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-compress:hover:not(:disabled) {
   background: #374151;
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow-lg);
+  
+  box-shadow: var(--shadow-md);
 }
 
 .btn-compress:disabled {
@@ -1816,10 +1827,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .progress-pct {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 1rem;
-  color: var(--brutal-pink);
+  color: var(--m3-pink);
 }
 
 .progress-track {
@@ -1828,12 +1839,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-radius: var(--radius-sm);
   overflow: hidden;
   margin-bottom: 8px;
-  border: 2px solid var(--border-color);
+  border: none;
 }
 
 .progress-bar {
   height: 100%;
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   border-radius: var(--radius-sm);
   transition: width 0.2s ease;
 }
@@ -1849,7 +1860,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 24px 20px;
   background: #ECFDF5;
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   text-align: center;
   box-shadow: var(--shadow-sm);
 }
@@ -1873,7 +1884,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .result-val-orig {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 1.05rem;
   color: var(--text-muted);
   text-decoration: line-through;
@@ -1886,7 +1897,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .result-val-comp {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 1.35rem;
   font-weight: 700;
   color: #059669;
@@ -1896,13 +1907,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .result-badge {
   display: inline-flex;
   padding: 6px 16px;
-  background: var(--brutal-mint);
+  background: var(--m3-mint);
   border: var(--border-thin);
   border-radius: var(--radius-sm);
   color: var(--text-main);
   font-weight: 700;
   font-size: 0.85rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1915,13 +1926,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .btn-download {
-  background: var(--brutal-mint);
+  background: var(--m3-mint);
   color: var(--text-main);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 700;
   padding: 13px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   border: var(--border-thin);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1933,19 +1944,19 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .btn-download:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-drive-upload {
   background: #FFFFFF;
   color: var(--text-main);
   border: var(--border-thin);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 700;
   padding: 12px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.15s ease;
   box-shadow: 2px 2px 0 var(--border-color);
@@ -1953,7 +1964,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .btn-drive-upload:hover:not(:disabled) {
   background: var(--bg-surface);
-  transform: translate(-2px, -2px);
+  
   box-shadow: var(--shadow-sm);
 }
 
@@ -1967,11 +1978,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: transparent;
   color: var(--text-sub);
   border: var(--border-thin);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.88rem;
   font-weight: 600;
   padding: 11px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.15s ease;
   box-shadow: 2px 2px 0 var(--border-color);
@@ -1981,12 +1992,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .btn-reset:hover {
   color: var(--text-main);
   background: var(--bg-surface);
-  transform: translate(-1px, -1px);
+  
   box-shadow: var(--shadow-sm);
 }
 
 .btn-share.shared {
-  background: var(--brutal-mint) !important;
+  background: var(--m3-mint) !important;
   color: #1a1a1a !important;
   border-color: var(--border-color) !important;
   box-shadow: 2px 2px 0 var(--border-color);
@@ -1996,7 +2007,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .drive-feedback {
   font-size: 0.82rem;
   padding: 10px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   margin-top: 4px;
   text-align: center;
 }
@@ -2018,7 +2029,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border: var(--border-thin);
   color: #B91C1C;
   padding: 10px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
   margin-top: 14px;
 }
@@ -2084,7 +2095,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
    PWA OFFLINE BANNER
    ═══════════════════════════════════════ */
 .pwa-offline-banner {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: var(--text-main);
   text-align: center;
   padding: 8px 16px;
@@ -2100,7 +2111,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 /* Tablet & small desktops */
 @media (max-width: 960px) {
   .navbar {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-full);
   }
   .navbar-links {
     gap: 2px;
@@ -2137,7 +2148,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     max-width: calc(100% - 20px);
     margin: 0 auto;
     padding: 7px 12px;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-full);
     box-sizing: border-box;
     position: sticky;
   }
@@ -2162,11 +2173,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   .signin-text-short {
     display: inline;
   }
-  .btn-nav-signin {
-    padding: 7px 14px;
+  .btn-nav-signin {padding: 7px 14px;
     font-size: 0.82rem;
     gap: 6px;
-  }
+  border-radius: var(--radius-full);
+}
 
   /* Nav user avatar */
   .nav-avatar {
@@ -2229,12 +2240,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     width: 100%;
   }
   .hero-btn-image,
-  .hero-btn-pdf {
-    width: 100%;
+  .hero-btn-pdf {width: 100%;
     justify-content: center;
     padding: 14px 20px;
     font-size: 0.95rem;
-  }
+  border-radius: var(--radius-full);
+}
 
   /* Hero stats */
   .hero-stats-bar {
@@ -2295,14 +2306,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     font-size: 0.8rem;
     margin-bottom: 16px;
   }
-  .drop-btn-row {
-    flex-direction: column;
+  .drop-btn-row {flex-direction: column;
     gap: 10px;
-  }
-  .drop-btn, .drop-btn-drive {
-    width: 100%;
+  border-radius: var(--radius-full);
+}
+  .drop-btn, .drop-btn-drive {width: 100%;
     justify-content: center;
-  }
+  border-radius: var(--radius-full);
+}
 
   /* Controls card */
   .tool-controls-card {
@@ -2411,7 +2422,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 12px 16px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
   position: relative;
 }
@@ -2424,7 +2435,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 8px 14px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 700;
@@ -2435,9 +2446,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .ocr-lang-selector:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shadow);
+  background: var(--m3-yellow);
+  
+  box-shadow: var(--shadow-sm);
 }
 
 .ocr-lang-dropdown {
@@ -2449,9 +2460,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   overflow-y: auto;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 6px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   z-index: 1200;
   display: flex;
   flex-direction: column;
@@ -2483,7 +2494,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .ocr-lang-option.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: #1a1a1a;
   border-color: var(--border-color);
   box-shadow: 2px 2px 0px var(--border-color);
@@ -2500,15 +2511,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   height: 14px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   overflow: hidden;
   box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .ocr-progress-fill {
   height: 100%;
-  background: var(--brutal-sky);
-  border-radius: var(--radius-md);
+  background: var(--m3-sky);
+  border-radius: var(--radius-full);
   transition: width 0.3s ease;
   background-image: repeating-linear-gradient(
     45deg,
@@ -2539,7 +2550,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   margin-bottom: 14px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 10px 14px;
   box-shadow: var(--shadow-sm);
 }
@@ -2566,12 +2577,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .ocr-page-strip-scroll::-webkit-scrollbar-track {
   background: var(--bg-surface);
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .ocr-page-strip-scroll::-webkit-scrollbar-thumb {
   background: var(--text-muted);
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .ocr-page-thumb {
@@ -2595,14 +2606,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .ocr-page-thumb:hover {
-  transform: translate(-2px, -2px);
+  
   box-shadow: var(--shadow-sm);
 }
 
 .ocr-page-thumb.active {
-  border-color: var(--brutal-sky);
+  border-color: var(--m3-sky);
   border-width: 3px;
-  box-shadow: 3px 3px 0px var(--brutal-sky);
+  box-shadow: 3px 3px 0px var(--m3-sky);
 }
 
 .ocr-page-num {
@@ -2614,8 +2625,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 9px;
   font-weight: 800;
   padding: 1px 5px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  border-radius: 16px;
+  font-family: var(--font-body);
 }
 
 /* Split Layout */
@@ -2636,7 +2647,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .ocr-preview-pane {
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -2678,7 +2689,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .ocr-text-pane {
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -2698,12 +2709,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .ocr-confidence-badge {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 800;
   padding: 3px 10px;
   border-radius: var(--radius-sm);
-  border: 2px solid var(--border-color);
+  border: none;
   color: #1a1a1a;
 }
 
@@ -2711,7 +2722,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   flex: 1;
   min-height: 280px;
   padding: 14px;
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--text-main);
@@ -2737,7 +2748,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-weight: 700;
   color: var(--text-sub);
   background: var(--bg-surface);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
 }
 
 /* Export Bar */
@@ -2748,7 +2759,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 12px 16px;
   background: var(--bg-card);
   border: var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
   align-items: center;
 }
@@ -2760,7 +2771,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 8px 16px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--text-main);
@@ -2771,8 +2782,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .ocr-export-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-2px, -2px);
+  background: var(--m3-yellow);
+  
   box-shadow: var(--shadow-sm);
 }
 
@@ -2786,7 +2797,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 6px 10px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--text-main);
@@ -2797,8 +2808,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .nav-cmd-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-1px, -1px);
+  background: var(--m3-yellow);
+  
   box-shadow: var(--shadow-sm);
 }
 
@@ -2808,9 +2819,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 1px 5px;
   font-size: 10px;
   font-weight: 800;
-  border-radius: 4px;
+  border-radius: 16px;
   box-shadow: 1px 1px 0px var(--border-color);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
 }
 
 /* Command Palette Modal Overlay */
@@ -2843,7 +2854,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 100%;
   max-width: 620px;
   background: var(--bg-card);
-  border: 3px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-lg);
   box-shadow: 8px 8px 0px var(--border-color);
   overflow: hidden;
@@ -2890,7 +2901,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   color: var(--text-muted);
   cursor: pointer;
   padding: 4px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-full);
 }
 
 .cmd-clear-btn:hover {
@@ -2900,14 +2911,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .cmd-esc-badge {
   background: var(--bg-card);
-  border: 2px solid var(--border-color);
+  border: none;
   font-size: 10px;
   font-weight: 800;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 16px;
   box-shadow: 1px 1px 0px var(--border-color);
   cursor: pointer;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   color: var(--text-main);
 }
 
@@ -2926,7 +2937,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
   border: 2px solid transparent;
   transition: all 0.1s ease;
@@ -2935,10 +2946,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .cmd-item:hover,
 .cmd-item.active {
-  background: var(--brutal-yellow) !important;
+  background: var(--m3-yellow) !important;
   border-color: #1a1a1a !important;
   box-shadow: 2px 2px 0px #1a1a1a;
-  transform: translate(-1px, -1px);
+  
   color: #1a1a1a !important;
 }
 
@@ -2984,7 +2995,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 10px;
   font-weight: 800;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: 16px;
   border: 1.5px solid #1a1a1a;
   color: #1a1a1a;
   text-transform: uppercase;
@@ -3049,10 +3060,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .cmd-mini-kbd {
   display: inline-block;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: none;
   padding: 1px 4px;
-  border-radius: 3px;
-  font-family: 'JetBrains Mono', monospace;
+  border-radius: 16px;
+  font-family: var(--font-body);
   font-size: 10px;
   margin-right: 3px;
   color: var(--text-main);
@@ -3099,7 +3110,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   max-width: 620px;
   max-height: 90vh;
   background: var(--bg-card);
-  border: 3px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-lg);
   box-shadow: 8px 8px 0px var(--border-color);
   display: flex;
@@ -3120,12 +3131,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .clipboard-modal-badge {
   display: inline-block;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border: 1.5px solid #1a1a1a;
   font-size: 10px;
   font-weight: 900;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 16px;
   box-shadow: 1px 1px 0px #1a1a1a;
   color: #1a1a1a;
   margin-bottom: 6px;
@@ -3141,8 +3152,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .clipboard-close-btn {
   background: transparent;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 800;
   width: 32px;
@@ -3156,8 +3167,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .clipboard-close-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-1px, -1px);
+  background: var(--m3-yellow);
+  
 }
 
 .clipboard-file-info-card {
@@ -3172,8 +3183,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .clipboard-thumb-wrap {
   width: 64px;
   height: 64px;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   overflow: hidden;
   background: #fff;
   display: flex;
@@ -3216,12 +3227,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .clipboard-meta-pill {
   background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  border: none;
   font-size: 10px;
   font-weight: 700;
   padding: 1px 6px;
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace;
+  border-radius: 16px;
+  font-family: var(--font-body);
   color: var(--text-main);
 }
 
@@ -3256,8 +3267,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   gap: 10px;
   padding: 10px 12px;
   background: var(--bg-surface);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
   text-align: left;
   transition: all 0.12s ease;
@@ -3267,8 +3278,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .clipboard-tool-btn:hover {
-  background: var(--brutal-yellow);
-  transform: translate(-1px, -1px);
+  background: var(--m3-yellow);
+  
   box-shadow: 3px 3px 0px var(--border-color);
   color: #1a1a1a;
 }
@@ -3327,7 +3338,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .clipboard-cancel-btn {
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 4px 12px;
   font-weight: 700;
   font-size: 0.8rem;
@@ -3337,7 +3348,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .clipboard-cancel-btn:hover {
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   color: #1a1a1a;
 }
 
@@ -3346,12 +3357,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: #1a1a1a;
   border: 2.5px solid #1a1a1a;
   box-shadow: 4px 4px 0px #1a1a1a;
   padding: 10px 20px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-weight: 800;
   font-size: 0.9rem;
   z-index: 10000;
@@ -3391,7 +3402,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 12px 18px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
 }
 
 .vc-file-name-wrap {
@@ -3401,10 +3412,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .vc-type-badge {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border: 1.5px solid #1a1a1a;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 16px;
   font-weight: 900;
   font-size: 11px;
   color: #1a1a1a;
@@ -3427,11 +3438,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-meta-pill {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: none;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 16px;
   font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   color: var(--text-muted);
 }
 
@@ -3442,7 +3453,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .vc-btn-change {
   background: transparent;
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 4px 10px;
   font-size: 11px;
   font-weight: 700;
@@ -3452,7 +3463,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .vc-btn-change:hover {
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   color: #1a1a1a;
 }
 
@@ -3475,8 +3486,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-video-container {
   background: #000;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   aspect-ratio: 16/9;
@@ -3495,7 +3506,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   margin-top: 14px;
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 14px;
 }
 
@@ -3516,7 +3527,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-range-slider {
   width: 100%;
-  accent-color: var(--brutal-yellow);
+  accent-color: var(--m3-yellow);
   cursor: pointer;
 }
 
@@ -3553,8 +3564,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   gap: 12px;
   padding: 12px;
   background: var(--bg-surface);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.15s ease;
   box-shadow: 2px 2px 0px var(--border-color);
@@ -3562,10 +3573,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-preset-card:hover,
 .vc-preset-card.active {
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   border-color: #1a1a1a;
   box-shadow: 3px 3px 0px #1a1a1a;
-  transform: translate(-1px, -1px);
+  
   color: #1a1a1a;
 }
 
@@ -3593,7 +3604,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .vc-custom-box {
   background: var(--bg-surface);
   border: var(--border-thin);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 14px;
   margin-bottom: 16px;
 }
@@ -3622,8 +3633,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .vc-select {
   width: 100%;
   padding: 8px 10px;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   background: var(--bg-card);
   font-weight: 700;
   color: var(--text-main);
@@ -3648,9 +3659,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .btn-start-compress {
   width: 100%;
   padding: 14px;
-  background: var(--brutal-yellow);
-  border: 3px solid #1a1a1a;
-  border-radius: var(--radius-md);
+  background: var(--m3-yellow);
+  border: none;
+  border-radius: var(--radius-full);
   font-weight: 900;
   font-size: 1rem;
   color: #1a1a1a;
@@ -3661,14 +3672,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .btn-start-compress:hover {
-  transform: translate(-2px, -2px);
+  
   box-shadow: 6px 6px 0px #1a1a1a;
 }
 
 .vc-progress-box {
   background: var(--bg-surface);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 16px;
   text-align: center;
   display: flex;
@@ -3685,7 +3696,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .vc-progress-pct {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-weight: 900;
 }
 
@@ -3693,14 +3704,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 100%;
   height: 16px;
   background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: 999px;
+  border: none;
+  border-radius: 16px;
   overflow: hidden;
 }
 
 .vc-progress-fill {
   height: 100%;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   transition: width 0.1s linear;
 }
 
@@ -3708,7 +3719,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-self: center;
   background: transparent;
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   padding: 4px 12px;
   font-size: 0.78rem;
   font-weight: 700;
@@ -3717,7 +3728,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .vc-btn-cancel:hover {
-  background: var(--brutal-pink);
+  background: var(--m3-pink);
   color: #1a1a1a;
 }
 
@@ -3725,8 +3736,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   margin-top: 10px;
   padding: 18px;
   background: var(--bg-surface);
-  border: 3px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   box-shadow: 4px 4px 0px var(--border-color);
   display: flex;
   flex-direction: column;
@@ -3764,7 +3775,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: #10b981;
   color: #fff;
   border: 1.5px solid #1a1a1a;
-  border-radius: 4px;
+  border-radius: 16px;
   padding: 2px 8px;
   font-size: 11px;
   font-weight: 900;
@@ -3773,11 +3784,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-badge-new {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: none;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 16px;
   font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-weight: 700;
   color: var(--text-main);
 }
@@ -3785,8 +3796,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .btn-download-video {
   background: #10b981;
   color: #ffffff;
-  border: 2px solid #1a1a1a;
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 10px 20px;
   font-weight: 900;
   font-size: 0.95rem;
@@ -3797,14 +3808,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .btn-download-video:hover {
-  transform: translate(-2px, -2px);
+  
   box-shadow: 5px 5px 0px #1a1a1a;
 }
 
 .vc-result-player-wrap {
   background: #000;
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   overflow: hidden;
   max-height: 420px;
   display: flex;
@@ -3820,10 +3831,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-error-banner {
   background: #fee2e2;
-  border: 2px solid #ef4444;
+  border: none;
   color: #b91c1c;
   padding: 12px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 0.88rem;
 }
@@ -3836,7 +3847,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   padding: 24px;
   background: var(--bg-surface);
   border: 2.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   box-shadow: 3px 3px 0px var(--border-color);
 }
 
@@ -3881,8 +3892,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   align-items: center;
   padding: 12px 20px;
   background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   box-shadow: 2px 2px 0px var(--border-color);
   min-width: 140px;
 }
@@ -3900,7 +3911,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-weight: 800;
   color: var(--text-muted);
   text-decoration: line-through;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   margin-top: 3px;
 }
 
@@ -3908,12 +3919,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 1.15rem;
   font-weight: 900;
   color: var(--text-main);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   margin-top: 3px;
 }
 
 .vc-stat-card-highlight {
-  background: var(--brutal-yellow) !important;
+  background: var(--m3-yellow) !important;
   border-color: #1a1a1a !important;
   box-shadow: 3px 3px 0px #1a1a1a !important;
 }
@@ -3922,7 +3933,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 1.25rem;
   font-weight: 900;
   color: #1a1a1a;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   margin-top: 3px;
 }
 
@@ -3944,8 +3955,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .btn-download-video-large {
   background: #10b981;
   color: #ffffff;
-  border: 3px solid #1a1a1a;
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 14px 28px;
   font-weight: 900;
   font-size: 1rem;
@@ -3956,15 +3967,15 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .btn-download-video-large:hover {
-  transform: translate(-2px, -2px);
+  
   box-shadow: 6px 6px 0px #1a1a1a;
 }
 
 .vc-btn-secondary {
   background: var(--bg-card);
   color: var(--text-main);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 12px 18px;
   font-weight: 800;
   font-size: 0.88rem;
@@ -3976,7 +3987,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .vc-btn-secondary:hover {
   background: var(--bg-surface);
-  transform: translate(-1px, -1px);
+  
   box-shadow: 3px 3px 0px var(--border-color);
 }
 
@@ -4033,7 +4044,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   min-width: 0;
   box-sizing: border-box;
   background: var(--bg-card);
-  border: 3px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-lg);
   box-shadow: 4px 4px 0px var(--border-color);
   padding: 24px;
@@ -4066,16 +4077,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     gap: 8px;
     margin-top: 10px;
   }
-  .scanner-shutter-btn {
-    padding: 10px 22px;
+  .scanner-shutter-btn {padding: 10px 22px;
     font-size: 0.92rem;
     box-shadow: 3px 3px 0px #1a1a1a;
-  }
-  .scanner-icon-btn, .scanner-action-btn {
-    padding: 6px 10px;
+  border-radius: var(--radius-full);
+}
+  .scanner-icon-btn, .scanner-action-btn {padding: 6px 10px;
     font-size: 0.78rem;
     box-shadow: 1.5px 1.5px 0px var(--border-color);
-  }
+  border-radius: var(--radius-full);
+}
   .scanner-filter-pills {
     gap: 6px;
   }
@@ -4092,11 +4103,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     flex: 0 0 68px;
     height: 90px;
   }
-  .scanner-btn-export-pdf {
-    padding: 12px 20px;
+  .scanner-btn-export-pdf {padding: 12px 20px;
     font-size: 0.92rem;
     box-shadow: 3px 3px 0px #1a1a1a;
-  }
+  border-radius: var(--radius-full);
+}
   .scanner-bottom-section {
     margin-top: 16px;
     padding-top: 12px;
@@ -4108,7 +4119,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   aspect-ratio: 4/3;
   background: #111827;
   border: 2.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   overflow: hidden;
   position: relative;
   display: flex;
@@ -4142,7 +4153,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   width: 88%;
   height: 86%;
   border: 2px dashed rgba(255, 255, 255, 0.7);
-  border-radius: 8px;
+  border-radius: 16px;
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -4156,7 +4167,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: 0.75rem;
   font-weight: 800;
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -4201,10 +4212,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--brutal-yellow);
+  background: var(--m3-yellow);
   color: #1a1a1a;
-  border: 3px solid #1a1a1a;
-  border-radius: var(--radius-pill, 9999px);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 12px 28px;
   font-weight: 900;
   font-size: 1rem;
@@ -4215,28 +4226,28 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .scanner-shutter-btn:hover {
-  transform: translate(-2px, -2px);
+  
   box-shadow: 6px 6px 0px #1a1a1a;
 }
 
 .scanner-shutter-btn:active {
-  transform: translate(2px, 2px);
+  
   box-shadow: 2px 2px 0px #1a1a1a;
 }
 
-.scanner-secondary-btns {
-  display: flex;
+.scanner-secondary-btns {display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
+  border-radius: var(--radius-full);
 }
 
 .scanner-icon-btn, .scanner-action-btn {
   background: var(--bg-surface);
   color: var(--text-main);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 8px 14px;
   font-weight: 800;
   font-size: 0.82rem;
@@ -4248,7 +4259,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .scanner-icon-btn:hover, .scanner-action-btn:hover {
   background: var(--bg-card);
-  transform: translate(-1px, -1px);
+  
   box-shadow: 3px 3px 0px var(--border-color);
 }
 
@@ -4271,7 +4282,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: var(--bg-surface);
   color: var(--text-main);
   border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   padding: 4px 10px;
   font-size: 0.78rem;
   font-weight: 800;
@@ -4281,14 +4292,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .scanner-mini-btn:hover {
-  transform: translate(-1px, -1px);
+  
   box-shadow: 2.5px 2.5px 0px var(--border-color);
 }
 
-.scanner-btn-danger {
-  background: #fee2e2 !important;
+.scanner-btn-danger {background: #fee2e2 !important;
   color: #b91c1c !important;
   border-color: #ef4444 !important;
+  border-radius: var(--radius-full);
 }
 
 .scanner-active-image-wrap {
@@ -4296,7 +4307,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   aspect-ratio: 4/3;
   background: var(--bg-surface);
   border: 2.5px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   box-shadow: 2px 2px 0px var(--border-color);
   overflow: hidden;
   display: flex;
@@ -4309,7 +4320,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .scanner-empty-preview {
@@ -4343,7 +4354,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .scanner-filter-pill {
   background: var(--bg-surface);
   color: var(--text-main);
-  border: 2px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-pill, 9999px);
   padding: 6px 14px;
   font-size: 0.82rem;
@@ -4355,12 +4366,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .scanner-filter-pill:hover {
-  transform: translate(-1px, -1px);
+  
   box-shadow: 3px 3px 0px var(--border-color);
 }
 
 .scanner-filter-pill.active {
-  background: var(--brutal-yellow) !important;
+  background: var(--m3-yellow) !important;
   color: #1a1a1a !important;
   border-color: #1a1a1a !important;
   box-shadow: 3px 3px 0px #1a1a1a !important;
@@ -4415,14 +4426,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 .scanner-thumbnail-strip::-webkit-scrollbar-thumb {
   background: var(--border-color);
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .scanner-thumb-card {
   position: relative;
   flex: 0 0 84px;
   height: 110px;
-  border: 2px solid var(--border-color);
+  border: none;
   border-radius: var(--radius-sm);
   background: var(--bg-surface);
   overflow: hidden;
@@ -4437,7 +4448,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .scanner-thumb-card.active {
-  border: 3px solid #f43f5e;
+  border: none;
   box-shadow: 3px 3px 0px #1a1a1a;
   transform: translateY(-2px);
 }
@@ -4470,7 +4481,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   right: 4px;
   background: #ef4444;
   color: #ffffff;
-  border: 1px solid #1a1a1a;
+  border: none;
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -4515,8 +4526,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   max-width: 480px;
   background: #10b981;
   color: #ffffff;
-  border: 3px solid #1a1a1a;
-  border-radius: var(--radius-md);
+  border: none;
+  border-radius: var(--radius-full);
   padding: 14px 28px;
   font-weight: 900;
   font-size: 1.05rem;
@@ -4528,7 +4539,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .scanner-btn-export-pdf:hover:not(:disabled) {
-  transform: translate(-2px, -2px);
+  
   box-shadow: 6px 6px 0px #1a1a1a;
 }
 
@@ -4557,3 +4568,4 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+

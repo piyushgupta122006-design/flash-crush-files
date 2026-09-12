@@ -306,8 +306,8 @@ export default function ImageCompressor({ auth }) {
             <>
               {preview && (
                 <div style={{
-                  margin: "20px 20px 0", borderRadius: "8px", overflow: "hidden",
-                  border: "1px solid var(--border)", maxHeight: "220px",
+                  margin: "20px 20px 0", borderRadius: 'var(--radius-full)', overflow: "hidden",
+                  border: 'none', maxHeight: "220px",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: "var(--p50)",
                 }}>
@@ -355,7 +355,7 @@ export default function ImageCompressor({ auth }) {
               
               {/* Custom size input */}
               {level === "custom" && (
-                <div style={{ marginTop: "16px", background: "var(--p50)", padding: "12px", borderRadius: "10px", border: "1px dashed var(--p400)" }}>
+                <div style={{ marginTop: "16px", background: "var(--p50)", padding: "12px", borderRadius: 'var(--radius-full)', border: "1px dashed var(--p400)" }}>
                   <label style={{ fontSize: "12px", color: "var(--text)", fontWeight: "600", display: "block", marginBottom: "6px" }}>
                     Target Size (KB)
                   </label>
@@ -365,8 +365,8 @@ export default function ImageCompressor({ auth }) {
                     onChange={(e) => setTargetSize(e.target.value)}
                     placeholder="e.g. 50"
                     style={{
-                      width: "100%", padding: "8px 12px", borderRadius: "6px", 
-                      border: "1px solid var(--border2)", outline: "none",
+                      width: "100%", padding: "8px 12px", borderRadius: 'var(--radius-full)', 
+                      border: 'none', outline: "none",
                       fontFamily: "'JetBrains Mono', monospace",
                       background: "#fff"
                     }}

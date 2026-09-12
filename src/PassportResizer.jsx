@@ -704,7 +704,7 @@ export default function PassportResizer({ auth }) {
                   {selectedPreset === "custom" && (
                     <div style={{
                       padding: "14px", background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                     }}>
                       <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "8px" }}>
                         Custom Dimensions & Units
@@ -713,17 +713,17 @@ export default function PassportResizer({ auth }) {
                         <div>
                           <label style={{ fontSize: "10px", color: "#94a3b8" }}>Width</label>
                           <input type="number" step="0.1" value={customWidth} onChange={(e) => setCustomWidth(Number(e.target.value))}
-                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", outline: "none" }} />
+                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }} />
                         </div>
                         <div>
                           <label style={{ fontSize: "10px", color: "#94a3b8" }}>Height</label>
                           <input type="number" step="0.1" value={customHeight} onChange={(e) => setCustomHeight(Number(e.target.value))}
-                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", outline: "none" }} />
+                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }} />
                         </div>
                         <div>
                           <label style={{ fontSize: "10px", color: "#94a3b8" }}>Unit</label>
                           <select value={unit} onChange={(e) => setUnit(e.target.value)}
-                            style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", outline: "none" }}>
+                            style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }}>
                             <option value="cm">cm</option>
                             <option value="mm">mm</option>
                             <option value="inch">inch</option>
@@ -737,7 +737,7 @@ export default function PassportResizer({ auth }) {
                   {/* Positioning & Zoom Controls */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px" }}>
                       Photo Alignment & Sizing
@@ -779,7 +779,7 @@ export default function PassportResizer({ auth }) {
                   {/* Name & Date on Photo (SSC / UPSC / State PSC) */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", fontWeight: 800, color: "#f59e0b", textTransform: "uppercase", cursor: "pointer", marginBottom: addNameDate ? "10px" : 0 }}>
                       <input type="checkbox" checked={addNameDate} onChange={(e) => setAddNameDate(e.target.checked)} style={{ accentColor: "#f59e0b" }} />
@@ -795,7 +795,7 @@ export default function PassportResizer({ auth }) {
                           onChange={(e) => setApplicantName(e.target.value)}
                           style={{
                             width: "100%", padding: "8px 10px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff",
                             fontSize: "12px", outline: "none", boxSizing: "border-box",
                           }}
                         />
@@ -805,7 +805,7 @@ export default function PassportResizer({ auth }) {
                           onChange={(e) => setPhotoDate(e.target.value)}
                           style={{
                             width: "100%", padding: "8px 10px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", color: "#fff",
+                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff",
                             fontSize: "12px", outline: "none", boxSizing: "border-box",
                           }}
                         />
@@ -816,7 +816,7 @@ export default function PassportResizer({ auth }) {
                   {/* Target KB Size & Export Mode */}
                   <div style={{
                     padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px"
+                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
                   }}>
                     <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "8px" }}>
                       Target File Size & Export Format
@@ -830,7 +830,7 @@ export default function PassportResizer({ auth }) {
                         max="500"
                         value={targetMaxKb}
                         onChange={(e) => setTargetMaxKb(Number(e.target.value))}
-                        style={{ width: "65px", padding: "6px", background: "#0f172a", border: "1px solid #10b981", borderRadius: "6px", color: "#fff", textAlign: "center", fontSize: "12px" }}
+                        style={{ width: "65px", padding: "6px", background: "#0f172a", border: 'none', borderRadius: 'var(--radius-full)', color: "#fff", textAlign: "center", fontSize: "12px" }}
                       />
                       <span style={{ fontSize: "11px", color: "#34d399", fontWeight: 700 }}>KB (Max Limit)</span>
                     </div>
@@ -850,7 +850,7 @@ export default function PassportResizer({ auth }) {
                             padding: "6px 4px", fontSize: "10px", fontWeight: 700,
                             background: exportMode === m.id ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.04)",
                             border: exportMode === m.id ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: "6px", color: exportMode === m.id ? "#34d399" : "#94a3b8",
+                            borderRadius: 'var(--radius-full)', color: exportMode === m.id ? "#34d399" : "#94a3b8",
                             cursor: "pointer",
                           }}
                         >
@@ -873,7 +873,7 @@ export default function PassportResizer({ auth }) {
                   <div style={{
                     width: "100%", maxHeight: "420px", overflow: "hidden",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#080c16", borderRadius: "14px",
+                    background: "#080c16", borderRadius: 'var(--radius-full)',
                     border: "1.5px solid rgba(56, 189, 248, 0.3)", boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
                     padding: "16px", boxSizing: "border-box", cursor: "grab"
                   }}>
@@ -885,7 +885,7 @@ export default function PassportResizer({ auth }) {
                       onTouchStart={handleTouchStart}
                       onTouchMove={handleTouchMove}
                       onTouchEnd={handleMouseUp}
-                      style={{ maxWidth: "100%", maxHeight: "380px", objectFit: "contain", borderRadius: "4px", boxShadow: "0 5px 20px rgba(0,0,0,0.8)" }}
+                      style={{ maxWidth: "100%", maxHeight: "380px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 5px 20px rgba(0,0,0,0.8)" }}
                     />
                   </div>
 
