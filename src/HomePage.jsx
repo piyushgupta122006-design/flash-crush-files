@@ -410,33 +410,33 @@ export default function HomePage() {
   const filteredTools = filter === "all" ? ALL_TOOLS : ALL_TOOLS.filter(t => t.category === filter);
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans p-3 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-7xl mx-auto w-full transition-colors">
+    <div ref={pageRef} className="min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans p-2 sm:p-6 lg:p-8 flex flex-col gap-4 sm:gap-6 max-w-7xl mx-auto w-full transition-colors">
       
       {/* ── Google Drive Style Canvas Sheet ── */}
-      <div className="rounded-3xl bg-white dark:bg-[#1e1f20] p-6 sm:p-8 shadow-sm border border-gray-200/60 dark:border-gray-800 transition-colors">
+      <div className="rounded-2xl sm:rounded-3xl bg-white dark:bg-[#1e1f20] p-4 sm:p-6 lg:p-8 shadow-sm border border-gray-200/60 dark:border-gray-800 transition-colors">
         
         {/* Header Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-gray-100 dark:border-gray-800/80 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-100 dark:border-gray-800/80 gap-3 sm:gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
               Welcome to FlashCrush
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-normal">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 font-normal leading-relaxed">
               Zero-upload, 100% private in-browser file suite. Processed securely on your device.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 pt-1 sm:pt-0">
             <button
               onClick={() => navigate("/pdf")}
-              className="rounded-full px-5 py-2 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white shadow-xs transition-colors flex items-center gap-2"
+              className="rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white shadow-xs transition-colors flex items-center gap-2"
             >
               <span className="text-base font-bold">+</span>
               <span>New Document</span>
             </button>
             <button
               onClick={() => navigate("/drop")}
-              className="rounded-full px-4 py-2 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-gray-200/60 dark:border-gray-700/60 transition-colors flex items-center gap-1.5"
+              className="rounded-full px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-gray-200/60 dark:border-gray-700/60 transition-colors flex items-center gap-1.5"
             >
               <span>🌐</span>
               <span>P2P Drop</span>

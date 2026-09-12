@@ -238,7 +238,7 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <div className="site-layout min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans transition-colors">
+    <div className="site-layout min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans transition-colors overflow-x-hidden w-full max-w-full">
       {/* ── Offline Status Banner (M3 Tonal Amber) ── */}
       {!pwa.isOnline && (
         <div className="bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 text-xs font-medium py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-amber-200/50 dark:border-amber-900/50 z-50">
@@ -248,7 +248,7 @@ export default function App() {
       )}
 
       {/* ── Google M3 Workspace Top App Bar ── */}
-      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd] dark:bg-[#131314] px-4 lg:px-6 py-2.5 flex items-center justify-between border-b border-gray-200/50 dark:border-gray-800 transition-colors">
+      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd] dark:bg-[#131314] px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between border-b border-gray-200/50 dark:border-gray-800 transition-colors">
         {/* Left Side: Logo & Navigation Pills */}
         <div className="flex items-center gap-2 lg:gap-4">
           {/* Logo */}
@@ -427,21 +427,21 @@ export default function App() {
         </div>
 
         {/* Right Side: Quick Tools, Auth & Controls */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           {/* Quick Search Button (Tablet/Mobile) */}
           <button
             type="button"
-            className="lg:hidden rounded-full p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors"
+            className="lg:hidden rounded-full p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
             onClick={() => setShowCmdPalette(true)}
             title="Quick Search (Ctrl + K)"
           >
             <span className="text-base">🔍</span>
           </button>
 
-          {/* Local Offline History Button */}
+          {/* Local Offline History Button (Tablet/Desktop only; available in Mobile Drawer on phones) */}
           <button
             type="button"
-            className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 flex items-center gap-1.5 transition-colors"
+            className="hidden sm:flex rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 items-center gap-1.5 transition-colors flex-shrink-0"
             onClick={() => setShowHistoryDrawer(true)}
             title="Local Offline History (IndexedDB)"
           >
@@ -454,11 +454,11 @@ export default function App() {
             )}
           </button>
 
-          {/* PWA Install Button */}
+          {/* PWA Install Button (Tablet/Desktop only; available in Mobile Drawer on phones) */}
           {pwa.canInstall && (
             <button
               type="button"
-              className="rounded-full px-3.5 py-1.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] flex items-center gap-1.5 shadow-xs transition-colors"
+              className="hidden sm:flex rounded-full px-3.5 py-1.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] items-center gap-1.5 shadow-xs transition-colors flex-shrink-0"
               onClick={pwa.installApp}
               title="Install FlashCrush as Native App"
             >
@@ -467,8 +467,8 @@ export default function App() {
             </button>
           )}
 
-          {/* Theme Toggle Dropdown */}
-          <div className="relative" ref={themeMenuRef}>
+          {/* Theme Toggle Dropdown (Tablet/Desktop only; Mobile Drawer has segmented Light/Dark/Auto chips) */}
+          <div className="relative hidden sm:block flex-shrink-0" ref={themeMenuRef}>
             <button
               type="button"
               className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 border border-gray-300/70 dark:border-gray-700 flex items-center gap-1.5 transition-colors"
@@ -526,7 +526,7 @@ export default function App() {
 
           {/* User Auth (Google Sign-In or Avatar) */}
           {isSignedIn ? (
-            <div className="relative" ref={menuRef}>
+            <div className="relative flex-shrink-0" ref={menuRef}>
               <div
                 className="flex items-center gap-1 p-0.5 rounded-full hover:ring-2 hover:ring-blue-500/30 cursor-pointer transition-all"
                 onClick={() => setShowMenu(m => !m)}
@@ -556,11 +556,12 @@ export default function App() {
               )}
             </div>
           ) : (
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <button
-                className="rounded-full px-4 py-1.5 text-sm font-medium border border-gray-300/80 dark:border-gray-700 bg-white dark:bg-[#1e1f20] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-xs flex items-center gap-2 transition-all"
+                className="rounded-full px-2.5 sm:px-4 py-1.5 text-sm font-medium border border-gray-300/80 dark:border-gray-700 bg-white dark:bg-[#1e1f20] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-xs flex items-center gap-2 transition-all flex-shrink-0"
                 onClick={auth.signIn}
                 disabled={auth.authStatus === "loading"}
+                title={isSignedIn ? "Account" : "Sign in with Google"}
               >
                 <GoogleIcon />
                 <span className="hidden sm:inline">
@@ -576,9 +577,10 @@ export default function App() {
           {/* Mobile Drawer Hamburger Button */}
           <button
             type="button"
-            className="md:hidden rounded-full p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-base"
+            className="md:hidden rounded-full p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-lg flex items-center justify-center flex-shrink-0"
             onClick={() => setMobileNavOpen(o => !o)}
             title="Toggle Menu"
+            aria-label="Toggle navigation menu"
           >
             {mobileNavOpen ? "✕" : "☰"}
           </button>
