@@ -78,13 +78,13 @@
 /* ═══════════════════════════════════════════════════════════════
    DARK THEME TOKENS - True Material 3 Dark
    ═══════════════════════════════════════════════════════════════ */
-[data-theme="dark"] {
+[data-theme="dark"], html.dark, .dark {
   /* Core Dark Backgrounds — M3 Dark */
-  --bg-void:        #1B1B1E; /* Background */
-  --bg-surface:     #45464F; /* Surface Variant */
-  --bg-card:        #131316; /* Surface */
-  --bg-card-hover:  #202024; /* Surface + Elevation 1 */
-  --bg-card-solid:  #131316;
+  --bg-void:        #131314; /* Background */
+  --bg-surface:     #1e1f20; /* Surface Variant */
+  --bg-card:        #1e1f20; /* Surface */
+  --bg-card-hover:  #28292a; /* Surface + Elevation 1 */
+  --bg-card-solid:  #1e1f20;
 
   /* M3 Accent Palette - Mapped */
   --m3-pink:    #344D2F; /* Tertiary Container */
@@ -128,7 +128,7 @@ html {
   color-scheme: light;
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark"], html.dark {
   color-scheme: dark;
 }
 

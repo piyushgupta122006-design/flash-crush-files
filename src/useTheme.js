@@ -29,16 +29,25 @@ export function useTheme() {
     return getSystemTheme();
   });
 
-  // Apply theme to document & meta tags
+  // Apply theme to document, classList & meta tags
   const applyTheme = useCallback((activeResolvedTheme) => {
     const root = document.documentElement;
+    
+    // 1. Critical for Tailwind CSS darkMode: "class"
+    if (activeResolvedTheme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    // 2. Set data-theme & color-scheme for CSS variables and native controls
     root.setAttribute("data-theme", activeResolvedTheme);
     root.style.colorScheme = activeResolvedTheme;
 
-    // Update meta theme-color for mobile address bar
+    // 3. Update meta theme-color for mobile address bar (Google M3 surface tonal)
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute("content", activeResolvedTheme === "dark" ? "#121214" : "#FFD93D");
+      metaThemeColor.setAttribute("content", activeResolvedTheme === "dark" ? "#131314" : "#f8fafd");
     }
   }, []);
 

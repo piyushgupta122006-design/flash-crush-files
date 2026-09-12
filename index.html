@@ -14,7 +14,7 @@
       content="Flash Crush-Files, compress PDF free, PDF compressor online, reduce PDF size, image compressor, compress JPG PNG WebP, no upload file compressor, browser based compressor, free file compressor" />
     <meta name="author" content="Flash Crush-Files" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta name="theme-color" content="#FFD93D" />
+    <meta name="theme-color" content="#f8fafd" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="FlashCrush" />
@@ -145,6 +145,26 @@
     <!-- Preload critical font: Roboto -->
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+
+    <!-- Prevent Theme Flash (FOUC) on Load -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem("flashcrush_theme") || "system";
+          var isDark = saved === "dark" || (saved === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var root = document.documentElement;
+          if (isDark) {
+            root.classList.add("dark");
+            root.setAttribute("data-theme", "dark");
+            root.style.colorScheme = "dark";
+          } else {
+            root.classList.remove("dark");
+            root.setAttribute("data-theme", "light");
+            root.style.colorScheme = "light";
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
 
   <body>

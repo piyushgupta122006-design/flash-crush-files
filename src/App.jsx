@@ -473,52 +473,61 @@ export default function App() {
               type="button"
               className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 border border-gray-300/70 dark:border-gray-700 flex items-center gap-1.5 transition-colors"
               onClick={() => setShowThemeMenu(m => !m)}
-              title={`Theme: ${theme === "system" ? "System Default" : theme === "dark" ? "Dark Mode" : "Light Mode"}`}
+              title={`Theme: ${theme === "system" ? `Auto (${resolvedTheme === "dark" ? "Dark" : "Light"})` : theme === "dark" ? "Dark Mode" : "Light Mode"}`}
             >
               <span>{theme === "light" ? "☀️" : theme === "dark" ? "🌙" : "💻"}</span>
               <span className="hidden sm:inline text-xs font-normal">
-                {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "Auto"}
+                {theme === "light" ? "Light" : theme === "dark" ? "Dark" : `Auto (${resolvedTheme === "dark" ? "Dark" : "Light"})`}
               </span>
               <span className="text-[9px] text-gray-500">{showThemeMenu ? "▲" : "▼"}</span>
             </button>
 
             {showThemeMenu && (
-              <div className="absolute right-0 top-full mt-2 w-44 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-1.5 z-50">
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-1.5 z-50">
                 <button
                   type="button"
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                     theme === "light"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => { setTheme("light"); setShowThemeMenu(false); }}
                 >
-                  <span>☀️</span>
-                  <span>Light Mode</span>
+                  <span className="flex items-center gap-2.5">
+                    <span>☀️</span>
+                    <span>Light Mode</span>
+                  </span>
+                  {theme === "light" && <span className="text-xs font-bold">✓</span>}
                 </button>
                 <button
                   type="button"
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                     theme === "dark"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => { setTheme("dark"); setShowThemeMenu(false); }}
                 >
-                  <span>🌙</span>
-                  <span>Dark Mode</span>
+                  <span className="flex items-center gap-2.5">
+                    <span>🌙</span>
+                    <span>Dark Mode</span>
+                  </span>
+                  {theme === "dark" && <span className="text-xs font-bold">✓</span>}
                 </button>
                 <button
                   type="button"
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                     theme === "system"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                   }`}
                   onClick={() => { setTheme("system"); setShowThemeMenu(false); }}
                 >
-                  <span>💻</span>
-                  <span>System (Auto)</span>
+                  <span className="flex items-center gap-2.5">
+                    <span>💻</span>
+                    <span>System (Auto)</span>
+                  </span>
+                  {theme === "system" && <span className="text-xs font-bold">✓</span>}
                 </button>
               </div>
             )}
@@ -638,8 +647,8 @@ export default function App() {
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "light"
-                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                   onClick={() => setTheme("light")}
                 >
@@ -649,8 +658,8 @@ export default function App() {
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "dark"
-                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                   onClick={() => setTheme("dark")}
                 >
@@ -660,8 +669,8 @@ export default function App() {
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "system"
-                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                   }`}
                   onClick={() => setTheme("system")}
                 >
