@@ -238,73 +238,106 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <div className="site-layout">
-      {/* ── Offline Status Banner ── */}
+    <div className="site-layout min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans transition-colors">
+      {/* ── Offline Status Banner (M3 Tonal Amber) ── */}
       {!pwa.isOnline && (
-        <div style={{
-          background: "var(--m3-yellow)", color: "var(--text-main)",
-          fontSize: "12px", fontWeight: 700, padding: "6px 16px", textAlign: "center",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 100,
-          borderBottom: "var(--border)"
-        }}>
+        <div className="bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 text-xs font-medium py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-amber-200/50 dark:border-amber-900/50 z-50">
           <span>⚡ Offline Mode Active</span>
-          <span style={{ opacity: 0.8 }}>— 100% of tools work locally in your browser without internet.</span>
+          <span className="opacity-80">— 100% of tools work locally in your browser without internet.</span>
         </div>
       )}
 
-      {/* ── Floating glass navbar ── */}
-      <nav className="navbar anim-fade d0">
-        <div className="navbar-left">
+      {/* ── Google M3 Workspace Top App Bar ── */}
+      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd] dark:bg-[#131314] px-4 lg:px-6 py-2.5 flex items-center justify-between border-b border-gray-200/50 dark:border-gray-800 transition-colors">
+        {/* Left Side: Logo & Navigation Pills */}
+        <div className="flex items-center gap-2 lg:gap-4">
           {/* Logo */}
-          <div className="navbar-logo" onClick={() => navigate("/")}>
+          <div
+            className="flex items-center gap-2.5 cursor-pointer select-none py-1 px-2 rounded-full hover:bg-gray-200/40 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate("/")}
+            onMouseEnter={() => {
+              setShowPdfMenu(false);
+              setShowImgMenu(false);
+            }}
+          >
             <LogoMark size={28} />
-            <span className="nav-logo-text">Flash<span style={{ color: "var(--m3-pink)" }}>Crush</span></span>
+            <span className="text-xl font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
+              Flash<span className="text-blue-600 dark:text-blue-400 font-medium">Crush</span>
+            </span>
           </div>
 
-          {/* Desktop Categorized Navigation Links */}
-          <div className="navbar-links desktop-nav">
+          {/* Desktop Categorized Navigation Links (M3 Pills) */}
+          <div className="hidden md:flex items-center gap-1.5">
             {/* Home */}
             <NavLink
               to="/"
               end
-              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+              onMouseEnter={() => {
+                setShowPdfMenu(false);
+                setShowImgMenu(false);
+              }}
+              className={({ isActive }) =>
+                `rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                }`
+              }
             >
               Home
             </NavLink>
 
             {/* PDF Tools Dropdown */}
-            <div className="nav-dropdown-trigger-wrap" ref={pdfMenuRef}>
+            <div
+              className="relative"
+              ref={pdfMenuRef}
+              onMouseEnter={() => {
+                setShowPdfMenu(true);
+                setShowImgMenu(false);
+              }}
+              onMouseLeave={() => setShowPdfMenu(false)}
+            >
               <button
                 type="button"
-                className={`nav-dropdown-trigger${isPdfActive ? " active" : ""}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  isPdfActive
+                    ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                }`}
                 onClick={() => {
                   setShowPdfMenu(p => !p);
                   setShowImgMenu(false);
                 }}
-                onMouseEnter={() => setShowPdfMenu(true)}
               >
                 <span>📄 PDF Tools</span>
-                <span className="nav-chevron">{showPdfMenu ? "▲" : "▼"}</span>
+                <span className="text-[10px] text-gray-500">{showPdfMenu ? "▲" : "▼"}</span>
               </button>
 
               {showPdfMenu && (
                 <div
-                  className="nav-category-menu"
-                  onMouseLeave={() => setShowPdfMenu(false)}
+                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-2 z-50"
                 >
-                  <div className="nav-category-header">PDF Power Tools</div>
-                  <div className="nav-category-grid">
+                  <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    PDF Power Tools
+                  </div>
+                  <div className="grid grid-cols-1 gap-1 max-h-96 overflow-y-auto">
                     {PDF_TOOLS.map(t => (
                       <NavLink
                         key={t.path}
                         to={t.path}
-                        className={({ isActive }) => `nav-category-item${isActive ? " active-item" : ""}`}
+                        className={({ isActive }) =>
+                          `flex items-start gap-3 p-2.5 rounded-xl transition-colors ${
+                            isActive
+                              ? "bg-[#f0f4f9] dark:bg-[#28292a]"
+                              : "hover:bg-gray-100/80 dark:hover:bg-[#28292a]"
+                          }`
+                        }
                         onClick={() => setShowPdfMenu(false)}
                       >
-                        <span className="nav-cat-icon">{t.icon}</span>
+                        <span className="text-lg select-none">{t.icon}</span>
                         <div>
-                          <div className="nav-cat-label">{t.label}</div>
-                          <div className="nav-cat-desc">{t.desc}</div>
+                          <div className="text-sm font-medium text-gray-800 dark:text-gray-100">{t.label}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 leading-snug">{t.desc}</div>
                         </div>
                       </NavLink>
                     ))}
@@ -314,38 +347,56 @@ export default function App() {
             </div>
 
             {/* Image Tools Dropdown */}
-            <div className="nav-dropdown-trigger-wrap" ref={imgMenuRef}>
+            <div
+              className="relative"
+              ref={imgMenuRef}
+              onMouseEnter={() => {
+                setShowImgMenu(true);
+                setShowPdfMenu(false);
+              }}
+              onMouseLeave={() => setShowImgMenu(false)}
+            >
               <button
                 type="button"
-                className={`nav-dropdown-trigger${isImgActive ? " active" : ""}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  isImgActive
+                    ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                }`}
                 onClick={() => {
                   setShowImgMenu(p => !p);
                   setShowPdfMenu(false);
                 }}
-                onMouseEnter={() => setShowImgMenu(true)}
               >
                 <span>🖼️ Image Tools</span>
-                <span className="nav-chevron">{showImgMenu ? "▲" : "▼"}</span>
+                <span className="text-[10px] text-gray-500">{showImgMenu ? "▲" : "▼"}</span>
               </button>
 
               {showImgMenu && (
                 <div
-                  className="nav-category-menu"
-                  onMouseLeave={() => setShowImgMenu(false)}
+                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-2 z-50"
                 >
-                  <div className="nav-category-header">Image Super-Tools</div>
-                  <div className="nav-category-grid">
+                  <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Image Super-Tools
+                  </div>
+                  <div className="grid grid-cols-1 gap-1 max-h-96 overflow-y-auto">
                     {IMAGE_TOOLS.map(t => (
                       <NavLink
                         key={t.path}
                         to={t.path}
-                        className={({ isActive }) => `nav-category-item${isActive ? " active-item" : ""}`}
+                        className={({ isActive }) =>
+                          `flex items-start gap-3 p-2.5 rounded-xl transition-colors ${
+                            isActive
+                              ? "bg-[#f0f4f9] dark:bg-[#28292a]"
+                              : "hover:bg-gray-100/80 dark:hover:bg-[#28292a]"
+                          }`
+                        }
                         onClick={() => setShowImgMenu(false)}
                       >
-                        <span className="nav-cat-icon">{t.icon}</span>
+                        <span className="text-lg select-none">{t.icon}</span>
                         <div>
-                          <div className="nav-cat-label">{t.label}</div>
-                          <div className="nav-cat-desc">{t.desc}</div>
+                          <div className="text-sm font-medium text-gray-800 dark:text-gray-100">{t.label}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 leading-snug">{t.desc}</div>
                         </div>
                       </NavLink>
                     ))}
@@ -356,113 +407,90 @@ export default function App() {
           </div>
         </div>
 
-        {/* Right side: Auth + Mobile Hamburger */}
-        <div className="navbar-right">
-          {/* User Auth */}
-          {isSignedIn ? (
-            <div className="nav-user-wrap" ref={menuRef}>
-              <div className="nav-user" onClick={() => setShowMenu(m => !m)}>
-                {auth.user?.picture
-                  ? <img src={auth.user.picture} alt="" className="nav-avatar" />
-                  : <div className="nav-avatar">{auth.user?.name?.[0] || "G"}</div>
-                }
-                <span className="nav-chevron">{showMenu ? "▲" : "▼"}</span>
-              </div>
-              {showMenu && (
-                <div className="nav-dropdown">
-                  <div className="nav-dropdown-user">
-                    <div className="nav-dropdown-name">{auth.user?.name}</div>
-                    <div className="nav-dropdown-email">{auth.user?.email}</div>
-                  </div>
-                  <button className="nav-dropdown-logout" onClick={() => { auth.signOut(); setShowMenu(false); }}>
-                    <span>⏻</span> Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="nav-signin-wrap">
-              <button
-                className="btn-nav-signin"
-                onClick={auth.signIn}
-                disabled={auth.authStatus === "loading"}
-              >
-                <GoogleIcon />
-                <span className="signin-text-full">
-                  {auth.authStatus === "loading" ? "Signing in…" : "Sign in with Google"}
-                </span>
-                <span className="signin-text-short">
-                  {auth.authStatus === "loading" ? "Signing in…" : "Sign in"}
-                </span>
-              </button>
-              {signInError && <div className="nav-signin-error">{signInError}</div>}
-            </div>
-          )}
+        {/* Center: Google Drive Style Pill Search Bar */}
+        <div
+          className="hidden lg:flex flex-1 max-w-lg mx-6 items-center gap-3 px-4 py-2 rounded-full bg-[#edf2fc] dark:bg-[#28292a] hover:bg-[#e4ebf7] dark:hover:bg-[#333537] text-gray-600 dark:text-gray-300 text-sm cursor-pointer transition-colors border border-transparent shadow-xs"
+          onClick={() => setShowCmdPalette(true)}
+          onMouseEnter={() => {
+            setShowPdfMenu(false);
+            setShowImgMenu(false);
+          }}
+          title="Search tools, PDFs & actions (Ctrl + K)"
+        >
+          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span className="flex-1 select-none text-gray-500 dark:text-gray-400">Search in FlashCrush...</span>
+          <kbd className="rounded-full px-2.5 py-0.5 text-xs bg-white dark:bg-[#1e1f20] text-gray-500 dark:text-gray-400 font-mono shadow-xs border border-gray-200/60 dark:border-gray-700">
+            Ctrl K
+          </kbd>
+        </div>
 
-          {/* Install PWA App Button */}
-          {pwa.canInstall && (
-            <button
-              type="button"
-              className="nav-install-btn"
-              onClick={pwa.installApp}
-              title="Install FlashCrush as Native App"
-            >
-              <span>📲</span>
-              <span className="install-text-full">Install App</span>
-            </button>
-          )}
-
-          {/* Quick Command Palette (Ctrl+K) */}
+        {/* Right Side: Quick Tools, Auth & Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Quick Search Button (Tablet/Mobile) */}
           <button
             type="button"
-            className="nav-cmd-btn"
+            className="lg:hidden rounded-full p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setShowCmdPalette(true)}
-            title="Quick Search & Tools (Ctrl + K)"
+            title="Quick Search (Ctrl + K)"
           >
-            <span>🔍</span>
-            <span className="cmd-text-full">Search</span>
-            <kbd className="cmd-kbd-badge">Ctrl K</kbd>
+            <span className="text-base">🔍</span>
           </button>
 
-          {/* Local Offline History Drawer Button */}
+          {/* Local Offline History Button */}
           <button
             type="button"
-            className="nav-history-btn"
+            className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 flex items-center gap-1.5 transition-colors"
             onClick={() => setShowHistoryDrawer(true)}
             title="Local Offline History (IndexedDB)"
           >
             <span>🕒</span>
-            <span className="history-text-full">History</span>
+            <span className="hidden xl:inline">History</span>
             {historyCount > 0 && (
-              <span style={{
-                background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800,
-                padding: "1px 6px", borderRadius: 'var(--radius-full)'
-              }}>
+              <span className="rounded-full bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none">
                 {historyCount}
               </span>
             )}
           </button>
 
-          {/* Theme Toggle Dropdown */}
-          <div className="nav-theme-wrap" ref={themeMenuRef}>
+          {/* PWA Install Button */}
+          {pwa.canInstall && (
             <button
               type="button"
-              className="nav-theme-btn"
+              className="rounded-full px-3.5 py-1.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] flex items-center gap-1.5 shadow-xs transition-colors"
+              onClick={pwa.installApp}
+              title="Install FlashCrush as Native App"
+            >
+              <span>📲</span>
+              <span className="hidden sm:inline">Install</span>
+            </button>
+          )}
+
+          {/* Theme Toggle Dropdown */}
+          <div className="relative" ref={themeMenuRef}>
+            <button
+              type="button"
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 border border-gray-300/70 dark:border-gray-700 flex items-center gap-1.5 transition-colors"
               onClick={() => setShowThemeMenu(m => !m)}
               title={`Theme: ${theme === "system" ? "System Default" : theme === "dark" ? "Dark Mode" : "Light Mode"}`}
             >
               <span>{theme === "light" ? "☀️" : theme === "dark" ? "🌙" : "💻"}</span>
-              <span className="theme-text-full">
+              <span className="hidden sm:inline text-xs font-normal">
                 {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "Auto"}
               </span>
-              <span className="nav-chevron">{showThemeMenu ? "▲" : "▼"}</span>
+              <span className="text-[9px] text-gray-500">{showThemeMenu ? "▲" : "▼"}</span>
             </button>
 
             {showThemeMenu && (
-              <div className="nav-theme-dropdown">
+              <div className="absolute right-0 top-full mt-2 w-44 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-1.5 z-50">
                 <button
                   type="button"
-                  className={`nav-theme-option${theme === "light" ? " active" : ""}`}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    theme === "light"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                   onClick={() => { setTheme("light"); setShowThemeMenu(false); }}
                 >
                   <span>☀️</span>
@@ -470,7 +498,11 @@ export default function App() {
                 </button>
                 <button
                   type="button"
-                  className={`nav-theme-option${theme === "dark" ? " active" : ""}`}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    theme === "dark"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                   onClick={() => { setTheme("dark"); setShowThemeMenu(false); }}
                 >
                   <span>🌙</span>
@@ -478,7 +510,11 @@ export default function App() {
                 </button>
                 <button
                   type="button"
-                  className={`nav-theme-option${theme === "system" ? " active" : ""}`}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    theme === "system"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
                   onClick={() => { setTheme("system"); setShowThemeMenu(false); }}
                 >
                   <span>💻</span>
@@ -488,10 +524,59 @@ export default function App() {
             )}
           </div>
 
-          {/* Mobile Hamburger Button */}
+          {/* User Auth (Google Sign-In or Avatar) */}
+          {isSignedIn ? (
+            <div className="relative" ref={menuRef}>
+              <div
+                className="flex items-center gap-1 p-0.5 rounded-full hover:ring-2 hover:ring-blue-500/30 cursor-pointer transition-all"
+                onClick={() => setShowMenu(m => !m)}
+              >
+                {auth.user?.picture ? (
+                  <img src={auth.user.picture} alt="" className="w-8 h-8 rounded-full object-cover" />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white font-medium text-xs flex items-center justify-center">
+                    {auth.user?.name?.[0] || "G"}
+                  </div>
+                )}
+                <span className="text-[8px] text-gray-500">{showMenu ? "▲" : "▼"}</span>
+              </div>
+              {showMenu && (
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white dark:bg-[#1e1f20] shadow-lg border border-gray-200/80 dark:border-gray-800 p-3 z-50">
+                  <div className="border-b border-gray-100 dark:border-gray-800 pb-2.5 mb-2">
+                    <div className="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">{auth.user?.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{auth.user?.email}</div>
+                  </div>
+                  <button
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                    onClick={() => { auth.signOut(); setShowMenu(false); }}
+                  >
+                    <span>⏻</span> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <button
+                className="rounded-full px-4 py-1.5 text-sm font-medium border border-gray-300/80 dark:border-gray-700 bg-white dark:bg-[#1e1f20] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-xs flex items-center gap-2 transition-all"
+                onClick={auth.signIn}
+                disabled={auth.authStatus === "loading"}
+              >
+                <GoogleIcon />
+                <span className="hidden sm:inline">
+                  {auth.authStatus === "loading" ? "Signing in…" : "Sign in"}
+                </span>
+              </button>
+              {signInError && (
+                <div className="text-xs text-rose-600 ml-2">{signInError}</div>
+              )}
+            </div>
+          )}
+
+          {/* Mobile Drawer Hamburger Button */}
           <button
             type="button"
-            className="mobile-hamburger-btn"
+            className="md:hidden rounded-full p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-base"
             onClick={() => setMobileNavOpen(o => !o)}
             title="Toggle Menu"
           >
@@ -500,69 +585,97 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ── Mobile Drawer Menu ── */}
+
+      {/* ── Mobile Drawer Menu (Google M3 Style) ── */}
       {mobileNavOpen && (
-        <div className="mobile-nav-overlay" onClick={() => setMobileNavOpen(false)}>
-          <div className="mobile-nav-drawer" onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <div className="navbar-logo" onClick={() => { navigate("/"); setMobileNavOpen(false); }}>
+        <div className="fixed inset-0 bg-black/40 z-50 flex justify-start" onClick={() => setMobileNavOpen(false)}>
+          <div
+            className="w-80 max-w-[85vw] h-full bg-[#f8fafd] dark:bg-[#1e1f20] p-5 flex flex-col gap-2 shadow-2xl overflow-y-auto border-r border-gray-200 dark:border-gray-800"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-800 mb-2">
+              <div
+                className="flex items-center gap-2.5 cursor-pointer"
+                onClick={() => { navigate("/"); setMobileNavOpen(false); }}
+              >
                 <LogoMark size={24} />
-                <span>Flash<span style={{ color: "var(--m3-pink)" }}>Crush</span></span>
+                <span className="text-lg font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
+                  Flash<span className="text-blue-600 dark:text-blue-400 font-medium">Crush</span>
+                </span>
               </div>
-              <button className="close-btn" onClick={() => setMobileNavOpen(false)}>✕</button>
+              <button
+                className="rounded-full p-2 text-gray-500 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-sm"
+                onClick={() => setMobileNavOpen(false)}
+              >
+                ✕
+              </button>
             </div>
 
             <NavLink
               to="/"
               end
-              className={({ isActive }) => `mobile-nav-item${isActive ? " active" : ""}`}
+              className={({ isActive }) =>
+                `rounded-full px-4 py-2.5 text-sm font-medium flex items-center gap-3 transition-colors ${
+                  isActive
+                    ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                }`
+              }
               onClick={() => setMobileNavOpen(false)}
             >
               <span>🏠</span> Home
             </NavLink>
 
-            {/* Mobile Theme Selector */}
-            <div style={{ marginTop: "4px", marginBottom: "4px" }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-sub)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px", paddingLeft: "4px" }}>
-                Theme Mode
+            {/* Mobile Theme Segment */}
+            <div className="my-2">
+              <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mb-1.5">
+                Theme
               </div>
-              <div className="mobile-theme-segment">
+              <div className="grid grid-cols-3 gap-1 p-1 bg-gray-200/70 dark:bg-[#28292a] rounded-full">
                 <button
                   type="button"
-                  className={`mobile-theme-btn${theme === "light" ? " active" : ""}`}
+                  className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
+                    theme === "light"
+                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                  }`}
                   onClick={() => setTheme("light")}
                 >
-                  <span style={{ fontSize: "16px" }}>☀️</span>
-                  <span>Light</span>
+                  <span>☀️</span> Light
                 </button>
                 <button
                   type="button"
-                  className={`mobile-theme-btn${theme === "dark" ? " active" : ""}`}
+                  className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
+                    theme === "dark"
+                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                  }`}
                   onClick={() => setTheme("dark")}
                 >
-                  <span style={{ fontSize: "16px" }}>🌙</span>
-                  <span>Dark</span>
+                  <span>🌙</span> Dark
                 </button>
                 <button
                   type="button"
-                  className={`mobile-theme-btn${theme === "system" ? " active" : ""}`}
+                  className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
+                    theme === "system"
+                      ? "bg-white dark:bg-[#1e1f20] text-gray-800 dark:text-gray-100 shadow-xs"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                  }`}
                   onClick={() => setTheme("system")}
                 >
-                  <span style={{ fontSize: "16px" }}>💻</span>
-                  <span>Auto</span>
+                  <span>💻</span> Auto
                 </button>
               </div>
             </div>
 
             {/* Mobile History Link */}
             <div
-              className="mobile-nav-item"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800 flex items-center justify-between cursor-pointer transition-colors"
               onClick={() => { setShowHistoryDrawer(true); setMobileNavOpen(false); }}
-              style={{ cursor: "pointer", display: "flex", justifyContent: "space-between" }}
             >
-              <span><span>🕒</span> Local History</span>
+              <span className="flex items-center gap-3"><span>🕒</span> Local History</span>
               {historyCount > 0 && (
-                <span style={{ background: "var(--text-main)", color: "#fff", fontSize: "10px", fontWeight: 800, padding: "1px 6px", borderRadius: 'var(--radius-full)' }}>
+                <span className="rounded-full bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 leading-none">
                   {historyCount}
                 </span>
               )}
@@ -571,21 +684,28 @@ export default function App() {
             {/* Mobile Install App Button */}
             {pwa.canInstall && (
               <div
-                className="mobile-nav-item"
+                className="rounded-full px-4 py-2.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-blue-600 dark:text-blue-400 hover:bg-[#e9eef6] dark:hover:bg-[#333537] flex items-center gap-3 cursor-pointer shadow-xs transition-colors"
                 onClick={() => { pwa.installApp(); setMobileNavOpen(false); }}
-                style={{ cursor: "pointer", color: "var(--text-main)", fontWeight: 800 }}
               >
-                <span>📲</span> Install FlashCrush App
+                <span>📲</span> Install App
               </div>
             )}
 
-            <div className="mobile-nav-section-title">📄 PDF Tools</div>
-            <div className="mobile-nav-grid">
+            <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mt-3">
+              📄 PDF Tools
+            </div>
+            <div className="flex flex-col gap-0.5">
               {PDF_TOOLS.map(t => (
                 <NavLink
                   key={t.path}
                   to={t.path}
-                  className={({ isActive }) => `mobile-nav-item${isActive ? " active" : ""}`}
+                  className={({ isActive }) =>
+                    `rounded-full px-4 py-2 text-sm font-medium flex items-center gap-3 transition-colors ${
+                      isActive
+                        ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                    }`
+                  }
                   onClick={() => setMobileNavOpen(false)}
                 >
                   <span>{t.icon}</span> {t.label}
@@ -593,19 +713,28 @@ export default function App() {
               ))}
             </div>
 
-            <div className="mobile-nav-section-title" style={{ marginTop: "14px" }}>🖼️ Image Tools</div>
-            <div className="mobile-nav-grid">
+            <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mt-4">
+              🖼️ Image Tools
+            </div>
+            <div className="flex flex-col gap-0.5 pb-6">
               {IMAGE_TOOLS.map(t => (
                 <NavLink
                   key={t.path}
                   to={t.path}
-                  className={({ isActive }) => `mobile-nav-item${isActive ? " active" : ""}`}
+                  className={({ isActive }) =>
+                    `rounded-full px-4 py-2 text-sm font-medium flex items-center gap-3 transition-colors ${
+                      isActive
+                        ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                    }`
+                  }
                   onClick={() => setMobileNavOpen(false)}
                 >
                   <span>{t.icon}</span> {t.label}
                 </NavLink>
               ))}
             </div>
+
           </div>
         </div>
       )}
