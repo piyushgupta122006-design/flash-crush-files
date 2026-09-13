@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@imgly/background-removal": "^1.7.0",
+    "@material/web": "^2.5.0",
     "@pdfsmaller/pdf-encrypt": "^1.2.0",
     "@upscalerjs/default-model": "^1.0.0",
     "exifreader": "^4.44.0",

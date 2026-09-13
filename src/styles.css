@@ -58,6 +58,27 @@
   --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15); /* Elevation 3 */
   --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15); /* Elevation 4 */
 
+  /* Official @material/web System Color Tokens (Light Mode) */
+  --md-sys-color-primary: #0b57d0;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #c2e7ff;
+  --md-sys-color-on-primary-container: #001d35;
+  --md-sys-color-secondary: #004a77;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #c2e7ff;
+  --md-sys-color-on-secondary-container: #001d35;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-on-surface: #1f1f1f;
+  --md-sys-color-surface-variant: #f0f4f9;
+  --md-sys-color-on-surface-variant: #444746;
+  --md-sys-color-surface-container: #f0f4f9;
+  --md-sys-color-surface-container-high: #e9eef6;
+  --md-sys-color-surface-container-low: #f8fafd;
+  --md-sys-color-background: #f8fafd;
+  --md-sys-color-on-background: #1f1f1f;
+  --md-sys-color-outline: #747775;
+  --md-sys-color-outline-variant: #c7c7c7;
+
   /* Radii — Material 3 */
   --radius-sm:      8px;
   --radius-md:      16px;
@@ -111,6 +132,27 @@
   --shadow-md:      0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
   --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
   --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15);
+
+  /* Official @material/web System Color Tokens (Dark Mode) */
+  --md-sys-color-primary: #a8c7fa;
+  --md-sys-color-on-primary: #062e6f;
+  --md-sys-color-primary-container: #004a77;
+  --md-sys-color-on-primary-container: #c2e7ff;
+  --md-sys-color-secondary: #7fcfff;
+  --md-sys-color-on-secondary: #003454;
+  --md-sys-color-secondary-container: #004a77;
+  --md-sys-color-on-secondary-container: #c2e7ff;
+  --md-sys-color-surface: #1e1f20;
+  --md-sys-color-on-surface: #e3e3e3;
+  --md-sys-color-surface-variant: #28292a;
+  --md-sys-color-on-surface-variant: #c4c7c5;
+  --md-sys-color-surface-container: #28292a;
+  --md-sys-color-surface-container-high: #333537;
+  --md-sys-color-surface-container-low: #131314;
+  --md-sys-color-background: #131314;
+  --md-sys-color-on-background: #e3e3e3;
+  --md-sys-color-outline: #8e918f;
+  --md-sys-color-outline-variant: #444746;
 
   /* Legacy compat in Dark Mode */
   --cyan-neon:      #4FD8E9;

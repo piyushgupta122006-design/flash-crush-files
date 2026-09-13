@@ -14,24 +14,37 @@ export function usePWA() {
     }
 
     // 2. Register Service Worker reliably across all devices (Desktop PC & Mobile)
+    // 2. Register Service Worker in production; unregister and clear in development
     if ("serviceWorker" in navigator) {
-      const registerSW = () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((reg) => {
-            console.log("FlashCrush Service Worker active on:", reg.scope);
-            // Check for updates
-            reg.update().catch(() => {});
-          })
-          .catch((err) => {
-            console.warn("Service Worker registration error:", err);
+      if (import.meta.env.DEV) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (let registration of registrations) {
+            registration.unregister();
+          }
+        });
+        if ("caches" in window) {
+          caches.keys().then((keys) => {
+            keys.forEach((key) => caches.delete(key));
           });
-      };
-
-      if (document.readyState === "complete") {
-        registerSW();
+        }
       } else {
-        window.addEventListener("load", registerSW);
+        const registerSW = () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((reg) => {
+              console.log("FlashCrush Service Worker active on:", reg.scope);
+              reg.update().catch(() => {});
+            })
+            .catch((err) => {
+              console.warn("Service Worker registration error:", err);
+            });
+        };
+
+        if (document.readyState === "complete") {
+          registerSW();
+        } else {
+          window.addEventListener("load", registerSW);
+        }
       }
     }
 

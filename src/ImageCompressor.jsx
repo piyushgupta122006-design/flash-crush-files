@@ -1,9 +1,15 @@
-// ImageCompressor.jsx
+// ImageCompressor.jsx — Google Material 3 (Material Web Components)
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButtons from "./ActionButtons";
 
-// Helper: Binary Search for Exact Size
+// Import Google Official Material Web Components
+import "@material/web/button/filled-button.js";
+import "@material/web/button/outlined-button.js";
+import "@material/web/progress/linear-progress.js";
+import "@material/web/iconbutton/icon-button.js";
+
+// Helper: Binary Search for Exact Size (Unchanged & 100% Intact)
 async function compressToTargetSize(imgElement, mimeType, targetSizeKB) {
   const targetBytes = targetSizeKB * 1024;
   const effectiveMime = mimeType === "image/png" ? "image/webp" : mimeType;
@@ -111,7 +117,6 @@ export default function ImageCompressor({ auth }) {
   const handleDrivePick = async () => {
     setPickLoading(true);
     try {
-      // Get token directly in user-click context to avoid popup blocking
       const token = await auth.getToken();
       await auth.pickFromDrive(["image/jpeg", "image/png", "image/webp"], (pickedFile) => {
         handleFile(pickedFile);
@@ -153,11 +158,9 @@ export default function ImageCompressor({ auth }) {
 
     const img = new Image();
     img.onload = async () => {
-      // Browser canvas ignores quality parameter for PNG (PNG is lossless in Canvas API).
-      // WebP format preserves full transparency and achieves true quality compression.
       let outMime = "image/jpeg";
       if (file.type === "image/png" || file.name.match(/\.png$/i)) {
-        outMime = "image/webp"; // WebP compresses PNGs with alpha channel beautifully
+        outMime = "image/webp";
       } else if (file.type === "image/webp" || file.name.match(/\.webp$/i)) {
         outMime = "image/webp";
       } else {
@@ -185,7 +188,6 @@ export default function ImageCompressor({ auth }) {
             canvas.toBlob(resolve, outMime, q)
           );
 
-          // Smart Never-Larger Guard: If result is ever >= original size, downscale slightly with webp
           if (finalBlob && finalBlob.size >= file.size) {
             const fallbackBlob = await new Promise(resolve => 
               canvas.toBlob(resolve, "image/webp", Math.max(0.2, q - 0.2))
@@ -244,119 +246,169 @@ export default function ImageCompressor({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Image Compressor</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP</div>
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+      {/* Top Bar */}
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Image Compressor</div>
+        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP</div>
       </div>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge img">🖼️</div>
-            <div className="comp-title">Image Compressor</div>
+      <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pb-12 flex-1">
+        
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-2xl text-[#001d35] dark:text-[#c2e7ff]">
+              🖼️
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">
+              Image Compressor
+            </h1>
           </div>
-          <p className="comp-sub">Compress JPG, PNG, and WebP images instantly in your browser.</p>
+          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-md mx-auto">
+            Compress JPG, PNG, and WebP images instantly with maximum quality in your browser.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* Main Card Surface */}
+        <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-6 sm:p-8 overflow-hidden">
 
           {/* Drop Zone */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`border-2 border-dashed border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                dragging 
+                  ? "bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border-[#0b57d0] dark:border-[#a8c7fa]" 
+                  : "bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#1e1f20]"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">🖼️</span>
-              <p className="drop-main">
+              <input 
+                ref={inputRef} 
+                type="file" 
+                accept="image/jpeg,image/png,image/webp" 
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])} 
+              />
+              <span className="text-4xl mb-3 block">🖼️</span>
+              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
                 {dragging ? "Drop your image here!" : "Drag & drop your image here"}
               </p>
-              <p className="drop-sub">JPG, PNG, WebP · max {MAX_SIZE_MB} MB</p>
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-6">
+                JPG, PNG, WebP · max {MAX_SIZE_MB} MB · 100% Client-Side Privacy
+              </p>
 
               {stage !== "error" && (
-                <div className="drop-btn-row">
-                  <button className="drop-btn"
-                    onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                  {/* Google Material Web Filled Button */}
+                  <md-filled-button onClick={() => inputRef.current?.click()}>
                     📁 Browse File
-                  </button>
-                  <button className="drop-btn-drive"
-                    onClick={(e) => { e.stopPropagation(); handleDrivePick(); }}
-                    disabled={pickLoading || auth.authStatus === "loading"}>
-                    <DriveIconSmall />
+                  </md-filled-button>
+
+                  {/* Google Material Web Outlined Button */}
+                  <md-outlined-button 
+                    onClick={handleDrivePick}
+                    disabled={pickLoading || auth.authStatus === "loading" ? true : undefined}
+                  >
+                    <DriveIconSmall slot="icon" />
                     {drivePickLabel()}
-                  </button>
+                  </md-outlined-button>
                 </div>
               )}
 
               {stage === "error" && (
-                <div className="error-box">⚠ {errorMsg}</div>
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-[#ffdad6] dark:bg-[#93000a]/30 text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]/50 inline-block">
+                  ⚠ {errorMsg}
+                </div>
               )}
             </div>
           )}
 
           {/* Image preview + file row */}
           {(stage === "ready" || stage === "done") && (
-            <>
+            <div className="space-y-4">
               {preview && (
-                <div style={{
-                  margin: "20px 20px 0", borderRadius: 'var(--radius-full)', overflow: "hidden",
-                  border: 'none', maxHeight: "220px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "var(--p50)",
-                }}>
+                <div className="rounded-2xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden max-h-[260px] flex items-center justify-center bg-[#f0f4f9] dark:bg-[#131314] p-2">
                   <img
                     src={stage === "done" && compressedUrl ? compressedUrl : preview}
                     alt="Preview"
-                    style={{ maxWidth: "100%", maxHeight: "220px", display: "block", objectFit: "contain" }}
+                    className="max-w-full max-h-[240px] object-contain rounded-xl"
                   />
                 </div>
               )}
-              <div className="file-row" style={{ marginTop: "12px" }}>
-                <div className="file-icon img">🖼️</div>
-                <div className="file-info">
-                  <div className="file-name">{file?.name}</div>
-                  <div className="file-size">{fmt(file?.size)}</div>
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-xl flex items-center justify-center text-[#001d35] dark:text-[#c2e7ff] flex-shrink-0">
+                    🖼️
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file?.name}</div>
+                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">{fmt(file?.size)}</div>
+                  </div>
                 </div>
-                <button className="close-btn" onClick={reset}>✕</button>
+                {/* Google Material Web Icon Button */}
+                <md-icon-button onClick={reset} title="Remove image">
+                  ✕
+                </md-icon-button>
               </div>
-            </>
+            </div>
           )}
 
           {/* Level selector */}
           {(stage === "ready" || stage === "done") && (
-            <div className="level-wrap">
-              <span className="level-label">Compression Level</span>
-              <div className="level-grid">
+            <div className="mt-6">
+              <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+                Compression Level
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {LEVELS.map((l) => (
-                  <button key={l.id}
-                    className={`level-btn${level === l.id ? " active-img" : ""}`}
-                    onClick={() => setLevel(l.id)}>
-                    <span className="level-icon">{l.icon}</span>
-                    <span className="level-name">{l.label}</span>
+                  <button 
+                    key={l.id}
+                    type="button"
+                    className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
+                      level === l.id 
+                        ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold shadow-xs" 
+                        : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                    }`}
+                    onClick={() => setLevel(l.id)}
+                  >
+                    <span className="text-lg mb-1">{l.icon}</span>
+                    <span className="text-sm font-medium">{l.label}</span>
                   </button>
                 ))}
                 
                 {/* Custom Button */}
                 <button 
-                  className={`level-btn${level === "custom" ? " active-img" : ""}`}
-                  onClick={() => setLevel("custom")}>
-                  <span className="level-icon">🎯</span>
-                  <span className="level-name">Custom</span>
+                  type="button"
+                  className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
+                    level === "custom" 
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold shadow-xs" 
+                      : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                  }`}
+                  onClick={() => setLevel("custom")}
+                >
+                  <span className="text-lg mb-1">🎯</span>
+                  <span className="text-sm font-medium">Custom</span>
                 </button>
               </div>
-              <p className="level-hint">{level === "custom" ? "Target an exact file size in KB" : LEVELS.find(l => l.id === level)?.desc}</p>
+
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2">
+                {level === "custom" ? "Target an exact file size in KB" : LEVELS.find(l => l.id === level)?.desc}
+              </p>
               
               {/* Custom size input */}
               {level === "custom" && (
-                <div style={{ marginTop: "16px", background: "var(--p50)", padding: "12px", borderRadius: 'var(--radius-full)', border: "1px dashed var(--p400)" }}>
-                  <label style={{ fontSize: "12px", color: "var(--text)", fontWeight: "600", display: "block", marginBottom: "6px" }}>
+                <div className="mt-4 p-4 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+                  <label className="text-xs font-semibold text-[#1f1f1f] dark:text-[#e3e3e3] block mb-1.5">
                     Target Size (KB)
                   </label>
                   <input 
@@ -364,14 +416,9 @@ export default function ImageCompressor({ auth }) {
                     value={targetSize} 
                     onChange={(e) => setTargetSize(e.target.value)}
                     placeholder="e.g. 50"
-                    style={{
-                      width: "100%", padding: "8px 12px", borderRadius: 'var(--radius-full)', 
-                      border: 'none', outline: "none",
-                      fontFamily: "'JetBrains Mono', monospace",
-                      background: "#fff"
-                    }}
+                    className="w-full px-4 py-2.5 rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] font-mono text-sm outline-none"
                   />
-                  <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "6px" }}>
+                  <p className="text-[11px] text-[#444746] dark:text-[#c4c7c5] mt-1.5">
                     Note: We will optimize quality to get as close to this target size as possible.
                   </p>
                 </div>
@@ -379,56 +426,65 @@ export default function ImageCompressor({ auth }) {
             </div>
           )}
 
-          {/* ── Compress button ── */}
+          {/* ── Compress button (Google Material Web Filled Button) ── */}
           {(stage === "ready" || stage === "done") && (
-            <div className="action-wrap">
-              <button className="btn-compress img" onClick={compress}>
+            <div className="mt-6">
+              <md-filled-button 
+                onClick={compress} 
+                style={{ width: "100%", height: "48px" }}
+              >
                 {stage === "done" ? "🔁 Re-compress Image" : "⚡ Compress Image"}
-              </button>
+              </md-filled-button>
             </div>
           )}
 
+          {/* Progress Section (Google Material Web Linear Progress) */}
           {stage === "compressing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Compressing your image...</span>
-                <span className="progress-pct blue">{progress}%</span>
+            <div className="mt-6 p-6 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">Compressing your image...</span>
+                <span className="text-sm font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar blue" style={{ width: `${progress}%` }} />
-              </div>
-              <p className="progress-msg">{progressMsg}</p>
+              
+              {/* Google Material Web Linear Progress Component */}
+              <md-linear-progress value={progress / 100} style={{ width: "100%" }}></md-linear-progress>
+              
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3 font-medium">{progressMsg}</p>
             </div>
           )}
 
+          {/* Result Box */}
           {stage === "done" && result && (
-            <>
-              <div className="result-box">
-                <div className="result-grid">
+            <div className="mt-6 space-y-4">
+              <div className="p-5 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+                <div className="flex items-center justify-around text-center mb-4">
                   <div>
-                    <span className="result-label">Original Size</span>
-                    <span className="result-val-orig">{fmt(result.originalSize)}</span>
+                    <span className="text-xs text-[#444746] dark:text-[#c4c7c5] block mb-1">Original Size</span>
+                    <span className="text-base font-semibold text-[#1f1f1f] dark:text-[#e3e3e3] font-mono">{fmt(result.originalSize)}</span>
                   </div>
-                  <div className="result-arrow">→</div>
+                  <div className="text-xl text-[#0b57d0] dark:text-[#a8c7fa]">→</div>
                   <div>
-                    <span className="result-label">Compressed</span>
-                    <span className="result-val-comp">{fmt(result.compressedSize)}</span>
+                    <span className="text-xs text-[#444746] dark:text-[#c4c7c5] block mb-1">Compressed</span>
+                    <span className="text-base font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{fmt(result.compressedSize)}</span>
                   </div>
                 </div>
-                <div className="result-badge">
-                  <span>🎉 {result.saving}% smaller</span>
+                <div className="flex justify-center">
+                  <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-[#e6f4ea] dark:bg-[#0f5223]/30 text-[#137333] dark:text-[#81c995] border border-[#ceead6] dark:border-[#137333]/50">
+                    🎉 {result.saving}% smaller
+                  </span>
                 </div>
               </div>
+
               <ActionButtons
                 blob={compressedBlob}
                 fileName={getFileName()}
                 onReset={reset}
                 auth={auth}
               />
-            </>
+            </div>
           )}
 
-          <div className="comp-footer">
+          <div className="mt-8 pt-4 border-t border-[#c7c7c7]/40 dark:border-[#444746]/40 flex justify-between text-[11px] text-[#444746] dark:text-[#c4c7c5]">
             <span>FlashCrush · Image Tool</span>
             <span>Files never leave your browser</span>
           </div>
