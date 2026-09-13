@@ -1,8 +1,14 @@
-// ImageConverter.jsx
+// ImageConverter.jsx — Google Material 3 (Material Web Components)
 // Convert images between PNG, JPG, WebP, BMP, GIF formats — all in the browser.
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionButtons from "./ActionButtons";
+
+// Import Google Official Material Web Components
+import "@material/web/button/filled-button.js";
+import "@material/web/button/outlined-button.js";
+import "@material/web/progress/linear-progress.js";
+import "@material/web/iconbutton/icon-button.js";
 
 const MAX_SIZE_MB = 30;
 const MAX_SIZE    = MAX_SIZE_MB * 1024 * 1024;
@@ -199,250 +205,46 @@ export default function ImageConverter({ auth }) {
   const isSameFormat = file && file.type === targetFormat;
 
   return (
-    <div className="compressor-page">
-
-      <style>{`
-        .fmt-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
-          gap: 8px;
-          margin-bottom: 8px;
-        }
-        .fmt-btn {
-          padding: 12px 6px;
-          background: #FFFFFF;
-          border: 2px solid #1a1a1a;
-          border-radius: 8px;
-          cursor: pointer;
-          text-align: center;
-          transition: all 0.15s ease;
-          font-family: inherit;
-          position: relative;
-          box-shadow: 2px 2px 0px #1a1a1a;
-        }
-        .fmt-btn:hover:not(:disabled) {
-          background: #FEF3C7;
-          transform: translate(-1px, -1px);
-          box-shadow: 3px 3px 0px #1a1a1a;
-        }
-        .fmt-btn.active-convert {
-          background: #7DD3FC;
-          border-color: #1a1a1a;
-          box-shadow: 3px 3px 0px #1a1a1a;
-          transform: translate(-1px, -1px);
-        }
-        .fmt-btn.same-format {
-          opacity: 0.4;
-          cursor: not-allowed;
-          box-shadow: none;
-        }
-        .fmt-btn-label {
-          font-size: 13px;
-          font-weight: 700;
-          color: #1a1a1a;
-          display: block;
-          margin-bottom: 2px;
-        }
-        .fmt-btn.active-convert .fmt-btn-label { color: #1a1a1a; }
-        .fmt-btn-ext {
-          font-size: 10px;
-          font-weight: 600;
-          color: #525252;
-          display: block;
-          font-family: 'JetBrains Mono', monospace;
-        }
-        .source-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          background: #FEF3C7;
-          border: 2px solid #1a1a1a;
-          border-radius: 6px;
-          padding: 3px 12px;
-          font-size: 11px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin-bottom: 8px;
-          box-shadow: 2px 2px 0px #1a1a1a;
-        }
-        .convert-arrow-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          margin: 14px 0;
-          font-size: 13px;
-          font-weight: 700;
-          color: #1a1a1a;
-        }
-        .convert-arrow-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: #FFFFFF;
-          border: 2px solid #1a1a1a;
-          border-radius: 6px;
-          padding: 6px 14px;
-          font-size: 13px;
-          font-weight: 700;
-          box-shadow: 2px 2px 0px #1a1a1a;
-        }
-        .convert-arrow-badge.source { color: #525252; }
-        .convert-arrow-badge.target { color: #1a1a1a; background: #7DD3FC; }
-        .arrow-icon {
-          font-size: 16px;
-          color: #1a1a1a;
-          font-weight: 800;
-        }
-        .btn-compress.convert {
-          background: #1a1a1a;
-          color: #FFFFFF;
-          box-shadow: 4px 4px 0px #1a1a1a;
-        }
-        .btn-compress.convert:hover {
-          background: #374151;
-          transform: translate(-2px, -2px);
-          box-shadow: 6px 6px 0px #1a1a1a;
-        }
-        .btn-compress.convert:disabled {
-          opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none;
-        }
-        .progress-pct.blue-sky { color: #0284C7; }
-        .progress-bar.sky { background: #7DD3FC; }
-        .result-box-convert {
-          margin: 0 20px 16px;
-          background: #F0F9FF;
-          border: 2px solid #1a1a1a;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 4px 4px 0px #1a1a1a;
-        }
-        .convert-result-formats {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 16px;
-          margin-bottom: 16px;
-        }
-        .convert-result-fmt {
-          text-align: center;
-        }
-        .convert-result-fmt-label {
-          font-size: 10px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: #525252;
-          margin-bottom: 4px;
-          display: block;
-        }
-        .convert-result-fmt-name {
-          font-size: 22px;
-          font-weight: 800;
-          letter-spacing: -0.5px;
-          color: #1a1a1a;
-        }
-        .convert-result-fmt-name.source { color: #525252; }
-        .convert-result-fmt-name.target { color: #0284C7; }
-        .convert-arrow-big { font-size: 20px; color: #1a1a1a; margin-top: 8px; }
-        .convert-meta-row {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 18px;
-          flex-wrap: wrap;
-        }
-        .convert-meta-item {
-          text-align: center;
-        }
-        .convert-meta-label {
-          font-size: 10px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: var(--text-muted);
-          margin-bottom: 2px;
-          display: block;
-        }
-        .convert-meta-val {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px;
-          font-weight: 600;
-          color: #ffffff;
-        }
-        .convert-meta-divider {
-          width: 1px;
-          height: 28px;
-          background: rgba(255,255,255,0.1);
-        }
-        .gif-notice {
-          font-size: 12px;
-          color: #fcd34d;
-          background: rgba(245,158,11,0.12);
-          border: 1px solid rgba(245,158,11,0.3);
-          border-radius: var(--radius-sm);
-          padding: 8px 12px;
-          margin-top: 10px;
-          text-align: center;
-        }
-
-        .quality-grid {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 8px;
-        }
-        .quality-btn {
-          flex: 1;
-          padding: 10px 6px;
-          background: rgba(255,255,255,0.03);
-          border: 1.5px solid rgba(255,255,255,0.08);
-          border-radius: var(--radius-sm);
-          cursor: pointer;
-          text-align: center;
-          font-family: inherit;
-          transition: all 0.2s ease;
-        }
-        .quality-btn:hover { border-color: #38bdf8; background: rgba(56,189,248,0.08); }
-        .quality-btn.active-quality {
-          background: rgba(56,189,248,0.18);
-          border-color: #38bdf8;
-          box-shadow: 0 0 15px rgba(56,189,248,0.35);
-        }
-        .quality-name {
-          font-size: 12px;
-          font-weight: 700;
-          color: #ffffff;
-        }
-
-        @media (max-width: 600px) {
-          .fmt-grid { grid-template-columns: repeat(3, 1fr); }
-          .convert-result-formats { gap: 8px; }
-          .convert-meta-row { gap: 10px; }
-        }
-      `}</style>
-
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Image Converter</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP · BMP · GIF</div>
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+      {/* Top Bar */}
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Image Converter</div>
+        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP · BMP · GIF</div>
       </div>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge convert">🔄</div>
-            <div className="comp-title">Image Converter</div>
+      <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pb-12 flex-1">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-2xl text-[#001d35] dark:text-[#c2e7ff]">
+              🔄
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">
+              Image Converter
+            </h1>
           </div>
-          <p className="comp-sub">Convert between PNG, JPG, WebP, BMP and GIF — instantly in your browser.</p>
+          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-md mx-auto">
+            Convert between PNG, JPG, WebP, BMP and GIF — instantly in your browser.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* Main Card Surface */}
+        <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-6 sm:p-8 overflow-hidden">
 
-          {/* ── Drop Zone ── */}
+          {/* Drop Zone */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
-              style={{ "--dz-accent": "#0ea5e9", "--dz-bg": "rgba(14,165,233,0.04)" }}
+              className={`border-2 border-dashed border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                dragging 
+                  ? "bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border-[#0b57d0] dark:border-[#a8c7fa]" 
+                  : "bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#1e1f20]"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
@@ -455,135 +257,162 @@ export default function ImageConverter({ auth }) {
                 hidden
                 onChange={(e) => handleFile(e.target.files[0])}
               />
-              <span className="drop-icon">🔄</span>
-              <p className="drop-main">
+              <span className="text-4xl mb-3 block">🔄</span>
+              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
                 {dragging ? "Drop your image here!" : "Drag & drop your image here"}
               </p>
-              <p className="drop-sub">JPG, PNG, WebP, BMP, GIF · max {MAX_SIZE_MB} MB</p>
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-6">
+                JPG, PNG, WebP, BMP, GIF · max {MAX_SIZE_MB} MB · 100% Client-Side Privacy
+              </p>
 
               {stage !== "error" && (
-                <div className="drop-btn-row">
-                  <button className="drop-btn"
-                    style={{ background: "linear-gradient(135deg,#0ea5e9,#0369a1)", boxShadow: "0 3px 12px rgba(14,165,233,0.30)" }}
-                    onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                  {/* Google Material Web Filled Button */}
+                  <md-filled-button onClick={() => inputRef.current?.click()}>
                     📁 Browse File
-                  </button>
-                  <button className="drop-btn-drive"
-                    onClick={(e) => { e.stopPropagation(); handleDrivePick(); }}
-                    disabled={pickLoading || auth.authStatus === "loading"}>
-                    <DriveIconSmall />
+                  </md-filled-button>
+
+                  {/* Google Material Web Outlined Button */}
+                  <md-outlined-button 
+                    onClick={handleDrivePick}
+                    disabled={pickLoading || auth.authStatus === "loading" ? true : undefined}
+                  >
+                    <DriveIconSmall slot="icon" />
                     {drivePickLabel()}
-                  </button>
+                  </md-outlined-button>
                 </div>
               )}
 
               {stage === "error" && (
-                <div className="error-box">⚠ {errorMsg}</div>
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-[#ffdad6] dark:bg-[#93000a]/30 text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]/50 inline-block">
+                  ⚠ {errorMsg}
+                </div>
               )}
             </div>
           )}
 
-          {/* ── File row + preview ── */}
+          {/* Image preview + file row */}
           {(stage === "ready" || stage === "done") && (
-            <>
+            <div className="space-y-4">
               {preview && (
-                <div style={{
-                  margin: "20px 20px 0", borderRadius: 'var(--radius-full)', overflow: "hidden",
-                  border: 'none', maxHeight: "180px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "repeating-conic-gradient(rgba(168,85,247,0.06) 0% 25%, transparent 0% 50%) 0 0 / 16px 16px",
-                }}>
+                <div className="rounded-2xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden max-h-[260px] flex items-center justify-center bg-[#f0f4f9] dark:bg-[#131314] p-2">
                   <img
                     src={stage === "done" && convertedUrl ? convertedUrl : preview}
                     alt="Preview"
-                    style={{ maxWidth: "100%", maxHeight: "180px", display: "block", objectFit: "contain" }}
+                    className="max-w-full max-h-[240px] object-contain rounded-xl"
                   />
                 </div>
               )}
 
-              <div className="file-row" style={{ marginTop: "12px" }}>
-                <div className="file-icon img">🖼️</div>
-                <div className="file-info">
-                  <div className="file-name">{file?.name}</div>
-                  <div className="file-size">{fmt(file?.size)}</div>
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-xl flex items-center justify-center text-[#001d35] dark:text-[#c2e7ff] flex-shrink-0">
+                    🖼️
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file?.name}</div>
+                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">{fmt(file?.size)}</div>
+                  </div>
                 </div>
-                <button className="close-btn" onClick={reset}>✕</button>
+                {/* Google Material Web Icon Button */}
+                <md-icon-button onClick={reset} title="Remove image">
+                  ✕
+                </md-icon-button>
               </div>
 
               {/* Source format badge */}
               {sourceFormat && (
-                <div style={{ padding: "10px 20px 0", display: "flex", alignItems: "center", gap: 8 }}>
-                  <span className="source-badge">
-                    📄 Source: <strong>{sourceFormat}</strong>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#e8def8] dark:bg-[#4a4458] text-[#1d192b] dark:text-[#e8def8] border border-[#cac4d0] dark:border-[#49454f]">
+                    📄 Source Format: <strong>{sourceFormat}</strong>
                   </span>
                 </div>
               )}
-            </>
+            </div>
           )}
 
-          {/* ── Format selector ── */}
+          {/* Format selector */}
           {(stage === "ready" || stage === "done") && (
-            <div className="level-wrap">
-              <span className="level-label">Convert To</span>
+            <div className="mt-6">
+              <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+                Convert To
+              </label>
 
               {/* Arrow preview */}
-              <div className="convert-arrow-row">
-                <span className="convert-arrow-badge source">{sourceFormat}</span>
-                <span className="arrow-icon">→</span>
-                <span className="convert-arrow-badge target">
+              <div className="flex items-center justify-center gap-3 mb-4 text-sm font-medium">
+                <span className="px-3 py-1 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] text-[#444746] dark:text-[#c4c7c5]">
+                  {sourceFormat}
+                </span>
+                <span className="text-[#0b57d0] dark:text-[#a8c7fa] font-bold">→</span>
+                <span className="px-3 py-1 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] font-semibold border border-[#0b57d0]/30 dark:border-[#a8c7fa]/30">
                   {getFormatFromMime(targetFormat)?.label}
                 </span>
               </div>
 
-              <div className="fmt-grid">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 {FORMATS.map((fmt) => {
                   const isCurrent = file?.type === fmt.id;
+                  const isSelected = targetFormat === fmt.id;
                   return (
                     <button
                       key={fmt.id}
-                      className={`fmt-btn${targetFormat === fmt.id ? " active-convert" : ""}${isCurrent ? " same-format" : ""}`}
+                      type="button"
+                      className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
+                        isSelected 
+                          ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold border-2 border-[#0b57d0] dark:border-[#a8c7fa] shadow-xs" 
+                          : isCurrent
+                          ? "opacity-40 cursor-not-allowed bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-dashed border-[#c7c7c7] dark:border-[#444746]"
+                          : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                      }`}
                       onClick={() => { if (!isCurrent) setTargetFormat(fmt.id); }}
                       disabled={isCurrent}
                       title={isCurrent ? "This is already the source format" : fmt.desc}
                     >
-                      <span className="fmt-btn-label">{fmt.label}</span>
-                      <span className="fmt-btn-ext">.{fmt.ext}</span>
+                      <span className="text-base font-bold">{fmt.label}</span>
+                      <span className="text-[11px] font-mono opacity-80">.{fmt.ext}</span>
                       {isCurrent && (
-                        <span style={{ fontSize: 9, color: "#b45309", display: "block", marginTop: 1 }}>current</span>
+                        <span className="text-[9px] uppercase font-bold text-[#b45309] dark:text-[#fde68a] mt-0.5">Current</span>
                       )}
                     </button>
                   );
                 })}
               </div>
 
-              <p className="level-hint" style={{ marginTop: 6 }}>
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2">
                 {getFormatFromMime(targetFormat)?.desc}
               </p>
 
               {/* GIF notice */}
               {targetFormat === "image/gif" && (
-                <div className="gif-notice">
+                <div className="mt-3 px-3 py-2 rounded-xl bg-[#fff8e1] dark:bg-[#4a3b00]/30 border border-[#ffe082] dark:border-[#ffe082]/30 text-[#855700] dark:text-[#ffe082] text-xs">
                   ⚠️ GIF export is limited to PNG encoding (browser restriction). For animated GIFs, use a dedicated tool.
                 </div>
               )}
 
               {/* Quality selector — only for JPG / WebP */}
               {(targetFormat === "image/jpeg" || targetFormat === "image/webp") && (
-                <div style={{ marginTop: 14 }}>
-                  <span className="level-label">Output Quality</span>
-                  <div className="quality-grid">
+                <div className="mt-4">
+                  <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+                    Output Quality
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
                     {QUALITY_OPTS.map((q) => (
                       <button
                         key={q.id}
-                        className={`quality-btn${quality === q.id ? " active-quality" : ""}`}
+                        type="button"
+                        className={`py-2.5 px-3 rounded-xl text-center text-sm font-medium transition-all ${
+                          quality === q.id
+                            ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold border-2 border-[#0b57d0] dark:border-[#a8c7fa]"
+                            : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                        }`}
                         onClick={() => setQuality(q.id)}
                         title={q.desc}
                       >
-                        <span className="quality-name">{q.label}</span>
+                        {q.label}
                       </button>
                     ))}
                   </div>
-                  <p className="level-hint">
+                  <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-1.5">
                     {QUALITY_OPTS.find(q => q.id === quality)?.desc}
                   </p>
                 </div>
@@ -591,88 +420,86 @@ export default function ImageConverter({ auth }) {
             </div>
           )}
 
-          {/* ── Convert button ── */}
+          {/* Convert button (Google Material Web Filled Button) */}
           {(stage === "ready" || stage === "done") && (
-            <div className="action-wrap">
-              <button
-                className="btn-compress convert"
-                onClick={convert}
-                disabled={isSameFormat}
+            <div className="mt-6">
+              <md-filled-button 
+                onClick={convert} 
+                disabled={isSameFormat ? true : undefined}
+                style={{ width: "100%", height: "48px" }}
               >
                 {stage === "done" ? "🔁 Convert Again" : "🔄 Convert Image"}
-              </button>
+              </md-filled-button>
             </div>
           )}
 
-          {/* ── Progress ── */}
+          {/* Progress Section (Google Material Web Linear Progress) */}
           {stage === "converting" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Converting your image...</span>
-                <span className="progress-pct blue-sky">{progress}%</span>
+            <div className="mt-6 p-6 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">Converting your image...</span>
+                <span className="text-sm font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar sky" style={{ width: `${progress}%` }} />
-              </div>
-              <p className="progress-msg">{progressMsg}</p>
+              
+              {/* Google Material Web Linear Progress Component */}
+              <md-linear-progress value={progress / 100} style={{ width: "100%" }}></md-linear-progress>
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2 text-center">{progressMsg}</p>
             </div>
           )}
 
-          {/* ── Result ── */}
+          {/* Result Card */}
           {stage === "done" && result && (
-            <div className="result-box-convert">
-              <div className="convert-result-formats">
-                <div className="convert-result-fmt">
-                  <span className="convert-result-fmt-label">From</span>
-                  <span className="convert-result-fmt-name source">{result.originalFormat}</span>
+            <div className="mt-6 p-6 rounded-2xl bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border border-[#0b57d0]/30 dark:border-[#a8c7fa]/30 text-center">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <div className="text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] block">From</span>
+                  <span className="text-xl font-bold text-[#1f1f1f] dark:text-[#e3e3e3]">{result.originalFormat}</span>
                 </div>
-                <span className="convert-arrow-big">→</span>
-                <div className="convert-result-fmt">
-                  <span className="convert-result-fmt-label">To</span>
-                  <span className="convert-result-fmt-name target">{result.targetFormat}</span>
-                </div>
-              </div>
-
-              <div className="convert-meta-row">
-                <div className="convert-meta-item">
-                  <span className="convert-meta-label">Original</span>
-                  <span className="convert-meta-val">{fmt(result.originalSize)}</span>
-                </div>
-                <div className="convert-meta-divider" />
-                <div className="convert-meta-item">
-                  <span className="convert-meta-label">Converted</span>
-                  <span className="convert-meta-val" style={{ color: "#0284c7" }}>{fmt(result.convertedSize)}</span>
-                </div>
-                <div className="convert-meta-divider" />
-                <div className="convert-meta-item">
-                  <span className="convert-meta-label">Dimensions</span>
-                  <span className="convert-meta-val">{result.width} × {result.height}</span>
+                <span className="text-xl text-[#0b57d0] dark:text-[#a8c7fa]">→</span>
+                <div className="text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#0b57d0] dark:text-[#a8c7fa] block">To</span>
+                  <span className="text-xl font-bold text-[#0b57d0] dark:text-[#a8c7fa]">{result.targetFormat}</span>
                 </div>
               </div>
 
-              <div className="result-badge" style={{ marginTop: 14 }}>
-                <span style={{
-                  background: "rgba(14,165,233,0.08)",
-                  border: "1px solid rgba(14,165,233,0.20)",
-                  color: "#0284c7",
-                }}>
-                  ✅ Converted to {result.targetFormat}
+              <div className="flex items-center justify-center gap-6 flex-wrap py-3 border-y border-[#0b57d0]/10 dark:border-[#a8c7fa]/10">
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Original</span>
+                  <span className="text-sm font-semibold font-mono text-[#1f1f1f] dark:text-[#e3e3e3]">{fmt(result.originalSize)}</span>
+                </div>
+                <div className="w-[1px] h-6 bg-[#c7c7c7] dark:bg-[#444746]" />
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Converted</span>
+                  <span className="text-sm font-semibold font-mono text-[#0b57d0] dark:text-[#a8c7fa]">{fmt(result.convertedSize)}</span>
+                </div>
+                <div className="w-[1px] h-6 bg-[#c7c7c7] dark:bg-[#444746]" />
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Dimensions</span>
+                  <span className="text-sm font-semibold font-mono text-[#1f1f1f] dark:text-[#e3e3e3]">{result.width} × {result.height}</span>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]">
+                  ✅ Successfully converted to {result.targetFormat}
                 </span>
               </div>
             </div>
           )}
 
-          {/* ── Action buttons ── */}
+          {/* Action buttons */}
           {stage === "done" && convertedBlob && (
-            <ActionButtons
-              blob={convertedBlob}
-              fileName={getFileName()}
-              onReset={reset}
-              auth={auth}
-            />
+            <div className="mt-6">
+              <ActionButtons
+                blob={convertedBlob}
+                fileName={getFileName()}
+                onReset={reset}
+                auth={auth}
+              />
+            </div>
           )}
 
-          <div className="comp-footer">
+          <div className="mt-8 pt-4 border-t border-[#c7c7c7] dark:border-[#444746] flex items-center justify-between text-xs text-[#444746] dark:text-[#c4c7c5]">
             <span>Flash Crush-Files · Convert Tool</span>
             <span>Files never leave your browser</span>
           </div>
