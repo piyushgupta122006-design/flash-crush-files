@@ -362,23 +362,23 @@ export default function CommandPalette({
   if (!isOpen) return null;
 
   return (
-    <div className="cmd-overlay" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] pb-4 px-4 bg-[#1f1f1f]/60 backdrop-blur-sm transition-opacity font-sans" onClick={onClose}>
       <div
         ref={modalRef}
-        className="cmd-modal"
+        className="w-full max-w-2xl bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl shadow-xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden flex flex-col"
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Command Palette"
       >
         {/* Search Input Bar */}
-        <div className="cmd-search-wrap">
-          <span className="cmd-search-icon">🔍</span>
+        <div className="flex items-center px-4 py-3 border-b border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
+          <span className="text-xl text-[#444746] dark:text-[#c4c7c5] mr-3">🔍</span>
           <input
             ref={inputRef}
             type="text"
-            className="cmd-search-input"
-            placeholder="Type a tool, keyword, or action (e.g. compress, sign, ocr, drop)..."
+            className="flex-1 bg-transparent border-none outline-none text-lg text-[#1f1f1f] dark:text-[#e3e3e3] placeholder-[#444746] dark:placeholder-[#c4c7c5] font-sans"
+            placeholder="Type a tool, keyword, or action..."
             value={query}
             onChange={e => {
               setQuery(e.target.value);
@@ -389,7 +389,7 @@ export default function CommandPalette({
           {query && (
             <button
               type="button"
-              className="cmd-clear-btn"
+              className="p-1 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] transition-all ml-2"
               onClick={() => {
                 setQuery("");
                 inputRef.current?.focus();
@@ -399,52 +399,90 @@ export default function CommandPalette({
               ✕
             </button>
           )}
-          <kbd className="cmd-esc-badge" onClick={onClose}>ESC</kbd>
+          <kbd className="hidden sm:inline-block ml-3 px-2 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#444746] dark:text-[#c4c7c5] font-mono text-[10px] font-medium shadow-sm">
+            ESC
+          </kbd>
         </div>
 
         {/* Results List */}
-        <div className="cmd-results-list" ref={listRef}>
+        <div className="flex-1 overflow-y-auto max-h-[50vh] p-2" ref={listRef}>
           {filteredCommands.length > 0 ? (
             filteredCommands.map((cmd, idx) => {
               const isSelected = idx === selectedIndex;
               return (
                 <div
                   key={cmd.id}
-                  className={`cmd-item ${isSelected ? "active" : ""}`}
+                  className={`flex items-center gap-4 px-4 py-3 my-1 mx-1 rounded-2xl cursor-pointer transition-colors ${
+                    isSelected 
+                      ? "bg-[#c2e7ff] dark:bg-[#004a77]" 
+                      : "hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                  }`}
                   onClick={() => handleSelect(cmd)}
                   onMouseEnter={() => setSelectedIndex(idx)}
                 >
-                  <span className="cmd-item-icon">{cmd.icon}</span>
-                  <div className="cmd-item-body">
-                    <div className="cmd-item-header">
-                      <span className="cmd-item-label">{cmd.label}</span>
-                      <span className={`cmd-tag cmd-tag-${cmd.category.toLowerCase().replace(/[^a-z]/g, "")}`}>
+                  <span className={`text-2xl flex-shrink-0 ${isSelected ? "opacity-100" : "opacity-80"}`}>{cmd.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className={`text-sm font-medium truncate ${
+                        isSelected 
+                          ? "text-[#001d35] dark:text-[#c2e7ff]" 
+                          : "text-[#1f1f1f] dark:text-[#e3e3e3]"
+                      }`}>
+                        {cmd.label}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide flex-shrink-0 uppercase ${
+                        isSelected 
+                          ? "bg-[#001d35]/10 text-[#001d35] dark:bg-[#c2e7ff]/10 dark:text-[#c2e7ff]"
+                          : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746]"
+                      }`}>
                         {cmd.category}
                       </span>
                     </div>
-                    <div className="cmd-item-desc">{cmd.desc}</div>
+                    <div className={`text-[11px] truncate ${
+                      isSelected 
+                        ? "text-[#001d35]/80 dark:text-[#c2e7ff]/80" 
+                        : "text-[#444746] dark:text-[#c4c7c5]"
+                    }`}>
+                      {cmd.desc}
+                    </div>
                   </div>
-                  {isSelected && <span className="cmd-arrow-enter">↵</span>}
+                  {isSelected && (
+                    <span className="text-[#0b57d0] dark:text-[#a8c7fa] text-lg font-bold flex-shrink-0 ml-2">↵</span>
+                  )}
                 </div>
               );
             })
           ) : (
-            <div className="cmd-empty-state">
-              <div className="cmd-empty-icon">🔎</div>
-              <div className="cmd-empty-title">No tools found for "{query}"</div>
-              <div className="cmd-empty-hint">Try searching "pdf", "compress", "crop", "sign", or "drop"</div>
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="text-3xl mb-3 opacity-80">🔎</div>
+              <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
+                No tools found for "{query}"
+              </div>
+              <div className="text-xs text-[#444746] dark:text-[#c4c7c5]">
+                Try searching "pdf", "compress", "crop", "sign", or "drop"
+              </div>
             </div>
           )}
         </div>
 
         {/* Footer shortcuts hint */}
-        <div className="cmd-footer">
-          <div className="cmd-footer-shortcuts">
-            <span><kbd className="cmd-mini-kbd">↑</kbd><kbd className="cmd-mini-kbd">↓</kbd> Navigate</span>
-            <span><kbd className="cmd-mini-kbd">↵</kbd> Open</span>
-            <span><kbd className="cmd-mini-kbd">ESC</kbd> Close</span>
+        <div className="flex items-center justify-between px-4 py-3 bg-[#f8fafd] dark:bg-[#131314] border-t border-[#c7c7c7] dark:border-[#444746] text-[11px] text-[#444746] dark:text-[#c4c7c5]">
+          <div className="hidden sm:flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↑</kbd>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↓</kbd>
+              Navigate
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↵</kbd>
+              Open
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">ESC</kbd>
+              Close
+            </span>
           </div>
-          <div className="cmd-footer-branding">
+          <div className="font-medium tracking-wide">
             FlashCrush ⚡ 22+ Tools
           </div>
         </div>

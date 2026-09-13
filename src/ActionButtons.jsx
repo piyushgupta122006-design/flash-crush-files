@@ -124,167 +124,34 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
   return (
     <div
       onClick={handleBackdrop}
-      style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(0,0,0,0.70)",
-        backdropFilter: "blur(6px)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "20px",
-        animation: "fcModalFadeIn 0.18s ease forwards",
-      }}
+      className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all animate-[fadeIn_0.15s_ease-out]"
     >
-      <style>{`
-        @keyframes fcModalFadeIn {
-          from { opacity: 0; transform: scale(0.96); }
-          to   { opacity: 1; transform: scale(1); }
-        }
-        .fc-modal-card {
-          background: var(--bg-card);
-          border: var(--border);
-          border-radius: 16px;
-          box-shadow: var(--shadow);
-          width: 100%;
-          max-width: 460px;
-          padding: 32px;
-          font-family: 'DM Sans', -apple-system, sans-serif;
-          position: relative;
-          overflow: hidden;
-        }
-        .fc-modal-card::before {
-          content: '';
-          position: absolute; top: 0; left: 0; right: 0; height: 6px;
-          background: #FF6B9D;
-          border-radius: 16px 16px 0 0;
-        }
-        .fc-modal-title {
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 20px; font-weight: 700; color: var(--text-main);
-          margin-bottom: 6px; letter-spacing: -0.3px;
-          display: flex; align-items: center; gap: 10px;
-        }
-        .fc-modal-sub {
-          font-size: 13px; color: var(--text-sub); margin-bottom: 24px;
-        }
-        .fc-label {
-          font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
-          text-transform: uppercase; color: var(--text-sub); margin-bottom: 8px;
-          display: block;
-        }
-        .fc-input {
-          width: 100%; padding: 12px 16px;
-          background: var(--bg-surface);
-          border: var(--border-thin);
-          border-radius: 8px;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px; color: var(--text-main);
-          outline: none; transition: all 0.15s;
-          box-sizing: border-box;
-        }
-        .fc-input:focus {
-          border-color: var(--border-color);
-          box-shadow: 3px 3px 0px var(--border-color);
-          background: var(--bg-main);
-        }
-        .fc-folder-btn {
-          display: flex; align-items: center; gap: 10px;
-          width: 100%; padding: 13px 16px;
-          background: var(--bg-surface);
-          border: 2px dashed var(--border-color);
-          border-radius: 8px; cursor: pointer;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 13.5px; font-weight: 700;
-          color: var(--text-main); transition: all 0.15s;
-          text-align: left;
-        }
-        .fc-folder-btn:hover:not(:disabled) {
-          background: var(--m3-yellow);
-          border-style: solid;
-          box-shadow: 3px 3px 0px #1a1a1a;
-        }
-        .fc-folder-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-        .fc-folder-selected {
-          background: #D8B4FE;
-          border-style: solid; border-color: #1a1a1a;
-          color: #1a1a1a;
-          box-shadow: 3px 3px 0px #1a1a1a;
-        }
-        .fc-folder-hint {
-          font-size: 12px; color: #525252; margin-top: 6px;
-        }
-        .fc-error {
-          font-size: 12px; color: #B91C1C;
-          background: #FEF2F2; border: 2px solid #1a1a1a;
-          border-radius: 8px; padding: 10px 14px; margin-top: 16px;
-          box-shadow: 3px 3px 0px #1a1a1a;
-        }
-        .fc-actions {
-          display: flex; gap: 12px; margin-top: 26px;
-        }
-        .fc-btn-cancel {
-          flex: 1; padding: 13px;
-          background: #FFFFFF;
-          border: 2px solid #1a1a1a;
-          border-radius: 8px; cursor: pointer;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 13.5px; font-weight: 700;
-          color: #1a1a1a; transition: all 0.15s;
-          box-shadow: 3px 3px 0px #1a1a1a;
-        }
-        .fc-btn-cancel:hover { background: #F3F4F6; transform: translate(-1px, -1px); box-shadow: 4px 4px 0px #1a1a1a; }
-        .fc-btn-save {
-          flex: 2; padding: 13px;
-          background: #FF6B9D;
-          border: 2px solid #1a1a1a; border-radius: 8px; cursor: pointer;
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 13.5px; font-weight: 700; color: #FFFFFF;
-          display: flex; align-items: center; justify-content: center; gap: 8px;
-          box-shadow: 3px 3px 0px #1a1a1a;
-          transition: all 0.15s;
-        }
-        .fc-btn-save:hover {
-          transform: translate(-2px, -2px);
-          box-shadow: 5px 5px 0px #1a1a1a;
-        }
-        .fc-close-btn {
-          position: absolute; top: 18px; right: 18px;
-          background: #FEE2E2; border: 2px solid #1a1a1a;
-          border-radius: 8px; width: 32px; height: 32px;
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; color: #1a1a1a; transition: all 0.15s;
-          box-shadow: 2px 2px 0px #1a1a1a;
-        }
-        .fc-close-btn:hover { background: #EF4444; color: #fff; transform: translate(-1px, -1px); }
-        .fc-divider { height: 2px; background: #e5e5e5; margin: 22px 0; }
-        .fc-root-hint {
-          display: flex; align-items: center; gap: 6px;
-          font-size: 12px; color: #525252;
-          background: #FEF3C7;
-          border: 2px solid #1a1a1a;
-          border-radius: 8px; padding: 10px 12px; margin-top: 10px;
-        }
-        @media (max-width: 480px) {
-          .fc-modal-card { padding: 20px; }
-          .fc-actions { flex-direction: column; }
-        }
-      `}</style>
-
-      <div className="fc-modal-card">
+      <div className="w-full max-w-md rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 sm:p-8 border border-[#c7c7c7] dark:border-[#444746] shadow-md font-sans relative overflow-hidden">
+        
         {/* Close button */}
-        <button className="fc-close-btn" onClick={onClose} title="Cancel">
+        <button 
+          className="absolute top-4 right-4 p-2 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-colors"
+          onClick={onClose} 
+          title="Cancel"
+        >
           <CloseIcon />
         </button>
 
-        <div className="fc-modal-title">
-          <DriveIcon size={18} />
+        <div className="text-xl sm:text-2xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] mb-1.5 flex items-center gap-2.5 tracking-tight">
+          <DriveIcon size={20} />
           Save to Google Drive
         </div>
-        <div className="fc-modal-sub">Rename your file and choose where to save it.</div>
+        <div className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">
+          Rename your file and choose where to save it.
+        </div>
 
         {/* File name input */}
-        <label className="fc-label">File Name</label>
+        <label className="block text-[11px] font-bold tracking-wide uppercase text-[#444746] dark:text-[#c4c7c5] mb-2">
+          File Name
+        </label>
         <input
           ref={inputRef}
-          className="fc-input"
+          className="w-full px-4 py-3 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa] transition-colors shadow-sm"
           value={fileName}
           onChange={e => { setFileName(e.target.value); setError(""); }}
           onKeyDown={e => { if (e.key === "Enter") handleConfirm(); }}
@@ -292,12 +159,18 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           spellCheck={false}
         />
 
-        <div className="fc-divider" />
+        <div className="h-px w-full bg-[#c7c7c7]/50 dark:bg-[#444746]/60 my-6" />
 
         {/* Folder picker */}
-        <label className="fc-label">Save Location</label>
+        <label className="block text-[11px] font-bold tracking-wide uppercase text-[#444746] dark:text-[#c4c7c5] mb-2">
+          Save Location
+        </label>
         <button
-          className={`fc-folder-btn${folder ? " fc-folder-selected" : ""}`}
+          className={`w-full flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl text-sm font-medium transition-colors text-left disabled:opacity-50 disabled:cursor-not-allowed ${
+            folder 
+              ? "bg-[#c2e7ff] dark:bg-[#004a77] border-[#0b57d0] dark:border-[#a8c7fa] text-[#001d35] dark:text-[#c2e7ff] border-solid" 
+              : "bg-[#f0f4f9] dark:bg-[#28292a] border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#e9eef6] dark:hover:bg-[#333537] hover:border-[#0b57d0] dark:hover:border-[#a8c7fa]"
+          }`}
           onClick={handlePickFolder}
           disabled={pickingFolder}
           type="button"
@@ -311,15 +184,15 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
         </button>
 
         {!folder && (
-          <div className="fc-root-hint">
+          <div className="flex items-center gap-2 text-xs text-[#444746] dark:text-[#c4c7c5] bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-xl px-3 py-2 mt-3">
             <span>ℹ️</span> If no folder is selected, the file will be saved to your Drive root.
           </div>
         )}
         {folder && (
-          <div className="fc-folder-hint">
-            Will save to: <strong>{folder.name}</strong> &nbsp;
+          <div className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2 ml-1">
+            Will save to: <strong className="text-[#1f1f1f] dark:text-[#e3e3e3]">{folder.name}</strong> &nbsp;
             <span
-              style={{ color: "#a855f7", cursor: "pointer", textDecoration: "underline" }}
+              className="text-[#0b57d0] dark:text-[#a8c7fa] cursor-pointer hover:underline"
               onClick={() => setFolder(null)}
             >
               clear
@@ -327,12 +200,26 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           </div>
         )}
 
-        {error && <div className="fc-error">⚠ {error}</div>}
+        {error && (
+          <div className="text-xs text-[#ba1a1a] dark:text-[#ffb4ab] bg-[#ffdad6] dark:bg-[#93000a] border border-[#ffb4ab] dark:border-[#ffdad6] rounded-xl px-3 py-2.5 mt-4 font-medium">
+            ⚠ {error}
+          </div>
+        )}
 
         {/* Action buttons */}
-        <div className="fc-actions">
-          <button className="fc-btn-cancel" onClick={onClose} type="button">Cancel</button>
-          <button className="fc-btn-save" onClick={handleConfirm} type="button">
+        <div className="flex flex-col sm:flex-row gap-3 mt-8">
+          <button 
+            className="flex-1 px-4 py-2.5 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-full text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f8fafd] dark:hover:bg-[#28292a] transition-colors shadow-sm"
+            onClick={onClose} 
+            type="button"
+          >
+            Cancel
+          </button>
+          <button 
+            className="flex-[2] px-4 py-2.5 bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] border border-transparent rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm"
+            onClick={handleConfirm} 
+            type="button"
+          >
             <DriveIcon size={14} />
             Save to Drive
           </button>
@@ -522,23 +409,26 @@ export default function ActionButtons({
         />
       )}
 
-      <div className="action-group">
+      <div className="flex flex-col gap-3 w-full font-sans mt-8">
+        
         {/* Download */}
-        <button className="btn-download" onClick={handleDownload}>
+        <button 
+          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all flex items-center justify-center gap-2"
+          onClick={handleDownload}
+        >
           ⬇ Download file
         </button>
 
         {/* Save to Drive */}
         <button
-          className="btn-drive-upload"
+          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f8fafd] dark:hover:bg-[#28292a] shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleDriveClick}
           disabled={isDriveDisabled}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
         >
           <DriveIcon />
           {auth?.authStatus === "loading" ? "Signing in…" : driveButtonLabel()}
           {isSignedIn && driveStatus === "idle" && (
-            <span style={{ marginLeft: "auto", opacity: 0.50 }}>
+            <span className="ml-auto opacity-50">
               <EditIcon />
             </span>
           )}
@@ -546,19 +436,18 @@ export default function ActionButtons({
 
         {/* Drive feedback */}
         {driveStatus === "success" && driveLink && (
-          <div className="drive-feedback success">
-            ✓ Saved to {auth?.user?.email || "your Drive"}!{" "}
-            <a href={driveLink} target="_blank" rel="noopener noreferrer"
-              style={{ color: "inherit", fontWeight: 700 }}>
+          <div className="mt-1 px-4 py-3 rounded-xl bg-[#c2e7ff]/30 dark:bg-[#004a77]/30 border border-[#c2e7ff] dark:border-[#004a77] text-[#001d35] dark:text-[#c2e7ff] text-sm font-medium flex items-center justify-between">
+            <span>✓ Saved to {auth?.user?.email || "your Drive"}!</span>
+            <a href={driveLink} target="_blank" rel="noopener noreferrer" className="font-bold hover:underline">
               Open in Drive →
             </a>
           </div>
         )}
         {driveStatus === "error" && driveError && (
-          <div className="drive-feedback error">
-            ⚠ {driveError}{" "}
+          <div className="mt-1 px-4 py-3 rounded-xl bg-[#ffdad6]/30 dark:bg-[#93000a]/30 border border-[#ffdad6] dark:border-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium flex items-center justify-between">
+            <span>⚠ {driveError}</span>
             <span
-              style={{ cursor: "pointer", textDecoration: "underline", fontWeight: 700 }}
+              className="cursor-pointer underline font-bold"
               onClick={() => setDriveStatus("modal")}
             >
               Retry
@@ -567,14 +456,25 @@ export default function ActionButtons({
         )}
 
         {/* Share */}
-        <button className={`btn-share${shared ? " shared" : ""}`} onClick={handleShare}>
+        <button 
+          className={`w-full rounded-full py-3.5 px-4 text-sm font-medium transition-all flex items-center justify-center gap-2 shadow-sm ${
+            shared 
+              ? 'bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border border-transparent' 
+              : 'bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f8fafd] dark:hover:bg-[#28292a]'
+          }`} 
+          onClick={handleShare}
+        >
           {getShareButtonLabel()}
         </button>
 
         {/* Reset */}
-        <button className="btn-reset" onClick={onReset}>
+        <button 
+          className="w-full rounded-full py-3 px-4 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] shadow-sm transition-all flex items-center justify-center gap-2 mt-2" 
+          onClick={onReset}
+        >
           ↺ Process another file
         </button>
+
       </div>
     </>
   );

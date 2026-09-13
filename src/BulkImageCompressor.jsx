@@ -36,21 +36,19 @@ const PRESETS = [
 
 export default function BulkImageCompressor({ auth }) {
   const navigate = useNavigate();
-  const [files, setFiles] = useState([]); // [{ id, file, thumb, origSize, compBlob, compSize, status: 'pending'|'done'|'error', error }]
+  const [files, setFiles] = useState([]);
   const [dragging, setDragging] = useState(false);
   const [stage, setStage] = useState("idle"); // idle | loaded | processing | done | error
   const [progress, setProgress] = useState(0);
   const [progressMsg, setProgressMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Compression Mode Settings
   const [preset, setPreset] = useState("balanced");
   const [customQuality, setCustomQuality] = useState(70);
   const [outputFormat, setOutputFormat] = useState("original"); // "original" | "image/webp" | "image/jpeg"
-  const [targetKb, setTargetKb] = useState(100); // For target KB mode
+  const [targetKb, setTargetKb] = useState(100);
   const [maxWidthOption, setMaxWidthOption] = useState(1920);
 
-  // Result ZIP
   const [zipBlob, setZipBlob] = useState(null);
   const [zipName, setZipName] = useState("");
   const [pickLoading, setPickLoading] = useState(false);
@@ -184,7 +182,6 @@ export default function BulkImageCompressor({ auth }) {
         canvas.height = height;
         const ctx = canvas.getContext("2d");
 
-        // Handle transparency background for JPEG
         const targetMime = settings.format === "original"
           ? (item.file.type === "image/png" ? "image/png" : "image/jpeg")
           : settings.format;
@@ -197,7 +194,6 @@ export default function BulkImageCompressor({ auth }) {
         ctx.drawImage(img, 0, 0, width, height);
 
         if (settings.preset === "target" && settings.targetKb) {
-          // Binary search loop to reach target KB size
           const targetBytes = settings.targetKb * 1024;
           let minQ = 0.1, maxQ = 0.95, bestBlob = null, bestDiff = Infinity;
 
@@ -221,7 +217,6 @@ export default function BulkImageCompressor({ auth }) {
 
           resolve({ blob: bestBlob || item.file, size: bestBlob ? bestBlob.size : item.file.size });
         } else {
-          // Standard quality compression
           const q = settings.quality;
           canvas.toBlob((blob) => {
             if (!blob) {
@@ -242,7 +237,6 @@ export default function BulkImageCompressor({ auth }) {
     });
   };
 
-  // ── Run Batch Compression ──
   const runBatchCompression = async () => {
     if (files.length === 0) return;
 
@@ -276,7 +270,6 @@ export default function BulkImageCompressor({ auth }) {
         error: result.error,
       };
 
-      // Add to ZIP
       let ext = item.name.split(".").pop();
       if (activeSettings.format === "image/webp") ext = "webp";
       else if (activeSettings.format === "image/jpeg" && ext.toLowerCase() === "png") ext = "jpg";
@@ -303,7 +296,6 @@ export default function BulkImageCompressor({ auth }) {
     setStage("done");
   };
 
-  // Download single image
   const downloadSingle = (item) => {
     if (!item.compBlob) return;
     const url = URL.createObjectURL(item.compBlob);
@@ -316,7 +308,6 @@ export default function BulkImageCompressor({ auth }) {
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   };
 
-  // Stats Calculations
   const totalOrigSize = files.reduce((acc, f) => acc + f.origSize, 0);
   const totalCompSize = files.reduce((acc, f) => acc + (f.compSize || f.origSize), 0);
   const totalSavedBytes = Math.max(0, totalOrigSize - totalCompSize);
@@ -332,34 +323,46 @@ export default function BulkImageCompressor({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Bulk Image Compressor</div>
-        <div className="tool-page-meta">Batch Compress 20-50+ Photos · 1-Click ZIP</div>
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+      {/* Top Bar */}
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Bulk Image Compressor</div>
+        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Batch 20-50+ Photos</div>
       </div>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1050px" }}>
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(16, 185, 129, 0.4)", boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)" }}>
-              🖼️
-            </div>
-            <div className="comp-title">Bulk / Batch Image Compressor</div>
+      <div className="w-full max-w-[1050px] mx-auto px-4 sm:px-6 pb-12 flex-1">
+        {/* Header Text */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] text-xl">🖼️</div>
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Bulk / Batch Image Compressor</h1>
           </div>
-          <p className="comp-sub">Upload 20–50+ images at once, compress with customizable presets, and download in a single .ZIP file.</p>
+          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-xl mx-auto">
+            Upload 20–50+ images at once, compress with customizable presets, and download in a single .ZIP file.
+          </p>
         </div>
 
-        <div className="comp-card">
-
-          {/* ── Drop Zone ── */}
+        {/* Main Card Surface */}
+        <div className="w-full bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm overflow-hidden">
+          
+          {/* Drop Zone */}
           <div
-            className={`drop-zone${dragging ? " dragging" : ""}`}
+            className={`flex flex-col items-center justify-center p-8 sm:p-12 mx-6 mt-6 border-2 border-dashed rounded-3xl cursor-pointer transition-all ${
+              dragging 
+                ? "border-[#0b57d0] dark:border-[#a8c7fa] bg-[#c2e7ff]/20 dark:bg-[#004a77]/20" 
+                : "border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+            }`}
+            style={{ marginBottom: files.length > 0 ? "16px" : "24px" }}
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
-            style={{ marginBottom: files.length > 0 ? "16px" : 0 }}
           >
             <input
               ref={inputRef}
@@ -369,129 +372,116 @@ export default function BulkImageCompressor({ auth }) {
               hidden
               onChange={(e) => addFiles(e.target.files)}
             />
-            <span className="drop-icon">📸</span>
-            <p className="drop-main">
+            <span className="text-4xl mb-4">📸</span>
+            <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">
               {dragging ? "Drop your photos here!" : "Drag & drop multiple images to compress"}
             </p>
-            <p className="drop-sub">
-              Upload up to {MAX_FILES} photos (JPG, PNG, WebP, GIF, AVIF) · 100% in-browser privacy
+            <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">
+              Upload up to {MAX_FILES} photos (JPG, PNG, WebP) · 100% in-browser privacy
             </p>
 
-            <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-              <button className="drop-btn" onClick={() => inputRef.current?.click()}>
-                📁 Browse Images ({files.length} selected)
+            <div className="flex flex-col sm:flex-row gap-3" onClick={(e) => e.stopPropagation()}>
+              <button className="px-6 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm" onClick={() => inputRef.current?.click()}>
+                📁 Browse Images {files.length > 0 ? `(${files.length} selected)` : ""}
               </button>
-              <button className="drop-btn-drive" onClick={handleDrivePick}
-                disabled={pickLoading || auth.authStatus === "loading"}>
+              <button 
+                className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all disabled:opacity-50 shadow-sm" 
+                onClick={handleDrivePick}
+                disabled={pickLoading || auth.authStatus === "loading"}
+              >
                 <DriveIconSmall />{drivePickLabel()}
               </button>
             </div>
-
-            {errorMsg && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+            {errorMsg && <div className="mt-4 px-4 py-2 rounded-xl bg-[#ffdad6] dark:bg-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]">⚠ {errorMsg}</div>}
           </div>
 
-          {/* ── Compression Settings & Presets ── */}
+          {/* Settings & Controls */}
           {files.length > 0 && (
-            <div style={{ padding: "0 20px 16px" }}>
-
-              {/* Presets Grid */}
-              <div style={{ marginBottom: "16px" }}>
-                <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Compression Preset</span>
-                <div className="level-grid">
+            <div className="px-6 pb-6">
+              
+              {/* Presets Map */}
+              <div className="mb-6">
+                <span className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">1. Compression Preset</span>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`level-btn${preset === p.id ? " active" : ""}`}
+                      className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all ${
+                        preset === p.id
+                          ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
+                          : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                      }`}
                       onClick={() => setPreset(p.id)}
                     >
-                      <span style={{ fontSize: "1.3rem" }}>{p.icon}</span>
-                      <span className="level-name">{p.label}</span>
-                      <span style={{ fontSize: "0.7rem", color: "var(--text-sub)" }}>{p.desc}</span>
+                      <span className="text-2xl mb-1">{p.icon}</span>
+                      <span className="text-sm font-medium mb-1">{p.label}</span>
+                      <span className="text-[10px] text-center opacity-80">{p.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Fine-Tuning Controls */}
-              <div style={{
-                display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px",
-                padding: "14px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 'var(--radius-full)', marginBottom: "16px"
-              }}>
-                {/* Target KB Input (If in target mode) */}
+              {/* Fine-Tuning Settings */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl mb-6">
+                
                 {preset === "target" && (
                   <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#34d399", textTransform: "uppercase", marginBottom: "6px" }}>
-                      Target File Size (KB per photo)
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
+                      Target File Size (KB)
                     </label>
-                    <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                    <div className="flex items-center gap-2">
                       <input
                         type="number"
                         min="10"
                         max="2000"
                         value={targetKb}
                         onChange={(e) => setTargetKb(Math.max(10, Number(e.target.value)))}
-                        style={{
-                          width: "90px", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                          border: "1.5px solid #10b981", borderRadius: 'var(--radius-full)', color: "#fff",
-                          fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", outline: "none",
-                        }}
+                        className="w-24 px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa] font-mono"
                       />
-                      <span style={{ fontSize: "12px", color: "#94a3b8" }}>KB (e.g. 50, 100, 200)</span>
+                      <span className="text-xs text-[#444746] dark:text-[#c4c7c5]">KB</span>
                     </div>
                   </div>
                 )}
 
-                {/* Output Format */}
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", marginBottom: "6px" }}>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
                     Output Format
                   </label>
                   <select
                     value={outputFormat}
                     onChange={(e) => setOutputFormat(e.target.value)}
-                    style={{
-                      width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
-                      color: "#fff", fontSize: "12px", outline: "none",
-                    }}
+                    className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
                   >
-                    <option value="original" style={{ background: "#0f172a" }}>Keep Original Format</option>
-                    <option value="image/webp" style={{ background: "#0f172a" }}>Convert to WebP (Recommended)</option>
-                    <option value="image/jpeg" style={{ background: "#0f172a" }}>Convert to JPG</option>
+                    <option value="original">Keep Original Format</option>
+                    <option value="image/webp">Convert to WebP (Recommended)</option>
+                    <option value="image/jpeg">Convert to JPG</option>
                   </select>
                 </div>
 
-                {/* Max Width Resize */}
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", marginBottom: "6px" }}>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
                     Max Resolution Width
                   </label>
                   <select
                     value={maxWidthOption}
                     onChange={(e) => setMaxWidthOption(Number(e.target.value))}
-                    style={{
-                      width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                      border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
-                      color: "#fff", fontSize: "12px", outline: "none",
-                    }}
+                    className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
                   >
-                    <option value={1920} style={{ background: "#0f172a" }}>Full HD (1920px) — Recommended</option>
-                    <option value={1280} style={{ background: "#0f172a" }}>HD (1280px) — Compact</option>
-                    <option value={2560} style={{ background: "#0f172a" }}>2K (2560px) — Sharp</option>
-                    <option value={99999} style={{ background: "#0f172a" }}>Original Dimensions</option>
+                    <option value={1920}>Full HD (1920px) — Recommended</option>
+                    <option value={1280}>HD (1280px) — Compact</option>
+                    <option value={2560}>2K (2560px) — Sharp</option>
+                    <option value={99999}>Original Dimensions</option>
                   </select>
                 </div>
               </div>
 
-              {/* Action Button & Clear */}
-              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              {/* Action Buttons Row */}
+              <div className="flex gap-3 items-center">
                 <button
-                  className="btn-compress"
+                  className="flex-1 rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all"
                   onClick={runBatchCompression}
                   disabled={stage === "processing"}
-                  style={{ flex: 1 }}
                 >
                   {stage === "done"
                     ? `🔁 Re-Compress All ${files.length} Images`
@@ -500,10 +490,7 @@ export default function BulkImageCompressor({ auth }) {
                 <button
                   type="button"
                   onClick={clearAll}
-                  style={{
-                    padding: "14px 18px", background: "rgba(244,63,94,0.12)", border: "1px solid rgba(244,63,94,0.3)",
-                    borderRadius: 'var(--radius-full)', color: "#f87171", fontWeight: 700, fontSize: "13px", cursor: "pointer",
-                  }}
+                  className="rounded-full px-6 py-3.5 text-sm font-medium text-[#ba1a1a] dark:text-[#ffb4ab] bg-[#ffdad6]/50 hover:bg-[#ffdad6] dark:bg-[#93000a]/50 dark:hover:bg-[#93000a] border border-[#ffdad6] dark:border-[#93000a] transition-all"
                   title="Clear all uploaded images"
                 >
                   Clear All
@@ -514,79 +501,58 @@ export default function BulkImageCompressor({ auth }) {
 
           {/* ── Progress Bar ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Batch Compressing Images...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="px-6 pb-8 text-center">
+              <div className="flex justify-between text-sm font-medium mb-2 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                <span>Batch Compressing...</span>
+                <span>{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #10b981, #06b6d4)" }} />
+              <div className="w-full h-3 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] overflow-hidden">
+                <div className="h-full bg-[#0b57d0] dark:bg-[#a8c7fa] transition-all duration-300" style={{ width: `${progress}%` }} />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3">{progressMsg}</p>
             </div>
           )}
 
-          {/* ── Results Summary Banner ── */}
+          {/* ── Results Banner ── */}
           {stage === "done" && zipBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: "rgba(16,185,129,0.08)",
-                borderColor: "rgba(16,185,129,0.3)",
-              }}>
-                <div className="result-grid">
+            <div className="px-6 pb-6">
+              <div className="mt-2 mb-6 p-4 bg-[#c4eed0]/30 dark:bg-[#0f5223]/30 border border-[#c4eed0] dark:border-[#0f5223] rounded-2xl">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="result-label">Original Total</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.2rem", fontWeight: 800, color: "var(--text-muted)" }}>
-                      {files.length} Photos · {fmt(totalOrigSize)}
-                    </span>
+                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Original Total</span>
+                    <span className="font-mono text-lg font-bold text-[#444746] dark:text-[#c4c7c5]">{files.length} Photos · {fmt(totalOrigSize)}</span>
                   </div>
-                  <div className="result-arrow">→</div>
+                  <div className="text-xl text-[#c7c7c7] dark:text-[#444746] hidden sm:block">→</div>
                   <div>
-                    <span className="result-label">Compressed Total</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.2rem", fontWeight: 800, color: "#34d399" }}>
-                      {fmt(totalCompSize)} (-{totalSavedPercent}%)
-                    </span>
+                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Compressed Total</span>
+                    <span className="font-mono text-lg font-bold text-[#0f5223] dark:text-[#c4eed0]">{fmt(totalCompSize)} (-{totalSavedPercent}%)</span>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: "rgba(16,185,129,0.18)",
-                  borderColor: "#10b981",
-                  color: "#34d399",
-                }}>
+                <div className="mt-3 text-center text-xs font-medium text-[#0f5223] dark:text-[#c4eed0] bg-[#c4eed0] dark:bg-[#0f5223] py-1.5 rounded-full px-3 inline-block w-full">
                   🎉 Saved {fmt(totalSavedBytes)} ({totalSavedPercent}% space saved)
                 </div>
               </div>
 
-              <ActionButtons
-                blob={zipBlob}
-                fileName={zipName}
-                onReset={clearAll}
-                auth={auth}
-              />
+              <div className="max-w-md mx-auto">
+                <ActionButtons blob={zipBlob} fileName={zipName} onReset={clearAll} auth={auth} />
+              </div>
             </div>
           )}
 
-          {/* ── Interactive File Thumbnails Grid ── */}
+          {/* ── Files Grid ── */}
           {files.length > 0 && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                  Selected Photos ({files.length} images)
+            <div className="px-6 pb-6">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-xs font-bold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider">
+                  Selected Photos ({files.length})
                 </span>
-                <span style={{ fontSize: "12px", color: "var(--text-sub)" }}>
+                <span className="text-xs text-[#444746] dark:text-[#c4c7c5]">
                   Total: {fmt(totalOrigSize)}
                 </span>
               </div>
 
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(120px, 100%), 1fr))",
-                gap: "12px", maxHeight: "420px", overflowY: "auto", padding: "6px",
-                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.06)"
-              }}>
-                {files.map((item, idx) => {
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[420px] overflow-y-auto p-2 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
+                {files.map((item) => {
                   const isDone = item.status === "done";
                   const savedPct = isDone && item.compSize < item.origSize
                     ? Math.round(((item.origSize - item.compSize) / item.origSize) * 100)
@@ -595,81 +561,48 @@ export default function BulkImageCompressor({ auth }) {
                   return (
                     <div
                       key={item.id}
-                      style={{
-                        position: "relative",
-                        background: "rgba(255,255,255,0.04)",
-                        border: isDone ? "1.5px solid rgba(16,185,129,0.4)" : "1.5px solid rgba(255,255,255,0.08)",
-                        borderRadius: 'var(--radius-full)', overflow: "hidden", display: "flex", flexDirection: "column",
-                      }}
+                      className={`relative flex flex-col overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#1e1f20] transition-colors ${
+                        isDone ? "border border-[#c4eed0] dark:border-[#0f5223]" : "border border-[#c7c7c7] dark:border-[#444746]"
+                      }`}
                     >
-                      {/* Image Preview */}
-                      <div style={{
-                        aspectRatio: "4/3", overflow: "hidden", background: "#0a0a0a",
-                        display: "flex", alignItems: "center", justifyContent: "center", position: "relative"
-                      }}>
-                        <img
-                          src={item.thumb}
-                          alt={item.name}
-                          style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "cover" }}
-                        />
-                        {/* Remove Button */}
+                      <div className="aspect-[4/3] bg-[#f8fafd] dark:bg-[#131314] flex items-center justify-center relative overflow-hidden">
+                        <img src={item.thumb} alt={item.name} className="max-w-full max-h-full object-cover w-full h-full" />
                         <button
                           onClick={() => removeFile(item.id)}
-                          style={{
-                            position: "absolute", top: "5px", right: "5px",
-                            width: "22px", height: "22px", borderRadius: "50%",
-                            background: "rgba(0,0,0,0.7)", border: "1px solid rgba(255,255,255,0.2)",
-                            color: "#fff", fontSize: "11px", cursor: "pointer",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}
-                          title="Remove this image"
+                          className="absolute top-1 right-1 w-6 h-6 rounded-full bg-[#1f1f1f]/60 text-white flex items-center justify-center text-xs border border-white/20 hover:bg-[#1f1f1f]"
                         >
                           ✕
                         </button>
                       </div>
 
-                      {/* Info & Savings */}
-                      <div style={{ padding: "8px 10px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                      <div className="p-2 flex flex-col flex-1 justify-between">
                         <div>
-                          <div style={{
-                            fontSize: "11px", fontWeight: 700, color: "#fff",
-                            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: "4px"
-                          }}>
+                          <div className="text-[10px] font-bold text-[#1f1f1f] dark:text-[#e3e3e3] truncate mb-1">
                             {item.name}
                           </div>
-
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "10px", color: "#94a3b8" }}>
+                          <div className="flex justify-between items-center text-[9px] text-[#444746] dark:text-[#c4c7c5]">
                             <span>{fmt(item.origSize)}</span>
                             {isDone && (
-                              <span style={{ color: "#34d399", fontWeight: 800 }}>
+                              <span className="text-[#0f5223] dark:text-[#c4eed0] font-bold">
                                 → {fmt(item.compSize)}
                               </span>
                             )}
                           </div>
                         </div>
 
-                        {/* Status / Savings Badge */}
-                        <div style={{ marginTop: "6px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div className="mt-2 flex justify-between items-center">
                           {isDone ? (
-                            <span style={{
-                              padding: "2px 6px", borderRadius: 'var(--radius-full)',
-                              background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)",
-                              color: "#34d399", fontSize: "9px", fontWeight: 800
-                            }}>
+                            <span className="px-1.5 py-0.5 rounded-full bg-[#c4eed0] dark:bg-[#0f5223] text-[#0f5223] dark:text-[#c4eed0] text-[8px] font-bold">
                               -{savedPct}% Saved
                             </span>
                           ) : (
-                            <span style={{ fontSize: "9px", color: "var(--text-sub)" }}>Ready</span>
+                            <span className="text-[8px] text-[#444746] dark:text-[#c4c7c5]">Ready</span>
                           )}
 
                           {isDone && (
                             <button
                               onClick={() => downloadSingle(item)}
-                              style={{
-                                padding: "2px 6px", background: "none", border: "none",
-                                color: "var(--cyan-neon)", fontSize: "11px", cursor: "pointer", fontWeight: 700
-                              }}
-                              title="Download single photo"
+                              className="text-[9px] font-bold text-[#0b57d0] dark:text-[#a8c7fa] hover:underline"
                             >
                               ⬇ Save
                             </button>
@@ -683,9 +616,8 @@ export default function BulkImageCompressor({ auth }) {
             </div>
           )}
 
-          <div className="comp-footer">
-            <span>FlashCrush · Bulk Image Compressor Studio</span>
-            <span>100% in-browser processing · Zero server uploads</span>
+          <div className="p-4 text-center text-xs text-[#444746] dark:text-[#c4c7c5] border-t border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
+            FlashCrush · Bulk Batch Compressor · 100% in-browser processing
           </div>
         </div>
       </div>

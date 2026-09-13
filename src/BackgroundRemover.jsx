@@ -30,13 +30,10 @@ function DriveIconSmall() {
 const BG_PRESETS = [
   { id: "transparent", label: "Transparent", type: "transparent", icon: "🏁" },
   { id: "white", label: "Pure White", type: "color", val: "#ffffff", icon: "⚪" },
-  { id: "black", label: "Dark Luxury", type: "color", val: "#0d1117", icon: "⚫" },
-  { id: "studio-gray", label: "Studio Light", type: "color", val: "#f1f5f9", icon: "🌫️" },
-  { id: "passport-blue", label: "Passport Blue", type: "color", val: "#0284c7", icon: "🔵" },
-  { id: "emerald", label: "Emerald Green", type: "color", val: "#059669", icon: "🟢" },
-  { id: "grad-cyber", label: "Cyber Glow", type: "gradient", val: "linear-gradient(135deg, #8b5cf6, #06b6d4)", icon: "✨" },
-  { id: "grad-sunset", label: "Sunset Glow", type: "gradient", val: "linear-gradient(135deg, #f43f5e, #fbbf24)", icon: "🌅" },
-  { id: "grad-neon", label: "Midnight Neon", type: "gradient", val: "linear-gradient(135deg, #1e1b4b, #312e81)", icon: "🌌" },
+  { id: "black", label: "Dark Luxury", type: "color", val: "#131314", icon: "⚫" },
+  { id: "studio-gray", label: "Studio Light", type: "color", val: "#f0f4f9", icon: "🌫️" },
+  { id: "passport-blue", label: "Passport Blue", type: "color", val: "#0b57d0", icon: "🔵" },
+  { id: "emerald", label: "Emerald Green", type: "color", val: "#0f5223", icon: "🟢" },
 ];
 
 export default function BackgroundRemover({ auth }) {
@@ -57,11 +54,6 @@ export default function BackgroundRemover({ auth }) {
   const [customBgColor, setCustomBgColor] = useState("#ffffff");
   const [customBgImg, setCustomBgImg] = useState(null);
   const [addShadow, setAddShadow] = useState(true);
-  const [feather, setFeather] = useState(1);
-
-  // Before / After Split Slider
-  const [sliderPos, setSliderPos] = useState(50); // 0 to 100%
-  const [viewMode, setViewMode] = useState("split"); // "split" | "cutout" | "original"
 
   // Final Export
   const [resultBlob, setResultBlob] = useState(null);
@@ -147,7 +139,6 @@ export default function BackgroundRemover({ auth }) {
     setErrorMsg("");
 
     try {
-      // Configuration with progress callback
       const config = {
         progress: (key, current, total) => {
           if (key.includes("fetch")) {
@@ -158,14 +149,10 @@ export default function BackgroundRemover({ auth }) {
             setProgressMsg("Extracting subject and refining fine edges...");
           }
         },
-        model: "medium", // balanced quality and fast load
-        output: {
-          format: "image/png",
-          quality: 0.95,
-        },
+        model: "medium", 
+        output: { format: "image/png", quality: 0.95 },
       };
 
-      // Execute on-device segmentation
       const blob = await removeBackground(file, config);
 
       setProgress(95);
@@ -184,13 +171,11 @@ export default function BackgroundRemover({ auth }) {
 
     } catch (err) {
       console.error("AI Background Removal Error:", err);
-      // If WebGL/WebGPU fails, provide informative message
       setErrorMsg("AI processing error: " + (err.message || "Please ensure hardware acceleration is enabled in your browser."));
       setStage("error");
     }
   };
 
-  // Custom Background Image Upload
   const handleCustomBgUpload = (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
@@ -203,7 +188,6 @@ export default function BackgroundRemover({ auth }) {
     img.src = url;
   };
 
-  // ── Render Live Composited Preview on Canvas ──
   const renderCompositedCanvas = useCallback(() => {
     if (!cutoutImg) return;
     const canvas = canvasRef.current;
@@ -212,36 +196,20 @@ export default function BackgroundRemover({ auth }) {
 
     const w = cutoutImg.width;
     const h = cutoutImg.height;
-
     canvas.width = w;
     canvas.height = h;
 
-    // 1. Draw Background
     const selectedPreset = BG_PRESETS.find(p => p.id === bgChoice);
 
     if (bgChoice === "transparent") {
-      // Checkerboard transparent pattern
       ctx.clearRect(0, 0, w, h);
     } else if (selectedPreset?.type === "color") {
       ctx.fillStyle = selectedPreset.val;
-      ctx.fillRect(0, 0, w, h);
-    } else if (selectedPreset?.type === "gradient") {
-      // Gradient
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      if (bgChoice === "grad-cyber") {
-        grad.addColorStop(0, "#8b5cf6"); grad.addColorStop(1, "#06b6d4");
-      } else if (bgChoice === "grad-sunset") {
-        grad.addColorStop(0, "#f43f5e"); grad.addColorStop(1, "#fbbf24");
-      } else if (bgChoice === "grad-neon") {
-        grad.addColorStop(0, "#1e1b4b"); grad.addColorStop(1, "#312e81");
-      }
-      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
     } else if (bgChoice === "custom-color") {
       ctx.fillStyle = customBgColor;
       ctx.fillRect(0, 0, w, h);
     } else if (bgChoice === "custom-img" && customBgImg) {
-      // Fit user uploaded background image to cover canvas
       const bgAspect = customBgImg.width / customBgImg.height;
       const cAspect = w / h;
       let drawW, drawH;
@@ -253,7 +221,6 @@ export default function BackgroundRemover({ auth }) {
       ctx.drawImage(customBgImg, (w - drawW) / 2, (h - drawH) / 2, drawW, drawH);
     }
 
-    // 2. Draw Soft Drop Shadow (if enabled)
     if (addShadow && bgChoice !== "transparent") {
       ctx.save();
       ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
@@ -263,7 +230,6 @@ export default function BackgroundRemover({ auth }) {
       ctx.restore();
     }
 
-    // 3. Draw Cutout Subject
     ctx.drawImage(cutoutImg, 0, 0, w, h);
 
   }, [cutoutImg, bgChoice, customBgColor, customBgImg, addShadow]);
@@ -274,11 +240,9 @@ export default function BackgroundRemover({ auth }) {
     }
   }, [stage, cutoutImg, renderCompositedCanvas]);
 
-  // ── Export Final Image ──
   const exportImage = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const chosenMime = bgChoice === "transparent" ? "image/png" : exportFormat;
     const blob = await new Promise(r => canvas.toBlob(r, chosenMime, 0.95));
 
@@ -317,76 +281,96 @@ export default function BackgroundRemover({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">AI Background Remover</div>
-        <div className="tool-page-meta">100% In-Browser ML · Zero Uploads</div>
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+      {/* Top Bar */}
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm" 
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">AI Background Remover</div>
+        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">100% In-Browser ML</div>
       </div>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1100px" }}>
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)" }}>
-              🤖
-            </div>
-            <div className="comp-title">AI Background Remover Studio</div>
+      <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-6 pb-12 flex-1">
+        {/* Header Text */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] text-xl">🤖</div>
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">AI Background Remover Studio</h1>
           </div>
-          <p className="comp-sub">Erase backgrounds instantly using on-device machine learning. Replace with studio colors, gradients or custom backdrops.</p>
+          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-xl mx-auto">
+            Erase backgrounds instantly using on-device machine learning. Replace with studio colors or custom backdrops.
+          </p>
         </div>
 
-        <div className="comp-card">
-
+        {/* Main Card Surface */}
+        <div className="w-full bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm overflow-hidden">
+          
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`flex flex-col items-center justify-center p-8 sm:p-12 m-6 border-2 border-dashed rounded-3xl cursor-pointer transition-all ${
+                dragging 
+                  ? "border-[#0b57d0] dark:border-[#a8c7fa] bg-[#c2e7ff]/20 dark:bg-[#004a77]/20" 
+                  : "border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.avif" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">🤖</span>
-              <p className="drop-main">{dragging ? "Drop your photo here!" : "Drag & drop photo to remove background"}</p>
-              <p className="drop-sub">100% private in-browser AI · Portraits, products, vehicles, animals · max {MAX_SIZE_MB} MB</p>
+              <input ref={inputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.avif" hidden onChange={(e) => handleFile(e.target.files[0])} />
+              <span className="text-4xl mb-4">🤖</span>
+              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">{dragging ? "Drop your photo here!" : "Drag & drop photo to remove background"}</p>
+              <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">100% private in-browser AI · max {MAX_SIZE_MB} MB</p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse Photo</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
+              <div className="flex flex-col sm:flex-row gap-3" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  className="px-6 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  📁 Browse Photo
+                </button>
+                <button 
+                  className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all disabled:opacity-50 shadow-sm"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
                   <DriveIconSmall />{drivePickLabel()}
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && <div className="mt-4 px-4 py-2 rounded-xl bg-[#ffdad6] dark:bg-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]">⚠ {errorMsg}</div>}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && stage !== "idle" && !(stage === "error" && !file) && (
-            <div className="file-row">
-              <div className="file-icon">📸</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)} · Original Photo</div>
+            <div className="flex items-center gap-4 mx-6 my-6 p-4 rounded-2xl border border-[#c7c7c7] dark:border-[#444746] bg-[#f0f4f9] dark:bg-[#28292a]">
+              <div className="text-2xl">📸</div>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file.name}</div>
+                <div className="text-xs text-[#444746] dark:text-[#c4c7c5]">{fmt(file.size)} · Original Photo</div>
               </div>
-              {stage !== "processing" && <button className="close-btn" onClick={reset}>✕</button>}
+              {stage !== "processing" && (
+                <button className="p-2 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] transition-all" onClick={reset}>✕</button>
+              )}
             </div>
           )}
 
-          {/* ── Loaded State: Trigger AI Removal ── */}
+          {/* ── Loaded State ── */}
           {stage === "loaded" && (
-            <div style={{ padding: "0 20px 20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{
-                maxHeight: "340px", overflow: "hidden", borderRadius: 'var(--radius-full)',
-                border: "1px solid rgba(255,255,255,0.1)", marginBottom: "18px", boxShadow: "0 10px 30px rgba(0,0,0,0.6)"
-              }}>
-                <img src={origUrl} alt="" style={{ maxWidth: "100%", maxHeight: "320px", objectFit: "contain", display: "block" }} />
+            <div className="flex flex-col items-center px-6 pb-6">
+              <div className="w-full max-w-md max-h-[340px] overflow-hidden rounded-2xl border border-[#c7c7c7] dark:border-[#444746] mb-5 shadow-sm bg-[#f8fafd] dark:bg-[#131314]">
+                <img src={origUrl} alt="" className="w-full max-h-[320px] object-contain block mx-auto" />
               </div>
-
-              <button className="btn-compress" onClick={runBackgroundRemoval} style={{ maxWidth: "420px" }}>
+              <button 
+                className="w-full max-w-[420px] rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all"
+                onClick={runBackgroundRemoval}
+              >
                 ✨ Remove Background with On-Device AI
               </button>
             </div>
@@ -394,116 +378,118 @@ export default function BackgroundRemover({ auth }) {
 
           {/* ── Processing State ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Running On-Device Neural Vision Model...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="flex flex-col items-center justify-center p-12">
+              <div className="w-full max-w-md">
+                <div className="flex justify-between text-sm font-medium mb-2 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                  <span>Running AI Vision Model...</span>
+                  <span>{progress}%</span>
+                </div>
+                <div className="w-full h-3 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] overflow-hidden">
+                  <div className="h-full bg-[#0b57d0] dark:bg-[#a8c7fa] transition-all duration-300" style={{ width: `${progress}%` }} />
+                </div>
+                <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3 text-center">{progressMsg}</p>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #a855f7, #38bdf8)" }} />
-              </div>
-              <p className="progress-msg">{progressMsg}</p>
             </div>
           )}
 
-          {/* ── STUDIO POST-PROCESSING (DONE STATE) ── */}
+          {/* ── DONE STATE (Studio) ── */}
           {stage === "done" && cutoutImg && (
-            <div style={{ padding: "0 20px 20px" }}>
-
-              {/* Top: Background Options Grid */}
-              <div style={{ marginBottom: "18px" }}>
-                <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Replace Background</span>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "6px" }}>
+            <div className="p-6">
+              {/* Background Options Grid */}
+              <div className="mb-6">
+                <span className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">1. Replace Background</span>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-2">
                   {BG_PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`level-btn${bgChoice === p.id ? " active" : ""}`}
+                      className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                        bgChoice === p.id
+                          ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
+                          : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                      }`}
                       onClick={() => setBgChoice(p.id)}
-                      style={{ padding: "8px 4px" }}
                     >
-                      <span style={{ fontSize: "1.1rem" }}>{p.icon}</span>
-                      <span className="level-name" style={{ fontSize: "0.78rem" }}>{p.label}</span>
+                      <span className="text-xl mb-1">{p.icon}</span>
+                      <span className="text-[10px] font-medium text-center leading-tight">{p.label}</span>
                     </button>
                   ))}
+                  
                   <button
                     type="button"
-                    className={`level-btn${bgChoice === "custom-color" ? " active" : ""}`}
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                      bgChoice === "custom-color"
+                        ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
+                        : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                    }`}
                     onClick={() => setBgChoice("custom-color")}
-                    style={{ padding: "8px 4px" }}
                   >
-                    <span style={{ fontSize: "1.1rem" }}>🎨</span>
-                    <span className="level-name" style={{ fontSize: "0.78rem" }}>Custom Hex</span>
+                    <span className="text-xl mb-1">🎨</span>
+                    <span className="text-[10px] font-medium text-center leading-tight">Custom Hex</span>
                   </button>
+
                   <button
                     type="button"
-                    className={`level-btn${bgChoice === "custom-img" ? " active" : ""}`}
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                      bgChoice === "custom-img"
+                        ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
+                        : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                    }`}
                     onClick={() => customBgInputRef.current?.click()}
-                    style={{ padding: "8px 4px" }}
                   >
                     <input ref={customBgInputRef} type="file" accept="image/*" hidden onChange={handleCustomBgUpload} />
-                    <span style={{ fontSize: "1.1rem" }}>🖼️</span>
-                    <span className="level-name" style={{ fontSize: "0.78rem" }}>Upload BG</span>
+                    <span className="text-xl mb-1">🖼️</span>
+                    <span className="text-[10px] font-medium text-center leading-tight">Upload BG</span>
                   </button>
                 </div>
               </div>
 
-              {/* Studio Grid: Controls Left, Live Composited Canvas Right */}
-              <div className="studio-split-layout">
-
-                {/* Left Controls */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-
-                  {/* Custom Hex Color Picker (If selected) */}
+              {/* Layout: Controls (Left), Canvas (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
+                
+                {/* Controls */}
+                <div className="flex flex-col gap-4">
+                  
                   {bgChoice === "custom-color" && (
-                    <div style={{
-                      padding: "12px", background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                    }}>
-                      <label style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", display: "block", marginBottom: "6px" }}>
-                        Pick Backdrop Color
-                      </label>
-                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <div className="p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">Pick Color</label>
+                      <div className="flex items-center gap-3">
                         <input
                           type="color"
                           value={customBgColor}
                           onChange={(e) => setCustomBgColor(e.target.value)}
-                          style={{ width: "36px", height: "36px", padding: 0, border: "none", background: "none", cursor: "pointer" }}
+                          className="w-10 h-10 p-0 border-0 bg-transparent cursor-pointer rounded-lg overflow-hidden"
                         />
                         <input
                           type="text"
                           value={customBgColor}
                           onChange={(e) => setCustomBgColor(e.target.value)}
-                          style={{
-                            flex: 1, padding: "6px 10px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: 'var(--radius-full)', color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", outline: "none"
-                          }}
+                          className="flex-1 px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] font-mono outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
                         />
                       </div>
                     </div>
                   )}
 
-                  {/* Studio Effects */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#a855f7", textTransform: "uppercase", marginBottom: "10px" }}>
-                      Studio Lighting & Shadow
-                    </div>
-
-                    <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#cbd5e1", cursor: "pointer", marginBottom: "8px" }}>
-                      <input type="checkbox" checked={addShadow} onChange={(e) => setAddShadow(e.target.checked)} style={{ accentColor: "#a855f7" }} />
-                      Add Soft Studio Drop Shadow
+                  <div className="p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">Lighting & Export</div>
+                    
+                    <label className="flex items-center gap-3 text-sm text-[#1f1f1f] dark:text-[#e3e3e3] cursor-pointer mb-4">
+                      <input 
+                        type="checkbox" 
+                        checked={addShadow} 
+                        onChange={(e) => setAddShadow(e.target.checked)} 
+                        className="w-4 h-4 accent-[#0b57d0] dark:accent-[#a8c7fa]" 
+                      />
+                      Add Soft Studio Shadow
                     </label>
 
                     {bgChoice !== "transparent" && (
                       <div>
-                        <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Export Format</label>
+                        <label className="block text-xs text-[#444746] dark:text-[#c4c7c5] mb-1.5">Export Format</label>
                         <select
                           value={exportFormat}
                           onChange={(e) => setExportFormat(e.target.value)}
-                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
+                          className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
                         >
                           <option value="image/png">PNG (High Quality)</option>
                           <option value="image/webp">WebP (Compact)</option>
@@ -514,28 +500,24 @@ export default function BackgroundRemover({ auth }) {
                   </div>
                 </div>
 
-                {/* Right: Live Interactive Canvas */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{
-                    width: "100%", minHeight: "380px", overflow: "hidden",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    borderRadius: 'var(--radius-full)', border: "1.5px solid rgba(168, 85, 247, 0.35)",
-                    boxShadow: "0 15px 35px rgba(0,0,0,0.6)", padding: "16px", boxSizing: "border-box",
-                    background: bgChoice === "transparent"
-                      ? "repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 20px 20px"
-                      : "#080c16"
-                  }}>
-                    <canvas
-                      ref={canvasRef}
-                      style={{ maxWidth: "100%", maxHeight: "400px", objectFit: "contain", borderRadius: 'var(--radius-full)' }}
-                    />
+                {/* Canvas */}
+                <div className="flex flex-col items-center">
+                  <div className={`w-full min-h-[380px] overflow-hidden flex items-center justify-center rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-4 ${
+                    bgChoice === "transparent" 
+                      ? "bg-[repeating-conic-gradient(#e5e7eb_0%_25%,_#f3f4f6_0%_50%)] dark:bg-[repeating-conic-gradient(#1e293b_0%_25%,_#0f172a_0%_50%)] bg-[length:20px_20px]" 
+                      : "bg-[#f0f4f9] dark:bg-[#131314]"
+                  }`}>
+                    <canvas ref={canvasRef} className="max-w-full max-h-[400px] object-contain rounded-2xl" />
                   </div>
                 </div>
               </div>
 
-              {/* Action Button */}
-              <div className="action-wrap" style={{ marginTop: "22px" }}>
-                <button className="btn-compress" onClick={exportImage}>
+              {/* Process Button */}
+              <div className="mt-6">
+                <button 
+                  className="w-full max-w-md mx-auto rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all flex items-center justify-center gap-2 block"
+                  onClick={exportImage}
+                >
                   {resultBlob ? "🔁 Re-Export Image" : "⚡ Prepare Download & Save"}
                 </button>
               </div>
@@ -544,48 +526,32 @@ export default function BackgroundRemover({ auth }) {
 
           {/* ── Results Box ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: "rgba(168,85,247,0.08)",
-                borderColor: "rgba(168,85,247,0.3)",
-              }}>
-                <div className="result-grid">
+            <div className="px-6 pb-6">
+              <div className="mt-4 mb-6 p-4 bg-[#c2e7ff]/30 dark:bg-[#004a77]/30 border border-[#c2e7ff] dark:border-[#004a77] rounded-2xl">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="result-label">Original Photo</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
-                      {fmt(file?.size)}
-                    </span>
+                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Original Photo</span>
+                    <span className="font-mono text-lg font-bold text-[#444746] dark:text-[#c4c7c5]">{fmt(file?.size)}</span>
                   </div>
-                  <div className="result-arrow">→</div>
+                  <div className="text-xl text-[#c7c7c7] dark:text-[#444746] hidden sm:block">→</div>
                   <div>
-                    <span className="result-label">Cut-Out Output</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "#c084fc" }}>
-                      {resultInfo}
-                    </span>
+                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Composited Output</span>
+                    <span className="font-mono text-lg font-bold text-[#001d35] dark:text-[#c2e7ff]">{resultInfo}</span>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: "rgba(168,85,247,0.18)",
-                  borderColor: "#a855f7",
-                  color: "#c084fc",
-                }}>
+                <div className="mt-3 text-center text-xs font-medium text-[#001d35] dark:text-[#c2e7ff] bg-[#c2e7ff] dark:bg-[#004a77] py-1.5 rounded-full px-3 inline-block w-full">
                   🤖 Background Removed & Composited Successfully
                 </div>
               </div>
 
-              <ActionButtons
-                blob={resultBlob}
-                fileName={resultName}
-                onReset={reset}
-                auth={auth}
-              />
+              <div className="max-w-md mx-auto">
+                <ActionButtons blob={resultBlob} fileName={resultName} onReset={reset} auth={auth} />
+              </div>
             </div>
           )}
 
-          <div className="comp-footer">
-            <span>FlashCrush · AI Background Remover Studio</span>
-            <span>100% in-browser processing · Zero server uploads</span>
+          <div className="p-4 text-center text-xs text-[#444746] dark:text-[#c4c7c5] border-t border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
+            FlashCrush · 100% in-browser processing · Zero server uploads
           </div>
         </div>
       </div>
