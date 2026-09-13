@@ -1,4 +1,4 @@
-// App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer (Neo-Brutalism)
+// App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer (Google Material Design 3)
 import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import "./styles.css";
@@ -238,22 +238,22 @@ export default function App() {
   }, [location.pathname]);
 
   return (
-    <div className="site-layout min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans transition-colors overflow-x-hidden w-full max-w-full">
-      {/* ── Offline Status Banner (M3 Tonal Amber) ── */}
+    <div className="site-layout min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-[#1f1f1f] dark:text-[#e3e3e3] font-sans transition-colors overflow-x-hidden w-full max-w-full">
+      {/* ── Offline Status Banner (M3 Warning Container) ── */}
       {!pwa.isOnline && (
-        <div className="bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 text-xs font-medium py-1.5 px-4 text-center flex items-center justify-center gap-2 border-b border-amber-200/50 dark:border-amber-900/50 z-50">
-          <span>⚡ Offline Mode Active</span>
-          <span className="opacity-80">— 100% of tools work locally in your browser without internet.</span>
+        <div className="bg-[#fff8e1] dark:bg-[#3e2e04] text-[#795548] dark:text-[#ffecb3] text-xs font-medium py-2 px-4 text-center flex items-center justify-center gap-2 border-b border-[#ffe082]/60 dark:border-[#ffe082]/20 z-50 transition-colors">
+          <span className="font-semibold">⚡ Offline Mode Active</span>
+          <span className="opacity-90">— 100% of tools work locally in your browser without internet.</span>
         </div>
       )}
 
       {/* ── Google M3 Workspace Top App Bar ── */}
-      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd] dark:bg-[#131314] px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#c7c7c7]/50 dark:border-[#444746]/60 transition-colors font-sans">
+      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd]/95 dark:bg-[#131314]/95 backdrop-blur-md px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#c4c7c5]/40 dark:border-[#444746]/40 transition-colors font-sans">
         {/* Left Side: Logo & Navigation Pills */}
         <div className="flex items-center gap-2 lg:gap-4">
           {/* Logo */}
           <div
-            className="flex items-center gap-2.5 cursor-pointer select-none py-1 px-2 rounded-full hover:bg-gray-200/40 dark:hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2.5 cursor-pointer select-none py-1 px-2.5 rounded-full hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 transition-colors"
             onClick={() => navigate("/")}
             onMouseEnter={() => {
               setShowPdfMenu(false);
@@ -261,8 +261,8 @@ export default function App() {
             }}
           >
             <LogoMark size={28} />
-            <span className="text-xl font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
-              Flash<span className="text-blue-600 dark:text-blue-400 font-medium">Crush</span>
+            <span className="text-xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] font-sans tracking-tight">
+              Flash<span className="text-[#0b57d0] dark:text-[#a8c7fa] font-medium">Crush</span>
             </span>
           </div>
 
@@ -280,7 +280,7 @@ export default function App() {
                 `rounded-full px-4 py-1.5 text-sm font-medium transition-colors font-sans ${
                   isActive
                     ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                    : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                 }`
               }
             >
@@ -302,7 +302,7 @@ export default function App() {
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-1.5 font-sans ${
                   isPdfActive
                     ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                    : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                 }`}
                 onClick={() => {
                   setShowPdfMenu(p => !p);
@@ -310,14 +310,14 @@ export default function App() {
                 }}
               >
                 <span>📄 PDF Tools</span>
-                <span className="text-[10px] text-gray-500">{showPdfMenu ? "▲" : "▼"}</span>
+                <span className="text-[10px] opacity-70">{showPdfMenu ? "▲" : "▼"}</span>
               </button>
 
               {showPdfMenu && (
                 <div
-                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-lg border border-[#c7c7c7] dark:border-[#444746] p-2 z-50 font-sans"
+                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-2 z-50 font-sans"
                 >
-                  <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-sans">
+                  <div className="px-3 py-1.5 text-[11px] font-semibold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider font-sans">
                     PDF Power Tools
                   </div>
                   <div className="grid grid-cols-1 gap-1 max-h-96 overflow-y-auto">
@@ -328,16 +328,16 @@ export default function App() {
                         className={({ isActive }) =>
                           `flex items-start gap-3 p-2.5 rounded-xl transition-colors ${
                             isActive
-                              ? "bg-[#f0f4f9] dark:bg-[#28292a]"
-                              : "hover:bg-gray-100/80 dark:hover:bg-[#28292a]"
+                              ? "bg-[#c2e7ff]/40 dark:bg-[#004a77]/40 text-[#001d35] dark:text-[#c2e7ff]"
+                              : "hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
                           }`
                         }
                         onClick={() => setShowPdfMenu(false)}
                       >
                         <span className="text-lg select-none">{t.icon}</span>
                         <div>
-                          <div className="text-sm font-medium text-gray-800 dark:text-gray-100">{t.label}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 leading-snug">{t.desc}</div>
+                          <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">{t.label}</div>
+                          <div className="text-xs text-[#444746] dark:text-[#c4c7c5] leading-snug">{t.desc}</div>
                         </div>
                       </NavLink>
                     ))}
@@ -358,10 +358,10 @@ export default function App() {
             >
               <button
                 type="button"
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-1.5 font-sans ${
                   isImgActive
                     ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                    : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                 }`}
                 onClick={() => {
                   setShowImgMenu(p => !p);
@@ -369,14 +369,14 @@ export default function App() {
                 }}
               >
                 <span>🖼️ Image Tools</span>
-                <span className="text-[10px] text-gray-500">{showImgMenu ? "▲" : "▼"}</span>
+                <span className="text-[10px] opacity-70">{showImgMenu ? "▲" : "▼"}</span>
               </button>
 
               {showImgMenu && (
                 <div
-                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-lg border border-[#c7c7c7] dark:border-[#444746] p-2 z-50 font-sans"
+                  className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-2 z-50 font-sans"
                 >
-                  <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider font-sans">
+                  <div className="px-3 py-1.5 text-[11px] font-semibold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider font-sans">
                     Image Super-Tools
                   </div>
                   <div className="grid grid-cols-1 gap-1 max-h-96 overflow-y-auto">
@@ -387,16 +387,16 @@ export default function App() {
                         className={({ isActive }) =>
                           `flex items-start gap-3 p-2.5 rounded-xl transition-colors ${
                             isActive
-                              ? "bg-[#f0f4f9] dark:bg-[#28292a]"
-                              : "hover:bg-gray-100/80 dark:hover:bg-[#28292a]"
+                              ? "bg-[#c2e7ff]/40 dark:bg-[#004a77]/40 text-[#001d35] dark:text-[#c2e7ff]"
+                              : "hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
                           }`
                         }
                         onClick={() => setShowImgMenu(false)}
                       >
                         <span className="text-lg select-none">{t.icon}</span>
                         <div>
-                          <div className="text-sm font-medium text-gray-800 dark:text-gray-100">{t.label}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 leading-snug">{t.desc}</div>
+                          <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">{t.label}</div>
+                          <div className="text-xs text-[#444746] dark:text-[#c4c7c5] leading-snug">{t.desc}</div>
                         </div>
                       </NavLink>
                     ))}
@@ -407,9 +407,9 @@ export default function App() {
           </div>
         </div>
 
-        {/* Center: Google Drive Style Pill Search Bar */}
+        {/* Center: Google M3 Search Pill */}
         <div
-          className="hidden lg:flex flex-1 max-w-lg mx-6 items-center gap-3 px-4 py-2 rounded-full bg-[#edf2fc] dark:bg-[#28292a] hover:bg-[#e4ebf7] dark:hover:bg-[#333537] text-gray-600 dark:text-gray-300 text-sm cursor-pointer transition-colors border border-[#c7c7c7]/40 dark:border-[#444746]/50 shadow-xs font-sans"
+          className="hidden lg:flex flex-1 max-w-lg mx-6 items-center gap-3 px-4 py-2 rounded-full bg-[#edf2f7] dark:bg-[#28292a] hover:bg-[#e4ebf0] dark:hover:bg-[#333537] text-[#444746] dark:text-[#c4c7c5] text-sm cursor-pointer transition-all border border-[#c4c7c5]/40 dark:border-[#444746]/40 shadow-none font-sans"
           onClick={() => setShowCmdPalette(true)}
           onMouseEnter={() => {
             setShowPdfMenu(false);
@@ -417,11 +417,11 @@ export default function App() {
           }}
           title="Search tools, PDFs & actions (Ctrl + K)"
         >
-          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-[#444746] dark:text-[#c4c7c5] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <span className="flex-1 select-none text-gray-500 dark:text-gray-400">Search in FlashCrush...</span>
-          <kbd className="rounded-full px-2.5 py-0.5 text-xs bg-white dark:bg-[#1e1f20] text-gray-500 dark:text-gray-400 font-mono shadow-xs border border-[#c7c7c7]/60 dark:border-[#444746]/60">
+          <span className="flex-1 select-none text-[#444746] dark:text-[#c4c7c5]">Search in FlashCrush...</span>
+          <kbd className="rounded-full px-2.5 py-0.5 text-xs bg-[#ffffff] dark:bg-[#1e1f20] text-[#444746] dark:text-[#c4c7c5] font-mono border border-[#c4c7c5]/50 dark:border-[#444746]/50">
             Ctrl K
           </kbd>
         </div>
@@ -431,34 +431,34 @@ export default function App() {
           {/* Quick Search Button (Tablet/Mobile) */}
           <button
             type="button"
-            className="lg:hidden rounded-full p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+            className="lg:hidden rounded-full p-2 text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 transition-colors flex-shrink-0"
             onClick={() => setShowCmdPalette(true)}
             title="Quick Search (Ctrl + K)"
           >
             <span className="text-base">🔍</span>
           </button>
 
-          {/* Local Offline History Button (Tablet/Desktop only; available in Mobile Drawer on phones) */}
+          {/* Local Offline History Button */}
           <button
             type="button"
-            className="hidden sm:flex rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 items-center gap-1.5 transition-colors flex-shrink-0 font-sans"
+            className="hidden sm:flex rounded-full px-3 py-1.5 text-sm font-medium text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 items-center gap-1.5 transition-colors flex-shrink-0 font-sans"
             onClick={() => setShowHistoryDrawer(true)}
             title="Local Offline History (IndexedDB)"
           >
             <span>🕒</span>
             <span className="hidden xl:inline">History</span>
             {historyCount > 0 && (
-              <span className="rounded-full bg-[#0b57d0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] text-[10px] font-bold px-1.5 py-0.5 leading-none">
+              <span className="rounded-full bg-[#0b57d0] text-[#ffffff] dark:bg-[#a8c7fa] dark:text-[#062e6f] text-[10px] font-bold px-1.5 py-0.5 leading-none">
                 {historyCount}
               </span>
             )}
           </button>
 
-          {/* PWA Install Button (Tablet/Desktop only; available in Mobile Drawer on phones) */}
+          {/* PWA Install Button */}
           {pwa.canInstall && (
             <button
               type="button"
-              className="hidden sm:flex rounded-full px-3.5 py-1.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-gray-800 dark:text-gray-200 hover:bg-[#e9eef6] dark:hover:bg-[#333537] items-center gap-1.5 shadow-xs transition-colors flex-shrink-0 font-sans"
+              className="hidden sm:flex rounded-full px-3.5 py-1.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#e4ebf0] dark:hover:bg-[#333537] items-center gap-1.5 shadow-none border border-[#c4c7c5]/30 dark:border-[#444746]/40 transition-colors flex-shrink-0 font-sans"
               onClick={pwa.installApp}
               title="Install FlashCrush as Native App"
             >
@@ -467,11 +467,11 @@ export default function App() {
             </button>
           )}
 
-          {/* Theme Toggle Dropdown (Tablet/Desktop only; Mobile Drawer has segmented Light/Dark/Auto chips) */}
+          {/* Theme Toggle Dropdown */}
           <div className="relative hidden sm:block flex-shrink-0" ref={themeMenuRef}>
             <button
               type="button"
-              className="rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 border border-[#c7c7c7] dark:border-[#444746] flex items-center gap-1.5 transition-colors font-sans"
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 border border-[#c4c7c5]/50 dark:border-[#444746]/60 flex items-center gap-1.5 transition-colors font-sans"
               onClick={() => setShowThemeMenu(m => !m)}
               title={`Theme: ${theme === "system" ? `Auto (${resolvedTheme === "dark" ? "Dark" : "Light"})` : theme === "dark" ? "Dark Mode" : "Light Mode"}`}
             >
@@ -479,17 +479,17 @@ export default function App() {
               <span className="hidden sm:inline text-xs font-normal">
                 {theme === "light" ? "Light" : theme === "dark" ? "Dark" : `Auto (${resolvedTheme === "dark" ? "Dark" : "Light"})`}
               </span>
-              <span className="text-[9px] text-gray-500">{showThemeMenu ? "▲" : "▼"}</span>
+              <span className="text-[9px] opacity-70">{showThemeMenu ? "▲" : "▼"}</span>
             </button>
 
             {showThemeMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-lg border border-[#c7c7c7] dark:border-[#444746] p-1.5 z-50 font-sans">
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-1.5 z-50 font-sans">
                 <button
                   type="button"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors font-sans ${
                     theme === "light"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
                   }`}
                   onClick={() => { setTheme("light"); setShowThemeMenu(false); }}
                 >
@@ -497,14 +497,14 @@ export default function App() {
                     <span>☀️</span>
                     <span>Light Mode</span>
                   </span>
-                  {theme === "light" && <span className="text-xs font-bold">✓</span>}
+                  {theme === "light" && <span className="text-xs font-bold text-[#0b57d0] dark:text-[#a8c7fa]">✓</span>}
                 </button>
                 <button
                   type="button"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors font-sans ${
                     theme === "dark"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
                   }`}
                   onClick={() => { setTheme("dark"); setShowThemeMenu(false); }}
                 >
@@ -512,14 +512,14 @@ export default function App() {
                     <span>🌙</span>
                     <span>Dark Mode</span>
                   </span>
-                  {theme === "dark" && <span className="text-xs font-bold">✓</span>}
+                  {theme === "dark" && <span className="text-xs font-bold text-[#0b57d0] dark:text-[#a8c7fa]">✓</span>}
                 </button>
                 <button
                   type="button"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors font-sans ${
                     theme === "system"
                       ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
                   }`}
                   onClick={() => { setTheme("system"); setShowThemeMenu(false); }}
                 >
@@ -527,7 +527,7 @@ export default function App() {
                     <span>💻</span>
                     <span>System (Auto)</span>
                   </span>
-                  {theme === "system" && <span className="text-xs font-bold">✓</span>}
+                  {theme === "system" && <span className="text-xs font-bold text-[#0b57d0] dark:text-[#a8c7fa]">✓</span>}
                 </button>
               </div>
             )}
@@ -537,7 +537,7 @@ export default function App() {
           {isSignedIn ? (
             <div className="relative flex-shrink-0" ref={menuRef}>
               <div
-                className="flex items-center gap-1 p-0.5 rounded-full hover:ring-2 hover:ring-blue-500/30 cursor-pointer transition-all"
+                className="flex items-center gap-1 p-0.5 rounded-full hover:ring-2 hover:ring-[#0b57d0]/30 dark:hover:ring-[#a8c7fa]/30 cursor-pointer transition-all"
                 onClick={() => setShowMenu(m => !m)}
               >
                 {auth.user?.picture ? (
@@ -547,16 +547,16 @@ export default function App() {
                     {auth.user?.name?.[0] || "G"}
                   </div>
                 )}
-                <span className="text-[8px] text-gray-500">{showMenu ? "▲" : "▼"}</span>
+                <span className="text-[8px] opacity-70">{showMenu ? "▲" : "▼"}</span>
               </div>
               {showMenu && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-lg border border-[#c7c7c7] dark:border-[#444746] p-3 z-50 font-sans">
-                  <div className="border-b border-[#c7c7c7]/50 dark:border-[#444746]/60 pb-2.5 mb-2">
-                    <div className="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">{auth.user?.name}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{auth.user?.email}</div>
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-3 z-50 font-sans">
+                  <div className="border-b border-[#c4c7c5]/40 dark:border-[#444746]/40 pb-2.5 mb-2">
+                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{auth.user?.name}</div>
+                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] truncate">{auth.user?.email}</div>
                   </div>
                   <button
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors font-sans"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-[#b3261e] dark:text-[#f2b8b5] hover:bg-[#f9dedc]/40 dark:hover:bg-[#8c1d18]/20 transition-colors font-sans"
                     onClick={() => { auth.signOut(); setShowMenu(false); }}
                   >
                     <span>⏻</span> Logout
@@ -567,7 +567,7 @@ export default function App() {
           ) : (
             <div className="flex items-center flex-shrink-0">
               <button
-                className="rounded-full px-2.5 sm:px-4 py-1.5 text-sm font-medium border border-[#c7c7c7] dark:border-[#444746] bg-[#ffffff] dark:bg-[#1e1f20] text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-xs flex items-center gap-2 transition-all flex-shrink-0 font-sans"
+                className="rounded-full px-2.5 sm:px-4 py-1.5 text-sm font-medium border border-[#c4c7c5]/60 dark:border-[#444746]/70 bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 shadow-none flex items-center gap-2 transition-all flex-shrink-0 font-sans"
                 onClick={auth.signIn}
                 disabled={auth.authStatus === "loading"}
                 title={isSignedIn ? "Account" : "Sign in with Google"}
@@ -578,7 +578,7 @@ export default function App() {
                 </span>
               </button>
               {signInError && (
-                <div className="text-xs text-rose-600 ml-2">{signInError}</div>
+                <div className="text-xs text-[#b3261e] dark:text-[#f2b8b5] ml-2">{signInError}</div>
               )}
             </div>
           )}
@@ -586,7 +586,7 @@ export default function App() {
           {/* Mobile Drawer Hamburger Button */}
           <button
             type="button"
-            className="md:hidden rounded-full p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-lg flex items-center justify-center flex-shrink-0"
+            className="md:hidden rounded-full p-2 text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 transition-colors text-lg flex items-center justify-center flex-shrink-0"
             onClick={() => setMobileNavOpen(o => !o)}
             title="Toggle Menu"
             aria-label="Toggle navigation menu"
@@ -599,23 +599,23 @@ export default function App() {
 
       {/* ── Mobile Drawer Menu (Google M3 Style) ── */}
       {mobileNavOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex justify-start" onClick={() => setMobileNavOpen(false)}>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex justify-start transition-all" onClick={() => setMobileNavOpen(false)}>
           <div
-            className="w-80 max-w-[85vw] h-full bg-[#f8fafd] dark:bg-[#1e1f20] p-5 flex flex-col gap-2 shadow-2xl overflow-y-auto border-r border-[#c7c7c7] dark:border-[#444746] font-sans"
+            className="w-80 max-w-[85vw] h-full bg-[#f8fafd] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] p-5 flex flex-col gap-2 shadow-[0_4px_8px_3px_rgba(0,0,0,0.15)] dark:shadow-[0_4px_8px_3px_rgba(0,0,0,0.50)] overflow-y-auto border-r border-[#c4c7c5]/40 dark:border-[#444746]/40 font-sans"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#c7c7c7] dark:border-[#444746] mb-2">
+            <div className="flex items-center justify-between pb-3 border-b border-[#c4c7c5]/40 dark:border-[#444746]/40 mb-2">
               <div
                 className="flex items-center gap-2.5 cursor-pointer"
                 onClick={() => { navigate("/"); setMobileNavOpen(false); }}
               >
                 <LogoMark size={24} />
-                <span className="text-lg font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
-                  Flash<span className="text-blue-600 dark:text-blue-400 font-medium">Crush</span>
+                <span className="text-lg font-normal text-[#1f1f1f] dark:text-[#e3e3e3] font-sans tracking-tight">
+                  Flash<span className="text-[#0b57d0] dark:text-[#a8c7fa] font-medium">Crush</span>
                 </span>
               </div>
               <button
-                className="rounded-full p-2 text-gray-500 hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors text-sm"
+                className="rounded-full p-2 text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 transition-colors text-sm"
                 onClick={() => setMobileNavOpen(false)}
               >
                 ✕
@@ -629,7 +629,7 @@ export default function App() {
                 `rounded-full px-4 py-2.5 text-sm font-medium flex items-center gap-3 transition-colors ${
                   isActive
                     ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                    : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                 }`
               }
               onClick={() => setMobileNavOpen(false)}
@@ -639,16 +639,16 @@ export default function App() {
 
             {/* Mobile Theme Segment */}
             <div className="my-2">
-              <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mb-1.5">
+              <div className="text-[11px] font-semibold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider px-3 mb-1.5">
                 Theme
               </div>
-              <div className="grid grid-cols-3 gap-1 p-1 bg-gray-200/70 dark:bg-[#28292a] rounded-full">
+              <div className="grid grid-cols-3 gap-1 p-1 bg-[#edf2f7] dark:bg-[#28292a] rounded-full border border-[#c4c7c5]/30 dark:border-[#444746]/40">
                 <button
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "light"
-                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-none font-semibold"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:text-[#1f1f1f] dark:hover:text-[#e3e3e3]"
                   }`}
                   onClick={() => setTheme("light")}
                 >
@@ -658,8 +658,8 @@ export default function App() {
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "dark"
-                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-none font-semibold"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:text-[#1f1f1f] dark:hover:text-[#e3e3e3]"
                   }`}
                   onClick={() => setTheme("dark")}
                 >
@@ -669,8 +669,8 @@ export default function App() {
                   type="button"
                   className={`rounded-full py-1.5 text-xs font-medium flex items-center justify-center gap-1 transition-all ${
                     theme === "system"
-                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-none font-semibold"
+                      : "text-[#444746] dark:text-[#c4c7c5] hover:text-[#1f1f1f] dark:hover:text-[#e3e3e3]"
                   }`}
                   onClick={() => setTheme("system")}
                 >
@@ -681,12 +681,12 @@ export default function App() {
 
             {/* Mobile History Link */}
             <div
-              className="rounded-full px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800 flex items-center justify-between cursor-pointer transition-colors"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8 flex items-center justify-between cursor-pointer transition-colors"
               onClick={() => { setShowHistoryDrawer(true); setMobileNavOpen(false); }}
             >
               <span className="flex items-center gap-3"><span>🕒</span> Local History</span>
               {historyCount > 0 && (
-                <span className="rounded-full bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 leading-none">
+                <span className="rounded-full bg-[#0b57d0] text-[#ffffff] text-[10px] font-bold px-2 py-0.5 leading-none">
                   {historyCount}
                 </span>
               )}
@@ -695,14 +695,14 @@ export default function App() {
             {/* Mobile Install App Button */}
             {pwa.canInstall && (
               <div
-                className="rounded-full px-4 py-2.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-blue-600 dark:text-blue-400 hover:bg-[#e9eef6] dark:hover:bg-[#333537] flex items-center gap-3 cursor-pointer shadow-xs transition-colors"
+                className="rounded-full px-4 py-2.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#0b57d0] dark:text-[#a8c7fa] hover:bg-[#e4ebf0] dark:hover:bg-[#333537] flex items-center gap-3 cursor-pointer shadow-none transition-colors border border-[#c4c7c5]/30 dark:border-[#444746]/40"
                 onClick={() => { pwa.installApp(); setMobileNavOpen(false); }}
               >
                 <span>📲</span> Install App
               </div>
             )}
 
-            <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mt-3">
+            <div className="text-[11px] font-semibold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider px-3 mt-3">
               📄 PDF Tools
             </div>
             <div className="flex flex-col gap-0.5">
@@ -714,7 +714,7 @@ export default function App() {
                     `rounded-full px-4 py-2 text-sm font-medium flex items-center gap-3 transition-colors ${
                       isActive
                         ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                        : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                     }`
                   }
                   onClick={() => setMobileNavOpen(false)}
@@ -724,7 +724,7 @@ export default function App() {
               ))}
             </div>
 
-            <div className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 mt-4">
+            <div className="text-[11px] font-semibold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider px-3 mt-4">
               🖼️ Image Tools
             </div>
             <div className="flex flex-col gap-0.5 pb-6">
@@ -736,7 +736,7 @@ export default function App() {
                     `rounded-full px-4 py-2 text-sm font-medium flex items-center gap-3 transition-colors ${
                       isActive
                         ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-800"
+                        : "text-[#444746] dark:text-[#c4c7c5] hover:bg-[#1f1f1f]/8 dark:hover:bg-[#e3e3e3]/8"
                     }`
                   }
                   onClick={() => setMobileNavOpen(false)}
@@ -796,7 +796,7 @@ export default function App() {
         installApp={pwa.installApp}
       />
 
-      {/* ── Clipboard Paste Modal & Toast ── */}
+      {/* ── Clipboard Paste Modal & Toast (M3 Snackbar) ── */}
       <ClipboardPasteModal
         file={clipboardFile}
         onClose={() => setClipboardFile(null)}
@@ -808,15 +808,15 @@ export default function App() {
       />
 
       {pasteToast && (
-        <div className="clipboard-toast">
+        <div className="fixed bottom-7 left-1/2 -translate-x-1/2 bg-[#313033] text-[#f4eff4] dark:bg-[#e6e1e5] dark:text-[#313033] shadow-[0_3px_6px_1px_rgba(0,0,0,0.15)] rounded-full px-5 py-2.5 text-sm font-medium z-[10000] flex items-center gap-2 pointer-events-none transition-all animate-bounce">
           <span>{pasteToast}</span>
         </div>
       )}
 
-      {/* ── Footer ── */}
-      <footer className="site-footer">
-        <span><strong>FlashCrush</strong> — 100% free, no account required</span>
-        <span>All files processed locally · Never uploaded without your permission · <a href="#privacy" style={{ color: "inherit" }}>Privacy Policy</a></span>
+      {/* ── Footer (M3 Surface Container Low) ── */}
+      <footer className="w-full bg-[#f0f4f9] dark:bg-[#1b1b1c] text-[#444746] dark:text-[#c4c7c5] border-t border-[#c4c7c5]/40 dark:border-[#444746]/40 py-8 px-4 flex flex-col items-center gap-2 text-center text-xs transition-colors font-sans mt-auto">
+        <span><strong className="text-[#1f1f1f] dark:text-[#e3e3e3] font-semibold">FlashCrush</strong> — 100% free, no account required</span>
+        <span>All files processed locally · Never uploaded without your permission · <a href="/privacy.html" className="underline hover:text-[#0b57d0] dark:hover:text-[#a8c7fa] transition-colors">Privacy Policy</a></span>
       </footer>
     </div>
   );
