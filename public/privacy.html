@@ -5,56 +5,207 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy — Flash Crush-Files</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafd" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131314" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Roboto:wght@400;500&display=swap" />
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem("flashcrush_theme");
+                if (saved === "dark") document.documentElement.setAttribute("data-theme", "dark");
+                else if (saved === "light") document.documentElement.setAttribute("data-theme", "light");
+            } catch (e) { }
+        })();
+    </script>
     <style>
+        :root {
+            --md-sys-color-surface: #f8fafd;
+            --md-sys-color-surface-container: #ffffff;
+            --md-sys-color-on-surface: #1f1f1f;
+            --md-sys-color-on-surface-variant: #444746;
+            --md-sys-color-outline-variant: #c4c7c5;
+            --md-sys-color-primary: #0b57d0;
+            --md-sys-color-secondary-container: #c2e7ff;
+            --md-sys-color-on-secondary-container: #001d35;
+            --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --md-sys-color-surface: #131314;
+                --md-sys-color-surface-container: #1e1f20;
+                --md-sys-color-on-surface: #e3e3e3;
+                --md-sys-color-on-surface-variant: #c4c7c5;
+                --md-sys-color-outline-variant: #444746;
+                --md-sys-color-primary: #a8c7fa;
+                --md-sys-color-secondary-container: #004a77;
+                --md-sys-color-on-secondary-container: #c2e7ff;
+                --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.35), 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+            }
+        }
+
+        [data-theme="dark"] {
+            --md-sys-color-surface: #131314;
+            --md-sys-color-surface-container: #1e1f20;
+            --md-sys-color-on-surface: #e3e3e3;
+            --md-sys-color-on-surface-variant: #c4c7c5;
+            --md-sys-color-outline-variant: #444746;
+            --md-sys-color-primary: #a8c7fa;
+            --md-sys-color-secondary-container: #004a77;
+            --md-sys-color-on-secondary-container: #c2e7ff;
+            --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.35), 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        [data-theme="light"] {
+            --md-sys-color-surface: #f8fafd;
+            --md-sys-color-surface-container: #ffffff;
+            --md-sys-color-on-surface: #1f1f1f;
+            --md-sys-color-on-surface-variant: #444746;
+            --md-sys-color-outline-variant: #c4c7c5;
+            --md-sys-color-primary: #0b57d0;
+            --md-sys-color-secondary-container: #c2e7ff;
+            --md-sys-color-on-secondary-container: #001d35;
+            --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-            max-width: 700px;
-            margin: 60px auto;
-            padding: 0 24px;
-            color: #1a0533;
-            line-height: 1.7;
-            background: #f8f4ff;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            line-height: 1.6;
+            padding: 40px 16px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            background: var(--md-sys-color-surface-container);
+            border: 1px solid var(--md-sys-color-outline-variant);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--md-sys-elevation-1);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 16px 12px;
+            }
+
+            .container {
+                padding: 24px 20px;
+                border-radius: 16px;
+            }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--md-sys-color-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         h1 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 6px;
+            font-family: 'Outfit', -apple-system, sans-serif;
+            font-size: 32px;
+            line-height: 40px;
+            font-weight: 700;
+            color: var(--md-sys-color-on-surface);
+            margin-bottom: 8px;
+            letter-spacing: -0.25px;
+        }
+
+        .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.1px;
+        }
+
+        .date {
+            font-size: 13px;
+            color: var(--md-sys-color-on-surface-variant);
         }
 
         h2 {
-            font-size: 17px;
-            font-weight: 700;
+            font-family: 'Outfit', -apple-system, sans-serif;
+            font-size: 18px;
+            line-height: 26px;
+            font-weight: 600;
+            color: var(--md-sys-color-on-surface);
             margin-top: 32px;
+            margin-bottom: 8px;
         }
 
         p,
         li {
-            font-size: 15px;
-            color: #5b4b72;
+            font-size: 14px;
+            line-height: 22px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
         }
 
         a {
-            color: #a855f7;
+            color: var(--md-sys-color-primary);
+            text-decoration: none;
+            font-weight: 500;
         }
 
-        .chip {
-            display: inline-block;
-            background: #f3e8ff;
-            color: #7e22ce;
-            border-radius: 6px;
-            padding: 2px 10px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 24px;
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <h1>Privacy Policy</h1>
-    <span class="chip">Flash Crush-Files</span>
-    <p>Last updated: March 2026</p>
+    <main class="container">
+        <a href="/" class="back-link">← Back to Flash Crush-Files</a>
+        <h1>Privacy Policy</h1>
+        <div class="meta-row">
+            <span class="chip">Flash Crush-Files</span>
+            <span class="date">Last updated: March 2026</span>
+        </div>
 
     <h2>1. No Data Collection</h2>
     <p>Flash Crush-Files does not collect, store, or transmit any of your files. All PDF and image compression happens
@@ -79,6 +230,7 @@
 
     <h2>5. Contact</h2>
     <p>Questions? Contact us through our official support channel.</p>
+    </main>
 </body>
 
 </html>
