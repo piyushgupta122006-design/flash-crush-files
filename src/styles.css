@@ -16,153 +16,186 @@
 }
 
 :root {
-  /* Core Backgrounds — True Material 3 Light */
-  --bg-void:        #FEFBFF; /* Background */
-  --bg-surface:     #F4F0F4; /* Surface Variant / Container */
-  --bg-card:        #FDF8FD; /* Surface */
-  --bg-card-hover:  #F4F0F4; /* Surface Variant */
-  --bg-card-solid:  #FDF8FD; /* Surface */
+  /* ── Official Google Material Design 3 (M3) System Color Tokens (Light Mode) ── */
+  --md-sys-color-primary:                #0b57d0;
+  --md-sys-color-on-primary:             #ffffff;
+  --md-sys-color-primary-container:      #d3e3fd;
+  --md-sys-color-on-primary-container:   #041e49;
+  --md-sys-color-secondary:              #00639b;
+  --md-sys-color-on-secondary:           #ffffff;
+  --md-sys-color-secondary-container:    #c2e7ff;
+  --md-sys-color-on-secondary-container: #001d35;
+  --md-sys-color-surface:                #f8fafd;
+  --md-sys-color-surface-dim:            #d9dadc;
+  --md-sys-color-surface-bright:         #f8fafd;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low:  #f0f4f9;
+  --md-sys-color-surface-container:      #edf2f7;
+  --md-sys-color-surface-container-high: #e7ebf0;
+  --md-sys-color-surface-container-highest: #e1e3e8;
+  --md-sys-color-on-surface:             #1f1f1f;
+  --md-sys-color-on-surface-variant:     #444746;
+  --md-sys-color-outline:                #747775;
+  --md-sys-color-outline-variant:        #c4c7c5;
+  --md-sys-color-error:                  #b3261e;
+  --md-sys-color-on-error:               #ffffff;
+  --md-sys-color-error-container:        #f9dedc;
+  --md-sys-color-on-error-container:     #410e0b;
+  --md-sys-color-background:             #f8fafd;
+  --md-sys-color-on-background:          #1f1f1f;
 
-  /* M3 Accent Palette (Mapped from brutal variables to M3 Roles) */
-  --m3-pink:    #CDEBC2; /* Tertiary Container */
-  --m3-yellow:  #FFDEA5; /* Primary Container */
-  --m3-lavender:#F6DFBB; /* Secondary Container */
-  --m3-mint:    #E9F4E5; /* Light Green */
-  --m3-coral:   #FFD8E4; /* Error Container */
-  --m3-sky:     #D3E4FF; /* Blue Container */
-  --m3-orange:  #FFDCC2; /* Orange Container */
-  --m3-lime:    #E2EED9; /* Lime Container */
+  /* ── M3 Elevation & Diffused Ambient Shadows (Light Mode) ── */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-2: 0 2px 6px 2px rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.10), 0 1px 3px 0 rgba(0, 0, 0, 0.14);
+  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+  --md-sys-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.14), 0 4px 6px 0 rgba(0, 0, 0, 0.18);
 
-  /* Typography Colors - M3 Light */
-  --text-main:      #1B1B1E; /* On Surface */
-  --text-sub:       #45464F; /* On Surface Variant */
-  --text-muted:     #767680; /* Outline */
-  --text-dim:       #8F909A; /* Outline Variant */
+  /* ── M3 Shapes & Corner Radiuses ── */
+  --md-sys-shape-none:  0px;
+  --md-sys-shape-xs:    4px;
+  --md-sys-shape-sm:    8px;
+  --md-sys-shape-md:    12px;
+  --md-sys-shape-lg:    16px;
+  --md-sys-shape-xl:    28px;
+  --md-sys-shape-full:  9999px;
 
-  /* M3 Typography Scale */
-  --font-display:   'Outfit', sans-serif;
-  --font-headline:  'Outfit', sans-serif;
-  --font-title:     'Outfit', sans-serif;
-  --font-label:     'Roboto', sans-serif;
+  /* ── M3 Typography Scale ── */
+  --font-display:   'Outfit', -apple-system, sans-serif;
+  --font-headline:  'Outfit', -apple-system, sans-serif;
+  --font-title:     'Outfit', -apple-system, sans-serif;
+  --font-label:     'Roboto', -apple-system, sans-serif;
   --font-body:      'Roboto', -apple-system, sans-serif;
 
-  /* Borders & Shadows — True Material 3 Elevation */
-  --border-color:   #E4E1E6; /* Outline Variant */
-  --border: none;
+  /* ── Backward Compatibility Aliases (Ensures Zero Defect Across All 29 Tools) ── */
+  --bg-void:        var(--md-sys-color-surface);
+  --bg-surface:     var(--md-sys-color-surface-container-low);
+  --bg-card:        var(--md-sys-color-surface-container-lowest);
+  --bg-card-hover:  var(--md-sys-color-surface-container);
+  --bg-card-solid:  var(--md-sys-color-surface-container-lowest);
+
+  --text-main:      var(--md-sys-color-on-surface);
+  --text-sub:       var(--md-sys-color-on-surface-variant);
+  --text-muted:     var(--md-sys-color-outline);
+  --text-dim:       var(--md-sys-color-outline-variant);
+
+  --border-color:   var(--md-sys-color-outline-variant);
+  --border:         none;
   --border-thin:    1px solid var(--border-color);
-  
-  /* M3 Elevations (1 to 5) */
-  --shadow:         0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15); /* Elevation 1 */
-  --shadow-sm:      0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15); /* Elevation 1 */
-  --shadow-md:      0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15); /* Elevation 2 */
-  --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15); /* Elevation 3 */
-  --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15); /* Elevation 4 */
 
-  /* Official @material/web System Color Tokens (Light Mode) */
-  --md-sys-color-primary: #0b57d0;
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #c2e7ff;
-  --md-sys-color-on-primary-container: #001d35;
-  --md-sys-color-secondary: #004a77;
-  --md-sys-color-on-secondary: #ffffff;
-  --md-sys-color-secondary-container: #c2e7ff;
-  --md-sys-color-on-secondary-container: #001d35;
-  --md-sys-color-surface: #ffffff;
-  --md-sys-color-on-surface: #1f1f1f;
-  --md-sys-color-surface-variant: #f0f4f9;
-  --md-sys-color-on-surface-variant: #444746;
-  --md-sys-color-surface-container: #f0f4f9;
-  --md-sys-color-surface-container-high: #e9eef6;
-  --md-sys-color-surface-container-low: #f8fafd;
-  --md-sys-color-background: #f8fafd;
-  --md-sys-color-on-background: #1f1f1f;
-  --md-sys-color-outline: #747775;
-  --md-sys-color-outline-variant: #c7c7c7;
+  --shadow:         var(--md-sys-elevation-1);
+  --shadow-sm:      var(--md-sys-elevation-1);
+  --shadow-md:      var(--md-sys-elevation-2);
+  --shadow-lg:      var(--md-sys-elevation-3);
+  --shadow-hover:   var(--md-sys-elevation-2);
 
-  /* Radii — Material 3 */
-  --radius-sm:      8px;
-  --radius-md:      16px;
-  --radius-lg:      24px;
-  --radius-full:    9999px;
+  --radius-sm:      var(--md-sys-shape-sm);
+  --radius-md:      var(--md-sys-shape-lg);
+  --radius-lg:      var(--md-sys-shape-xl);
+  --radius-full:    var(--md-sys-shape-full);
 
-  /* Legacy compat tokens */
+  /* Legacy Accent Tonal Mappings */
+  --m3-pink:        #ffd8e4;
+  --m3-yellow:      #ffdea5;
+  --m3-lavender:    #e8def8;
+  --m3-mint:        #cdebc2;
+  --m3-coral:       #f9dedc;
+  --m3-sky:         #d3e3fd;
+  --m3-orange:      #ffdcc2;
+  --m3-lime:        #dcedc8;
+
   --cyan-neon:      #006874;
-  --violet-neon:    #65558F;
-  --rose-neon:      #B3261E;
-  --emerald-neon:   #006D36;
-  --amber-neon:     #7A5700;
-  --p400:           #7D5260;
-  --p500:           #6750A4;
-  --p600:           #4F378B;
+  --violet-neon:    #65558f;
+  --rose-neon:      #b3261e;
+  --emerald-neon:   #006d36;
+  --amber-neon:     #7a5700;
+  --p400:           #7d5260;
+  --p500:           #6750a4;
+  --p600:           #4f378b;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DARK THEME TOKENS - True Material 3 Dark
+   DARK THEME TOKENS — Google Material Design 3 (M3)
+   Base starting canvas: #131314 (Pure #000000 strictly prohibited)
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="dark"], html.dark, .dark {
-  /* Core Dark Backgrounds — M3 Dark */
-  --bg-void:        #131314; /* Background */
-  --bg-surface:     #1e1f20; /* Surface Variant */
-  --bg-card:        #1e1f20; /* Surface */
-  --bg-card-hover:  #28292a; /* Surface + Elevation 1 */
-  --bg-card-solid:  #1e1f20;
-
-  /* M3 Accent Palette - Mapped */
-  --m3-pink:    #344D2F; /* Tertiary Container */
-  --m3-yellow:  #5C4100; /* Primary Container */
-  --m3-lavender:#53452A; /* Secondary Container */
-  --m3-mint:    #1E3616; /* Green */
-  --m3-coral:   #93000A; /* Error Container */
-  --m3-sky:     #004A77; /* Blue */
-  --m3-orange:  #703800; /* Orange */
-  --m3-lime:    #354E15; /* Lime */
-
-  /* Typography Colors - M3 Dark */
-  --text-main:      #E4E1E6; /* On Surface */
-  --text-sub:       #C6C5D0; /* On Surface Variant */
-  --text-muted:     #90909A; /* Outline */
-  --text-dim:       #767680; /* Outline Variant */
-
-  /* Borders & Shadows — M3 Dark Elevation */
-  --border-color:   #45464F; /* Outline Variant */
-  --border: none;
-  --border-thin:    1px solid var(--border-color);
-  --shadow:         0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
-  --shadow-sm:      0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
-  --shadow-md:      0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
-  --shadow-lg:      0 1px 3px 0 rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
-  --shadow-hover:   0 2px 3px 0 rgba(0,0,0,0.3), 0 6px 10px 4px rgba(0,0,0,0.15);
-
-  /* Official @material/web System Color Tokens (Dark Mode) */
-  --md-sys-color-primary: #a8c7fa;
-  --md-sys-color-on-primary: #062e6f;
-  --md-sys-color-primary-container: #004a77;
-  --md-sys-color-on-primary-container: #c2e7ff;
-  --md-sys-color-secondary: #7fcfff;
-  --md-sys-color-on-secondary: #003454;
-  --md-sys-color-secondary-container: #004a77;
+  /* ── Official Google Material Design 3 (M3) System Color Tokens (Dark Mode) ── */
+  --md-sys-color-primary:                #a8c7fa;
+  --md-sys-color-on-primary:             #062e6f;
+  --md-sys-color-primary-container:      #0842a0;
+  --md-sys-color-on-primary-container:   #d3e3fd;
+  --md-sys-color-secondary:              #7fcfff;
+  --md-sys-color-on-secondary:           #003355;
+  --md-sys-color-secondary-container:    #004a77;
   --md-sys-color-on-secondary-container: #c2e7ff;
-  --md-sys-color-surface: #1e1f20;
-  --md-sys-color-on-surface: #e3e3e3;
-  --md-sys-color-surface-variant: #28292a;
-  --md-sys-color-on-surface-variant: #c4c7c5;
-  --md-sys-color-surface-container: #28292a;
-  --md-sys-color-surface-container-high: #333537;
-  --md-sys-color-surface-container-low: #131314;
-  --md-sys-color-background: #131314;
-  --md-sys-color-on-background: #e3e3e3;
-  --md-sys-color-outline: #8e918f;
-  --md-sys-color-outline-variant: #444746;
+  --md-sys-color-surface:                #131314;
+  --md-sys-color-surface-dim:            #111213;
+  --md-sys-color-surface-bright:         #37393b;
+  --md-sys-color-surface-container-lowest: #0e0e0f;
+  --md-sys-color-surface-container-low:  #1b1b1c;
+  --md-sys-color-surface-container:      #1e1f20;
+  --md-sys-color-surface-container-high: #28292a;
+  --md-sys-color-surface-container-highest: #333537;
+  --md-sys-color-on-surface:             #e3e3e3;
+  --md-sys-color-on-surface-variant:     #c4c7c5;
+  --md-sys-color-outline:                #8e918f;
+  --md-sys-color-outline-variant:        #444746;
+  --md-sys-color-error:                  #f2b8b5;
+  --md-sys-color-on-error:               #601410;
+  --md-sys-color-error-container:        #8c1d18;
+  --md-sys-color-on-error-container:     #f9dedc;
+  --md-sys-color-background:             #131314;
+  --md-sys-color-on-background:          #e3e3e3;
 
-  /* Legacy compat in Dark Mode */
-  --cyan-neon:      #4FD8E9;
-  --violet-neon:    #D0BCFF;
-  --rose-neon:      #F2B8B5;
-  --emerald-neon:   #6DD58C;
-  --amber-neon:     #FABD00;
-  --p400:           #EFB8C8;
-  --p500:           #D0BCFF;
-  --p600:           #EADDFF;
+  /* ── M3 Soft Luminescence Dark Elevations ── */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.35);
+  --md-sys-elevation-2: 0 2px 6px 2px rgba(0, 0, 0, 0.40);
+  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.45);
+  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.50);
+  --md-sys-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.55);
+
+  /* ── Dark Mode Backward Compatibility Aliases ── */
+  --bg-void:        var(--md-sys-color-surface);
+  --bg-surface:     var(--md-sys-color-surface-container);
+  --bg-card:        var(--md-sys-color-surface-container-low);
+  --bg-card-hover:  var(--md-sys-color-surface-container-high);
+  --bg-card-solid:  var(--md-sys-color-surface-container-low);
+
+  --text-main:      var(--md-sys-color-on-surface);
+  --text-sub:       var(--md-sys-color-on-surface-variant);
+  --text-muted:     var(--md-sys-color-outline);
+  --text-dim:       var(--md-sys-color-outline-variant);
+
+  --border-color:   var(--md-sys-color-outline-variant);
+  --border:         none;
+  --border-thin:    1px solid var(--border-color);
+
+  --shadow:         var(--md-sys-elevation-1);
+  --shadow-sm:      var(--md-sys-elevation-1);
+  --shadow-md:      var(--md-sys-elevation-2);
+  --shadow-lg:      var(--md-sys-elevation-3);
+  --shadow-hover:   var(--md-sys-elevation-2);
+
+  /* Dark Legacy Accent Tonal Mappings */
+  --m3-pink:        #5b3b4d;
+  --m3-yellow:      #5c4100;
+  --m3-lavender:    #4a4458;
+  --m3-mint:        #1e3616;
+  --m3-coral:       #8c1d18;
+  --m3-sky:         #0842a0;
+  --m3-orange:      #703800;
+  --m3-lime:        #334b17;
+
+  --cyan-neon:      #4fd8e9;
+  --violet-neon:    #d0bcff;
+  --rose-neon:      #f2b8b5;
+  --emerald-neon:   #6dd58c;
+  --amber-neon:     #fabd00;
+  --p400:           #efb8c8;
+  --p500:           #d0bcff;
+  --p600:           #eaddff;
 }
 
 html {
@@ -191,30 +224,29 @@ body::before {
   display: none;
 }
 
-/* ── Premium Global Custom Scrollbar ── */
+/* ── Material 3 Minimalist Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-surface);
+  background: var(--md-sys-color-surface);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: var(--radius-full);
-  border: none;
+  background: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-sub);
+  background: var(--md-sys-color-outline);
 }
 
-/* ── A11y Focus Outlines ── */
-button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: none;
-  outline-offset: 3px;
+/* ── Material 3 Focus Accessibility Rings ── */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
 }
-[data-theme="dark"] button:focus-visible, [data-theme="dark"] a:focus-visible, [data-theme="dark"] input:focus-visible {
-  outline: none;
+[data-theme="dark"] button:focus-visible, [data-theme="dark"] a:focus-visible, [data-theme="dark"] input:focus-visible, [data-theme="dark"] select:focus-visible, [data-theme="dark"] textarea:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
 }
 
 /* ── Tactile Button Click States (Micro-interactions) ── */
