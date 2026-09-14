@@ -14,7 +14,8 @@
       content="Flash Crush-Files, compress PDF free, PDF compressor online, reduce PDF size, image compressor, compress JPG PNG WebP, no upload file compressor, browser based compressor, free file compressor" />
     <meta name="author" content="Flash Crush-Files" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta name="theme-color" content="#f8fafd" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafd" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131314" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="FlashCrush" />
@@ -142,9 +143,9 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
 
-    <!-- Preload critical font: Roboto -->
+    <!-- Google Fonts: Roboto (Body/Components) & Outfit (Brand/Headings) -->
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" />
 
     <!-- Prevent Theme Flash (FOUC) on Load -->
     <script>
@@ -161,6 +162,10 @@
             root.classList.remove("dark");
             root.setAttribute("data-theme", "light");
             root.style.colorScheme = "light";
+          }
+          var metas = document.querySelectorAll('meta[name="theme-color"]');
+          for (var i = 0; i < metas.length; i++) {
+            metas[i].setAttribute("content", isDark ? "#131314" : "#f8fafd");
           }
         } catch (e) {}
       })();
