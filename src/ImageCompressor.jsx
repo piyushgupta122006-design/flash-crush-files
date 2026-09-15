@@ -246,17 +246,17 @@ export default function ImageCompressor({ auth }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
       {/* Top Bar */}
       <div className="w-full max-w-4xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
         <button 
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
           onClick={() => navigate("/")}
         >
           ← Back
         </button>
-        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Image Compressor</div>
-        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP</div>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">Image Compressor</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP</div>
       </div>
 
       <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pb-12 flex-1">
@@ -264,28 +264,28 @@ export default function ImageCompressor({ auth }) {
         {/* Header Section */}
         <div className="mb-6 sm:mb-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-2xl text-[#001d35] dark:text-[#c2e7ff]">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">
               🖼️
             </div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">
               Image Compressor
             </h1>
           </div>
-          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-md mx-auto">
+          <p className="text-sm text-m3-on-surface-variant max-w-md mx-auto font-sans">
             Compress JPG, PNG, and WebP images instantly with maximum quality in your browser.
           </p>
         </div>
 
         {/* Main Card Surface */}
-        <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-6 sm:p-8 overflow-hidden">
+        <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 overflow-hidden transition-colors">
 
           {/* Drop Zone */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`border-2 border-dashed border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+              className={`border-2 border-dashed border-m3-outline-variant rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
                 dragging 
-                  ? "bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border-[#0b57d0] dark:border-[#a8c7fa]" 
-                  : "bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#1e1f20]"
+                  ? "bg-m3-primary/10 border-m3-primary" 
+                  : "bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
               }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
@@ -300,10 +300,10 @@ export default function ImageCompressor({ auth }) {
                 onChange={(e) => handleFile(e.target.files[0])} 
               />
               <span className="text-4xl mb-3 block">🖼️</span>
-              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-1">
                 {dragging ? "Drop your image here!" : "Drag & drop your image here"}
               </p>
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-6">
+              <p className="text-xs text-m3-on-surface-variant font-sans mb-6">
                 JPG, PNG, WebP · max {MAX_SIZE_MB} MB · 100% Client-Side Privacy
               </p>
 
@@ -326,7 +326,7 @@ export default function ImageCompressor({ auth }) {
               )}
 
               {stage === "error" && (
-                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-[#ffdad6] dark:bg-[#93000a]/30 text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]/50 inline-block">
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant inline-block font-sans">
                   ⚠ {errorMsg}
                 </div>
               )}
@@ -337,7 +337,7 @@ export default function ImageCompressor({ auth }) {
           {(stage === "ready" || stage === "done") && (
             <div className="space-y-4">
               {preview && (
-                <div className="rounded-2xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden max-h-[260px] flex items-center justify-center bg-[#f0f4f9] dark:bg-[#131314] p-2">
+                <div className="rounded-2xl border border-m3-outline-variant overflow-hidden max-h-[260px] flex items-center justify-center bg-m3-surface-container-low dark:bg-m3-surface-container-lowest p-2">
                   <img
                     src={stage === "done" && compressedUrl ? compressedUrl : preview}
                     alt="Preview"
@@ -345,14 +345,14 @@ export default function ImageCompressor({ auth }) {
                   />
                 </div>
               )}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-xl flex items-center justify-center text-[#001d35] dark:text-[#c2e7ff] flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-m3-secondary-container text-xl flex items-center justify-center text-m3-on-secondary-container flex-shrink-0">
                     🖼️
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file?.name}</div>
-                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">{fmt(file?.size)}</div>
+                    <div className="text-sm font-medium text-m3-on-surface truncate font-sans">{file?.name}</div>
+                    <div className="text-xs text-m3-on-surface-variant font-mono">{fmt(file?.size)}</div>
                   </div>
                 </div>
                 {/* Google Material Web Icon Button */}
@@ -366,7 +366,7 @@ export default function ImageCompressor({ auth }) {
           {/* Level selector */}
           {(stage === "ready" || stage === "done") && (
             <div className="mt-6">
-              <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+              <label className="text-xs font-medium text-m3-on-surface-variant block mb-2 uppercase tracking-wide font-sans">
                 Compression Level
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -376,13 +376,13 @@ export default function ImageCompressor({ auth }) {
                     type="button"
                     className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
                       level === l.id 
-                        ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold shadow-xs" 
-                        : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                        ? "bg-m3-secondary-container text-m3-on-secondary-container font-medium shadow-m3-elevation-1" 
+                        : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
                     }`}
                     onClick={() => setLevel(l.id)}
                   >
                     <span className="text-lg mb-1">{l.icon}</span>
-                    <span className="text-sm font-medium">{l.label}</span>
+                    <span className="text-sm font-medium font-sans">{l.label}</span>
                   </button>
                 ))}
                 
@@ -391,24 +391,24 @@ export default function ImageCompressor({ auth }) {
                   type="button"
                   className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
                     level === "custom" 
-                      ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold shadow-xs" 
-                      : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                      ? "bg-m3-secondary-container text-m3-on-secondary-container font-medium shadow-m3-elevation-1" 
+                      : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
                   }`}
                   onClick={() => setLevel("custom")}
                 >
                   <span className="text-lg mb-1">🎯</span>
-                  <span className="text-sm font-medium">Custom</span>
+                  <span className="text-sm font-medium font-sans">Custom</span>
                 </button>
               </div>
 
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2">
+              <p className="text-xs text-m3-on-surface-variant mt-2 font-sans">
                 {level === "custom" ? "Target an exact file size in KB" : LEVELS.find(l => l.id === level)?.desc}
               </p>
               
               {/* Custom size input */}
               {level === "custom" && (
-                <div className="mt-4 p-4 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
-                  <label className="text-xs font-semibold text-[#1f1f1f] dark:text-[#e3e3e3] block mb-1.5">
+                <div className="mt-4 p-4 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
+                  <label className="text-xs font-medium text-m3-on-surface block mb-1.5 font-sans">
                     Target Size (KB)
                   </label>
                   <input 
@@ -416,9 +416,9 @@ export default function ImageCompressor({ auth }) {
                     value={targetSize} 
                     onChange={(e) => setTargetSize(e.target.value)}
                     placeholder="e.g. 50"
-                    className="w-full px-4 py-2.5 rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] font-mono text-sm outline-none"
+                    className="w-full px-4 py-2.5 rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface font-mono text-sm outline-none focus:border-m3-primary transition-colors"
                   />
-                  <p className="text-[11px] text-[#444746] dark:text-[#c4c7c5] mt-1.5">
+                  <p className="text-[11px] text-m3-on-surface-variant mt-1.5 font-sans">
                     Note: We will optimize quality to get as close to this target size as possible.
                   </p>
                 </div>
@@ -440,36 +440,36 @@ export default function ImageCompressor({ auth }) {
 
           {/* Progress Section (Google Material Web Linear Progress) */}
           {stage === "compressing" && (
-            <div className="mt-6 p-6 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+            <div className="mt-6 p-6 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">Compressing your image...</span>
-                <span className="text-sm font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{progress}%</span>
+                <span className="text-sm font-medium text-m3-on-surface font-sans">Compressing your image...</span>
+                <span className="text-sm font-bold text-m3-primary font-mono">{progress}%</span>
               </div>
               
               {/* Google Material Web Linear Progress Component */}
               <md-linear-progress value={progress / 100} style={{ width: "100%" }}></md-linear-progress>
               
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3 font-medium">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant mt-3 font-medium font-sans">{progressMsg}</p>
             </div>
           )}
 
           {/* Result Box */}
           {stage === "done" && result && (
             <div className="mt-6 space-y-4">
-              <div className="p-5 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+              <div className="p-5 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
                 <div className="flex items-center justify-around text-center mb-4">
                   <div>
-                    <span className="text-xs text-[#444746] dark:text-[#c4c7c5] block mb-1">Original Size</span>
-                    <span className="text-base font-semibold text-[#1f1f1f] dark:text-[#e3e3e3] font-mono">{fmt(result.originalSize)}</span>
+                    <span className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Original Size</span>
+                    <span className="text-base font-medium text-m3-on-surface font-mono">{fmt(result.originalSize)}</span>
                   </div>
-                  <div className="text-xl text-[#0b57d0] dark:text-[#a8c7fa]">→</div>
+                  <div className="text-xl text-m3-primary font-mono">→</div>
                   <div>
-                    <span className="text-xs text-[#444746] dark:text-[#c4c7c5] block mb-1">Compressed</span>
-                    <span className="text-base font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{fmt(result.compressedSize)}</span>
+                    <span className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Compressed</span>
+                    <span className="text-base font-bold text-m3-primary font-mono">{fmt(result.compressedSize)}</span>
                   </div>
                 </div>
                 <div className="flex justify-center">
-                  <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-[#e6f4ea] dark:bg-[#0f5223]/30 text-[#137333] dark:text-[#81c995] border border-[#ceead6] dark:border-[#137333]/50">
+                  <span className="px-3.5 py-1 rounded-full text-xs font-medium bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant shadow-m3-elevation-1 font-sans">
                     🎉 {result.saving}% smaller
                   </span>
                 </div>
@@ -484,7 +484,7 @@ export default function ImageCompressor({ auth }) {
             </div>
           )}
 
-          <div className="mt-8 pt-4 border-t border-[#c7c7c7]/40 dark:border-[#444746]/40 flex justify-between text-[11px] text-[#444746] dark:text-[#c4c7c5]">
+          <div className="mt-8 pt-4 border-t border-m3-outline-variant/40 flex justify-between text-label-sm text-m3-on-surface-variant font-sans">
             <span>FlashCrush · Image Tool</span>
             <span>Files never leave your browser</span>
           </div>
