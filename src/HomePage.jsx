@@ -410,18 +410,18 @@ export default function HomePage() {
   const filteredTools = filter === "all" ? ALL_TOOLS : ALL_TOOLS.filter(t => t.category === filter);
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-[#1f1f1f] dark:text-[#e3e3e3] font-sans p-3 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-7xl mx-auto w-full transition-colors">
+    <div ref={pageRef} className="min-h-screen bg-m3-surface text-m3-on-surface font-sans p-3 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-7xl mx-auto w-full transition-colors">
       
       {/* ── Google Drive Style Canvas Sheet ── */}
-      <div className="rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 sm:p-8 lg:p-10 border border-[#c7c7c7] dark:border-[#444746] shadow-sm transition-colors">
+      <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 sm:p-8 lg:p-10 border border-m3-outline-variant shadow-m3-elevation-1 transition-colors">
         
         {/* Header Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-[#c7c7c7]/50 dark:border-[#444746]/60 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-m3-outline-variant/60 gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] font-sans tracking-tight">
+            <h1 className="text-2xl sm:text-headline-lg font-normal text-m3-on-surface font-display tracking-tight">
               Welcome to FlashCrush
             </h1>
-            <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mt-1.5 font-normal leading-relaxed font-sans">
+            <p className="text-sm sm:text-body-md text-m3-on-surface-variant mt-1.5 font-normal leading-relaxed font-sans">
               Zero-upload, 100% private in-browser file suite. Processed securely on your device.
             </p>
           </div>
@@ -429,14 +429,14 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => navigate("/pdf")}
-              className="rounded-full px-6 py-2.5 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:hover:bg-[#d3e3fd] dark:text-[#062e6f] shadow-xs transition-all flex items-center gap-2 font-sans"
+              className="rounded-full px-6 py-2.5 text-sm font-medium bg-m3-primary text-m3-on-primary hover:bg-[#0842a0] dark:hover:bg-[#d3e3fd] shadow-m3-elevation-1 transition-all flex items-center gap-2 font-sans"
             >
               <span className="text-base font-bold">+</span>
               <span>New Document</span>
             </button>
             <button
               onClick={() => navigate("/drop")}
-              className="rounded-full px-5 py-2.5 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-[#c7c7c7] dark:border-[#444746] transition-all flex items-center gap-2 font-sans"
+              className="rounded-full px-5 py-2.5 text-sm font-medium bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-m3-outline-variant transition-all flex items-center gap-2 font-sans"
             >
               <span>🌐</span>
               <span>P2P Drop</span>
@@ -447,7 +447,7 @@ export default function HomePage() {
         {/* ── Suggested Folders / Tools (Google Drive Style) ── */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
-            <h2 className="text-sm font-medium text-[#444746] dark:text-[#c4c7c5] flex items-center gap-2 select-none font-sans">
+            <h2 className="text-sm font-medium text-m3-on-surface-variant flex items-center gap-2 select-none font-sans">
               <span>Suggested tools</span>
             </h2>
           </div>
@@ -457,22 +457,22 @@ export default function HomePage() {
               <div
                 key={t.path}
                 onClick={() => navigate(t.path)}
-                className="rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] p-4 sm:p-5 flex items-center justify-between hover:bg-[#f8fafd] dark:hover:bg-[#28292a] transition-all cursor-pointer group border border-[#c7c7c7] dark:border-[#444746] shadow-xs"
+                className="rounded-2xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-4 sm:p-5 flex items-center justify-between hover:bg-m3-surface dark:hover:bg-m3-surface-container-high transition-all cursor-pointer group border border-m3-outline-variant shadow-m3-elevation-0 hover:shadow-m3-elevation-1"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-11 h-11 rounded-xl bg-[#f0f4f9] dark:bg-[#28292a] flex items-center justify-center flex-shrink-0 shadow-xs text-[#0b57d0] dark:text-[#a8c7fa] border border-[#c7c7c7]/40 dark:border-[#444746]/40">
+                  <div className="w-11 h-11 rounded-xl bg-m3-surface-container-low dark:bg-m3-surface-container-high flex items-center justify-center flex-shrink-0 text-m3-primary border border-m3-outline-variant/40">
                     {t.icon}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate group-hover:text-[#0b57d0] dark:group-hover:text-[#a8c7fa] transition-colors font-sans">
+                    <div className="text-sm font-medium text-m3-on-surface truncate group-hover:text-m3-primary transition-colors font-sans">
                       {t.label}
                     </div>
-                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] truncate font-sans mt-0.5">
+                    <div className="text-xs text-m3-on-surface-variant truncate font-sans mt-0.5">
                       {t.desc}
                     </div>
                   </div>
                 </div>
-                <span className="text-[#767680] group-hover:text-[#1f1f1f] dark:group-hover:text-[#e3e3e3] group-hover:translate-x-0.5 transition-all text-sm pr-1 select-none">
+                <span className="text-m3-outline group-hover:text-m3-on-surface group-hover:translate-x-0.5 transition-all text-sm pr-1 select-none">
                   →
                 </span>
               </div>
@@ -481,13 +481,13 @@ export default function HomePage() {
         </div>
 
         {/* ── Category Filter Pills (Google Drive Chips) ── */}
-        <div className="flex items-center gap-2.5 pb-5 mb-8 overflow-x-auto border-b border-[#c7c7c7]/50 dark:border-[#444746]/60">
+        <div className="flex items-center gap-2.5 pb-5 mb-8 overflow-x-auto border-b border-m3-outline-variant/60">
           <button
             onClick={() => setFilter("all")}
             className={`rounded-full px-5 py-2 text-xs sm:text-sm font-medium transition-colors font-sans whitespace-nowrap ${
               filter === "all"
-                ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-transparent"
+                ? "bg-m3-secondary-container text-m3-on-secondary-container shadow-m3-elevation-1 font-semibold"
+                : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-transparent"
             }`}
           >
             All Tools ({ALL_TOOLS.length})
@@ -496,8 +496,8 @@ export default function HomePage() {
             onClick={() => setFilter("pdf")}
             className={`rounded-full px-5 py-2 text-xs sm:text-sm font-medium transition-colors font-sans whitespace-nowrap ${
               filter === "pdf"
-                ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-transparent"
+                ? "bg-m3-secondary-container text-m3-on-secondary-container shadow-m3-elevation-1 font-semibold"
+                : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-transparent"
             }`}
           >
             📄 PDF Tools ({ALL_TOOLS.filter(t => t.category === "pdf").length})
@@ -506,8 +506,8 @@ export default function HomePage() {
             onClick={() => setFilter("image")}
             className={`rounded-full px-5 py-2 text-xs sm:text-sm font-medium transition-colors font-sans whitespace-nowrap ${
               filter === "image"
-                ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-transparent"
+                ? "bg-m3-secondary-container text-m3-on-secondary-container shadow-m3-elevation-1 font-semibold"
+                : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-transparent"
             }`}
           >
             🖼️ Image Tools ({ALL_TOOLS.filter(t => t.category === "image").length})
@@ -516,8 +516,8 @@ export default function HomePage() {
             onClick={() => setFilter("utilities")}
             className={`rounded-full px-5 py-2 text-xs sm:text-sm font-medium transition-colors font-sans whitespace-nowrap ${
               filter === "utilities"
-                ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] shadow-xs font-semibold"
-                : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] border border-transparent"
+                ? "bg-m3-secondary-container text-m3-on-secondary-container shadow-m3-elevation-1 font-semibold"
+                : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-transparent"
             }`}
           >
             ⚡ AI & Utilities ({ALL_TOOLS.filter(t => t.category === "utilities").length})
@@ -530,23 +530,23 @@ export default function HomePage() {
             <div
               key={tool.path}
               onClick={() => navigate(tool.path)}
-              className="rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 hover:bg-[#f8fafd] dark:hover:bg-[#28292a] transition-all cursor-pointer border border-[#c7c7c7] dark:border-[#444746] hover:shadow-sm flex flex-col justify-between group"
+              className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 hover:bg-m3-surface dark:hover:bg-m3-surface-container-high transition-all cursor-pointer border border-m3-outline-variant hover:shadow-m3-elevation-1 flex flex-col justify-between group"
             >
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] flex items-center justify-center text-xl mb-4 text-[#0b57d0] dark:text-[#a8c7fa] border border-[#c7c7c7]/40 dark:border-[#444746]/40 shadow-xs">
+                <div className="w-12 h-12 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high flex items-center justify-center text-xl mb-4 text-m3-primary border border-m3-outline-variant/40 shadow-xs">
                   {tool.icon}
                 </div>
-                <h3 className="text-base sm:text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] group-hover:text-[#0b57d0] dark:group-hover:text-[#a8c7fa] transition-colors font-sans">
+                <h3 className="text-base sm:text-title-medium font-medium text-m3-on-surface group-hover:text-m3-primary transition-colors font-display">
                   {tool.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#444746] dark:text-[#c4c7c5] leading-relaxed mt-2 mb-4 line-clamp-2 font-sans">
+                <p className="text-xs sm:text-body-sm text-m3-on-surface-variant leading-relaxed mt-2 mb-4 line-clamp-2 font-sans">
                   {tool.desc}
                 </p>
                 <div className="flex flex-wrap gap-1.5 mb-5">
                   {tool.tags.map(tag => (
                     <span
                       key={tag}
-                      className="rounded-full px-3 py-1 text-[11px] font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7]/60 dark:border-[#444746]/60 font-sans"
+                      className="rounded-full px-3 py-1 text-[11px] font-medium bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant border border-m3-outline-variant/60 font-sans"
                     >
                       {tag}
                     </span>
@@ -557,7 +557,7 @@ export default function HomePage() {
               <div className="pt-2">
                 <button
                   type="button"
-                  className="w-full rounded-full py-2.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:hover:bg-[#d3e3fd] dark:text-[#062e6f] shadow-xs flex items-center justify-center gap-2 transition-all font-sans font-medium"
+                  className="w-full rounded-full py-2.5 px-4 text-sm font-medium bg-m3-primary text-m3-on-primary hover:bg-[#0842a0] dark:hover:bg-[#d3e3fd] shadow-m3-elevation-1 flex items-center justify-center gap-2 transition-all font-sans"
                 >
                   <span>{tool.cta}</span>
                   <span className="text-sm select-none">→</span>
@@ -571,38 +571,38 @@ export default function HomePage() {
 
       {/* ── Google Keep Style Trust Cards ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 border border-[#c7c7c7] dark:border-[#444746] shadow-xs">
+        <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 border border-m3-outline-variant shadow-m3-elevation-1">
           <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3 text-lg">
             🔒
           </div>
-          <h4 className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1 font-sans">
+          <h4 className="text-sm font-medium text-m3-on-surface mb-1 font-display">
             100% Client-Side Privacy
           </h4>
-          <p className="text-xs text-[#444746] dark:text-[#c4c7c5] leading-relaxed font-sans">
+          <p className="text-xs text-m3-on-surface-variant leading-relaxed font-sans">
             All files are compressed and converted strictly in your browser. Files never touch any external server.
           </p>
         </div>
 
-        <div className="rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 border border-[#c7c7c7] dark:border-[#444746] shadow-xs">
-          <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-[#0b57d0] dark:text-[#a8c7fa] flex items-center justify-center mb-3 text-lg">
+        <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 border border-m3-outline-variant shadow-m3-elevation-1">
+          <div className="w-10 h-10 rounded-2xl bg-m3-secondary-container text-m3-primary flex items-center justify-center mb-3 text-lg">
             ⚡
           </div>
-          <h4 className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1 font-sans">
+          <h4 className="text-sm font-medium text-m3-on-surface mb-1 font-display">
             WebAssembly & WebGPU
           </h4>
-          <p className="text-xs text-[#444746] dark:text-[#c4c7c5] leading-relaxed font-sans">
+          <p className="text-xs text-m3-on-surface-variant leading-relaxed font-sans">
             Powered by high-performance WASM and on-device neural runtimes for near-instant execution.
           </p>
         </div>
 
-        <div className="rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 border border-[#c7c7c7] dark:border-[#444746] shadow-xs">
+        <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 border border-m3-outline-variant shadow-m3-elevation-1">
           <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3 text-lg">
             ☁️
           </div>
-          <h4 className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1 font-sans">
+          <h4 className="text-sm font-medium text-m3-on-surface mb-1 font-display">
             Google Drive Direct Sync
           </h4>
-          <p className="text-xs text-[#444746] dark:text-[#c4c7c5] leading-relaxed font-sans">
+          <p className="text-xs text-m3-on-surface-variant leading-relaxed font-sans">
             Import directly from Google Drive and export optimized files straight back into your folders.
           </p>
         </div>
