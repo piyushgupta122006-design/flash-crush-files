@@ -116,23 +116,19 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
   });
 
   const content = (
-    <div className="history-container" style={{ width: "100%", maxWidth: isPage ? "1050px" : "100%", margin: isPage ? "0 auto" : "0" }}>
+    <div className={`history-container w-full ${isPage ? "max-w-5xl mx-auto" : ""}`}>
 
       {/* Header Banner */}
-      <div style={{
-        padding: "20px", background: "#FFFFFF",
-        border: 'none', borderRadius: 'var(--radius-full)', marginBottom: "20px",
-        boxShadow: "4px 4px 0px #1a1a1a"
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+      <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-5 sm:p-6 border border-m3-outline-variant shadow-m3-elevation-1 mb-5 transition-colors">
+        <div className="flex justify-between items-start flex-wrap gap-3">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-              <span style={{ fontSize: "1.4rem" }}>🕒</span>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.3rem", fontWeight: 700, color: "#1a1a1a", margin: 0 }}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xl">🕒</span>
+              <h2 className="text-lg sm:text-title-large font-medium text-m3-on-surface font-display">
                 Local Offline History
               </h2>
             </div>
-            <p style={{ fontSize: "12px", color: "#525252", margin: 0 }}>
+            <p className="text-xs text-m3-on-surface-variant font-sans">
               🔒 100% Private in IndexedDB · Kept strictly inside your browser · Never uploaded to any cloud server.
             </p>
           </div>
@@ -140,49 +136,42 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
           {records.length > 0 && (
             <button
               onClick={() => setConfirmClear(true)}
-              style={{
-                padding: "6px 12px", background: "#FEE2E2", border: 'none',
-                borderRadius: 'var(--radius-full)', color: "#B91C1C", fontSize: "11px", fontWeight: 700, cursor: "pointer",
-                boxShadow: "2px 2px 0px #1a1a1a"
-              }}
+              className="rounded-full px-3.5 py-1.5 bg-m3-error-container text-m3-on-error-container hover:opacity-90 transition-all text-xs font-medium font-sans flex items-center gap-1.5 shadow-m3-elevation-0 hover:shadow-m3-elevation-1"
             >
-              🗑️ Clear All
+              <span>🗑️</span>
+              <span>Clear All</span>
             </button>
           )}
         </div>
 
         {/* Stats Row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px", marginTop: "16px" }}>
-          <div style={{ padding: "10px 14px", background: "#F0F9FF", borderRadius: 'var(--radius-full)', border: 'none' }}>
-            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Files Processed</span>
-            <strong style={{ fontSize: "1.2rem", color: "#0284C7", fontFamily: "'JetBrains Mono', monospace" }}>{stats.count}</strong>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+          <div className="p-3 px-4 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant/40">
+            <span className="text-[11px] text-m3-on-surface-variant font-medium tracking-wide uppercase block">Files Processed</span>
+            <strong className="text-lg text-m3-primary font-mono">{stats.count}</strong>
           </div>
-          <div style={{ padding: "10px 14px", background: "#ECFDF5", borderRadius: 'var(--radius-full)', border: 'none' }}>
-            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Disk Space Saved</span>
-            <strong style={{ fontSize: "1.2rem", color: "#059669", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalSavedBytes)}</strong>
+          <div className="p-3 px-4 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant/40">
+            <span className="text-[11px] text-m3-on-surface-variant font-medium tracking-wide uppercase block">Disk Space Saved</span>
+            <strong className="text-lg text-emerald-600 dark:text-emerald-400 font-mono">{fmt(stats.totalSavedBytes)}</strong>
           </div>
-          <div style={{ padding: "10px 14px", background: "#FAF5FF", borderRadius: 'var(--radius-full)', border: 'none' }}>
-            <span style={{ fontSize: "10px", color: "#525252", textTransform: "uppercase", display: "block", fontWeight: 700 }}>Total Output Size</span>
-            <strong style={{ fontSize: "1.2rem", color: "#7C3AED", fontFamily: "'JetBrains Mono', monospace" }}>{fmt(stats.totalProcessedBytes)}</strong>
+          <div className="p-3 px-4 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant/40">
+            <span className="text-[11px] text-m3-on-surface-variant font-medium tracking-wide uppercase block">Total Output Size</span>
+            <strong className="text-lg text-m3-on-surface font-mono">{fmt(stats.totalProcessedBytes)}</strong>
           </div>
         </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "16px", alignItems: "center" }}>
+      <div className="flex gap-2.5 flex-wrap mb-4 items-center">
         <input
           type="text"
           placeholder="🔍 Search by file name or tool..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            flex: 1, minWidth: "180px", padding: "9px 14px", background: "#FFFFFF", border: 'none',
-            borderRadius: 'var(--radius-full)', color: "#1a1a1a", fontSize: "12px", outline: "none",
-            boxShadow: "2px 2px 0px #1a1a1a"
-          }}
+          className="flex-1 min-w-[200px] py-2 px-4 rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container text-m3-on-surface placeholder:text-m3-on-surface-variant/70 border border-m3-outline-variant focus:outline-none focus:ring-2 focus:ring-m3-primary text-xs font-sans transition-all shadow-m3-elevation-0"
         />
 
-        <div style={{ display: "flex", gap: "6px" }}>
+        <div className="flex gap-1.5 flex-wrap">
           {[
             { id: "all", label: "All" },
             { id: "pdf", label: "📄 PDF" },
@@ -192,14 +181,11 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
             <button
               key={f.id}
               onClick={() => setFilterType(f.id)}
-              style={{
-                padding: "7px 12px", fontSize: "11px", fontWeight: 700,
-                background: filterType === f.id ? "#FFD93D" : "#FFFFFF",
-                border: 'none',
-                borderRadius: 'var(--radius-full)', color: "#1a1a1a", cursor: "pointer",
-                boxShadow: filterType === f.id ? "2px 2px 0px #1a1a1a" : "none",
-                transform: filterType === f.id ? "translate(-1px, -1px)" : "none"
-              }}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all font-sans whitespace-nowrap ${
+                filterType === f.id
+                  ? "bg-m3-secondary-container text-m3-on-secondary-container shadow-m3-elevation-1 font-semibold"
+                  : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-transparent"
+              }`}
             >
               {f.label}
             </button>
@@ -209,105 +195,85 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
       {/* History Items List */}
       {filtered.length === 0 ? (
-        <div style={{
-          textAlign: "center", padding: "48px 20px", background: "#FFFFFF",
-          border: "2px dashed #1a1a1a", borderRadius: 'var(--radius-full)', color: "#525252"
-        }}>
-          <div style={{ fontSize: "2.4rem", marginBottom: "10px" }}>🗄️</div>
-          <div style={{ fontSize: "14px", fontWeight: 700, color: "#1a1a1a", marginBottom: "4px", fontFamily: "'Space Grotesk', sans-serif" }}>
+        <div className="text-center py-12 px-6 rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-dashed border-m3-outline-variant text-m3-on-surface-variant transition-colors">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high flex items-center justify-center text-2xl text-m3-primary">
+            🗄️
+          </div>
+          <h3 className="text-sm font-medium text-m3-on-surface mb-1 font-display">
             No History Items Yet
-          </div>
-          <div style={{ fontSize: "12px", maxWidth: "340px", margin: "0 auto" }}>
-            Files processed in any FlashCrush tool (compressor, PDF tools, photo resizer, QR studio) will automatically appear here for instant re-download!
-          </div>
+          </h3>
+          <p className="text-xs text-m3-on-surface-variant max-w-sm mx-auto leading-relaxed font-sans">
+            Files processed in any FlashCrush tool will automatically appear here for private, offline re-download.
+          </p>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div className="flex flex-col gap-2.5">
           {filtered.map(item => (
             <div
               key={item.id}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "12px 16px", background: "#FFFFFF", border: 'none',
-                borderRadius: 'var(--radius-full)', gap: "14px", flexWrap: "wrap", transition: "all 0.15s",
-                boxShadow: "3px 3px 0px #1a1a1a"
-              }}
+              className="rounded-2xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-3 sm:p-4 border border-m3-outline-variant shadow-m3-elevation-0 hover:shadow-m3-elevation-1 transition-all flex items-center justify-between gap-3 flex-wrap"
             >
               {/* Left: Thumbnail & Info */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: "220px", flex: 1 }}>
+              <div className="flex items-center gap-3 min-w-[200px] flex-1">
                 {item.thumbnail ? (
                   <img
                     src={item.thumbnail}
                     alt=""
-                    style={{ width: "42px", height: "42px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
+                    className="w-10 h-10 rounded-xl object-cover border border-m3-outline-variant/40"
                   />
                 ) : (
-                  <div style={{
-                    width: "42px", height: "42px", borderRadius: 'var(--radius-full)', background: "#FEF3C7",
-                    border: 'none',
-                    display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem"
-                  }}>
+                  <div className="w-10 h-10 rounded-xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant/40 flex items-center justify-center text-lg text-m3-primary">
                     {getToolIcon(item.tool)}
                   </div>
                 )}
 
-                <div>
-                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a1a1a", maxWidth: "260px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-sm font-medium text-m3-on-surface truncate max-w-[180px] sm:max-w-xs font-sans">
                     {item.fileName}
                   </div>
-                  <div style={{ display: "flex", gap: "8px", alignItems: "center", marginTop: "2px" }}>
-                    <span style={{ fontSize: "10px", padding: "1px 6px", background: "#D8B4FE", border: 'none', borderRadius: 'var(--radius-full)', color: "#1a1a1a", fontWeight: 700 }}>
+                  <div className="flex gap-2 items-center mt-0.5">
+                    <span className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-m3-secondary-container text-m3-on-secondary-container font-sans">
                       {item.tool}
                     </span>
-                    <span style={{ fontSize: "11px", color: "#737373" }}>{timeAgo(item.timestamp)}</span>
+                    <span className="text-[11px] text-m3-on-surface-variant font-sans">{timeAgo(item.timestamp)}</span>
                   </div>
                 </div>
               </div>
 
               {/* Middle: Size & Savings */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", fontWeight: 700, color: "#0284C7" }}>
+              <div className="flex items-center gap-2">
+                <div className="text-right">
+                  <div className="text-xs sm:text-sm font-mono font-medium text-m3-primary">
                     {fmt(item.newSize)}
                   </div>
                   {item.origSize > 0 && item.origSize !== item.newSize && (
-                    <div style={{ fontSize: "10px", color: "#737373", textDecoration: "line-through" }}>
+                    <div className="text-[10px] text-m3-on-surface-variant/70 line-through font-mono">
                       {fmt(item.origSize)}
                     </div>
                   )}
                 </div>
 
                 {item.savingsPct > 0 && (
-                  <span style={{
-                    fontSize: "10px", fontWeight: 700, padding: "2px 6px", borderRadius: 'var(--radius-full)',
-                    background: "#6EE7B7", border: 'none', color: "#1a1a1a"
-                  }}>
+                  <span className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-mono">
                     -{item.savingsPct}%
                   </span>
                 )}
               </div>
 
               {/* Right: Actions */}
-              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+              <div className="flex gap-1.5 items-center">
                 <button
                   onClick={() => handleDownload(item)}
-                  style={{
-                    padding: "6px 12px", background: "#6EE7B7", border: 'none',
-                    borderRadius: 'var(--radius-full)', color: "#1a1a1a", fontSize: "11px", fontWeight: 700, cursor: "pointer",
-                    boxShadow: "2px 2px 0px #1a1a1a"
-                  }}
+                  className="rounded-full px-3 py-1.5 text-xs font-medium bg-m3-primary text-m3-on-primary hover:bg-[#0842a0] dark:hover:bg-[#d3e3fd] shadow-m3-elevation-0 hover:shadow-m3-elevation-1 flex items-center gap-1.5 transition-all font-sans"
                   title="Re-Download to Device"
                 >
-                  ⬇ Download
+                  <span>⬇</span>
+                  <span>Download</span>
                 </button>
 
                 <button
                   onClick={() => handleDriveUpload(item)}
-                  style={{
-                    padding: "6px 8px", background: "#FFFFFF", border: 'none',
-                    borderRadius: 'var(--radius-full)', color: "#1a1a1a", fontSize: "11px", cursor: "pointer",
-                    boxShadow: "2px 2px 0px #1a1a1a"
-                  }}
+                  className="rounded-full p-2 bg-m3-surface-container-low dark:bg-m3-surface-container-high hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-m3-outline-variant transition-all flex items-center justify-center text-m3-on-surface"
                   title="Save to Google Drive"
                 >
                   <DriveIconSmall />
@@ -315,10 +281,7 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
                 <button
                   onClick={(e) => handleDelete(item.id, e)}
-                  style={{
-                    padding: "6px 8px", background: "#FEE2E2", border: 'none', borderRadius: 'var(--radius-full)',
-                    color: "#1a1a1a", fontSize: "11px", fontWeight: 700, cursor: "pointer", transition: "all 0.15s"
-                  }}
+                  className="rounded-full p-1.5 w-7 h-7 flex items-center justify-center text-m3-on-surface-variant hover:bg-m3-error-container hover:text-m3-on-error-container transition-all text-xs"
                   title="Delete from local history"
                 >
                   ✕
@@ -331,31 +294,25 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
 
       {/* Confirmation Modal for Clear All */}
       {confirmClear && (
-        <div style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
-          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px"
-        }}>
-          <div style={{
-            background: "#FFFFFF", border: 'none', borderRadius: 'var(--radius-full)',
-            padding: "24px", maxWidth: "380px", width: "100%", textAlign: "center", boxShadow: "8px 8px 0px #1a1a1a"
-          }}>
-            <div style={{ fontSize: "2rem", marginBottom: "10px" }}>🗑️</div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#1a1a1a", marginBottom: "8px", fontFamily: "'Space Grotesk', sans-serif" }}>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-[9999] p-4">
+          <div className="rounded-3xl bg-m3-surface-container-lowest dark:bg-m3-surface-container p-6 max-w-sm w-full text-center border border-m3-outline-variant shadow-m3-elevation-3 transition-colors">
+            <div className="text-3xl mb-2.5">🗑️</div>
+            <h3 className="text-base sm:text-title-medium font-medium text-m3-on-surface mb-1.5 font-display">
               Clear All Local History?
-            </div>
-            <p style={{ fontSize: "12px", color: "#525252", marginBottom: "20px" }}>
+            </h3>
+            <p className="text-xs text-m3-on-surface-variant leading-relaxed mb-5 font-sans">
               This will permanently delete all {records.length} saved local files from your browser&apos;s IndexedDB storage.
             </p>
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div className="flex gap-2.5">
               <button
                 onClick={() => setConfirmClear(false)}
-                style={{ flex: 1, padding: "9px", background: "#FFFFFF", border: 'none', borderRadius: 'var(--radius-full)', color: "#1a1a1a", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
+                className="flex-1 py-2 px-4 rounded-full border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high text-xs font-medium transition-all font-sans"
               >
                 Cancel
               </button>
               <button
                 onClick={handleClearAll}
-                style={{ flex: 1, padding: "9px", background: "#EF4444", border: 'none', borderRadius: 'var(--radius-full)', color: "#fff", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
+                className="flex-1 py-2 px-4 rounded-full bg-m3-error text-m3-on-error hover:opacity-90 text-xs font-medium transition-all font-sans shadow-m3-elevation-1"
               >
                 Yes, Clear All
               </button>
@@ -370,12 +327,14 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
   if (isPage) {
     return (
       <div className="compressor-page">
-        <div className="tool-page-bar">
-          <button className="back-btn" onClick={() => navigate("/")}>← Back to Tools</button>
-          <div className="tool-page-title">Offline Processing History</div>
-          <div className="tool-page-meta">IndexedDB · 100% Private</div>
+        <div className="rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant shadow-m3-elevation-1 p-2.5 px-4 flex items-center justify-between mb-6 transition-colors">
+          <button className="rounded-full px-3.5 py-1 text-xs font-medium bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface hover:bg-m3-surface-container-high dark:hover:bg-m3-surface-container-highest border border-m3-outline-variant transition-all font-sans" onClick={() => navigate("/")}>
+            ← Back to Tools
+          </button>
+          <div className="text-sm font-medium text-m3-on-surface font-display">Offline Processing History</div>
+          <div className="text-xs text-m3-on-surface-variant font-sans">IndexedDB · 100% Private</div>
         </div>
-        <div style={{ padding: "20px" }}>
+        <div className="p-0 sm:p-2">
           {content}
         </div>
       </div>
@@ -386,22 +345,15 @@ export default function LocalHistory({ auth, isOpen, onClose, isPage = false }) 
   if (!isOpen) return null;
 
   return (
-    <div style={{
-      position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
-      display: "flex", justifyContent: "flex-end", zIndex: 999
-    }}>
-      <div style={{
-        width: "100%", maxWidth: "560px", height: "100%", background: "#FFFBEB",
-        borderLeft: "3px solid #1a1a1a", padding: "24px 20px", overflowY: "auto",
-        boxShadow: "-8px 0 0px #1a1a1a", boxSizing: "border-box"
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <span style={{ fontSize: "12px", fontWeight: 700, color: "#1a1a1a", textTransform: "uppercase", letterSpacing: "0.08em", background: "#FFD93D", border: 'none', padding: "4px 8px", borderRadius: 'var(--radius-full)' }}>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex justify-end z-[999]">
+      <div className="w-full max-w-xl h-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border-l border-m3-outline-variant p-5 sm:p-6 overflow-y-auto shadow-m3-elevation-3 transition-colors">
+        <div className="flex justify-between items-center mb-4">
+          <span className="rounded-full px-3 py-1 text-xs font-medium bg-m3-secondary-container text-m3-on-secondary-container tracking-wide font-sans">
             IndexedDB File Drawer
           </span>
           <button
             onClick={onClose}
-            style={{ width: "32px", height: "32px", borderRadius: 'var(--radius-full)', background: "#FEE2E2", border: 'none', color: "#1a1a1a", fontWeight: 700, cursor: "pointer", boxShadow: "2px 2px 0px #1a1a1a" }}
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-m3-surface-container-low dark:bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface transition-all text-xs font-bold"
           >
             ✕
           </button>
