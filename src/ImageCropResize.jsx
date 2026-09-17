@@ -470,30 +470,46 @@ export default function ImageCropResize({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Image Crop & Resize Studio</div>
-        <div className="tool-page-meta">Aspect Ratios · Exact Dimensions · Rotate</div>
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
+      {/* Top Bar */}
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">Image Crop & Resize Studio</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">Aspect Ratios · Exact Dimensions · Rotate</div>
       </div>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1100px" }}>
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(244, 63, 94, 0.4)", boxShadow: "0 0 20px rgba(244, 63, 94, 0.3)" }}>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pb-12 flex-1">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">
               📐
             </div>
-            <div className="comp-title">Image Crop, Resize & Aspect Ratio Studio</div>
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">
+              Image Crop, Resize & Aspect Ratio Studio
+            </h1>
           </div>
-          <p className="comp-sub">Crop to social media ratios (1:1, 9:16, 16:9), resize to exact pixels, rotate & flip with live studio canvas.</p>
+          <p className="text-sm text-m3-on-surface-variant max-w-xl mx-auto font-sans">
+            Crop to social media ratios (1:1, 9:16, 16:9), resize to exact pixels, rotate & flip with live studio canvas.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* Main Card Surface */}
+        <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 overflow-hidden transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`border-2 border-dashed border-m3-outline-variant rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                dragging 
+                  ? "bg-m3-primary/10 border-m3-primary" 
+                  : "bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
@@ -501,116 +517,144 @@ export default function ImageCropResize({ auth }) {
             >
               <input ref={inputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.avif,.bmp" hidden
                 onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">📐</span>
-              <p className="drop-main">{dragging ? "Drop your image here!" : "Drag & drop image to crop & resize"}</p>
-              <p className="drop-sub">Crop, scale dimensions, change aspect ratios · max {MAX_SIZE_MB} MB</p>
+              <span className="text-4xl mb-3 block">📐</span>
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-1">
+                {dragging ? "Drop your image here!" : "Drag & drop image to crop & resize"}
+              </p>
+              <p className="text-xs text-m3-on-surface-variant font-sans mb-6">
+                Crop, scale dimensions, change aspect ratios · max {MAX_SIZE_MB} MB · 100% Client-Side Privacy
+              </p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse Image</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  type="button"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all font-sans active:scale-[0.99]"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  📁 Browse Image
+                </button>
+                <button 
+                  type="button"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-all font-sans disabled:opacity-50"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
                   <DriveIconSmall />{drivePickLabel()}
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && (
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant inline-block font-sans">
+                  ⚠ {errorMsg}
+                </div>
+              )}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && stage !== "idle" && !(stage === "error" && !file) && (
-            <div className="file-row">
-              <div className="file-icon">🖼️</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">
+            <div className="flex items-center gap-4 mb-6 p-4 rounded-2xl border border-m3-outline-variant bg-m3-surface-container-low dark:bg-m3-surface-container-high">
+              <div className="w-10 h-10 rounded-full bg-m3-secondary-container text-xl flex items-center justify-center text-m3-on-secondary-container flex-shrink-0">
+                📐
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-m3-on-surface truncate font-sans">{file.name}</div>
+                <div className="text-xs text-m3-on-surface-variant font-mono">
                   {imgObj ? `${imgObj.width} × ${imgObj.height} px · ` : ""}{fmt(file.size)}
                 </div>
               </div>
-              {stage !== "processing" && <button className="close-btn" onClick={reset}>✕</button>}
+              {stage !== "processing" && (
+                <button 
+                  className="p-2 rounded-full text-m3-on-surface-variant hover:bg-m3-surface-container-highest transition-all"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           )}
 
           {/* ── MAIN STUDIO INTERFACE ── */}
           {(stage === "loaded" || stage === "done") && imgObj && (
-            <div style={{ padding: "0 20px 20px" }}>
+            <div>
 
               {/* 1. Aspect Ratio Presets Grid */}
-              <div style={{ marginBottom: "16px" }}>
-                <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Aspect Ratio Presets</span>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "6px" }}>
+              <div className="mb-6">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-3 font-sans">
+                  1. Aspect Ratio Presets
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
                   {ASPECT_PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`level-btn${selectedRatio === p.id ? " active" : ""}`}
+                      className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl border transition-all font-sans ${
+                        selectedRatio === p.id
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => applyRatioPreset(p.id)}
-                      style={{ padding: "8px 6px" }}
                     >
-                      <span style={{ fontSize: "1.1rem" }}>{p.icon}</span>
-                      <span className="level-name" style={{ fontSize: "0.8rem" }}>{p.label}</span>
+                      <span className="text-xl mb-1">{p.icon}</span>
+                      <span className="text-xs font-medium text-center leading-tight">{p.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Two Column Layout: Tools Sidebar (Left) vs Interactive Crop Canvas (Right) */}
-              <div className="studio-split-layout">
+              <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 items-start">
 
                 {/* Left Sidebar: Resize & Transform Controls */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                <div className="flex flex-col gap-4">
 
                   {/* Dimension Resizer Box */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px", display: "flex", justifyContent: "space-between" }}>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-m3-primary mb-3">
                       <span>Exact Dimensions (Pixels)</span>
                       <span
                         onClick={() => setLockAspect(!lockAspect)}
-                        style={{ cursor: "pointer", color: lockAspect ? "#38bdf8" : "#94a3b8" }}
+                        className="cursor-pointer text-xs font-medium text-m3-primary hover:underline"
                         title="Lock / Unlock Aspect Ratio"
                       >
                         {lockAspect ? "🔒 Linked" : "🔓 Unlinked"}
                       </span>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "10px" }}>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Width (px)</label>
+                        <label className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Width (px)</label>
                         <input
                           type="number"
                           value={outWidth}
                           onChange={(e) => handleWidthChange(e.target.value)}
-                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface font-mono outline-none focus:border-m3-primary transition-colors"
                         />
                       </div>
                       <div>
-                        <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Height (px)</label>
+                        <label className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Height (px)</label>
                         <input
                           type="number"
                           value={outHeight}
                           onChange={(e) => handleHeightChange(e.target.value)}
-                          style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface font-mono outline-none focus:border-m3-primary transition-colors"
                         />
                       </div>
                     </div>
 
                     {/* Scale Percentage Chips */}
-                    <div style={{ display: "flex", gap: "6px" }}>
+                    <div className="flex gap-1.5 mt-2">
                       {[25, 50, 75, 100].map(pct => (
                         <button
                           key={pct}
                           type="button"
                           onClick={() => handleScalePercent(pct)}
-                          style={{
-                            flex: 1, padding: "4px", fontSize: "10px", fontWeight: 700,
-                            background: scalePercent === pct ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
-                            border: scalePercent === pct ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: 'var(--radius-full)', color: scalePercent === pct ? "#38bdf8" : "#94a3b8",
-                            cursor: "pointer",
-                          }}
+                          className={`flex-1 py-1.5 px-1 text-xs font-semibold rounded-xl transition-all ${
+                            scalePercent === pct
+                              ? "bg-m3-primary text-m3-on-primary border border-m3-primary shadow-m3-elevation-1"
+                              : "bg-m3-surface-container-lowest dark:bg-m3-surface-container text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                          }`}
                         >
                           {pct}%
                         </button>
@@ -619,33 +663,34 @@ export default function ImageCropResize({ auth }) {
                   </div>
 
                   {/* Rotate & Flip Box */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#f472b6", textTransform: "uppercase", marginBottom: "10px" }}>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-m3-secondary mb-3">
                       Rotate & Flip
                     </div>
 
-                    <div style={{ display: "flex", gap: "6px", marginBottom: "12px" }}>
+                    <div className="flex gap-2 mb-3">
                       <button
                         type="button"
                         onClick={() => setRotation(r => (r - 90 + 360) % 360)}
-                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", cursor: "pointer" }}
+                        className="flex-1 py-2 px-1 text-xs font-medium rounded-xl bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-all"
                       >
                         ↺ -90°
                       </button>
                       <button
                         type="button"
                         onClick={() => setRotation(r => (r + 90) % 360)}
-                        style={{ flex: 1, padding: "6px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", cursor: "pointer" }}
+                        className="flex-1 py-2 px-1 text-xs font-medium rounded-xl bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-all"
                       >
                         ↻ +90°
                       </button>
                       <button
                         type="button"
                         onClick={() => setFlipH(!flipH)}
-                        style={{ flex: 1, padding: "6px", background: flipH ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: flipH ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
+                        className={`flex-1 py-2 px-1 text-xs font-medium rounded-xl border transition-all ${
+                          flipH
+                            ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                            : "bg-m3-surface-container-lowest dark:bg-m3-surface-container text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                        }`}
                         title="Flip Horizontal (Mirror)"
                       >
                         🪞 Flip H
@@ -653,7 +698,11 @@ export default function ImageCropResize({ auth }) {
                       <button
                         type="button"
                         onClick={() => setFlipV(!flipV)}
-                        style={{ flex: 1, padding: "6px", background: flipV ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: flipV ? "#f472b6" : "#fff", fontSize: "11px", cursor: "pointer" }}
+                        className={`flex-1 py-2 px-1 text-xs font-medium rounded-xl border transition-all ${
+                          flipV
+                            ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                            : "bg-m3-surface-container-lowest dark:bg-m3-surface-container text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                        }`}
                         title="Flip Vertical"
                       >
                         ↕ Flip V
@@ -662,30 +711,34 @@ export default function ImageCropResize({ auth }) {
 
                     {/* Fine Angle Straightening */}
                     <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "10px", color: "#94a3b8", marginBottom: "4px" }}>
+                      <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1 font-sans">
                         <span>Fine Angle Straighten</span>
-                        <span style={{ color: "#fff", fontWeight: 700 }}>{fineAngle}°</span>
+                        <span className="font-mono text-m3-primary font-bold">{fineAngle}°</span>
                       </div>
-                      <input type="range" min="-45" max="45" value={fineAngle} onChange={(e) => setFineAngle(Number(e.target.value))} style={{ width: "100%", accentColor: "#ec4899" }} />
+                      <input 
+                        type="range" 
+                        min="-45" 
+                        max="45" 
+                        value={fineAngle} 
+                        onChange={(e) => setFineAngle(Number(e.target.value))} 
+                        className="w-full accent-m3-primary cursor-pointer" 
+                      />
                     </div>
                   </div>
 
                   {/* Output Format & Quality */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "10px" }}>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-m3-tertiary mb-3">
                       Output Format & Quality
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "10px" }}>
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Format</label>
+                        <label className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Format</label>
                         <select
                           value={format}
                           onChange={(e) => setFormat(e.target.value)}
-                          style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary font-sans transition-colors"
                         >
                           <option value="image/webp">WebP (Best)</option>
                           <option value="image/png">PNG (Lossless)</option>
@@ -694,14 +747,14 @@ export default function ImageCropResize({ auth }) {
                       </div>
 
                       <div>
-                        <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Quality: {quality}%</label>
+                        <label className="text-xs text-m3-on-surface-variant block mb-1 font-sans">Quality: {quality}%</label>
                         <input
                           type="range"
                           min="10"
                           max="100"
                           value={quality}
                           onChange={(e) => setQuality(Number(e.target.value))}
-                          style={{ width: "100%", accentColor: "#10b981", marginTop: "6px" }}
+                          className="w-full accent-m3-primary cursor-pointer mt-2"
                         />
                       </div>
                     </div>
@@ -709,40 +762,38 @@ export default function ImageCropResize({ auth }) {
                 </div>
 
                 {/* Right Column: Interactive Studio Canvas */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      Drag Box to Move · Drag 4 Blue Handles to Resize Crop
+                <div className="flex flex-col items-center">
+                  <div className="w-full flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-m3-on-surface-variant uppercase tracking-wider font-sans">
+                      Drag Box to Move · Drag 4 Corner Handles to Resize Crop
                     </span>
                   </div>
 
                   {/* Canvas Container */}
-                  <div style={{
-                    width: "100%", minHeight: "380px", overflow: "hidden",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#080c16", borderRadius: 'var(--radius-full)',
-                    border: "1.5px solid rgba(139, 92, 246, 0.3)", boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
-                    padding: "16px", boxSizing: "border-box", cursor: isDraggingHandle.current ? "crosshair" : "default"
-                  }}>
+                  <div className="w-full min-h-[380px] overflow-hidden flex items-center justify-center rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-lowest transition-colors">
                     <canvas
                       ref={canvasRef}
                       onPointerDown={handleCanvasMouseDown}
                       onPointerMove={handleCanvasMouseMove}
                       onPointerUp={handleCanvasMouseUp}
                       onPointerLeave={handleCanvasMouseUp}
-                      style={{ touchAction: "none", maxWidth: "100%", maxHeight: "420px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 5px 25px rgba(0,0,0,0.8)" }}
+                      className="max-w-full max-h-[440px] object-contain rounded-2xl shadow-m3-elevation-2"
+                      style={{ touchAction: "none" }}
                     />
                   </div>
 
-                  <div style={{ fontSize: "11px", color: "var(--text-sub)", marginTop: "8px", textAlign: "center" }}>
-                    📐 Output Resolution: <strong style={{ color: "#38bdf8" }}>{outWidth || Math.round(cropBox.w * (imgObj?.width || 0))} × {outHeight || Math.round(cropBox.h * (imgObj?.height || 0))} px</strong>
+                  <div className="mt-3 text-xs text-m3-on-surface-variant text-center font-sans">
+                    📐 Output Resolution: <strong className="text-m3-primary font-mono">{outWidth || Math.round(cropBox.w * (imgObj?.width || 0))} × {outHeight || Math.round(cropBox.h * (imgObj?.height || 0))} px</strong>
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="action-wrap" style={{ marginTop: "22px" }}>
-                <button className="btn-compress" onClick={executeExport}>
+              <div className="mt-8 flex justify-center">
+                <button 
+                  className="w-full max-w-md rounded-full py-3.5 px-6 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 font-sans"
+                  onClick={executeExport}
+                >
                   {stage === "done" ? "🔁 Re-Export Cropped Image" : "⚡ Crop & Download Image"}
                 </button>
               </div>
@@ -751,46 +802,38 @@ export default function ImageCropResize({ auth }) {
 
           {/* ── Progress Bar ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Exporting cropped image...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-8 max-w-md mx-auto">
+              <div className="flex justify-between text-sm font-medium mb-2 text-m3-on-surface font-sans">
+                <span>Exporting cropped image...</span>
+                <span className="font-mono text-m3-primary font-bold">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #f43f5e, #8b5cf6)" }} />
+              <div className="w-full h-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant overflow-hidden">
+                <div className="h-full bg-m3-primary transition-all duration-300" style={{ width: `${progress}%` }} />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant font-sans mt-3 text-center">{progressMsg}</p>
             </div>
           )}
 
           {/* ── Results Box ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: "rgba(244,63,94,0.08)",
-                borderColor: "rgba(244,63,94,0.3)",
-              }}>
-                <div className="result-grid">
+            <div className="mt-8">
+              <div className="mb-6 p-6 rounded-3xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant shadow-m3-elevation-1">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="result-label">Original Image</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+                    <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-1 font-sans">Original Image</span>
+                    <span className="font-mono text-base font-bold text-m3-on-surface">
                       {imgObj?.width}×{imgObj?.height} px · {fmt(file.size)}
                     </span>
                   </div>
-                  <div className="result-arrow">→</div>
+                  <div className="text-xl text-m3-primary">→</div>
                   <div>
-                    <span className="result-label">Cropped & Resized</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "#fb7185" }}>
+                    <span className="block text-xs font-semibold uppercase tracking-wider text-m3-primary mb-1 font-sans">Cropped & Resized</span>
+                    <span className="font-mono text-base font-bold text-m3-primary">
                       {resultInfo}
                     </span>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: "rgba(244,63,94,0.18)",
-                  borderColor: "#f43f5e",
-                  color: "#fb7185",
-                }}>
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-m3-secondary-container text-m3-on-secondary-container text-xs font-medium shadow-m3-elevation-1 font-sans">
                   📐 Image Cropped & Resized Successfully
                 </div>
               </div>
@@ -804,7 +847,7 @@ export default function ImageCropResize({ auth }) {
             </div>
           )}
 
-          <div className="comp-footer">
+          <div className="mt-8 pt-4 border-t border-m3-outline-variant flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-m3-on-surface-variant font-sans">
             <span>FlashCrush · Image Crop & Resize Studio</span>
             <span>100% in-browser processing · Zero server uploads</span>
           </div>
