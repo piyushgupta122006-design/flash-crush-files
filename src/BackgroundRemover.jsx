@@ -281,41 +281,41 @@ export default function BackgroundRemover({ auth }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
       {/* Top Bar */}
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
         <button 
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm" 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans" 
           onClick={() => navigate("/")}
         >
           ← Back
         </button>
-        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">AI Background Remover</div>
-        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">100% In-Browser ML</div>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">AI Background Remover</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">100% In-Browser ML</div>
       </div>
 
       <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-6 pb-12 flex-1">
         {/* Header Text */}
         <div className="mb-6 sm:mb-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] text-xl">🤖</div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">AI Background Remover Studio</h1>
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">🤖</div>
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">AI Background Remover Studio</h1>
           </div>
-          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-xl mx-auto">
+          <p className="text-sm text-m3-on-surface-variant max-w-xl mx-auto font-sans">
             Erase backgrounds instantly using on-device machine learning. Replace with studio colors or custom backdrops.
           </p>
         </div>
 
         {/* Main Card Surface */}
-        <div className="w-full bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm overflow-hidden">
+        <div className="w-full bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 overflow-hidden transition-colors">
           
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
               className={`flex flex-col items-center justify-center p-8 sm:p-12 m-6 border-2 border-dashed rounded-3xl cursor-pointer transition-all ${
                 dragging 
-                  ? "border-[#0b57d0] dark:border-[#a8c7fa] bg-[#c2e7ff]/20 dark:bg-[#004a77]/20" 
-                  : "border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                  ? "border-m3-primary bg-m3-primary/10" 
+                  : "border-m3-outline-variant bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
               }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
@@ -324,18 +324,18 @@ export default function BackgroundRemover({ auth }) {
             >
               <input ref={inputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.avif" hidden onChange={(e) => handleFile(e.target.files[0])} />
               <span className="text-4xl mb-4">🤖</span>
-              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">{dragging ? "Drop your photo here!" : "Drag & drop photo to remove background"}</p>
-              <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">100% private in-browser AI · max {MAX_SIZE_MB} MB</p>
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-2">{dragging ? "Drop your photo here!" : "Drag & drop photo to remove background"}</p>
+              <p className="text-sm text-m3-on-surface-variant font-sans mb-6">100% private in-browser AI · max {MAX_SIZE_MB} MB</p>
 
               <div className="flex flex-col sm:flex-row gap-3" onClick={(e) => e.stopPropagation()}>
                 <button 
-                  className="px-6 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm"
+                  className="px-6 py-3 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 font-sans"
                   onClick={() => inputRef.current?.click()}
                 >
                   📁 Browse Photo
                 </button>
                 <button 
-                  className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all disabled:opacity-50 shadow-sm"
+                  className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all disabled:opacity-50 shadow-m3-elevation-1 font-sans"
                   onClick={handleDrivePick}
                   disabled={pickLoading || auth.authStatus === "loading"}
                 >
@@ -343,20 +343,20 @@ export default function BackgroundRemover({ auth }) {
                 </button>
               </div>
 
-              {stage === "error" && <div className="mt-4 px-4 py-2 rounded-xl bg-[#ffdad6] dark:bg-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]">⚠ {errorMsg}</div>}
+              {stage === "error" && <div className="mt-4 px-4 py-2 rounded-xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant font-sans">⚠ {errorMsg}</div>}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && stage !== "idle" && !(stage === "error" && !file) && (
-            <div className="flex items-center gap-4 mx-6 my-6 p-4 rounded-2xl border border-[#c7c7c7] dark:border-[#444746] bg-[#f0f4f9] dark:bg-[#28292a]">
+            <div className="flex items-center gap-4 mx-6 my-6 p-4 rounded-2xl border border-m3-outline-variant bg-m3-surface-container-low dark:bg-m3-surface-container-high">
               <div className="text-2xl">📸</div>
-              <div className="flex-1">
-                <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file.name}</div>
-                <div className="text-xs text-[#444746] dark:text-[#c4c7c5]">{fmt(file.size)} · Original Photo</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-m3-on-surface truncate font-sans">{file.name}</div>
+                <div className="text-xs text-m3-on-surface-variant font-mono">{fmt(file.size)} · Original Photo</div>
               </div>
               {stage !== "processing" && (
-                <button className="p-2 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] transition-all" onClick={reset}>✕</button>
+                <button className="p-2 rounded-full text-m3-on-surface-variant hover:bg-m3-surface-container-highest transition-all" onClick={reset} title="Remove file">✕</button>
               )}
             </div>
           )}
@@ -364,11 +364,11 @@ export default function BackgroundRemover({ auth }) {
           {/* ── Loaded State ── */}
           {stage === "loaded" && (
             <div className="flex flex-col items-center px-6 pb-6">
-              <div className="w-full max-w-md max-h-[340px] overflow-hidden rounded-2xl border border-[#c7c7c7] dark:border-[#444746] mb-5 shadow-sm bg-[#f8fafd] dark:bg-[#131314]">
-                <img src={origUrl} alt="" className="w-full max-h-[320px] object-contain block mx-auto" />
+              <div className="w-full max-w-md max-h-[340px] overflow-hidden rounded-2xl border border-m3-outline-variant mb-5 shadow-m3-elevation-1 bg-m3-surface-container-low dark:bg-m3-surface-container-lowest p-2">
+                <img src={origUrl} alt="" className="w-full max-h-[320px] object-contain block mx-auto rounded-xl" />
               </div>
               <button 
-                className="w-full max-w-[420px] rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all"
+                className="w-full max-w-[420px] rounded-full py-3.5 px-4 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all font-sans"
                 onClick={runBackgroundRemoval}
               >
                 ✨ Remove Background with On-Device AI
@@ -380,14 +380,14 @@ export default function BackgroundRemover({ auth }) {
           {stage === "processing" && (
             <div className="flex flex-col items-center justify-center p-12">
               <div className="w-full max-w-md">
-                <div className="flex justify-between text-sm font-medium mb-2 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                <div className="flex justify-between text-sm font-medium mb-2 text-m3-on-surface font-sans">
                   <span>Running AI Vision Model...</span>
-                  <span>{progress}%</span>
+                  <span className="font-mono text-m3-primary font-bold">{progress}%</span>
                 </div>
-                <div className="w-full h-3 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] overflow-hidden">
-                  <div className="h-full bg-[#0b57d0] dark:bg-[#a8c7fa] transition-all duration-300" style={{ width: `${progress}%` }} />
+                <div className="w-full h-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant overflow-hidden">
+                  <div className="h-full bg-m3-primary transition-all duration-300" style={{ width: `${progress}%` }} />
                 </div>
-                <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3 text-center">{progressMsg}</p>
+                <p className="text-xs text-m3-on-surface-variant font-sans mt-3 text-center">{progressMsg}</p>
               </div>
             </div>
           )}
@@ -397,16 +397,16 @@ export default function BackgroundRemover({ auth }) {
             <div className="p-6">
               {/* Background Options Grid */}
               <div className="mb-6">
-                <span className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">1. Replace Background</span>
+                <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-3 font-sans">1. Replace Background</span>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-2">
                   {BG_PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                      className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all font-sans ${
                         bgChoice === p.id
-                          ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
-                          : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
                       }`}
                       onClick={() => setBgChoice(p.id)}
                     >
@@ -417,10 +417,10 @@ export default function BackgroundRemover({ auth }) {
                   
                   <button
                     type="button"
-                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all font-sans ${
                       bgChoice === "custom-color"
-                        ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
-                        : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                        ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                        : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
                     }`}
                     onClick={() => setBgChoice("custom-color")}
                   >
@@ -430,10 +430,10 @@ export default function BackgroundRemover({ auth }) {
 
                   <button
                     type="button"
-                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all ${
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-2xl border transition-all font-sans ${
                       bgChoice === "custom-img"
-                        ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
-                        : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                        ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                        : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
                     }`}
                     onClick={() => customBgInputRef.current?.click()}
                   >
@@ -451,8 +451,8 @@ export default function BackgroundRemover({ auth }) {
                 <div className="flex flex-col gap-4">
                   
                   {bgChoice === "custom-color" && (
-                    <div className="p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">Pick Color</label>
+                    <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2">Pick Color</label>
                       <div className="flex items-center gap-3">
                         <input
                           type="color"
@@ -464,32 +464,32 @@ export default function BackgroundRemover({ auth }) {
                           type="text"
                           value={customBgColor}
                           onChange={(e) => setCustomBgColor(e.target.value)}
-                          className="flex-1 px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] font-mono outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
+                          className="flex-1 px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface font-mono outline-none focus:border-m3-primary transition-colors"
                         />
                       </div>
                     </div>
                   )}
 
-                  <div className="p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
-                    <div className="text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">Lighting & Export</div>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-3">Lighting & Export</div>
                     
-                    <label className="flex items-center gap-3 text-sm text-[#1f1f1f] dark:text-[#e3e3e3] cursor-pointer mb-4">
+                    <label className="flex items-center gap-3 text-sm text-m3-on-surface cursor-pointer mb-4">
                       <input 
                         type="checkbox" 
                         checked={addShadow} 
                         onChange={(e) => setAddShadow(e.target.checked)} 
-                        className="w-4 h-4 accent-[#0b57d0] dark:accent-[#a8c7fa]" 
+                        className="w-4 h-4 accent-m3-primary" 
                       />
                       Add Soft Studio Shadow
                     </label>
 
                     {bgChoice !== "transparent" && (
                       <div>
-                        <label className="block text-xs text-[#444746] dark:text-[#c4c7c5] mb-1.5">Export Format</label>
+                        <label className="block text-xs text-m3-on-surface-variant mb-1.5 font-sans">Export Format</label>
                         <select
                           value={exportFormat}
                           onChange={(e) => setExportFormat(e.target.value)}
-                          className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary font-sans transition-colors"
                         >
                           <option value="image/png">PNG (High Quality)</option>
                           <option value="image/webp">WebP (Compact)</option>
@@ -502,10 +502,10 @@ export default function BackgroundRemover({ auth }) {
 
                 {/* Canvas */}
                 <div className="flex flex-col items-center">
-                  <div className={`w-full min-h-[380px] overflow-hidden flex items-center justify-center rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-4 ${
+                  <div className={`w-full min-h-[380px] overflow-hidden flex items-center justify-center rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-4 ${
                     bgChoice === "transparent" 
                       ? "bg-[repeating-conic-gradient(#e5e7eb_0%_25%,_#f3f4f6_0%_50%)] dark:bg-[repeating-conic-gradient(#1e293b_0%_25%,_#0f172a_0%_50%)] bg-[length:20px_20px]" 
-                      : "bg-[#f0f4f9] dark:bg-[#131314]"
+                      : "bg-m3-surface-container-low dark:bg-m3-surface-container-lowest"
                   }`}>
                     <canvas ref={canvasRef} className="max-w-full max-h-[400px] object-contain rounded-2xl" />
                   </div>
@@ -515,7 +515,7 @@ export default function BackgroundRemover({ auth }) {
               {/* Process Button */}
               <div className="mt-6">
                 <button 
-                  className="w-full max-w-md mx-auto rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all flex items-center justify-center gap-2 block"
+                  className="w-full max-w-md mx-auto rounded-full py-3.5 px-4 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all flex items-center justify-center gap-2 block font-sans"
                   onClick={exportImage}
                 >
                   {resultBlob ? "🔁 Re-Export Image" : "⚡ Prepare Download & Save"}
@@ -527,19 +527,19 @@ export default function BackgroundRemover({ auth }) {
           {/* ── Results Box ── */}
           {stage === "done" && resultBlob && (
             <div className="px-6 pb-6">
-              <div className="mt-4 mb-6 p-4 bg-[#c2e7ff]/30 dark:bg-[#004a77]/30 border border-[#c2e7ff] dark:border-[#004a77] rounded-2xl">
+              <div className="mt-4 mb-6 p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Original Photo</span>
-                    <span className="font-mono text-lg font-bold text-[#444746] dark:text-[#c4c7c5]">{fmt(file?.size)}</span>
+                    <span className="block text-xs text-m3-on-surface-variant uppercase tracking-wider mb-1 font-sans">Original Photo</span>
+                    <span className="font-mono text-lg font-medium text-m3-on-surface">{fmt(file?.size)}</span>
                   </div>
-                  <div className="text-xl text-[#c7c7c7] dark:text-[#444746] hidden sm:block">→</div>
+                  <div className="text-xl text-m3-outline hidden sm:block">→</div>
                   <div>
-                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Composited Output</span>
-                    <span className="font-mono text-lg font-bold text-[#001d35] dark:text-[#c2e7ff]">{resultInfo}</span>
+                    <span className="block text-xs text-m3-on-surface-variant uppercase tracking-wider mb-1 font-sans">Composited Output</span>
+                    <span className="font-mono text-lg font-bold text-m3-primary">{resultInfo}</span>
                   </div>
                 </div>
-                <div className="mt-3 text-center text-xs font-medium text-[#001d35] dark:text-[#c2e7ff] bg-[#c2e7ff] dark:bg-[#004a77] py-1.5 rounded-full px-3 inline-block w-full">
+                <div className="mt-3 text-center text-xs font-medium text-m3-on-secondary-container bg-m3-secondary-container py-1.5 rounded-full px-3 inline-block w-full shadow-m3-elevation-1 font-sans border border-m3-outline-variant">
                   🤖 Background Removed & Composited Successfully
                 </div>
               </div>
@@ -550,7 +550,7 @@ export default function BackgroundRemover({ auth }) {
             </div>
           )}
 
-          <div className="p-4 text-center text-xs text-[#444746] dark:text-[#c4c7c5] border-t border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
+          <div className="p-4 text-center text-label-sm text-m3-on-surface-variant border-t border-m3-outline-variant/40 bg-m3-surface-container-low/30 font-sans">
             FlashCrush · 100% in-browser processing · Zero server uploads
           </div>
         </div>
