@@ -609,30 +609,46 @@ export default function PassportResizer({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Passport & Exam Photo Resizer</div>
-        <div className="tool-page-meta">Govt Exams · Visas · 4×6 Print Sheet</div>
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
+      {/* Top Bar */}
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">Passport & Exam Photo Resizer</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">Govt Exams · Visas · 4×6 Print Sheet</div>
       </div>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1050px" }}>
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(59, 130, 246, 0.4)", boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pb-12 flex-1">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">
               🛂
             </div>
-            <div className="comp-title">Passport & Govt Exam Photo Resizer</div>
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">
+              Passport & Govt Exam Photo Resizer
+            </h1>
           </div>
-          <p className="comp-sub">Crop, align face with official oval guide, compress to exact KB, and generate 4×6 printable studio sheets.</p>
+          <p className="text-sm text-m3-on-surface-variant max-w-xl mx-auto font-sans">
+            Crop, align face with official oval guide, compress to exact KB, and generate 4×6 printable studio sheets.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* Main Card Surface */}
+        <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 overflow-hidden transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`border-2 border-dashed border-m3-outline-variant rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                dragging 
+                  ? "bg-m3-primary/10 border-m3-primary" 
+                  : "bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
@@ -640,90 +656,133 @@ export default function PassportResizer({ auth }) {
             >
               <input ref={inputRef} type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.avif" hidden
                 onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">🛂</span>
-              <p className="drop-main">{dragging ? "Drop your photo here!" : "Drag & drop your photo or signature"}</p>
-              <p className="drop-sub">Upload portrait photo or signature to resize for Passport, Visa or Govt Exams</p>
+              <span className="text-4xl mb-3 block">🛂</span>
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-1">
+                {dragging ? "Drop your photo here!" : "Drag & drop your photo or signature"}
+              </p>
+              <p className="text-xs text-m3-on-surface-variant font-sans mb-6">
+                Upload portrait photo or signature to resize for Passport, Visa or Govt Exams · max {MAX_SIZE_MB} MB
+              </p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse Photo</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  type="button"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all font-sans active:scale-[0.99]"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  📁 Browse Photo
+                </button>
+                <button 
+                  type="button"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-all font-sans disabled:opacity-50"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
                   <DriveIconSmall />{drivePickLabel()}
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && (
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant inline-block font-sans">
+                  ⚠ {errorMsg}
+                </div>
+              )}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && stage !== "idle" && !(stage === "error" && !file) && (
-            <div className="file-row">
-              <div className="file-icon">📸</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)} · Original Photo</div>
+            <div className="flex items-center gap-4 mb-6 p-4 rounded-2xl border border-m3-outline-variant bg-m3-surface-container-low dark:bg-m3-surface-container-high">
+              <div className="w-10 h-10 rounded-full bg-m3-secondary-container text-xl flex items-center justify-center text-m3-on-secondary-container flex-shrink-0">
+                📸
               </div>
-              {stage !== "processing" && <button className="close-btn" onClick={reset}>✕</button>}
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-m3-on-surface truncate font-sans">{file.name}</div>
+                <div className="text-xs text-m3-on-surface-variant font-mono">{fmt(file.size)} · Original Photo</div>
+              </div>
+              {stage !== "processing" && (
+                <button 
+                  className="p-2 rounded-full text-m3-on-surface-variant hover:bg-m3-surface-container-highest transition-all"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           )}
 
           {/* ── MAIN RESIZER CONTROLS & INTERACTIVE CANVAS ── */}
           {(stage === "loaded" || stage === "done") && (
-            <div style={{ padding: "0 20px 20px" }}>
+            <div>
 
               {/* 1. Official Presets Selector */}
-              <div style={{ marginBottom: "16px" }}>
-                <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Select Official Passport / Exam Format</span>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "8px" }}>
+              <div className="mb-6">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-3 font-sans">
+                  1. Select Official Passport / Exam Format
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {OFFICIAL_PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`level-btn${selectedPreset === p.id ? " active" : ""}`}
+                      className={`p-3.5 text-left rounded-2xl border transition-all font-sans ${
+                        selectedPreset === p.id
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => handlePresetSelect(p.id)}
-                      style={{ padding: "10px", textAlign: "left" }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                        <span style={{ fontSize: "1.2rem" }}>{p.flag}</span>
-                        <span className="level-name" style={{ fontSize: "0.85rem" }}>{p.name}</span>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">{p.flag}</span>
+                        <span className="text-xs font-bold leading-tight">{p.name}</span>
                       </div>
-                      <span style={{ fontSize: "0.7rem", color: "var(--text-sub)", display: "block" }}>{p.desc}</span>
+                      <span className="text-[11px] text-m3-on-surface-variant block leading-tight opacity-90">{p.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Two Column Layout: Editor Controls (Left) vs Interactive Alignment Canvas (Right) */}
-              <div className="passport-split-layout">
+              <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6 items-start">
 
                 {/* Left Column: Fine Tuning Controls */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                <div className="flex flex-col gap-4">
 
                   {/* Custom Dimensions (If custom selected) */}
                   {selectedPreset === "custom" && (
-                    <div style={{
-                      padding: "14px", background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                    }}>
-                      <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "8px" }}>
+                    <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-m3-primary mb-2">
                         Custom Dimensions & Units
                       </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: "8px" }}>
+                      <div className="grid grid-cols-3 gap-2">
                         <div>
-                          <label style={{ fontSize: "10px", color: "#94a3b8" }}>Width</label>
-                          <input type="number" step="0.1" value={customWidth} onChange={(e) => setCustomWidth(Number(e.target.value))}
-                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }} />
+                          <label className="text-xs text-m3-on-surface-variant block mb-1">Width</label>
+                          <input 
+                            type="number" 
+                            step="0.1" 
+                            value={customWidth} 
+                            onChange={(e) => setCustomWidth(Number(e.target.value))}
+                            className="w-full px-2.5 py-1.5 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-mono outline-none focus:border-m3-primary" 
+                          />
                         </div>
                         <div>
-                          <label style={{ fontSize: "10px", color: "#94a3b8" }}>Height</label>
-                          <input type="number" step="0.1" value={customHeight} onChange={(e) => setCustomHeight(Number(e.target.value))}
-                            style={{ width: "100%", padding: "6px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }} />
+                          <label className="text-xs text-m3-on-surface-variant block mb-1">Height</label>
+                          <input 
+                            type="number" 
+                            step="0.1" 
+                            value={customHeight} 
+                            onChange={(e) => setCustomHeight(Number(e.target.value))}
+                            className="w-full px-2.5 py-1.5 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-mono outline-none focus:border-m3-primary" 
+                          />
                         </div>
                         <div>
-                          <label style={{ fontSize: "10px", color: "#94a3b8" }}>Unit</label>
-                          <select value={unit} onChange={(e) => setUnit(e.target.value)}
-                            style={{ width: "100%", padding: "6px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }}>
+                          <label className="text-xs text-m3-on-surface-variant block mb-1">Unit</label>
+                          <select 
+                            value={unit} 
+                            onChange={(e) => setUnit(e.target.value)}
+                            className="w-full px-2 py-1.5 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-sans outline-none focus:border-m3-primary"
+                          >
                             <option value="cm">cm</option>
                             <option value="mm">mm</option>
                             <option value="inch">inch</option>
@@ -735,108 +794,119 @@ export default function PassportResizer({ auth }) {
                   )}
 
                   {/* Positioning & Zoom Controls */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px" }}>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-m3-primary mb-3">
                       Photo Alignment & Sizing
                     </div>
 
                     {/* Zoom Slider */}
-                    <div style={{ marginBottom: "10px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
+                    <div className="mb-3">
+                      <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1 font-sans">
                         <span>Zoom</span>
-                        <span style={{ color: "#fff", fontWeight: 700 }}>{zoom.toFixed(2)}×</span>
+                        <span className="font-mono text-m3-primary font-bold">{zoom.toFixed(2)}×</span>
                       </div>
-                      <input type="range" min="0.5" max="2.5" step="0.05" value={zoom} onChange={(e) => setZoom(Number(e.target.value))}
-                        style={{ width: "100%", accentColor: "#38bdf8" }} />
+                      <input 
+                        type="range" 
+                        min="0.5" 
+                        max="2.5" 
+                        step="0.05" 
+                        value={zoom} 
+                        onChange={(e) => setZoom(Number(e.target.value))}
+                        className="w-full accent-m3-primary cursor-pointer" 
+                      />
                     </div>
 
                     {/* Rotation Slider */}
-                    <div style={{ marginBottom: "10px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
+                    <div className="mb-3">
+                      <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1 font-sans">
                         <span>Rotate / Straighten</span>
-                        <span style={{ color: "#fff", fontWeight: 700 }}>{rotation}°</span>
+                        <span className="font-mono text-m3-primary font-bold">{rotation}°</span>
                       </div>
-                      <input type="range" min="-45" max="45" value={rotation} onChange={(e) => setRotation(Number(e.target.value))}
-                        style={{ width: "100%", accentColor: "#38bdf8" }} />
+                      <input 
+                        type="range" 
+                        min="-45" 
+                        max="45" 
+                        value={rotation} 
+                        onChange={(e) => setRotation(Number(e.target.value))}
+                        className="w-full accent-m3-primary cursor-pointer" 
+                      />
                     </div>
 
                     {/* Toggle Checks */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
-                      <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#cbd5e1", cursor: "pointer" }}>
-                        <input type="checkbox" checked={showFaceGuide} onChange={(e) => setShowFaceGuide(e.target.checked)} style={{ accentColor: "#38bdf8" }} />
+                    <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-m3-outline-variant">
+                      <label className="flex items-center gap-2.5 text-xs text-m3-on-surface cursor-pointer font-sans">
+                        <input 
+                          type="checkbox" 
+                          checked={showFaceGuide} 
+                          onChange={(e) => setShowFaceGuide(e.target.checked)} 
+                          className="w-4 h-4 accent-m3-primary" 
+                        />
                         Show 70-80% Face Alignment Oval Guide
                       </label>
-                      <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#cbd5e1", cursor: "pointer" }}>
-                        <input type="checkbox" checked={lightenBg} onChange={(e) => setLightenBg(e.target.checked)} style={{ accentColor: "#38bdf8" }} />
+                      <label className="flex items-center gap-2.5 text-xs text-m3-on-surface cursor-pointer font-sans">
+                        <input 
+                          type="checkbox" 
+                          checked={lightenBg} 
+                          onChange={(e) => setLightenBg(e.target.checked)} 
+                          className="w-4 h-4 accent-m3-primary" 
+                        />
                         Whiten / Lighten Background (For Passport Rules)
                       </label>
                     </div>
                   </div>
 
                   {/* Name & Date on Photo (SSC / UPSC / State PSC) */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", fontWeight: 800, color: "#f59e0b", textTransform: "uppercase", cursor: "pointer", marginBottom: addNameDate ? "10px" : 0 }}>
-                      <input type="checkbox" checked={addNameDate} onChange={(e) => setAddNameDate(e.target.checked)} style={{ accentColor: "#f59e0b" }} />
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <label className={`flex items-center gap-2.5 text-xs font-semibold uppercase tracking-wider text-m3-secondary cursor-pointer ${addNameDate ? "mb-3" : ""}`}>
+                      <input 
+                        type="checkbox" 
+                        checked={addNameDate} 
+                        onChange={(e) => setAddNameDate(e.target.checked)} 
+                        className="w-4 h-4 accent-m3-secondary" 
+                      />
                       Add Name & Date Strip (Govt Exam Rule)
                     </label>
 
                     {addNameDate && (
-                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div className="flex flex-col gap-2.5">
                         <input
                           type="text"
                           placeholder="APPLICANT NAME"
                           value={applicantName}
                           onChange={(e) => setApplicantName(e.target.value)}
-                          style={{
-                            width: "100%", padding: "8px 10px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff",
-                            fontSize: "12px", outline: "none", boxSizing: "border-box",
-                          }}
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-sans uppercase outline-none focus:border-m3-primary"
                         />
                         <input
                           type="date"
                           value={photoDate}
                           onChange={(e) => setPhotoDate(e.target.value)}
-                          style={{
-                            width: "100%", padding: "8px 10px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff",
-                            fontSize: "12px", outline: "none", boxSizing: "border-box",
-                          }}
+                          className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-sans outline-none focus:border-m3-primary"
                         />
                       </div>
                     )}
                   </div>
 
                   {/* Target KB Size & Export Mode */}
-                  <div style={{
-                    padding: "14px", background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-                  }}>
-                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "8px" }}>
+                  <div className="p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl font-sans">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-m3-tertiary mb-3">
                       Target File Size & Export Format
                     </div>
 
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
-                      <span style={{ fontSize: "11px", color: "#94a3b8" }}>Target Size:</span>
+                    <div className="flex gap-2.5 items-center mb-3">
+                      <span className="text-xs text-m3-on-surface-variant font-sans">Target Size:</span>
                       <input
                         type="number"
                         min="10"
                         max="500"
                         value={targetMaxKb}
                         onChange={(e) => setTargetMaxKb(Number(e.target.value))}
-                        style={{ width: "65px", padding: "6px", background: "#0f172a", border: 'none', borderRadius: 'var(--radius-full)', color: "#fff", textAlign: "center", fontSize: "12px" }}
+                        className="w-20 px-2.5 py-1.5 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-xs text-m3-on-surface font-mono text-center outline-none focus:border-m3-primary"
                       />
-                      <span style={{ fontSize: "11px", color: "#34d399", fontWeight: 700 }}>KB (Max Limit)</span>
+                      <span className="text-xs font-bold text-m3-primary font-sans">KB (Max Limit)</span>
                     </div>
 
-                    <label style={{ fontSize: "11px", color: "#94a3b8", display: "block", marginBottom: "6px" }}>Export Format</label>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
+                    <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-sans">Export Format</label>
+                    <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: "single", label: "Single Photo" },
                         { id: "sheet-4x6", label: "4×6 in Sheet" },
@@ -846,13 +916,11 @@ export default function PassportResizer({ auth }) {
                           key={m.id}
                           type="button"
                           onClick={() => setExportMode(m.id)}
-                          style={{
-                            padding: "6px 4px", fontSize: "10px", fontWeight: 700,
-                            background: exportMode === m.id ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.04)",
-                            border: exportMode === m.id ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: 'var(--radius-full)', color: exportMode === m.id ? "#34d399" : "#94a3b8",
-                            cursor: "pointer",
-                          }}
+                          className={`py-2 px-1 text-xs font-medium rounded-xl border transition-all font-sans ${
+                            exportMode === m.id
+                              ? "bg-m3-primary text-m3-on-primary border-m3-primary shadow-m3-elevation-1"
+                              : "bg-m3-surface-container-lowest dark:bg-m3-surface-container text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                          }`}
                         >
                           {m.label}
                         </button>
@@ -862,21 +930,15 @@ export default function PassportResizer({ auth }) {
                 </div>
 
                 {/* Right Column: Live Cropping & Positioning Canvas */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                <div className="flex flex-col items-center">
+                  <div className="w-full flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-m3-on-surface-variant uppercase tracking-wider font-sans">
                       Drag to Position Photo · Scroll/Slider to Zoom
                     </span>
                   </div>
 
                   {/* Interactive Canvas */}
-                  <div style={{
-                    width: "100%", maxHeight: "420px", overflow: "hidden",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#080c16", borderRadius: 'var(--radius-full)',
-                    border: "1.5px solid rgba(56, 189, 248, 0.3)", boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
-                    padding: "16px", boxSizing: "border-box", cursor: "grab"
-                  }}>
+                  <div className="w-full min-h-[360px] overflow-hidden flex items-center justify-center rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-lowest transition-colors cursor-grab active:cursor-grabbing">
                     <canvas
                       ref={canvasRef}
                       onMouseDown={handleMouseDown}
@@ -885,19 +947,22 @@ export default function PassportResizer({ auth }) {
                       onTouchStart={handleTouchStart}
                       onTouchMove={handleTouchMove}
                       onTouchEnd={handleMouseUp}
-                      style={{ maxWidth: "100%", maxHeight: "380px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 5px 20px rgba(0,0,0,0.8)" }}
+                      className="max-w-full max-h-[380px] object-contain rounded-2xl shadow-m3-elevation-2"
                     />
                   </div>
 
-                  <div style={{ fontSize: "11px", color: "var(--text-sub)", marginTop: "8px", textAlign: "center" }}>
+                  <div className="mt-3 text-xs text-m3-on-surface-variant text-center font-sans">
                     💡 Tip: Align eyes with horizontal dashed line and face inside the blue oval.
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="action-wrap" style={{ marginTop: "22px" }}>
-                <button className="btn-compress" onClick={exportPassportPhoto}>
+              <div className="mt-8 flex justify-center">
+                <button 
+                  className="w-full max-w-md rounded-full py-3.5 px-6 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 font-sans"
+                  onClick={exportPassportPhoto}
+                >
                   {stage === "done"
                     ? "🔁 Re-Export Passport Photo"
                     : `⚡ Generate ${exportMode === "single" ? "Passport Photo" : exportMode === "sheet-4x6" ? "4×6 Studio Sheet" : "A4 Grid Sheet"}`}
@@ -908,46 +973,40 @@ export default function PassportResizer({ auth }) {
 
           {/* ── Processing Bar ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Generating Passport Photo...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-8 max-w-md mx-auto">
+              <div className="flex justify-between text-sm font-medium mb-2 text-m3-on-surface font-sans">
+                <span>{progressMsg}</span>
+                <span className="font-mono text-m3-primary font-bold">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #3b82f6, #06b6d4)" }} />
+              <div className="w-full h-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant overflow-hidden">
+                <div 
+                  className="h-full bg-m3-primary transition-all duration-200" 
+                  style={{ width: `${progress}%` }} 
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
             </div>
           )}
 
           {/* ── Results Box ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: "rgba(59,130,246,0.08)",
-                borderColor: "rgba(59,130,246,0.3)",
-              }}>
-                <div className="result-grid">
+            <div className="mt-8">
+              <div className="mb-6 p-6 rounded-3xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant shadow-m3-elevation-1">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="result-label">Original Photo</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+                    <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-1 font-sans">Original Photo</span>
+                    <span className="font-mono text-base font-bold text-m3-on-surface">
                       {fmt(file.size)}
                     </span>
                   </div>
-                  <div className="result-arrow">→</div>
+                  <div className="text-xl text-m3-primary">→</div>
                   <div>
-                    <span className="result-label">Passport Output</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "#60a5fa" }}>
+                    <span className="block text-xs font-semibold uppercase tracking-wider text-m3-primary mb-1 font-sans">Passport Output</span>
+                    <span className="font-mono text-base font-bold text-m3-primary">
                       {resultInfo}
                     </span>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: "rgba(59,130,246,0.18)",
-                  borderColor: "#3b82f6",
-                  color: "#60a5fa",
-                }}>
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-m3-secondary-container text-m3-on-secondary-container text-xs font-medium shadow-m3-elevation-1 font-sans">
                   🛂 Official Passport / Exam Sized Photo Ready
                 </div>
               </div>
@@ -961,7 +1020,7 @@ export default function PassportResizer({ auth }) {
             </div>
           )}
 
-          <div className="comp-footer">
+          <div className="mt-8 pt-4 border-t border-m3-outline-variant flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-m3-on-surface-variant font-sans">
             <span>FlashCrush · Passport & Exam Photo Studio</span>
             <span>100% in-browser processing · Zero server uploads</span>
           </div>
