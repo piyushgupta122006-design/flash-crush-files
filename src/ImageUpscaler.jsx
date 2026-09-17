@@ -55,16 +55,16 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
   }, [handlePointerMove]);
 
   return (
-    <div className="comp-card" style={{ padding: "20px", marginTop: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
-        <h3 style={{ fontSize: "1.2rem", margin: 0, fontWeight: 800, display: "flex", alignItems: "center", gap: "8px" }}>
+    <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 mt-6 transition-colors">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
+        <h3 className="text-lg font-medium text-m3-on-surface font-display flex items-center gap-2">
           <span>🔍</span> Interactive Before / After Comparison
         </h3>
-        <div style={{ display: "flex", gap: "10px", fontSize: "0.85rem", fontWeight: 700 }}>
-          <span style={{ background: "var(--m3-yellow)", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
+        <div className="flex items-center gap-2 font-mono text-xs">
+          <span className="px-3 py-1.5 rounded-full bg-m3-surface-container-high text-m3-on-surface-variant border border-m3-outline-variant">
             Original: {origDims.w}×{origDims.h}
           </span>
-          <span style={{ background: "var(--m3-mint)", padding: "4px 8px", borderRadius: 'var(--radius-full)', border: 'none' }}>
+          <span className="px-3 py-1.5 rounded-full bg-m3-primary text-m3-on-primary shadow-m3-elevation-1 font-bold">
             Upscaled: {newDims.w}×{newDims.h}
           </span>
         </div>
@@ -72,141 +72,51 @@ function BeforeAfterSlider({ originalSrc, upscaledSrc, origDims, newDims }) {
 
       <div
         ref={containerRef}
-        className="before-after-container"
-        style={{
-          position: "relative",
-          width: "100%",
-          maxHeight: "520px",
-          minHeight: "260px",
-          overflow: "hidden",
-          borderRadius: 'var(--radius-full)',
-          border: 'none',
-          boxShadow: "6px 6px 0px #1a1a1a",
-          cursor: "col-resize",
-          userSelect: "none",
-          background: "#111",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
+        className="relative w-full max-h-[520px] min-h-[260px] overflow-hidden rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 cursor-col-resize select-none bg-m3-surface-container-low dark:bg-m3-surface-container-lowest flex items-center justify-center"
         onPointerDown={onPointerDown}
       >
         {/* Upscaled Background (Full) */}
         <img
           src={upscaledSrc}
           alt="Upscaled result"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            display: "block",
-            pointerEvents: "none",
-            imageRendering: "auto"
-          }}
+          className="w-full h-full object-contain block pointer-events-none"
+          style={{ imageRendering: "auto" }}
         />
 
         {/* Original Clipped Layer */}
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-            clipPath: `polygon(0 0, ${sliderPos}% 0, ${sliderPos}% 100%, 0 100%)`,
-            pointerEvents: "none"
-          }}
+          className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none"
+          style={{ clipPath: `polygon(0 0, ${sliderPos}% 0, ${sliderPos}% 100%, 0 100%)` }}
         >
           <img
             src={originalSrc}
             alt="Original"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              display: "block",
-              imageRendering: "pixelated"
-            }}
+            className="w-full h-full object-contain block pointer-events-none"
+            style={{ imageRendering: "pixelated" }}
           />
         </div>
 
         {/* Labels */}
-        <div style={{
-          position: "absolute",
-          top: "14px",
-          left: "14px",
-          background: "rgba(0,0,0,0.85)",
-          color: "#fff",
-          padding: "4px 10px",
-          borderRadius: 'var(--radius-full)',
-          fontSize: "12px",
-          fontWeight: 800,
-          letterSpacing: "0.05em",
-          border: 'none',
-          pointerEvents: "none"
-        }}>
+        <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-sm text-white font-mono text-xs font-bold tracking-wider pointer-events-none">
           ORIGINAL
         </div>
 
-        <div style={{
-          position: "absolute",
-          top: "14px",
-          right: "14px",
-          background: "var(--m3-yellow)",
-          color: "#000",
-          padding: "4px 10px",
-          borderRadius: 'var(--radius-full)',
-          fontSize: "12px",
-          fontWeight: 800,
-          letterSpacing: "0.05em",
-          border: 'none',
-          pointerEvents: "none"
-        }}>
+        <div className="absolute top-3.5 right-3.5 px-3 py-1 rounded-full bg-m3-primary text-m3-on-primary font-mono text-xs font-bold tracking-wider pointer-events-none shadow-m3-elevation-1">
           ✨ AI UPSCALED
         </div>
 
         {/* Draggable Divider Line */}
         <div
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: `${sliderPos}%`,
-            width: "4px",
-            background: "#fff",
-            boxShadow: "0 0 8px rgba(0,0,0,0.8)",
-            transform: "translateX(-50%)",
-            pointerEvents: "none",
-            zIndex: 10
-          }}
+          className="absolute top-0 bottom-0 w-1 bg-white shadow-lg pointer-events-none z-10 -translate-x-1/2"
+          style={{ left: `${sliderPos}%` }}
         >
           {/* Handle Badge */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "38px",
-              height: "38px",
-              borderRadius: "50%",
-              background: "var(--m3-pink)",
-              border: 'none',
-              boxShadow: "2px 2px 0px #000",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontSize: "15px",
-              fontWeight: 900
-            }}
-          >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-m3-primary text-m3-on-primary border-2 border-white shadow-m3-elevation-2 flex items-center justify-center text-sm font-bold pointer-events-none">
             ↔
           </div>
         </div>
       </div>
-      <p style={{ textAlign: "center", color: "var(--text-sub)", fontSize: "0.85rem", marginTop: "10px", fontWeight: 600 }}>
+      <p className="text-center text-xs text-m3-on-surface-variant mt-3 font-sans font-medium">
         👈 Drag the slider left &amp; right to compare edge clarity and pixel super-resolution 👉
       </p>
     </div>
@@ -390,23 +300,33 @@ export default function ImageUpscaler({ auth }) {
   const isOversized = origDims.w > MAX_DIMENSION_WARN || origDims.h > MAX_DIMENSION_WARN;
 
   return (
-    <div className="compressor-page">
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
       {/* ── Tool Navigation Bar ── */}
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <span className="tool-page-title">✨ AI Image Upscaler</span>
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
+        <button 
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
+          onClick={() => navigate("/")}
+        >
+          ← Back
+        </button>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">AI Image Upscaler</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">2x & 4x Neural Super-Resolution</div>
       </div>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1080px" }}>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 pb-12 flex-1">
         
         {/* ── Header ── */}
         {!file && (
-          <div className="comp-header">
-            <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>✨</div>
-              <h1 className="comp-title">AI Image Upscaler</h1>
+          <div className="mb-6 sm:mb-8 text-center">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">
+                ✨
+              </div>
+              <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">
+                AI Image Upscaler
+              </h1>
             </div>
-            <p className="comp-sub">
+            <p className="text-sm text-m3-on-surface-variant max-w-xl mx-auto font-sans">
               2x &amp; 4x AI Super-Resolution directly in your browser. Sharpen blurry photos, illustrations, and textures with zero server uploads.
             </p>
           </div>
@@ -414,24 +334,30 @@ export default function ImageUpscaler({ auth }) {
 
         {/* ── Drop Zone ── */}
         {!file && !processing && (
-          <div className="comp-card">
+          <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 overflow-hidden transition-colors">
             <div
-              className="drop-zone"
+              className="border-2 border-dashed border-m3-outline-variant rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); }}
             >
-              <span className="drop-icon">🖼️</span>
-              <div className="drop-main">Drop Low-Res Image Here</div>
-              <div className="drop-sub">JPG, PNG, WebP · 100% on-device neural enhancement</div>
-              <button type="button" className="drop-btn" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
-                Browse Image
+              <span className="text-4xl mb-3 block">🖼️</span>
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-1">Drop Low-Res Image Here</p>
+              <p className="text-xs text-m3-on-surface-variant font-sans mb-6">
+                JPG, PNG, WebP · max {MAX_IMAGE_SIZE_MB} MB · 100% on-device neural enhancement
+              </p>
+              <button 
+                type="button" 
+                className="px-5 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all font-sans active:scale-[0.99]" 
+                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+              >
+                📁 Browse Image
               </button>
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                style={{ display: "none" }}
+                hidden
                 onChange={(e) => handleFile(e.target.files?.[0])}
               />
             </div>
@@ -440,119 +366,118 @@ export default function ImageUpscaler({ auth }) {
 
         {/* ── Configuration & Workspace ── */}
         {file && !resultBlob && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="flex flex-col gap-6">
             
             {/* Input Details Card */}
-            <div className="comp-card" style={{ padding: "20px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 transition-colors">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4 min-w-0">
                   <img
                     src={previewSrc}
                     alt="Preview"
-                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
+                    className="w-16 h-16 object-cover rounded-2xl border border-m3-outline-variant flex-shrink-0"
                   />
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>{file.name}</div>
-                    <div style={{ color: "var(--text-sub)", fontSize: "0.88rem", fontWeight: 600, display: "flex", gap: "10px", marginTop: "4px" }}>
+                  <div className="min-w-0">
+                    <div className="text-base font-medium text-m3-on-surface truncate font-sans">{file.name}</div>
+                    <div className="text-xs text-m3-on-surface-variant font-mono flex items-center gap-3 mt-1">
                       <span>📏 {origDims.w} × {origDims.h} px</span>
                       <span>💾 {formatBytes(file.size)}</span>
                     </div>
                   </div>
                 </div>
 
-                <button className="btn-reset" onClick={resetAll} disabled={processing}>
+                <button 
+                  className="px-4 py-2 text-xs font-medium rounded-full bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-all font-sans disabled:opacity-50" 
+                  onClick={resetAll} 
+                  disabled={processing}
+                >
                   Change Image
                 </button>
               </div>
 
               {isOversized && (
-                <div style={{ marginTop: "14px", padding: "10px 14px", background: "var(--m3-yellow)", border: 'none', borderRadius: 'var(--radius-full)', fontSize: "0.85rem", fontWeight: 700 }}>
+                <div className="mt-4 p-3.5 rounded-2xl bg-m3-tertiary-container/30 text-m3-on-tertiary-container border border-m3-outline-variant text-xs font-sans">
                   ⚠️ Large input resolution ({origDims.w}×{origDims.h}px). Tiling (patch size 64) is enabled to ensure smooth in-browser WebGL processing without GPU memory overflow.
                 </div>
               )}
             </div>
 
             {/* Upscale Settings */}
-            <div className="comp-card" style={{ padding: "24px" }}>
-              <h3 style={{ fontSize: "1.15rem", marginBottom: "18px", borderBottom: "2px solid var(--border-color)", paddingBottom: "8px" }}>
+            <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 transition-colors">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-6 pb-3 border-b border-m3-outline-variant font-sans">
                 ⚙️ Super-Resolution Settings
               </h3>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* Scale Factor */}
                 <div>
-                  <label style={{ display: "block", fontWeight: 800, marginBottom: "8px", fontSize: "0.95rem" }}>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-m3-primary mb-3 font-sans">
                     Upscale Multiplier:
                   </label>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
+                  <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
-                      className={`btn-reset ${scaleFactor === 2 ? "active" : ""}`}
-                      style={{
-                        padding: "12px",
-                        background: scaleFactor === 2 ? "var(--m3-sky)" : "var(--bg-main)",
-                        fontWeight: 800,
-                        border: 'none'
-                      }}
+                      className={`py-3 px-3 text-xs font-medium rounded-2xl border transition-all font-sans ${
+                        scaleFactor === 2
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => setScaleFactor(2)}
                       disabled={processing}
                     >
-                      🚀 2x HD ({origDims.w * 2}×{origDims.h * 2})
+                      <div className="text-sm mb-0.5">🚀 2x HD</div>
+                      <div className="text-[11px] font-mono opacity-80">{origDims.w * 2}×{origDims.h * 2} px</div>
                     </button>
 
                     <button
                       type="button"
-                      className={`btn-reset ${scaleFactor === 4 ? "active" : ""}`}
-                      style={{
-                        padding: "12px",
-                        background: scaleFactor === 4 ? "var(--m3-pink)" : "var(--bg-main)",
-                        color: scaleFactor === 4 ? "#fff" : "inherit",
-                        fontWeight: 800,
-                        border: 'none'
-                      }}
+                      className={`py-3 px-3 text-xs font-medium rounded-2xl border transition-all font-sans ${
+                        scaleFactor === 4
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => setScaleFactor(4)}
                       disabled={processing}
                     >
-                      🔥 4x Ultra ({origDims.w * 4}×{origDims.h * 4})
+                      <div className="text-sm mb-0.5">🔥 4x Ultra</div>
+                      <div className="text-[11px] font-mono opacity-80">{origDims.w * 4}×{origDims.h * 4} px</div>
                     </button>
                   </div>
                 </div>
 
                 {/* Patch Size / Tiling */}
                 <div>
-                  <label style={{ display: "block", fontWeight: 800, marginBottom: "8px", fontSize: "0.95rem" }}>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-m3-secondary mb-3 font-sans">
                     Neural Patch Tiling:
                   </label>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px" }}>
+                  <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
-                      className={`btn-reset ${patchSize === 64 ? "active" : ""}`}
-                      style={{
-                        padding: "12px",
-                        background: patchSize === 64 ? "var(--m3-mint)" : "var(--bg-main)",
-                        fontWeight: 800,
-                        border: 'none'
-                      }}
+                      className={`py-3 px-3 text-xs font-medium rounded-2xl border transition-all font-sans ${
+                        patchSize === 64
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => setPatchSize(64)}
                       disabled={processing}
                     >
-                      🛡️ Safe (64px)
+                      <div className="text-sm mb-0.5">🛡️ Safe (64px)</div>
+                      <div className="text-[11px] opacity-80 font-sans">Low VRAM</div>
                     </button>
 
                     <button
                       type="button"
-                      className={`btn-reset ${patchSize === 128 ? "active" : ""}`}
-                      style={{
-                        padding: "12px",
-                        background: patchSize === 128 ? "var(--m3-yellow)" : "var(--bg-main)",
-                        fontWeight: 800,
-                        border: 'none'
-                      }}
+                      className={`py-3 px-3 text-xs font-medium rounded-2xl border transition-all font-sans ${
+                        patchSize === 128
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
+                      }`}
                       onClick={() => setPatchSize(128)}
                       disabled={processing}
                     >
-                      ⚡ Fast (128px)
+                      <div className="text-sm mb-0.5">⚡ Fast (128px)</div>
+                      <div className="text-[11px] opacity-80 font-sans">High Performance</div>
                     </button>
                   </div>
                 </div>
@@ -561,22 +486,18 @@ export default function ImageUpscaler({ auth }) {
 
               {/* Progress Bar & Status */}
               {processing && (
-                <div style={{ marginTop: "24px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontWeight: 800, fontSize: "0.9rem" }}>
+                <div className="my-8 max-w-md mx-auto">
+                  <div className="flex justify-between text-sm font-medium mb-2 text-m3-on-surface font-sans">
                     <span>{statusMsg}</span>
-                    <span>{progress}%</span>
+                    <span className="font-mono text-m3-primary font-bold">{progress}%</span>
                   </div>
-                  <div style={{ width: "100%", height: "16px", background: "#e5e7eb", borderRadius: 'var(--radius-full)', border: 'none', overflow: "hidden" }}>
+                  <div className="w-full h-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant overflow-hidden">
                     <div
-                      style={{
-                        width: `${progress}%`,
-                        height: "100%",
-                        background: "var(--m3-pink)",
-                        transition: "width 0.2s ease",
-                      }}
+                      className="h-full bg-m3-primary transition-all duration-200"
+                      style={{ width: `${progress}%` }}
                     />
                   </div>
-                  <p style={{ fontSize: "0.8rem", color: "var(--text-sub)", marginTop: "6px", textAlign: "center" }}>
+                  <p className="text-xs text-m3-on-surface-variant font-sans mt-3 text-center">
                     Processing locally on your GPU/WASM pipeline. Please keep this tab active.
                   </p>
                 </div>
@@ -584,22 +505,14 @@ export default function ImageUpscaler({ auth }) {
 
               {/* Action Button */}
               {!processing && (
-                <button
-                  className="btn-compress"
-                  style={{
-                    width: "100%",
-                    marginTop: "24px",
-                    padding: "16px",
-                    fontSize: "1.15rem",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}
-                  onClick={runUpscale}
-                >
-                  <span>✨</span> Upscale Image ({scaleFactor}x Resolution)
-                </button>
+                <div className="mt-8 flex justify-center">
+                  <button
+                    className="w-full max-w-md rounded-full py-3.5 px-6 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 font-sans"
+                    onClick={runUpscale}
+                  >
+                    <span>✨</span> Upscale Image ({scaleFactor}x Resolution)
+                  </button>
+                </div>
               )}
 
             </div>
@@ -609,19 +522,7 @@ export default function ImageUpscaler({ auth }) {
 
         {/* ── Error Banner ── */}
         {error && (
-          <div
-            className="error-banner"
-            style={{
-              background: "#FEE2E2",
-              border: 'none',
-              padding: "14px",
-              borderRadius: 'var(--radius-full)',
-              color: "#B91C1C",
-              fontWeight: "bold",
-              marginTop: "20px",
-              boxShadow: "4px 4px 0 #000"
-            }}
-          >
+          <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-outline-variant text-sm font-medium font-sans">
             ⚠ {error}
           </div>
         )}
@@ -636,13 +537,15 @@ export default function ImageUpscaler({ auth }) {
               newDims={newDims}
             />
 
-            <div className="comp-card" style={{ maxWidth: "720px", margin: "24px auto", padding: "28px", textAlign: "center" }}>
-              <div style={{ fontSize: "3.5rem", marginBottom: "12px" }}>🎉</div>
-              <h2 style={{ fontSize: "1.6rem", fontWeight: 900, marginBottom: "8px" }}>
+            <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 max-w-2xl mx-auto p-8 text-center mt-6 transition-colors">
+              <div className="w-16 h-16 rounded-full bg-m3-secondary-container text-3xl flex items-center justify-center text-m3-on-secondary-container shadow-m3-elevation-1 mx-auto mb-4">
+                🎉
+              </div>
+              <h2 className="text-xl sm:text-2xl font-normal text-m3-on-surface font-display tracking-tight mb-2">
                 Super-Resolution Complete!
               </h2>
-              <p style={{ color: "var(--text-sub)", marginBottom: "20px", fontWeight: 600 }}>
-                Enhanced from {origDims.w}×{origDims.h} to <strong>{newDims.w}×{newDims.h} ({scaleFactor}x)</strong> with crisp neural detail.
+              <p className="text-sm text-m3-on-surface-variant mb-6 font-sans">
+                Enhanced from {origDims.w}×{origDims.h} to <strong className="text-m3-primary font-mono">{newDims.w}×{newDims.h} ({scaleFactor}x)</strong> with crisp neural detail.
               </p>
 
               <ActionButtons
