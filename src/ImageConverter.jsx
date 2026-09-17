@@ -205,45 +205,45 @@ export default function ImageConverter({ auth }) {
   const isSameFormat = file && file.type === targetFormat;
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
       {/* Top Bar */}
       <div className="w-full max-w-4xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
         <button 
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
           onClick={() => navigate("/")}
         >
           ← Back
         </button>
-        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Image Converter</div>
-        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP · BMP · GIF</div>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">Image Converter</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP · BMP · GIF</div>
       </div>
 
       <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pb-12 flex-1">
         {/* Header Section */}
         <div className="mb-6 sm:mb-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-2xl text-[#001d35] dark:text-[#c2e7ff]">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">
               🔄
             </div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">
               Image Converter
             </h1>
           </div>
-          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-md mx-auto">
+          <p className="text-sm text-m3-on-surface-variant max-w-md mx-auto font-sans">
             Convert between PNG, JPG, WebP, BMP and GIF — instantly in your browser.
           </p>
         </div>
 
         {/* Main Card Surface */}
-        <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm p-6 sm:p-8 overflow-hidden">
+        <div className="bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 p-6 sm:p-8 overflow-hidden transition-colors">
 
           {/* Drop Zone */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`border-2 border-dashed border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+              className={`border-2 border-dashed border-m3-outline-variant rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
                 dragging 
-                  ? "bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border-[#0b57d0] dark:border-[#a8c7fa]" 
-                  : "bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#1e1f20]"
+                  ? "bg-m3-primary/10 border-m3-primary" 
+                  : "bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
               }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
@@ -258,10 +258,10 @@ export default function ImageConverter({ auth }) {
                 onChange={(e) => handleFile(e.target.files[0])}
               />
               <span className="text-4xl mb-3 block">🔄</span>
-              <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
+              <p className="text-lg font-medium text-m3-on-surface font-display mb-1">
                 {dragging ? "Drop your image here!" : "Drag & drop your image here"}
               </p>
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-6">
+              <p className="text-xs text-m3-on-surface-variant font-sans mb-6">
                 JPG, PNG, WebP, BMP, GIF · max {MAX_SIZE_MB} MB · 100% Client-Side Privacy
               </p>
 
@@ -284,7 +284,7 @@ export default function ImageConverter({ auth }) {
               )}
 
               {stage === "error" && (
-                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-[#ffdad6] dark:bg-[#93000a]/30 text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]/50 inline-block">
+                <div className="mt-4 px-4 py-2.5 rounded-2xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant inline-block font-sans">
                   ⚠ {errorMsg}
                 </div>
               )}
@@ -295,7 +295,7 @@ export default function ImageConverter({ auth }) {
           {(stage === "ready" || stage === "done") && (
             <div className="space-y-4">
               {preview && (
-                <div className="rounded-2xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden max-h-[260px] flex items-center justify-center bg-[#f0f4f9] dark:bg-[#131314] p-2">
+                <div className="rounded-2xl border border-m3-outline-variant overflow-hidden max-h-[260px] flex items-center justify-center bg-m3-surface-container-low dark:bg-m3-surface-container-lowest p-2">
                   <img
                     src={stage === "done" && convertedUrl ? convertedUrl : preview}
                     alt="Preview"
@@ -304,14 +304,14 @@ export default function ImageConverter({ auth }) {
                 </div>
               )}
 
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-xl flex items-center justify-center text-[#001d35] dark:text-[#c2e7ff] flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-m3-secondary-container text-xl flex items-center justify-center text-m3-on-secondary-container flex-shrink-0">
                     🖼️
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate">{file?.name}</div>
-                    <div className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">{fmt(file?.size)}</div>
+                    <div className="text-sm font-medium text-m3-on-surface truncate font-sans">{file?.name}</div>
+                    <div className="text-xs text-m3-on-surface-variant font-mono">{fmt(file?.size)}</div>
                   </div>
                 </div>
                 {/* Google Material Web Icon Button */}
@@ -323,8 +323,8 @@ export default function ImageConverter({ auth }) {
               {/* Source format badge */}
               {sourceFormat && (
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#e8def8] dark:bg-[#4a4458] text-[#1d192b] dark:text-[#e8def8] border border-[#cac4d0] dark:border-[#49454f]">
-                    📄 Source Format: <strong>{sourceFormat}</strong>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant font-sans">
+                    📄 Source Format: <strong className="font-semibold">{sourceFormat}</strong>
                   </span>
                 </div>
               )}
@@ -334,17 +334,17 @@ export default function ImageConverter({ auth }) {
           {/* Format selector */}
           {(stage === "ready" || stage === "done") && (
             <div className="mt-6">
-              <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+              <label className="text-xs font-medium text-m3-on-surface-variant block mb-2 uppercase tracking-wide font-sans">
                 Convert To
               </label>
 
               {/* Arrow preview */}
-              <div className="flex items-center justify-center gap-3 mb-4 text-sm font-medium">
-                <span className="px-3 py-1 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] text-[#444746] dark:text-[#c4c7c5]">
+              <div className="flex items-center justify-center gap-3 mb-4 text-sm font-medium font-sans">
+                <span className="px-3 py-1 rounded-full bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant text-m3-on-surface-variant">
                   {sourceFormat}
                 </span>
-                <span className="text-[#0b57d0] dark:text-[#a8c7fa] font-bold">→</span>
-                <span className="px-3 py-1 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] font-semibold border border-[#0b57d0]/30 dark:border-[#a8c7fa]/30">
+                <span className="text-m3-primary font-bold">→</span>
+                <span className="px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container font-semibold border border-m3-outline-variant shadow-m3-elevation-1">
                   {getFormatFromMime(targetFormat)?.label}
                 </span>
               </div>
@@ -357,34 +357,34 @@ export default function ImageConverter({ auth }) {
                     <button
                       key={fmt.id}
                       type="button"
-                      className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all ${
+                      className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all font-sans ${
                         isSelected 
-                          ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold border-2 border-[#0b57d0] dark:border-[#a8c7fa] shadow-xs" 
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1" 
                           : isCurrent
-                          ? "opacity-40 cursor-not-allowed bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-dashed border-[#c7c7c7] dark:border-[#444746]"
-                          : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                          ? "opacity-40 cursor-not-allowed bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface-variant border border-dashed border-m3-outline-variant"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
                       }`}
                       onClick={() => { if (!isCurrent) setTargetFormat(fmt.id); }}
                       disabled={isCurrent}
                       title={isCurrent ? "This is already the source format" : fmt.desc}
                     >
-                      <span className="text-base font-bold">{fmt.label}</span>
+                      <span className="text-base font-bold font-display">{fmt.label}</span>
                       <span className="text-[11px] font-mono opacity-80">.{fmt.ext}</span>
                       {isCurrent && (
-                        <span className="text-[9px] uppercase font-bold text-[#b45309] dark:text-[#fde68a] mt-0.5">Current</span>
+                        <span className="text-[9px] uppercase font-bold text-m3-on-surface-variant mt-0.5">Current</span>
                       )}
                     </button>
                   );
                 })}
               </div>
 
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2">
+              <p className="text-xs text-m3-on-surface-variant mt-2 font-sans">
                 {getFormatFromMime(targetFormat)?.desc}
               </p>
 
               {/* GIF notice */}
               {targetFormat === "image/gif" && (
-                <div className="mt-3 px-3 py-2 rounded-xl bg-[#fff8e1] dark:bg-[#4a3b00]/30 border border-[#ffe082] dark:border-[#ffe082]/30 text-[#855700] dark:text-[#ffe082] text-xs">
+                <div className="mt-3 px-3 py-2 rounded-xl bg-m3-surface-container-high border border-m3-outline-variant text-m3-on-surface-variant text-xs font-sans">
                   ⚠️ GIF export is limited to PNG encoding (browser restriction). For animated GIFs, use a dedicated tool.
                 </div>
               )}
@@ -392,7 +392,7 @@ export default function ImageConverter({ auth }) {
               {/* Quality selector — only for JPG / WebP */}
               {(targetFormat === "image/jpeg" || targetFormat === "image/webp") && (
                 <div className="mt-4">
-                  <label className="text-xs font-semibold text-[#444746] dark:text-[#c4c7c5] block mb-2 uppercase tracking-wide">
+                  <label className="text-xs font-medium text-m3-on-surface-variant block mb-2 uppercase tracking-wide font-sans">
                     Output Quality
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -400,10 +400,10 @@ export default function ImageConverter({ auth }) {
                       <button
                         key={q.id}
                         type="button"
-                        className={`py-2.5 px-3 rounded-xl text-center text-sm font-medium transition-all ${
+                        className={`py-2.5 px-3 rounded-xl text-center text-sm font-medium transition-all font-sans ${
                           quality === q.id
-                            ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff] font-semibold border-2 border-[#0b57d0] dark:border-[#a8c7fa]"
-                            : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#e4ebf7] dark:hover:bg-[#333537]"
+                            ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                            : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant hover:bg-m3-surface-container-highest"
                         }`}
                         onClick={() => setQuality(q.id)}
                         title={q.desc}
@@ -412,7 +412,7 @@ export default function ImageConverter({ auth }) {
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-1.5">
+                  <p className="text-xs text-m3-on-surface-variant mt-1.5 font-sans">
                     {QUALITY_OPTS.find(q => q.id === quality)?.desc}
                   </p>
                 </div>
@@ -435,52 +435,52 @@ export default function ImageConverter({ auth }) {
 
           {/* Progress Section (Google Material Web Linear Progress) */}
           {stage === "converting" && (
-            <div className="mt-6 p-6 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746]">
+            <div className="mt-6 p-6 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">Converting your image...</span>
-                <span className="text-sm font-bold text-[#0b57d0] dark:text-[#a8c7fa] font-mono">{progress}%</span>
+                <span className="text-sm font-medium text-m3-on-surface font-sans">Converting your image...</span>
+                <span className="text-sm font-bold text-m3-primary font-mono">{progress}%</span>
               </div>
               
               {/* Google Material Web Linear Progress Component */}
               <md-linear-progress value={progress / 100} style={{ width: "100%" }}></md-linear-progress>
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2 text-center">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant mt-3 font-medium font-sans text-center">{progressMsg}</p>
             </div>
           )}
 
           {/* Result Card */}
           {stage === "done" && result && (
-            <div className="mt-6 p-6 rounded-2xl bg-[#c2e7ff]/20 dark:bg-[#004a77]/20 border border-[#0b57d0]/30 dark:border-[#a8c7fa]/30 text-center">
+            <div className="mt-6 p-6 rounded-2xl bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant text-center">
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] block">From</span>
-                  <span className="text-xl font-bold text-[#1f1f1f] dark:text-[#e3e3e3]">{result.originalFormat}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-m3-on-surface-variant block font-sans">From</span>
+                  <span className="text-xl font-bold text-m3-on-surface font-display">{result.originalFormat}</span>
                 </div>
-                <span className="text-xl text-[#0b57d0] dark:text-[#a8c7fa]">→</span>
+                <span className="text-xl text-m3-primary font-mono">→</span>
                 <div className="text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#0b57d0] dark:text-[#a8c7fa] block">To</span>
-                  <span className="text-xl font-bold text-[#0b57d0] dark:text-[#a8c7fa]">{result.targetFormat}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-m3-primary block font-sans">To</span>
+                  <span className="text-xl font-bold text-m3-primary font-display">{result.targetFormat}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-center gap-6 flex-wrap py-3 border-y border-[#0b57d0]/10 dark:border-[#a8c7fa]/10">
+              <div className="flex items-center justify-center gap-6 flex-wrap py-3 border-y border-m3-outline-variant/40">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Original</span>
-                  <span className="text-sm font-semibold font-mono text-[#1f1f1f] dark:text-[#e3e3e3]">{fmt(result.originalSize)}</span>
+                  <span className="text-[10px] font-bold uppercase text-m3-on-surface-variant block font-sans">Original</span>
+                  <span className="text-sm font-semibold font-mono text-m3-on-surface">{fmt(result.originalSize)}</span>
                 </div>
-                <div className="w-[1px] h-6 bg-[#c7c7c7] dark:bg-[#444746]" />
+                <div className="w-[1px] h-6 bg-m3-outline-variant" />
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Converted</span>
-                  <span className="text-sm font-semibold font-mono text-[#0b57d0] dark:text-[#a8c7fa]">{fmt(result.convertedSize)}</span>
+                  <span className="text-[10px] font-bold uppercase text-m3-on-surface-variant block font-sans">Converted</span>
+                  <span className="text-sm font-semibold font-mono text-m3-primary">{fmt(result.convertedSize)}</span>
                 </div>
-                <div className="w-[1px] h-6 bg-[#c7c7c7] dark:bg-[#444746]" />
+                <div className="w-[1px] h-6 bg-m3-outline-variant" />
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-[#444746] dark:text-[#c4c7c5] block">Dimensions</span>
-                  <span className="text-sm font-semibold font-mono text-[#1f1f1f] dark:text-[#e3e3e3]">{result.width} × {result.height}</span>
+                  <span className="text-[10px] font-bold uppercase text-m3-on-surface-variant block font-sans">Dimensions</span>
+                  <span className="text-sm font-semibold font-mono text-m3-on-surface">{result.width} × {result.height}</span>
                 </div>
               </div>
 
               <div className="mt-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant shadow-m3-elevation-1 font-sans">
                   ✅ Successfully converted to {result.targetFormat}
                 </span>
               </div>
@@ -499,8 +499,8 @@ export default function ImageConverter({ auth }) {
             </div>
           )}
 
-          <div className="mt-8 pt-4 border-t border-[#c7c7c7] dark:border-[#444746] flex items-center justify-between text-xs text-[#444746] dark:text-[#c4c7c5]">
-            <span>Flash Crush-Files · Convert Tool</span>
+          <div className="mt-8 pt-4 border-t border-m3-outline-variant/40 flex justify-between text-label-sm text-m3-on-surface-variant font-sans">
+            <span>FlashCrush · Convert Tool</span>
             <span>Files never leave your browser</span>
           </div>
         </div>
