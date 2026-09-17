@@ -323,40 +323,40 @@ export default function BulkImageCompressor({ auth }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors">
       {/* Top Bar */}
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
         <button 
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all shadow-m3-elevation-1 font-sans"
           onClick={() => navigate("/")}
         >
           ← Back
         </button>
-        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Bulk Image Compressor</div>
-        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">Batch 20-50+ Photos</div>
+        <div className="text-lg font-medium text-m3-on-surface font-display tracking-tight">Bulk Image Compressor</div>
+        <div className="text-xs text-m3-on-surface-variant hidden sm:block font-medium font-sans">Batch 20-50+ Photos</div>
       </div>
 
       <div className="w-full max-w-[1050px] mx-auto px-4 sm:px-6 pb-12 flex-1">
         {/* Header Text */}
         <div className="mb-6 sm:mb-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] text-xl">🖼️</div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">Bulk / Batch Image Compressor</h1>
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-m3-secondary-container text-2xl text-m3-on-secondary-container shadow-m3-elevation-1">🖼️</div>
+            <h1 className="text-2xl sm:text-headline-sm font-normal text-m3-on-surface font-display tracking-tight">Bulk / Batch Image Compressor</h1>
           </div>
-          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-xl mx-auto">
+          <p className="text-sm text-m3-on-surface-variant max-w-xl mx-auto font-sans">
             Upload 20–50+ images at once, compress with customizable presets, and download in a single .ZIP file.
           </p>
         </div>
 
         {/* Main Card Surface */}
-        <div className="w-full bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm overflow-hidden">
+        <div className="w-full bg-m3-surface-container-lowest dark:bg-m3-surface-container rounded-3xl border border-m3-outline-variant shadow-m3-elevation-1 overflow-hidden transition-colors">
           
           {/* Drop Zone */}
           <div
             className={`flex flex-col items-center justify-center p-8 sm:p-12 mx-6 mt-6 border-2 border-dashed rounded-3xl cursor-pointer transition-all ${
               dragging 
-                ? "border-[#0b57d0] dark:border-[#a8c7fa] bg-[#c2e7ff]/20 dark:bg-[#004a77]/20" 
-                : "border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                ? "border-m3-primary bg-m3-primary/10" 
+                : "border-m3-outline-variant bg-m3-surface-container-low/50 dark:bg-m3-surface-container-low/30 hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high"
             }`}
             style={{ marginBottom: files.length > 0 ? "16px" : "24px" }}
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
@@ -373,26 +373,26 @@ export default function BulkImageCompressor({ auth }) {
               onChange={(e) => addFiles(e.target.files)}
             />
             <span className="text-4xl mb-4">📸</span>
-            <p className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">
+            <p className="text-lg font-medium text-m3-on-surface font-display mb-2">
               {dragging ? "Drop your photos here!" : "Drag & drop multiple images to compress"}
             </p>
-            <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">
+            <p className="text-sm text-m3-on-surface-variant font-sans mb-6">
               Upload up to {MAX_FILES} photos (JPG, PNG, WebP) · 100% in-browser privacy
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3" onClick={(e) => e.stopPropagation()}>
-              <button className="px-6 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm" onClick={() => inputRef.current?.click()}>
+              <button className="px-6 py-3 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 font-sans" onClick={() => inputRef.current?.click()}>
                 📁 Browse Images {files.length > 0 ? `(${files.length} selected)` : ""}
               </button>
               <button 
-                className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all disabled:opacity-50 shadow-sm" 
+                className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-low dark:hover:bg-m3-surface-container-high transition-all disabled:opacity-50 shadow-m3-elevation-1 font-sans" 
                 onClick={handleDrivePick}
                 disabled={pickLoading || auth.authStatus === "loading"}
               >
                 <DriveIconSmall />{drivePickLabel()}
               </button>
             </div>
-            {errorMsg && <div className="mt-4 px-4 py-2 rounded-xl bg-[#ffdad6] dark:bg-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium border border-[#ffdad6] dark:border-[#93000a]">⚠ {errorMsg}</div>}
+            {errorMsg && <div className="mt-4 px-4 py-2 rounded-xl bg-m3-error-container text-m3-on-error-container text-sm font-medium border border-m3-outline-variant font-sans">⚠ {errorMsg}</div>}
           </div>
 
           {/* Settings & Controls */}
@@ -401,16 +401,16 @@ export default function BulkImageCompressor({ auth }) {
               
               {/* Presets Map */}
               <div className="mb-6">
-                <span className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-3">1. Compression Preset</span>
+                <span className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-3 font-sans">1. Compression Preset</span>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
-                      className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all ${
+                      className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all font-sans ${
                         preset === p.id
-                          ? "bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border-[#0b57d0] dark:border-[#a8c7fa] border-solid"
-                          : "bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container font-semibold border-2 border-m3-primary shadow-m3-elevation-1"
+                          : "bg-m3-surface-container-low dark:bg-m3-surface-container-high text-m3-on-surface border-m3-outline-variant hover:bg-m3-surface-container-highest"
                       }`}
                       onClick={() => setPreset(p.id)}
                     >
@@ -423,11 +423,11 @@ export default function BulkImageCompressor({ auth }) {
               </div>
 
               {/* Fine-Tuning Settings */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl mb-6">
                 
                 {preset === "target" && (
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2 font-sans">
                       Target File Size (KB)
                     </label>
                     <div className="flex items-center gap-2">
@@ -437,21 +437,21 @@ export default function BulkImageCompressor({ auth }) {
                         max="2000"
                         value={targetKb}
                         onChange={(e) => setTargetKb(Math.max(10, Number(e.target.value)))}
-                        className="w-24 px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa] font-mono"
+                        className="w-24 px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary font-mono transition-colors"
                       />
-                      <span className="text-xs text-[#444746] dark:text-[#c4c7c5]">KB</span>
+                      <span className="text-xs text-m3-on-surface-variant font-sans">KB</span>
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2 font-sans">
                     Output Format
                   </label>
                   <select
                     value={outputFormat}
                     onChange={(e) => setOutputFormat(e.target.value)}
-                    className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
+                    className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary font-sans transition-colors"
                   >
                     <option value="original">Keep Original Format</option>
                     <option value="image/webp">Convert to WebP (Recommended)</option>
@@ -460,13 +460,13 @@ export default function BulkImageCompressor({ auth }) {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-[#444746] dark:text-[#c4c7c5] mb-2">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2 font-sans">
                     Max Resolution Width
                   </label>
                   <select
                     value={maxWidthOption}
                     onChange={(e) => setMaxWidthOption(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa]"
+                    className="w-full px-3 py-2 bg-m3-surface-container-lowest dark:bg-m3-surface-container border border-m3-outline-variant rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary font-sans transition-colors"
                   >
                     <option value={1920}>Full HD (1920px) — Recommended</option>
                     <option value={1280}>HD (1280px) — Compact</option>
@@ -479,7 +479,7 @@ export default function BulkImageCompressor({ auth }) {
               {/* Action Buttons Row */}
               <div className="flex gap-3 items-center">
                 <button
-                  className="flex-1 rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all"
+                  className="flex-1 rounded-full py-3.5 px-4 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 transition-all font-sans"
                   onClick={runBatchCompression}
                   disabled={stage === "processing"}
                 >
@@ -490,7 +490,7 @@ export default function BulkImageCompressor({ auth }) {
                 <button
                   type="button"
                   onClick={clearAll}
-                  className="rounded-full px-6 py-3.5 text-sm font-medium text-[#ba1a1a] dark:text-[#ffb4ab] bg-[#ffdad6]/50 hover:bg-[#ffdad6] dark:bg-[#93000a]/50 dark:hover:bg-[#93000a] border border-[#ffdad6] dark:border-[#93000a] transition-all"
+                  className="rounded-full px-6 py-3.5 text-sm font-medium text-m3-on-error-container bg-m3-error-container/60 hover:bg-m3-error-container border border-m3-outline-variant transition-all font-sans"
                   title="Clear all uploaded images"
                 >
                   Clear All
@@ -502,33 +502,33 @@ export default function BulkImageCompressor({ auth }) {
           {/* ── Progress Bar ── */}
           {stage === "processing" && (
             <div className="px-6 pb-8 text-center">
-              <div className="flex justify-between text-sm font-medium mb-2 text-[#1f1f1f] dark:text-[#e3e3e3]">
+              <div className="flex justify-between text-sm font-medium mb-2 text-m3-on-surface font-sans">
                 <span>Batch Compressing...</span>
-                <span>{progress}%</span>
+                <span className="font-mono text-m3-primary font-bold">{progress}%</span>
               </div>
-              <div className="w-full h-3 rounded-full bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] overflow-hidden">
-                <div className="h-full bg-[#0b57d0] dark:bg-[#a8c7fa] transition-all duration-300" style={{ width: `${progress}%` }} />
+              <div className="w-full h-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant overflow-hidden">
+                <div className="h-full bg-m3-primary transition-all duration-300" style={{ width: `${progress}%` }} />
               </div>
-              <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-3">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant font-sans mt-3">{progressMsg}</p>
             </div>
           )}
 
           {/* ── Results Banner ── */}
           {stage === "done" && zipBlob && (
             <div className="px-6 pb-6">
-              <div className="mt-2 mb-6 p-4 bg-[#c4eed0]/30 dark:bg-[#0f5223]/30 border border-[#c4eed0] dark:border-[#0f5223] rounded-2xl">
+              <div className="mt-2 mb-6 p-4 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
                   <div>
-                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Original Total</span>
-                    <span className="font-mono text-lg font-bold text-[#444746] dark:text-[#c4c7c5]">{files.length} Photos · {fmt(totalOrigSize)}</span>
+                    <span className="block text-xs text-m3-on-surface-variant uppercase tracking-wider mb-1 font-sans">Original Total</span>
+                    <span className="font-mono text-lg font-medium text-m3-on-surface">{files.length} Photos · {fmt(totalOrigSize)}</span>
                   </div>
-                  <div className="text-xl text-[#c7c7c7] dark:text-[#444746] hidden sm:block">→</div>
+                  <div className="text-xl text-m3-outline hidden sm:block">→</div>
                   <div>
-                    <span className="block text-xs text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider mb-1">Compressed Total</span>
-                    <span className="font-mono text-lg font-bold text-[#0f5223] dark:text-[#c4eed0]">{fmt(totalCompSize)} (-{totalSavedPercent}%)</span>
+                    <span className="block text-xs text-m3-on-surface-variant uppercase tracking-wider mb-1 font-sans">Compressed Total</span>
+                    <span className="font-mono text-lg font-bold text-m3-primary">{fmt(totalCompSize)} (-{totalSavedPercent}%)</span>
                   </div>
                 </div>
-                <div className="mt-3 text-center text-xs font-medium text-[#0f5223] dark:text-[#c4eed0] bg-[#c4eed0] dark:bg-[#0f5223] py-1.5 rounded-full px-3 inline-block w-full">
+                <div className="mt-3 text-center text-xs font-medium text-m3-on-secondary-container bg-m3-secondary-container py-1.5 rounded-full px-3 inline-block w-full shadow-m3-elevation-1 font-sans border border-m3-outline-variant">
                   🎉 Saved {fmt(totalSavedBytes)} ({totalSavedPercent}% space saved)
                 </div>
               </div>
@@ -543,15 +543,15 @@ export default function BulkImageCompressor({ auth }) {
           {files.length > 0 && (
             <div className="px-6 pb-6">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-xs font-bold text-[#444746] dark:text-[#c4c7c5] uppercase tracking-wider">
+                <span className="text-xs font-semibold text-m3-on-surface-variant uppercase tracking-wider font-sans">
                   Selected Photos ({files.length})
                 </span>
-                <span className="text-xs text-[#444746] dark:text-[#c4c7c5]">
+                <span className="text-xs text-m3-on-surface-variant font-mono">
                   Total: {fmt(totalOrigSize)}
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[420px] overflow-y-auto p-2 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-2xl">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-[420px] overflow-y-auto p-2 bg-m3-surface-container-low dark:bg-m3-surface-container-high border border-m3-outline-variant rounded-2xl">
                 {files.map((item) => {
                   const isDone = item.status === "done";
                   const savedPct = isDone && item.compSize < item.origSize
@@ -561,29 +561,29 @@ export default function BulkImageCompressor({ auth }) {
                   return (
                     <div
                       key={item.id}
-                      className={`relative flex flex-col overflow-hidden rounded-xl bg-[#ffffff] dark:bg-[#1e1f20] transition-colors ${
-                        isDone ? "border border-[#c4eed0] dark:border-[#0f5223]" : "border border-[#c7c7c7] dark:border-[#444746]"
+                      className={`relative flex flex-col overflow-hidden rounded-xl bg-m3-surface-container-lowest dark:bg-m3-surface-container transition-colors ${
+                        isDone ? "border border-m3-primary/50" : "border border-m3-outline-variant"
                       }`}
                     >
-                      <div className="aspect-[4/3] bg-[#f8fafd] dark:bg-[#131314] flex items-center justify-center relative overflow-hidden">
+                      <div className="aspect-[4/3] bg-m3-surface-container-low dark:bg-m3-surface-container-lowest flex items-center justify-center relative overflow-hidden">
                         <img src={item.thumb} alt={item.name} className="max-w-full max-h-full object-cover w-full h-full" />
                         <button
                           onClick={() => removeFile(item.id)}
-                          className="absolute top-1 right-1 w-6 h-6 rounded-full bg-[#1f1f1f]/60 text-white flex items-center justify-center text-xs border border-white/20 hover:bg-[#1f1f1f]"
+                          className="absolute top-1 right-1 w-6 h-6 rounded-full bg-m3-surface-dim/80 text-m3-on-surface flex items-center justify-center text-xs border border-m3-outline-variant/50 hover:bg-m3-surface-dim transition-colors"
                         >
                           ✕
                         </button>
                       </div>
 
-                      <div className="p-2 flex flex-col flex-1 justify-between">
+                      <div className="p-2 flex flex-col flex-1 justify-between font-sans">
                         <div>
-                          <div className="text-[10px] font-bold text-[#1f1f1f] dark:text-[#e3e3e3] truncate mb-1">
+                          <div className="text-[10px] font-medium text-m3-on-surface truncate mb-1">
                             {item.name}
                           </div>
-                          <div className="flex justify-between items-center text-[9px] text-[#444746] dark:text-[#c4c7c5]">
+                          <div className="flex justify-between items-center text-[9px] text-m3-on-surface-variant font-mono">
                             <span>{fmt(item.origSize)}</span>
                             {isDone && (
-                              <span className="text-[#0f5223] dark:text-[#c4eed0] font-bold">
+                              <span className="text-m3-primary font-bold">
                                 → {fmt(item.compSize)}
                               </span>
                             )}
@@ -592,17 +592,17 @@ export default function BulkImageCompressor({ auth }) {
 
                         <div className="mt-2 flex justify-between items-center">
                           {isDone ? (
-                            <span className="px-1.5 py-0.5 rounded-full bg-[#c4eed0] dark:bg-[#0f5223] text-[#0f5223] dark:text-[#c4eed0] text-[8px] font-bold">
+                            <span className="px-1.5 py-0.5 rounded-full bg-m3-secondary-container text-m3-on-secondary-container text-[8px] font-semibold">
                               -{savedPct}% Saved
                             </span>
                           ) : (
-                            <span className="text-[8px] text-[#444746] dark:text-[#c4c7c5]">Ready</span>
+                            <span className="text-[8px] text-m3-on-surface-variant">Ready</span>
                           )}
 
                           {isDone && (
                             <button
                               onClick={() => downloadSingle(item)}
-                              className="text-[9px] font-bold text-[#0b57d0] dark:text-[#a8c7fa] hover:underline"
+                              className="text-[9px] font-bold text-m3-primary hover:underline"
                             >
                               ⬇ Save
                             </button>
@@ -616,7 +616,7 @@ export default function BulkImageCompressor({ auth }) {
             </div>
           )}
 
-          <div className="p-4 text-center text-xs text-[#444746] dark:text-[#c4c7c5] border-t border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
+          <div className="p-4 text-center text-label-sm text-m3-on-surface-variant border-t border-m3-outline-variant/40 bg-m3-surface-container-low/30 font-sans">
             FlashCrush · Bulk Batch Compressor · 100% in-browser processing
           </div>
         </div>
