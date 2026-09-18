@@ -195,33 +195,45 @@ export default function EXIFCleaner({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
       {/* ── Top Bar ── */}
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <span className="tool-page-title">🛡️ EXIF Cleaner &amp; Viewer</span>
-      </div>
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">🛡️</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">EXIF Cleaner &amp; Viewer</span>
+        </div>
+      </header>
 
-      <div className="compressor-wrap" style={{ maxWidth: "900px" }}>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* ── Header ── */}
         {!file && (
-          <div className="comp-header">
-            <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>🛡️</div>
-              <h1 className="comp-title">EXIF Cleaner &amp; Viewer</h1>
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+              🛡️
             </div>
-            <p className="comp-sub">
-              Extract, visualize, and scrub hidden GPS locations, camera models, and date stamps from photos. 100% private, zero uploads.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+              EXIF Cleaner &amp; Viewer
+            </h1>
+            <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+              Extract, visualize, and scrub hidden GPS locations, camera models, and date stamps from photos. 100% private client-side processing with zero uploads.
             </p>
           </div>
         )}
 
         {/* ── Drop Zone ── */}
         {!file && !processing && (
-          <div className="comp-card">
+          <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1">
             <div
-              className="drop-zone"
+              className="border-2 border-dashed border-m3-outline-variant hover:border-m3-primary bg-m3-surface-container/40 hover:bg-m3-surface-container/80 rounded-3xl p-8 sm:p-14 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 group"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
@@ -229,12 +241,18 @@ export default function EXIFCleaner({ auth }) {
                 handleFile(e.dataTransfer.files[0]);
               }}
             >
-              <span className="drop-icon">📸</span>
-              <div className="drop-main">Drop Photo to Analyze</div>
-              <div className="drop-sub">JPG, PNG, HEIC, TIFF · 100% offline analysis</div>
+              <div className="w-20 h-20 rounded-full bg-m3-primary/10 text-m3-primary flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                📸
+              </div>
+              <div className="text-xl sm:text-2xl font-display font-bold text-m3-on-surface mb-2">
+                Drop Photo to Analyze
+              </div>
+              <div className="text-sm text-m3-on-surface-variant mb-6 max-w-md">
+                JPG, PNG, HEIC, TIFF · 100% offline private analysis (up to {MAX_SIZE_MB}MB)
+              </div>
               <button
                 type="button"
-                className="drop-btn"
+                className="px-8 py-3.5 rounded-full bg-m3-primary text-m3-on-primary font-semibold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 hover:bg-m3-primary/90 active:scale-95 transition-all duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
@@ -246,7 +264,7 @@ export default function EXIFCleaner({ auth }) {
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={(e) => handleFile(e.target.files?.[0])}
               />
             </div>
@@ -255,26 +273,38 @@ export default function EXIFCleaner({ auth }) {
 
         {/* ── Privacy Inspector & Controls ── */}
         {file && !cleanBlob && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="flex flex-col gap-6">
             
             {/* Image Summary */}
-            <div className="comp-card" style={{ padding: "20px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 sm:p-6 shadow-m3-elevation-1">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-4 min-w-0">
                   <img
                     src={previewSrc}
                     alt="Original"
-                    style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: 'var(--radius-full)', border: 'none' }}
+                    className="w-16 h-16 rounded-2xl object-cover border border-m3-outline-variant/80 shadow-sm flex-shrink-0"
                   />
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>{file.name}</div>
-                    <div style={{ color: "var(--text-sub)", fontSize: "0.88rem", fontWeight: 600, display: "flex", gap: "10px", marginTop: "4px" }}>
-                      <span>📏 {origDims.w} × {origDims.h} px</span>
-                      <span>💾 {formatBytes(file.size)}</span>
+                  <div className="min-w-0">
+                    <div className="font-display font-bold text-base sm:text-lg text-m3-on-surface truncate max-w-xs sm:max-w-md">
+                      {file.name}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full bg-m3-surface-container text-xs font-mono text-m3-on-surface-variant border border-m3-outline-variant/50">
+                        📏 {origDims.w} × {origDims.h} px
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-m3-surface-container text-xs font-mono text-m3-on-surface-variant border border-m3-outline-variant/50">
+                        💾 {formatBytes(file.size)}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <button className="btn-reset" onClick={resetAll} disabled={processing}>
+
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded-full border border-m3-outline-variant/80 hover:bg-m3-error-container hover:text-m3-on-error-container hover:border-m3-error/30 text-sm font-semibold text-m3-on-surface transition-all duration-200 active:scale-95 disabled:opacity-50"
+                  onClick={resetAll}
+                  disabled={processing}
+                >
                   Change Image
                 </button>
               </div>
@@ -282,50 +312,100 @@ export default function EXIFCleaner({ auth }) {
 
             {/* Metadata Report Cards */}
             {metadata && (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
                 {/* Location / GPS Data */}
-                <div className="comp-card" style={{ padding: "20px", background: hasGPS ? "#FEE2E2" : "var(--bg-main)", borderColor: hasGPS ? "#B91C1C" : "#000" }}>
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    📍 GPS Location {hasGPS && <span style={{ fontSize: "0.75rem", background: "#B91C1C", color: "#fff", padding: "4px 8px", borderRadius: 'var(--radius-full)' }}>CRITICAL WARNING</span>}
-                  </h3>
+                <div className={`rounded-3xl p-6 shadow-m3-elevation-1 transition-all ${
+                  hasGPS
+                    ? "bg-m3-error-container/20 border-2 border-m3-error/50"
+                    : "bg-m3-surface-container-low border border-m3-outline-variant/60"
+                }`}>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <h3 className="text-base sm:text-lg font-display font-bold text-m3-on-surface flex items-center gap-2">
+                      <span>📍</span> GPS Location
+                    </h3>
+                    {hasGPS && (
+                      <span className="px-2.5 py-0.5 rounded-full bg-m3-error text-m3-on-error text-xs font-bold tracking-wide animate-pulse">
+                        CRITICAL WARNING
+                      </span>
+                    )}
+                  </div>
+
                   {hasGPS ? (
-                    <div>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Latitude: <span style={{ fontWeight: 500 }}>{metadata.GPSLatitude?.description} {metadata.GPSLatitudeRef?.value[0]}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Longitude: <span style={{ fontWeight: 500 }}>{metadata.GPSLongitude?.description} {metadata.GPSLongitudeRef?.value[0]}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "12px" }}>Altitude: <span style={{ fontWeight: 500 }}>{metadata.GPSAltitude?.description}</span></p>
-                      <a
-                        href={getGoogleMapsLink()}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-reset"
-                        style={{ background: "#B91C1C", color: "#fff", padding: "6px 12px", borderRadius: 'var(--radius-full)', fontSize: "0.85rem", fontWeight: 700, border: 'none', textDecoration: "none", display: "inline-block" }}
-                      >
-                        🗺️ View on Google Maps
-                      </a>
+                    <div className="space-y-2.5 text-sm">
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Latitude:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{metadata.GPSLatitude?.description} {metadata.GPSLatitudeRef?.value[0]}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Longitude:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{metadata.GPSLongitude?.description} {metadata.GPSLongitudeRef?.value[0]}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Altitude:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{metadata.GPSAltitude?.description || "N/A"}</span>
+                      </div>
+
+                      <div className="pt-2">
+                        <a
+                          href={getGoogleMapsLink()}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-m3-error text-m3-on-error text-xs font-bold shadow-sm hover:bg-m3-error/90 active:scale-95 transition-all"
+                        >
+                          <span>🗺️</span>
+                          <span>View on Google Maps</span>
+                        </a>
+                      </div>
                     </div>
                   ) : (
-                    <p style={{ fontWeight: 600, color: "var(--text-sub)" }}>✅ No embedded GPS location data found.</p>
+                    <p className="text-sm font-medium text-m3-on-surface-variant flex items-center gap-2 py-4">
+                      <span>✅</span> No embedded GPS location data found.
+                    </p>
                   )}
                 </div>
 
                 {/* Camera / Device Info */}
-                <div className="comp-card" style={{ padding: "20px", background: hasCamera ? "var(--m3-yellow)" : "var(--bg-main)" }}>
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    📸 Camera &amp; Lens
+                <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 shadow-m3-elevation-1">
+                  <h3 className="text-base sm:text-lg font-display font-bold text-m3-on-surface flex items-center gap-2 mb-4">
+                    <span>📸</span> Camera &amp; Lens
                   </h3>
+
                   {hasCamera ? (
-                    <div>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Make: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.Make)}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Model: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.Model)}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Lens: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.LensModel)}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Aperture: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.FNumber)}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Shutter: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.ExposureTime)}s</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>ISO: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.ISOSpeedRatings)}</span></p>
-                      <p style={{ fontWeight: 700, marginBottom: "6px" }}>Date Captured: <span style={{ fontWeight: 500 }}>{renderTagValue(metadata.DateTimeOriginal)}</span></p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Make:</span>
+                        <span className="font-mono text-m3-on-surface-variant text-right truncate max-w-[160px]">{renderTagValue(metadata.Make)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Model:</span>
+                        <span className="font-mono text-m3-on-surface-variant text-right truncate max-w-[160px]">{renderTagValue(metadata.Model)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Lens:</span>
+                        <span className="font-mono text-m3-on-surface-variant text-right truncate max-w-[160px]">{renderTagValue(metadata.LensModel)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Aperture:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{renderTagValue(metadata.FNumber)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Shutter:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{renderTagValue(metadata.ExposureTime)}s</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">ISO:</span>
+                        <span className="font-mono text-m3-on-surface-variant">{renderTagValue(metadata.ISOSpeedRatings)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1 border-b border-m3-outline-variant/30">
+                        <span className="font-semibold text-m3-on-surface">Date Captured:</span>
+                        <span className="font-mono text-m3-on-surface-variant text-right truncate max-w-[160px]">{renderTagValue(metadata.DateTimeOriginal)}</span>
+                      </div>
                     </div>
                   ) : (
-                    <p style={{ fontWeight: 600, color: "var(--text-sub)" }}>✅ No camera/device model data found.</p>
+                    <p className="text-sm font-medium text-m3-on-surface-variant flex items-center gap-2 py-4">
+                      <span>✅</span> No camera/device model data found.
+                    </p>
                   )}
                 </div>
 
@@ -334,20 +414,20 @@ export default function EXIFCleaner({ auth }) {
 
             {/* Raw Dump (Collapsible) */}
             {hasExif && metadata && (
-              <details style={{ background: "var(--bg-main)", padding: "16px", borderRadius: 'var(--radius-full)', border: 'none', boxShadow: "4px 4px 0 #1a1a1a" }}>
-                <summary style={{ fontWeight: 800, cursor: "pointer", fontSize: "1.05rem" }}>
-                  📂 View All Raw Metadata Tags ({Object.keys(metadata).length})
+              <details className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1 group">
+                <summary className="font-display font-bold text-sm sm:text-base text-m3-on-surface cursor-pointer list-none flex items-center justify-between py-1">
+                  <span>📂 View All Raw Metadata Tags ({Object.keys(metadata).length})</span>
+                  <span className="text-xs text-m3-primary transition-transform group-open:rotate-180">▼</span>
                 </summary>
-                <div style={{ marginTop: "14px", maxHeight: "300px", overflowY: "auto", fontSize: "0.8rem", background: "#f1f1f1", padding: "12px", borderRadius: 'var(--radius-full)', border: 'none' }}>
-                  <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+                <div className="mt-4 max-h-80 overflow-y-auto rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 p-4">
+                  <table className="w-full text-left border-collapse">
                     <tbody>
                       {Object.keys(metadata).map((key) => {
-                        // Skip thumbnail parsing for raw table view
-                        if (key === "Thumbnail") return null; 
+                        if (key === "Thumbnail") return null;
                         return (
-                          <tr key={key} style={{ borderBottom: "1px solid #ccc" }}>
-                            <td style={{ padding: "6px", fontWeight: 800, width: "35%", color: "#333" }}>{key}</td>
-                            <td style={{ padding: "6px", color: "#555", wordBreak: "break-all" }}>{renderTagValue(metadata[key])}</td>
+                          <tr key={key} className="border-b border-m3-outline-variant/25 last:border-0 text-xs">
+                            <td className="py-2 pr-3 font-mono font-bold text-m3-on-surface w-2/5">{key}</td>
+                            <td className="py-2 font-mono text-m3-on-surface-variant break-all">{renderTagValue(metadata[key])}</td>
                           </tr>
                         );
                       })}
@@ -358,33 +438,31 @@ export default function EXIFCleaner({ auth }) {
             )}
 
             {/* Scrub Trigger */}
-            <div className="comp-card" style={{ padding: "24px", textAlign: "center" }}>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, marginBottom: "12px" }}>
+            <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-8 text-center shadow-m3-elevation-1 max-w-xl mx-auto w-full">
+              <h3 className="text-lg sm:text-xl font-display font-bold text-m3-on-surface mb-2">
                 Ready to share this photo securely?
               </h3>
-              <p style={{ fontWeight: 600, color: "var(--text-sub)", marginBottom: "20px" }}>
+              <p className="text-sm text-m3-on-surface-variant mb-6 leading-relaxed">
                 Scrubbing removes 100% of EXIF, IPTC, and XMP data while preserving photo quality.
               </p>
               
               <button
-                className="btn-compress"
-                style={{
-                  width: "100%",
-                  maxWidth: "400px",
-                  margin: "0 auto",
-                  padding: "16px",
-                  fontSize: "1.15rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: "10px",
-                  background: "var(--m3-pink)",
-                  color: "#fff",
-                }}
+                type="button"
+                className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2.5 disabled:opacity-50"
                 onClick={scrubMetadata}
                 disabled={processing}
               >
-                {processing ? "Scrubbing..." : "🛡️ Scrub All Metadata"}
+                {processing ? (
+                  <>
+                    <span className="inline-block w-5 h-5 border-2 border-m3-on-primary border-t-transparent rounded-full animate-spin" />
+                    <span>Scrubbing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-lg">🛡️</span>
+                    <span>Scrub All Metadata</span>
+                  </>
+                )}
               </button>
             </div>
 
@@ -393,31 +471,20 @@ export default function EXIFCleaner({ auth }) {
 
         {/* ── Error Banner ── */}
         {error && (
-          <div
-            className="error-banner"
-            style={{
-              background: "#FEE2E2",
-              border: 'none',
-              padding: "14px",
-              borderRadius: 'var(--radius-full)',
-              color: "#B91C1C",
-              fontWeight: "bold",
-              marginTop: "20px",
-              boxShadow: "4px 4px 0 #000",
-            }}
-          >
-            ⚠ {error}
+          <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center gap-3 shadow-sm">
+            <span className="text-lg flex-shrink-0">⚠</span>
+            <span>{error}</span>
           </div>
         )}
 
         {/* ── Results Area ── */}
         {cleanBlob && (
-          <div className="comp-card" style={{ maxWidth: "720px", margin: "0 auto", padding: "28px", textAlign: "center" }}>
-            <div style={{ fontSize: "3rem", marginBottom: "8px" }}>✅</div>
-            <h2 style={{ fontSize: "1.5rem", fontWeight: 900, marginBottom: "6px" }}>
+          <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 max-w-2xl mx-auto w-full text-center shadow-m3-elevation-1">
+            <div className="text-4xl sm:text-5xl mb-3">✅</div>
+            <h2 className="text-xl sm:text-2xl font-display font-extrabold text-m3-on-surface mb-2">
               Metadata 100% Scrubbed!
             </h2>
-            <p style={{ color: "var(--text-sub)", marginBottom: "20px", fontWeight: 600 }}>
+            <p className="text-sm text-m3-on-surface-variant mb-6 leading-relaxed">
               Your photo is now completely safe and private to upload to Reddit, Twitter, or anywhere else.
             </p>
 
