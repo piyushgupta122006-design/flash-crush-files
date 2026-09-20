@@ -196,32 +196,50 @@ export default function PDFMerger({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top Bar with Back Navigation ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">📑</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF Merger</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Max {MAX_SIZE_MB} MB · Multiple PDFs
+        </div>
+      </header>
 
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">PDF Merger</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · Multiple PDFs</div>
-      </div>
-
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ background: "linear-gradient(135deg, #fef3c7, #fde68a)", color: "#d97706" }}>
-              📑
-            </div>
-            <div className="comp-title">Merge PDF Files</div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            📑
           </div>
-          <p className="comp-sub">Combine multiple PDF documents into a single organized file.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            Merge PDF Files
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+            Combine multiple PDF documents into a single organized file in seconds. 100% private, on-device merging.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Main Container Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone (Empty / Initial state) ── */}
           {(stage === "idle" || (stage === "error" && pdfFiles.length === 0)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
-              style={{ "--dz-accent": "#d97706", "--dz-bg": "rgba(217,119,6,0.04)" }}
+              className={`rounded-3xl border-2 border-dashed p-8 sm:p-14 text-center transition-all duration-300 cursor-pointer group ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/30"
+                  : "border-m3-outline-variant hover:border-m3-primary bg-m3-surface-container/40 hover:bg-m3-surface-container/80"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
@@ -235,55 +253,64 @@ export default function PDFMerger({ auth }) {
                 hidden
                 onChange={(e) => addFiles(Array.from(e.target.files))}
               />
-              <span className="drop-icon">📑</span>
-              <p className="drop-main">
+              <div className="w-20 h-20 rounded-full bg-m3-primary/10 text-m3-primary text-4xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                📑
+              </div>
+              <div className="text-xl sm:text-2xl font-display font-bold text-m3-on-surface mb-2">
                 {dragging ? "Drop your PDF files here!" : "Drag & drop PDF files here"}
-              </p>
-              <p className="drop-sub">Select 2 or more PDFs to combine</p>
+              </div>
+              <div className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+                Select 2 or more PDFs to combine · Max {MAX_SIZE_MB} MB
+              </div>
 
               {stage !== "error" && (
-                <div className="drop-btn-row">
+                <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
                   <button
-                    className="drop-btn"
-                    style={{ background: "linear-gradient(135deg, #d97706, #b45309)", boxShadow: "0 3px 12px rgba(217,119,6,0.25)" }}
+                    type="button"
+                    className="px-8 py-3.5 rounded-full bg-m3-primary text-m3-on-primary font-semibold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 hover:bg-m3-primary/90 active:scale-95 transition-all duration-200 flex items-center gap-2"
                     onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
                   >
-                    📁 Browse PDFs
+                    <span>📁</span>
+                    <span>Browse PDFs</span>
                   </button>
                   <button
-                    className="drop-btn-drive"
+                    type="button"
+                    className="rounded-full px-5 py-3 text-sm font-semibold bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/80 text-m3-on-surface shadow-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-60"
                     onClick={(e) => { e.stopPropagation(); handleDrivePick(); }}
                     disabled={pickLoading || auth.authStatus === "loading"}
                   >
                     <DriveIconSmall />
-                    {drivePickLabel()}
+                    <span>{drivePickLabel()}</span>
                   </button>
                 </div>
               )}
 
               {stage === "error" && (
-                <div className="error-box">⚠ {errorMsg}</div>
+                <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm max-w-md mx-auto">
+                  <span>⚠</span>
+                  <span>{errorMsg}</span>
+                </div>
               )}
             </div>
           )}
 
           {/* ── File List & Reorder Section ── */}
           {(stage === "ready" || stage === "need_more" || stage === "merging" || stage === "done") && pdfFiles.length > 0 && (
-            <div style={{ padding: "20px 20px 0" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-                <div>
-                  <span style={{ fontSize: "13px", fontWeight: "700", color: "var(--text)" }}>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-display font-bold text-sm sm:text-base text-m3-on-surface">
                     Selected PDFs ({pdfFiles.length})
                   </span>
                   {pdfFiles.length === 1 && (
-                    <span style={{ fontSize: "11px", color: "#d97706", marginLeft: "8px", fontWeight: "600" }}>
-                      (Add at least 1 more file to merge)
+                    <span className="text-xs font-semibold text-m3-tertiary bg-m3-tertiary-container/30 border border-m3-tertiary/20 px-2.5 py-0.5 rounded-full">
+                      Add at least 1 more file to merge
                     </span>
                   )}
                 </div>
 
                 {stage !== "merging" && stage !== "done" && (
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="flex items-center gap-2">
                     <input
                       ref={addMoreRef}
                       type="file"
@@ -293,104 +320,74 @@ export default function PDFMerger({ auth }) {
                       onChange={(e) => addFiles(Array.from(e.target.files))}
                     />
                     <button
+                      type="button"
                       onClick={() => addMoreRef.current?.click()}
-                      style={{
-                        padding: "5px 12px", background: "rgba(217,119,6,0.08)",
-                        border: "1px solid rgba(217,119,6,0.25)", borderRadius: 'var(--radius-full)',
-                        color: "#d97706", fontSize: "12px", fontWeight: "600", cursor: "pointer"
-                      }}
+                      className="px-3.5 py-1.5 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all active:scale-95"
                     >
-                      + Add More
+                      <span>+</span>
+                      <span>Add More</span>
                     </button>
                     <button
+                      type="button"
                       onClick={reset}
-                      style={{
-                        padding: "5px 10px", background: "rgba(239,68,68,0.08)",
-                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: 'var(--radius-full)',
-                        color: "#dc2626", fontSize: "12px", fontWeight: "600", cursor: "pointer"
-                      }}
+                      className="px-3.5 py-1.5 rounded-full border border-m3-error/30 bg-m3-error-container/30 hover:bg-m3-error-container text-m3-on-error-container text-xs font-semibold shadow-xs transition-all active:scale-95"
                     >
-                      Clear
+                      Clear All
                     </button>
                   </div>
                 )}
               </div>
 
               {/* PDF items list */}
-              <div style={{
-                display: "flex", flexDirection: "column", gap: "8px",
-                maxHeight: "260px", overflowY: "auto", padding: "8px",
-                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)"
-              }}>
+              <div className="flex flex-col gap-2.5 max-h-80 overflow-y-auto p-2 rounded-2xl bg-m3-surface-container/40 border border-m3-outline-variant/40">
                 {pdfFiles.map((item, idx) => (
                   <div
                     key={item.id}
-                    style={{
-                      display: "flex", alignItems: "center", gap: "12px",
-                      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "var(--radius-sm)", padding: "12px 14px"
-                    }}
+                    className="flex items-center gap-3 sm:gap-4 bg-m3-surface-container border border-m3-outline-variant/60 rounded-xl p-3 sm:p-4 transition-all duration-200 hover:border-m3-outline shadow-xs"
                   >
                     {/* Index */}
-                    <span style={{
-                      width: "24px", height: "24px", borderRadius: "50%",
-                      background: "rgba(245,158,11,0.15)", color: "#fbbf24",
-                      fontSize: "11px", fontWeight: "800", display: "flex",
-                      alignItems: "center", justifyContent: "center", flexShrink: 0,
-                      fontFamily: "'JetBrains Mono', monospace"
-                    }}>
+                    <span className="w-7 h-7 rounded-full bg-m3-primary/10 text-m3-primary border border-m3-primary/20 text-xs font-mono font-bold flex items-center justify-center flex-shrink-0">
                       {idx + 1}
                     </span>
 
                     {/* PDF Icon */}
-                    <span style={{ fontSize: "16px", flexShrink: 0 }}>📄</span>
+                    <span className="text-lg flex-shrink-0">📄</span>
 
                     {/* Name & Size */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: "13px", fontWeight: "700", color: "#ffffff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-display font-bold text-sm text-m3-on-surface truncate">
                         {item.file.name}
                       </div>
-                      <div style={{ fontSize: "11px", color: "var(--text-sub)", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
+                      <div className="text-xs font-mono text-m3-on-surface-variant mt-0.5">
                         {fmt(item.file.size)}
                       </div>
                     </div>
 
                     {/* Reorder and Delete controls */}
                     {stage !== "merging" && stage !== "done" && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
                         <button
+                          type="button"
                           onClick={() => moveFile(idx, -1)}
                           disabled={idx === 0}
-                          style={{
-                            padding: "5px 8px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
-                            fontSize: "11px", cursor: idx === 0 ? "not-allowed" : "pointer",
-                            opacity: idx === 0 ? 0.3 : 1, color: "#fff"
-                          }}
+                          className="w-8 h-8 rounded-full border border-m3-outline-variant/70 bg-m3-surface-container-low hover:bg-m3-surface-container-high text-m3-on-surface text-xs flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
                           title="Move Up"
                         >
                           ▲
                         </button>
                         <button
+                          type="button"
                           onClick={() => moveFile(idx, 1)}
                           disabled={idx === pdfFiles.length - 1}
-                          style={{
-                            padding: "5px 8px", background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
-                            fontSize: "11px", cursor: idx === pdfFiles.length - 1 ? "not-allowed" : "pointer",
-                            opacity: idx === pdfFiles.length - 1 ? 0.3 : 1, color: "#fff"
-                          }}
+                          className="w-8 h-8 rounded-full border border-m3-outline-variant/70 bg-m3-surface-container-low hover:bg-m3-surface-container-high text-m3-on-surface text-xs flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-90"
                           title="Move Down"
                         >
                           ▼
                         </button>
                         <button
+                          type="button"
                           onClick={() => removeFile(item.id)}
-                          style={{
-                            padding: "5px 9px", background: "rgba(244,63,94,0.12)",
-                            border: "1px solid rgba(244,63,94,0.3)", borderRadius: 'var(--radius-full)',
-                            color: "#fb7185", fontSize: "11px", fontWeight: "700", cursor: "pointer"
-                          }}
+                          className="w-8 h-8 rounded-full bg-m3-error-container/30 hover:bg-m3-error-container text-m3-on-error-container text-xs font-bold flex items-center justify-center transition-all active:scale-90"
                           title="Remove"
                         >
                           ✕
@@ -405,53 +402,68 @@ export default function PDFMerger({ auth }) {
 
           {/* ── Merge Action Button ── */}
           {(stage === "ready" || stage === "need_more" || stage === "done") && pdfFiles.length > 0 && (
-            <div className="action-wrap">
+            <div className="my-6">
               <button
-                className="btn-compress"
-                style={{
-                  background: pdfFiles.length < 2 ? "rgba(217,119,6,0.4)" : "linear-gradient(135deg, #d97706, #b45309)",
-                  boxShadow: pdfFiles.length < 2 ? "none" : "0 4px 20px rgba(217,119,6,0.28)",
-                  cursor: pdfFiles.length < 2 ? "not-allowed" : "pointer"
-                }}
+                type="button"
+                className={`w-full py-4 rounded-full font-display font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 ${
+                  pdfFiles.length < 2
+                    ? "bg-m3-surface-container-highest text-m3-on-surface-variant/50 cursor-not-allowed border border-m3-outline-variant/40"
+                    : "bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] cursor-pointer"
+                }`}
                 onClick={mergePDFs}
                 disabled={pdfFiles.length < 2}
               >
-                {stage === "done" ? "🔁 Merge Again" : `📑 Merge ${pdfFiles.length} PDF Files`}
+                <span>
+                  {stage === "done"
+                    ? "🔁 Merge Again"
+                    : pdfFiles.length < 2
+                    ? "📑 Add 1 more PDF to merge"
+                    : `📑 Merge ${pdfFiles.length} PDF Files`}
+                </span>
               </button>
             </div>
           )}
 
-          {/* ── Progress Bar ── */}
+          {/* ── Progress Bar (M3 Linear Indicator) ── */}
           {stage === "merging" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Merging PDF documents...</span>
-                <span className="progress-pct" style={{ color: "#d97706" }}>{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Merging PDF documents...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #fbbf24, #d97706)" }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result ── */}
           {stage === "done" && result && (
             <>
-              <div className="result-box" style={{ background: "rgba(217,119,6,0.06)", borderColor: "rgba(217,119,6,0.20)" }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Files Merged</span>
-                    <span className="result-val-orig">{result.fileCount} Documents</span>
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Files Merged</div>
+                    <div className="text-base sm:text-lg font-display font-bold text-m3-on-surface">
+                      {result.fileCount} Documents
+                    </div>
                   </div>
-                  <div className="result-arrow" style={{ color: "#d97706" }}>→</div>
-                  <div>
-                    <span className="result-label">Merged Size</span>
-                    <span className="result-val-comp" style={{ color: "#d97706" }}>{fmt(result.mergedSize)}</span>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Merged Size</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
+                      {fmt(result.mergedSize)}
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{ marginTop: "12px" }}>
-                  <span style={{ color: "#d97706", background: "rgba(217,119,6,0.08)", borderColor: "rgba(217,119,6,0.25)" }}>
+                <div className="text-center mt-3">
+                  <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
                     🎉 {result.totalPages} Total Pages Combined!
                   </span>
                 </div>
@@ -462,13 +474,14 @@ export default function PDFMerger({ auth }) {
                 fileName={getFileName()}
                 onReset={reset}
                 auth={auth}
+                toolName="PDF Merger"
               />
             </>
           )}
 
-          <div className="comp-footer">
-            <span>Flash Crush-Files · Merge PDF</span>
-            <span>Files never leave your browser</span>
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
+            <span>FlashCrush · PDF Merger</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
         </div>
       </div>
