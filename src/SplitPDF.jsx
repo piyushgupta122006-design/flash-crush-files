@@ -327,103 +327,176 @@ export default function SplitPDF({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Split & Extract PDF</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · Visual Preview</div>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top Bar with Back Navigation ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">✂️</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">Split & Extract PDF</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Max {MAX_SIZE_MB} MB · Visual Preview
+        </div>
+      </header>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(168, 85, 247, 0.4)", boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)" }}>
-              ✂️
-            </div>
-            <div className="comp-title">Split & Extract PDF Pages</div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            ✂️
           </div>
-          <p className="comp-sub">Extract specific pages, split all pages into individual PDFs, or chunk into groups.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            Split & Extract PDF Pages
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+            Extract specific pages, split all pages into individual PDFs, or chunk into groups. 100% private and on-device.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Main Container Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || stage === "error") && !file && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`rounded-3xl border-2 border-dashed p-8 sm:p-14 text-center transition-all duration-300 cursor-pointer group ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/30"
+                  : "border-m3-outline-variant hover:border-m3-primary bg-m3-surface-container/40 hover:bg-m3-surface-container/80"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">✂️</span>
-              <p className="drop-main">{dragging ? "Drop your PDF here!" : "Drag & drop your PDF to split"}</p>
-              <p className="drop-sub">Select PDF to split or extract pages · max {MAX_SIZE_MB} MB</p>
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])}
+              />
+              <div className="w-20 h-20 rounded-full bg-m3-primary/10 text-m3-primary text-4xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                ✂️
+              </div>
+              <div className="text-xl sm:text-2xl font-display font-bold text-m3-on-surface mb-2">
+                {dragging ? "Drop your PDF here!" : "Drag & drop your PDF to split"}
+              </div>
+              <div className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+                Select PDF to split or extract pages · Max {MAX_SIZE_MB} MB
+              </div>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>
-                  📁 Browse PDF
+              <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  className="px-8 py-3.5 rounded-full bg-m3-primary text-m3-on-primary font-semibold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 hover:bg-m3-primary/90 active:scale-95 transition-all duration-200 flex items-center gap-2"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <span>📁</span>
+                  <span>Browse PDF</span>
                 </button>
-                <button className="drop-btn-drive"
+                <button
+                  type="button"
+                  className="rounded-full px-5 py-3 text-sm font-semibold bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/80 text-m3-on-surface shadow-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-60"
                   onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
-                  <DriveIconSmall />{drivePickLabel()}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
+                  <DriveIconSmall />
+                  <span>{drivePickLabel()}</span>
                 </button>
               </div>
 
               {stage === "error" && (
-                <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>
+                <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm max-w-md mx-auto">
+                  <span>⚠</span>
+                  <span>{errorMsg}</span>
+                </div>
               )}
             </div>
           )}
 
           {/* ── Selected File Row ── */}
           {file && (stage === "loaded" || stage === "done" || stage === "processing" || stage === "error") && (
-            <div className="file-row">
-              <div className="file-icon">📄</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)} · {totalPages} pages</div>
+            <div className="bg-m3-surface-container rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 mb-6 border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-12 h-12 rounded-xl bg-m3-primary/10 text-m3-primary text-2xl flex items-center justify-center flex-shrink-0">
+                  📄
+                </div>
+                <div className="min-w-0">
+                  <div className="font-display font-bold text-sm sm:text-base text-m3-on-surface truncate">
+                    {file.name}
+                  </div>
+                  <div className="text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    {fmt(file.size)} · {totalPages} pages
+                  </div>
+                </div>
               </div>
               {stage !== "processing" && (
-                <button className="close-btn" onClick={reset}>✕</button>
+                <button
+                  type="button"
+                  className="p-2.5 rounded-full hover:bg-m3-error-container hover:text-m3-on-error-container text-m3-on-surface-variant transition-all text-sm active:scale-95"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
               )}
             </div>
           )}
 
           {/* ── Error Message ── */}
           {stage === "error" && file && errorMsg && (
-            <div style={{ padding: "0 20px 10px" }}>
-              <div className="error-box">⚠ {errorMsg}</div>
+            <div className="mb-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
+              <span>⚠</span>
+              <span>{errorMsg}</span>
             </div>
           )}
 
-          {/* ── Split Mode Selector ── */}
+          {/* ── Split Mode Selector (M3 Cards) ── */}
           {(stage === "loaded" || stage === "done") && (
-            <div className="level-wrap">
-              <span className="level-label">1. Choose Split Mode</span>
-              <div className="level-grid">
-                {SPLIT_MODES.map((m) => (
-                  <button
-                    key={m.id}
-                    className={`level-btn${mode === m.id ? " active" : ""}`}
-                    onClick={() => setMode(m.id)}
-                  >
-                    <span style={{ fontSize: "1.3rem" }}>{m.icon}</span>
-                    <span className="level-name">{m.label}</span>
-                    <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>{m.desc}</span>
-                  </button>
-                ))}
+            <div className="my-6">
+              <span className="block text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider mb-3">
+                1. Choose Split Mode
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {SPLIT_MODES.map((m) => {
+                  const isSelected = mode === m.id;
+                  return (
+                    <button
+                      key={m.id}
+                      type="button"
+                      className={`rounded-2xl p-4 text-left sm:text-center flex flex-col items-center justify-center gap-1.5 transition-all duration-200 ${
+                        isSelected
+                          ? "border-2 border-m3-primary bg-m3-primary-container text-m3-on-primary-container shadow-sm"
+                          : "border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface"
+                      }`}
+                      onClick={() => setMode(m.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{m.icon}</span>
+                        <span className="font-display font-bold text-sm sm:text-base">{m.label}</span>
+                      </div>
+                      <span className={`text-xs ${isSelected ? "text-m3-on-primary-container/80" : "text-m3-on-surface-variant"}`}>
+                        {m.desc}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
           {/* ── Mode-specific Controls ── */}
           {(stage === "loaded" || stage === "done") && mode === "extract" && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50 shadow-xs">
+              <label className="block text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5">
                 2. Enter Page Range (e.g. 1-3, 5, 8-10)
               </label>
               <input
@@ -431,42 +504,32 @@ export default function SplitPDF({ auth }) {
                 value={rangeInput}
                 onChange={(e) => setRangeInput(e.target.value)}
                 placeholder={`1-${totalPages}`}
-                style={{
-                  width: "100%", padding: "12px 16px", boxSizing: "border-box",
-                  background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                  borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "14px", color: "#fff", outline: "none",
-                }}
-                onFocus={(e) => { e.target.style.borderColor = "#8b5cf6"; e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.3)"; }}
-                onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.boxShadow = "none"; }}
+                className="w-full px-5 py-3.5 rounded-full font-mono text-sm bg-m3-surface border border-m3-outline-variant focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 text-m3-on-surface outline-none transition-all"
               />
-              <div style={{ fontSize: "12px", color: "var(--text-sub)", marginTop: "6px" }}>
-                Total pages: <strong style={{ color: "#fff" }}>{totalPages}</strong> · Separate ranges with commas
+              <div className="text-xs text-m3-on-surface-variant mt-2.5 flex items-center gap-1.5">
+                <span>Total pages:</span>
+                <strong className="text-m3-on-surface font-mono">{totalPages}</strong>
+                <span>· Separate ranges with commas</span>
               </div>
             </div>
           )}
 
           {(stage === "loaded" || stage === "done") && mode === "split-every" && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50 shadow-xs">
+              <label className="block text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5">
                 2. Pages per chunk
               </label>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div className="flex items-center gap-4">
                 <input
                   type="number"
                   min={1}
                   max={totalPages}
                   value={splitN}
                   onChange={(e) => setSplitN(Math.max(1, parseInt(e.target.value) || 1))}
-                  style={{
-                    width: "80px", padding: "12px 16px", textAlign: "center",
-                    background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "14px", color: "#fff", outline: "none",
-                  }}
+                  className="w-24 px-4 py-3 rounded-full text-center font-mono text-base font-bold bg-m3-surface border border-m3-outline-variant focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 text-m3-on-surface outline-none transition-all"
                 />
-                <span style={{ fontSize: "13px", color: "var(--text-sub)" }}>
-                  → {Math.ceil(totalPages / Math.max(1, splitN))} output PDFs
+                <span className="text-sm font-medium text-m3-on-surface-variant">
+                  → <strong className="font-mono text-m3-primary">{Math.ceil(totalPages / Math.max(1, splitN))}</strong> output PDFs
                 </span>
               </div>
             </div>
@@ -474,64 +537,49 @@ export default function SplitPDF({ auth }) {
 
           {/* ── Visual Page Thumbnails (for Extract mode) ── */}
           {(stage === "loaded" || stage === "done") && mode === "extract" && thumbnails.length > 0 && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50 shadow-xs">
+              <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+                <span className="text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider">
                   Visual Page Selector ({selectedPages.size}/{totalPages} selected)
                 </span>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <button onClick={selectAll} style={{
-                    padding: "4px 10px", background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)",
-                    borderRadius: 'var(--radius-full)', color: "#c084fc", fontSize: "11px", fontWeight: 700, cursor: "pointer"
-                  }}>Select All</button>
-                  <button onClick={deselectAll} style={{
-                    padding: "4px 10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: 'var(--radius-full)', color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
-                  }}>Clear</button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={selectAll}
+                    className="px-3.5 py-1.5 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface text-xs font-semibold shadow-xs transition-all active:scale-95"
+                  >
+                    Select All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={deselectAll}
+                    className="px-3.5 py-1.5 rounded-full border border-m3-error/30 bg-m3-error-container/30 hover:bg-m3-error-container text-m3-on-error-container text-xs font-semibold shadow-xs transition-all active:scale-95"
+                  >
+                    Clear
+                  </button>
                 </div>
               </div>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(80px, 100%), 1fr))",
-                gap: "8px", maxHeight: "280px", overflowY: "auto", padding: "6px",
-                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.06)"
-              }}>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 max-h-80 overflow-y-auto p-2 rounded-xl bg-m3-surface-container-low border border-m3-outline-variant/40">
                 {thumbnails.map((t) => {
                   const isSelected = selectedPages.has(t.pageNum);
                   return (
                     <div
                       key={t.pageNum}
-                      onClick={() => {
-                        togglePage(t.pageNum);
-                        // Also update range input based on selection
-                      }}
-                      style={{
-                        position: "relative", cursor: "pointer",
-                        border: isSelected ? "2px solid #8b5cf6" : "2px solid transparent",
-                        borderRadius: 'var(--radius-full)', overflow: "hidden",
-                        opacity: isSelected ? 1 : 0.45,
-                        transition: "all 0.15s ease",
-                        background: "rgba(0,0,0,0.3)",
-                      }}
+                      onClick={() => togglePage(t.pageNum)}
+                      className={`relative cursor-pointer rounded-xl overflow-hidden transition-all duration-200 ${
+                        isSelected
+                          ? "border-2 border-m3-primary ring-2 ring-m3-primary/25 shadow-sm opacity-100 scale-[1.02]"
+                          : "border-2 border-transparent opacity-40 hover:opacity-75"
+                      }`}
                     >
-                      <img src={t.url} alt={`Page ${t.pageNum}`}
-                        style={{ width: "100%", display: "block" }} />
-                      <span style={{
-                        position: "absolute", bottom: "3px", left: "50%", transform: "translateX(-50%)",
-                        background: isSelected ? "rgba(139,92,246,0.9)" : "rgba(0,0,0,0.7)",
-                        color: "#fff", fontSize: "9px", fontWeight: 800,
-                        fontFamily: "'JetBrains Mono', monospace",
-                        padding: "1px 6px", borderRadius: 'var(--radius-full)'
-                      }}>{t.pageNum}</span>
+                      <img src={t.url} alt={`Page ${t.pageNum}`} className="w-full block bg-white" />
+                      <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-m3-surface/90 text-m3-on-surface text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-m3-outline-variant/40 shadow-xs">
+                        {t.pageNum}
+                      </span>
                       {isSelected && (
-                        <span style={{
-                          position: "absolute", top: "3px", right: "3px",
-                          background: "#8b5cf6", color: "#fff",
-                          width: "16px", height: "16px", borderRadius: "50%",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "10px", fontWeight: 800
-                        }}>✓</span>
+                        <span className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-m3-primary text-m3-on-primary flex items-center justify-center text-xs font-bold shadow-xs">
+                          ✓
+                        </span>
                       )}
                     </div>
                   );
@@ -542,50 +590,65 @@ export default function SplitPDF({ auth }) {
 
           {/* ── Split / Extract Button ── */}
           {(stage === "loaded" || stage === "done") && (
-            <div className="action-wrap">
-              <button className="btn-compress" onClick={executeSplit}>
-                {mode === "extract" ? "⚡ Extract Selected Pages" :
-                  mode === "split-all" ? "⚡ Split All Pages to ZIP" :
-                    `⚡ Split into ${Math.ceil(totalPages / Math.max(1, splitN))} Chunks`}
+            <div className="my-6">
+              <button
+                type="button"
+                className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2"
+                onClick={executeSplit}
+              >
+                <span>
+                  {mode === "extract"
+                    ? "⚡ Extract Selected Pages"
+                    : mode === "split-all"
+                    ? "⚡ Split All Pages to ZIP"
+                    : `⚡ Split into ${Math.ceil(totalPages / Math.max(1, splitN))} Chunks`}
+                </span>
               </button>
             </div>
           )}
 
-          {/* ── Progress Bar ── */}
+          {/* ── Progress Bar (M3 Linear Indicator) ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Processing PDF...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Processing PDF...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Results ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{ margin: "10px 0 20px", background: "rgba(168, 85, 247, 0.08)", borderColor: "rgba(168, 85, 247, 0.3)" }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Original</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+            <>
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Original</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
                       {totalPages} Pages · {fmt(file.size)}
-                    </span>
+                    </div>
                   </div>
-                  <div className="result-arrow">→</div>
-                  <div>
-                    <span className="result-label">Output</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "#c084fc" }}>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Output</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
                       {resultInfo}
-                    </span>
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{ background: "rgba(168, 85, 247, 0.18)", borderColor: "#a855f7", color: "#c084fc" }}>
-                  ✂️ Split Complete
+                <div className="text-center mt-3">
+                  <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
+                    ✂️ Split Complete
+                  </span>
                 </div>
               </div>
 
@@ -594,13 +657,14 @@ export default function SplitPDF({ auth }) {
                 fileName={resultName}
                 onReset={reset}
                 auth={auth}
+                toolName="Split PDF"
               />
-            </div>
+            </>
           )}
 
-          <div className="comp-footer">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · Split & Extract PDF Tool</span>
-            <span>100% in-browser processing · Zero server uploads</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
         </div>
       </div>
