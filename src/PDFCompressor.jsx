@@ -210,49 +210,49 @@ export default function PDFCompressor({ auth }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafd] dark:bg-[#131314] text-gray-800 dark:text-gray-100 font-sans p-3 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-4xl mx-auto w-full transition-colors">
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
       {/* ── Top Bar with Back Navigation ── */}
-      <div className="flex items-center justify-between pb-4 border-b border-gray-200/60 dark:border-gray-800">
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
         <button
-          className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-800 border border-gray-300/70 dark:border-gray-700 transition-colors flex items-center gap-1.5"
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
           onClick={() => navigate("/")}
         >
-          <span>←</span>
+          <span className="text-base leading-none">←</span>
           <span>Back</span>
         </button>
-        <div className="text-base sm:text-lg font-normal text-gray-800 dark:text-gray-100 font-sans">
-          PDF Compressor
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">📄</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF Compressor</span>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
           Max {MAX_SIZE_MB} MB · PDF only
         </div>
-      </div>
+      </header>
 
-      <div className="w-full">
-        <div className="mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 flex items-center justify-center text-xl shadow-xs">
-              📄
-            </div>
-            <h1 className="text-2xl font-normal text-gray-800 dark:text-gray-100 font-sans tracking-tight">
-              PDF Compressor
-            </h1>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            📄
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 ml-13">
-            Upload your PDF and reduce its file size instantly.
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            PDF Compressor
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+            Upload your PDF and reduce its file size instantly with high-fidelity on-device compression. 100% private, zero uploads.
           </p>
         </div>
 
         {/* ── Main Google Keep / Drive Style Container Card ── */}
-        <div className="rounded-3xl bg-white dark:bg-[#1e1f20] p-6 sm:p-8 shadow-sm border border-gray-200/60 dark:border-gray-800 transition-colors">
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`rounded-3xl border-2 border-dashed p-8 sm:p-12 text-center transition-all cursor-pointer ${
+              className={`rounded-3xl border-2 border-dashed p-8 sm:p-14 text-center transition-all duration-300 cursor-pointer group ${
                 dragging
-                  ? "border-blue-600 bg-blue-50/50 dark:bg-blue-950/20"
-                  : "border-gray-300 dark:border-gray-700 bg-[#f8fafd] dark:bg-[#181a1b] hover:bg-[#f0f4f9] dark:hover:bg-[#202224] hover:border-gray-400"
+                  ? "border-m3-primary bg-m3-primary-container/30"
+                  : "border-m3-outline-variant hover:border-m3-primary bg-m3-surface-container/40 hover:bg-m3-surface-container/80"
               }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
@@ -262,26 +262,28 @@ export default function PDFCompressor({ auth }) {
               <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
                 onChange={(e) => handleFile(e.target.files[0])} />
               
-              <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#1e1f20] text-rose-600 text-2xl flex items-center justify-center mx-auto mb-4 shadow-xs">
+              <div className="w-20 h-20 rounded-full bg-m3-primary/10 text-m3-primary text-4xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 📄
               </div>
-              <p className="text-base font-medium text-gray-800 dark:text-gray-100 mb-1">
+              <div className="text-xl sm:text-2xl font-display font-bold text-m3-on-surface mb-2">
                 {dragging ? "Drop your PDF here!" : "Drag & drop your PDF here"}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">
-                or choose a source below · max {MAX_SIZE_MB} MB
-              </p>
+              </div>
+              <div className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+                or choose a source below · Max {MAX_SIZE_MB} MB
+              </div>
 
               <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
                 <button
-                  className="rounded-full px-6 py-2.5 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white shadow-xs transition-colors flex items-center gap-2"
+                  type="button"
+                  className="px-8 py-3.5 rounded-full bg-m3-primary text-m3-on-primary font-semibold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 hover:bg-m3-primary/90 active:scale-95 transition-all duration-200 flex items-center gap-2"
                   onClick={() => inputRef.current?.click()}
                 >
                   <span>📁</span>
                   <span>Browse File</span>
                 </button>
                 <button
-                  className="rounded-full px-5 py-2.5 text-sm font-medium bg-white dark:bg-[#28292a] border border-gray-300/80 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-xs flex items-center gap-2 transition-colors disabled:opacity-60"
+                  type="button"
+                  className="rounded-full px-5 py-3 text-sm font-semibold bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/80 text-m3-on-surface shadow-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-60"
                   onClick={handleDrivePick}
                   disabled={pickLoading || auth.authStatus === "loading"}
                 >
@@ -291,8 +293,9 @@ export default function PDFCompressor({ auth }) {
               </div>
 
               {stage === "error" && (
-                <div className="rounded-full px-4 py-1.5 text-xs font-medium bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300 inline-block mt-4 border border-rose-200 dark:border-rose-900/50">
-                  ⚠ {errorMsg}
+                <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm max-w-md mx-auto">
+                  <span>⚠</span>
+                  <span>{errorMsg}</span>
                 </div>
               )}
             </div>
@@ -300,19 +303,24 @@ export default function PDFCompressor({ auth }) {
 
           {/* ── File row ── */}
           {(stage === "ready" || stage === "done" || stage === "compressing") && (
-            <div className="rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] p-4 flex items-center justify-between gap-3 mb-6 border border-transparent shadow-xs">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#1e1f20] text-rose-600 text-xl flex items-center justify-center flex-shrink-0 shadow-xs">
+            <div className="bg-m3-surface-container rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 mb-6 border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-12 h-12 rounded-xl bg-m3-primary/10 text-m3-primary text-2xl flex items-center justify-center flex-shrink-0">
                   📄
                 </div>
                 <div className="min-w-0">
-                  <div className="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">{file?.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">{fmt(file?.size)}</div>
+                  <div className="font-display font-bold text-sm sm:text-base text-m3-on-surface truncate">
+                    {file?.name}
+                  </div>
+                  <div className="text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    {fmt(file?.size)}
+                  </div>
                 </div>
               </div>
               {stage !== "compressing" && (
                 <button
-                  className="rounded-full p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/60 dark:hover:bg-gray-700 transition-colors text-sm"
+                  type="button"
+                  className="p-2.5 rounded-full hover:bg-m3-error-container hover:text-m3-on-error-container text-m3-on-surface-variant transition-all text-sm active:scale-95"
                   onClick={reset}
                   title="Remove file"
                 >
@@ -322,31 +330,37 @@ export default function PDFCompressor({ auth }) {
             </div>
           )}
 
-          {/* ── Compression Level selector (M3 Chips) ── */}
+          {/* ── Compression Level selector (M3 Cards) ── */}
           {(stage === "ready" || stage === "done") && (
             <div className="my-6">
-              <span className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2.5">
+              <span className="block text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider mb-3">
                 Compression Level
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                {LEVELS.map((l) => (
-                  <button
-                    key={l.id}
-                    className={`rounded-full py-2.5 px-4 text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-                      level === l.id
-                        ? "bg-[#c2e7ff] text-[#001d35] dark:bg-[#004a77] dark:text-[#c2e7ff]"
-                        : "bg-[#f0f4f9] dark:bg-[#28292a] text-gray-700 dark:text-gray-300 hover:bg-[#e9eef6] dark:hover:bg-[#333537]"
-                    }`}
-                    onClick={() => setLevel(l.id)}
-                  >
-                    <span>{l.icon}</span>
-                    <span>{l.label}</span>
-                  </button>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {LEVELS.map((l) => {
+                  const isSelected = level === l.id;
+                  return (
+                    <button
+                      key={l.id}
+                      type="button"
+                      className={`rounded-2xl p-4 text-left sm:text-center flex flex-col items-center justify-center gap-1.5 transition-all duration-200 ${
+                        isSelected
+                          ? "border-2 border-m3-primary bg-m3-primary-container text-m3-on-primary-container shadow-sm"
+                          : "border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface"
+                      }`}
+                      onClick={() => setLevel(l.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{l.icon}</span>
+                        <span className="font-display font-bold text-sm sm:text-base">{l.label}</span>
+                      </div>
+                      <span className={`text-xs ${isSelected ? "text-m3-on-primary-container/80" : "text-m3-on-surface-variant"}`}>
+                        {l.desc}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                {LEVELS.find(l => l.id === level)?.desc}
-              </p>
             </div>
           )}
 
@@ -354,7 +368,8 @@ export default function PDFCompressor({ auth }) {
           {(stage === "ready" || stage === "done") && (
             <div className="my-6">
               <button
-                className="w-full rounded-full py-3 px-6 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white shadow-xs transition-colors flex items-center justify-center gap-2"
+                type="button"
+                className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2"
                 onClick={compress}
               >
                 <span>{stage === "done" ? "🔁 Re-compress PDF" : "⚡ Compress PDF"}</span>
@@ -364,42 +379,44 @@ export default function PDFCompressor({ auth }) {
 
           {/* ── Progress (M3 Linear Indicator) ── */}
           {stage === "compressing" && (
-            <div className="my-6 p-4 rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a]">
-              <div className="flex items-center justify-between text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
                 <span>Compressing your PDF...</span>
-                <span className="text-blue-600 font-bold">{progress}%</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#0b57d0] transition-all duration-200"
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result ── */}
           {stage === "done" && result && (
-            <div className="rounded-2xl bg-[#f0f4f9] dark:bg-[#28292a] p-5 my-6 border border-gray-200/60 dark:border-gray-800">
+            <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
               {usedFallback && (
-                <div className="rounded-xl p-2.5 text-xs text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 text-center mb-4 border border-amber-200 dark:border-amber-900/50">
+                <div className="rounded-xl p-3 text-xs font-medium text-m3-on-secondary-container bg-m3-secondary-container text-center mb-4 border border-m3-outline-variant/40">
                   ℹ️ This PDF is already optimised — metadata stripped &amp; returned as-is
                 </div>
               )}
-              <div className="flex items-center justify-center gap-6 py-2">
+              <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
                 <div className="text-center">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Original</div>
-                  <div className="text-base font-semibold text-gray-800 dark:text-gray-100">{fmt(result.originalSize)}</div>
+                  <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Original</div>
+                  <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">{fmt(result.originalSize)}</div>
                 </div>
-                <div className="text-lg text-gray-400 font-bold">→</div>
+                <div className="text-xl text-m3-outline font-bold">→</div>
                 <div className="text-center">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Compressed</div>
-                  <div className="text-base font-semibold text-blue-600 dark:text-blue-400">{fmt(result.compressedSize)}</div>
+                  <div className="text-xs font-semibold text-m3-primary mb-1">Compressed</div>
+                  <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">{fmt(result.compressedSize)}</div>
                 </div>
               </div>
               <div className="text-center mt-3">
-                <span className="rounded-full px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 inline-block">
+                <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
                   {result.saving > 0
                     ? `🎉 ${result.saving}% smaller`
                     : "✅ Already fully optimised"}
@@ -415,12 +432,13 @@ export default function PDFCompressor({ auth }) {
               fileName={`compressed_${file?.name}`}
               onReset={reset}
               auth={auth}
+              toolName="PDF Compressor"
             />
           )}
 
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-6 mt-6 border-t border-gray-100 dark:border-gray-800/80">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · PDF Tool</span>
-            <span>Files never leave your browser</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
         </div>
       </div>
