@@ -33,6 +33,7 @@ export default function CrushDrop() {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [shareLink, setShareLink] = useState("");
   const [copied, setCopied] = useState(false);
+  const [joinPeerId, setJoinPeerId] = useState("");
 
   // Transfer State
   const [fileToSend, setFileToSend] = useState(null);
@@ -269,70 +270,98 @@ export default function CrushDrop() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleJoinPeer = (e) => {
+    if (e) e.preventDefault();
+    const cleanId = joinPeerId.trim();
+    if (!cleanId || !peer) return;
+    setConnStatus(`Connecting to ${cleanId}...`);
+    connectToPeer(peer, cleanId);
+  };
+
   // Determine status card theme style
   const getStatusStyle = () => {
     if (isConnected) {
-      return "bg-[#e6f4ea] dark:bg-[#0f5223]/30 border-[#ceead6] dark:border-[#137333]/50 text-[#137333] dark:text-[#81c995]";
+      return "bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/30 text-emerald-700 dark:text-emerald-300";
     }
     if (connStatus.includes("Error") || connStatus.includes("⚠️") || connStatus.includes("🔴")) {
-      return "bg-[#ffdad6] dark:bg-[#93000a]/30 border-[#ffdad6] dark:border-[#93000a]/50 text-[#ba1a1a] dark:text-[#ffb4ab]";
+      return "bg-m3-error-container text-m3-on-error-container border-m3-error/30";
     }
-    return "bg-[#f0f4f9] dark:bg-[#28292a] border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3]";
+    return "bg-m3-surface-container border-m3-outline-variant/60 text-m3-on-surface";
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8fafd] dark:bg-[#131314]">
-      {/* Top Bar */}
-      <div className="w-full max-w-4xl mx-auto flex items-center justify-between p-4 sm:p-6 mb-2">
-        <button 
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-all shadow-sm"
-          onClick={() => navigate("/")}
-        >
-          ← Back
-        </button>
-        <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">CrushDrop P2P</div>
-        <div className="text-xs text-[#444746] dark:text-[#c4c7c5] hidden sm:block font-medium">WebRTC Direct Sync</div>
-      </div>
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors duration-200">
+      {/* Top App Bar */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 transition-colors">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <button 
+            type="button"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98] shadow-m3-elevation-1"
+            onClick={() => navigate("/")}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Tools
+          </button>
 
-      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-12 flex-1">
-        
-        {/* Header Section */}
-        <div className="mb-6 sm:mb-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#c2e7ff] dark:bg-[#004a77] text-2xl text-[#001d35] dark:text-[#c2e7ff]">
-              🌐
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] tracking-tight">
-              CrushDrop
-            </h1>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">🌐</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight text-m3-on-surface">
+              CrushDrop P2P
+            </span>
           </div>
-          <p className="text-sm text-[#444746] dark:text-[#c4c7c5] max-w-lg mx-auto">
-            AirDrop files directly between any two devices. 100% P2P WebRTC transfer. Zero server limits.
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              WebRTC Direct Sync
+            </span>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col">
+        
+        {/* Header Hero Section */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-m3-primary/10 text-m3-primary border border-m3-primary/20 text-3xl mb-3 shadow-m3-elevation-1">
+            🌐
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-m3-on-surface">
+            CrushDrop P2P
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-lg mx-auto mt-2 leading-relaxed">
+            AirDrop files directly between any two devices. 100% P2P WebRTC transfer with zero server storage or limits.
           </p>
         </div>
 
         {/* Status Bar */}
-        <div className={`rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-2 border shadow-xs transition-all ${getStatusStyle()}`}>
-          <div className="flex items-center gap-2 font-medium text-sm">
-            {connStatus}
+        <div className={`rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 border shadow-m3-elevation-1 transition-all ${getStatusStyle()}`}>
+          <div className="flex items-center gap-2.5 font-medium text-sm">
+            <span className={`w-2.5 h-2.5 rounded-full ${isConnected ? "bg-emerald-500 animate-ping" : connStatus.includes("Error") || connStatus.includes("⚠️") ? "bg-m3-error" : "bg-m3-primary"}`} />
+            <span>{connStatus}</span>
           </div>
           {myId && (
-            <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#444746] dark:text-[#c4c7c5]">
-              My ID: <span className="font-bold text-[#1f1f1f] dark:text-[#e3e3e3]">{myId}</span>
+            <div className="text-xs font-mono px-3 py-1.5 rounded-xl bg-m3-surface-container-high border border-m3-outline-variant/50 text-m3-on-surface-variant flex items-center gap-2">
+              <span>My Peer ID:</span>
+              <span className="font-bold text-m3-on-surface select-all">{myId}</span>
             </div>
           )}
         </div>
 
         {/* Receiver Connecting State */}
         {isReceiver && !isConnected && (
-          <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] p-8 text-center shadow-sm mb-6">
-            <div className="w-10 h-10 border-3 border-[#c2e7ff] dark:border-[#004a77] border-t-[#0b57d0] dark:border-t-[#a8c7fa] rounded-full animate-spin mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">Connecting to Sender...</h3>
-            <p className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">
-              Pairing via WebRTC direct channel ({targetPeerId})
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-8 sm:p-12 text-center shadow-m3-elevation-1 mb-6">
+            <div className="w-12 h-12 border-3 border-m3-primary/20 border-t-m3-primary rounded-full animate-spin mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-m3-on-surface mb-2">Connecting to Sender...</h3>
+            <p className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+              Pairing via WebRTC direct channel with peer <span className="font-mono font-medium text-m3-on-surface">{targetPeerId}</span>
             </p>
             <button
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm"
+              type="button"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 active:scale-[0.98]"
               onClick={() => {
                 if (peer && targetPeerId) {
                   setConnStatus(`Retrying connection to ${targetPeerId}...`);
@@ -340,53 +369,100 @@ export default function CrushDrop() {
                 }
               }}
             >
-              🔄 Retry Connection
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Retry Connection
             </button>
           </div>
         )}
 
         {/* Sender Mode UI */}
         {!isReceiver && !isConnected && (
-          <div className="bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl border border-[#c7c7c7] dark:border-[#444746] p-6 sm:p-8 text-center shadow-sm mb-6 flex flex-col items-center">
-            <h3 className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-2">
-              Share link or scan QR code to connect
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-10 shadow-m3-elevation-1 mb-6 flex flex-col items-center">
+            <h3 className="text-xl font-semibold text-m3-on-surface mb-2 text-center">
+              Share Link or Scan QR Code to Connect
             </h3>
-            <p className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-6 max-w-md">
-              Open this link on your phone, tablet, or another laptop to instantly pair and transfer files without upload limits.
+            <p className="text-sm text-m3-on-surface-variant mb-8 max-w-lg text-center leading-relaxed">
+              Open this link on your phone, tablet, or another device to instantly pair and transfer files directly without cloud uploads.
             </p>
             
             {qrCodeUrl && (
-              <div className="p-3 bg-[#ffffff] rounded-2xl border border-[#c7c7c7] dark:border-[#444746] shadow-sm mb-6">
+              <div className="p-4 bg-white rounded-3xl border border-m3-outline-variant/40 shadow-m3-elevation-1 mb-8 inline-block">
                 <img 
                   src={qrCodeUrl} 
-                  alt="QR Code" 
-                  className="w-48 h-48 rounded-xl object-contain"
+                  alt="CrushDrop Pairing QR Code" 
+                  className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-contain"
                 />
               </div>
             )}
             
-            <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
-              <input 
-                type="text" 
-                readOnly 
-                value={shareLink} 
-                className="flex-1 w-full px-4 py-2.5 rounded-full text-sm font-mono bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] outline-none select-all"
-              />
-              <button 
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm flex items-center justify-center gap-2 flex-shrink-0 w-full sm:w-auto ${
-                  copied 
-                    ? "bg-[#e6f4ea] text-[#137333] dark:bg-[#0f5223] dark:text-[#81c995] border border-[#ceead6] dark:border-[#137333]" 
-                    : "bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd]"
-                }`}
-                onClick={copyLink}
-              >
-                {copied ? "✓ Copied!" : "📋 Copy Link"}
-              </button>
+            {/* Share Link Box */}
+            <div className="w-full max-w-lg mb-8">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2">
+                Direct Pairing Link
+              </label>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={shareLink} 
+                  className="flex-1 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-mono bg-m3-surface-container-high border border-m3-outline-variant/60 text-m3-on-surface outline-none select-all focus:border-m3-primary"
+                />
+                <button 
+                  type="button"
+                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-m3-elevation-1 flex items-center justify-center gap-2 flex-shrink-0 active:scale-[0.98] ${
+                    copied 
+                      ? "bg-emerald-500 text-white" 
+                      : "bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary"
+                  }`}
+                  onClick={copyLink}
+                >
+                  {copied ? (
+                    <>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                      Copy Link
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-            
-            <p className="mt-6 text-xs text-[#444746] dark:text-[#c4c7c5] flex items-center gap-1.5">
-              <span>⚡</span> Keep this tab open. Devices connect directly via encrypted P2P channel.
-            </p>
+
+            {/* Manual Join Section */}
+            <div className="w-full max-w-lg pt-6 border-t border-m3-outline-variant/40">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2">
+                Or Join with Peer ID
+              </label>
+              <form onSubmit={handleJoinPeer} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input 
+                  type="text" 
+                  placeholder="e.g. crush-abc1-xyz2"
+                  value={joinPeerId}
+                  onChange={(e) => setJoinPeerId(e.target.value)}
+                  className="flex-1 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-mono bg-m3-surface-container-high border border-m3-outline-variant/60 text-m3-on-surface placeholder:text-m3-outline outline-none focus:border-m3-primary"
+                />
+                <button 
+                  type="submit"
+                  disabled={!joinPeerId.trim()}
+                  className="px-6 py-2.5 rounded-full text-sm font-medium bg-m3-secondary-container hover:bg-m3-secondary-container/80 text-m3-on-secondary-container border border-m3-outline-variant/50 transition-all shadow-m3-elevation-1 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+                >
+                  Connect
+                </button>
+              </form>
+            </div>
+
+            <div className="mt-8 text-xs text-m3-on-surface-variant flex items-center justify-center gap-2 text-center">
+              <span>⚡</span> Keep this tab open. Devices establish end-to-end encrypted direct WebRTC channel.
+            </div>
           </div>
         )}
 
@@ -396,7 +472,7 @@ export default function CrushDrop() {
             
             {/* Sending Dropzone */}
             <div
-              className="relative bg-[#ffffff] dark:bg-[#1e1f20] border-2 border-dashed border-[#c7c7c7] dark:border-[#444746] hover:border-[#0b57d0] dark:hover:border-[#a8c7fa] rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all shadow-sm group hover:bg-[#f0f4f9]/50 dark:hover:bg-[#28292a]/50"
+              className="relative bg-m3-surface-container border-2 border-dashed border-m3-outline-variant hover:border-m3-primary rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all shadow-m3-elevation-1 group hover:bg-m3-surface-container-high/60"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
@@ -404,22 +480,27 @@ export default function CrushDrop() {
                 handleFileSelect(e.dataTransfer.files[0]);
               }}
             >
-              <span className="text-4xl mb-3 block group-hover:scale-105 transition-transform">📤</span>
-              <div className="text-lg font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
+              <div className="w-16 h-16 rounded-2xl bg-m3-primary/10 text-m3-primary flex items-center justify-center mx-auto mb-4 text-3xl group-hover:scale-105 transition-transform shadow-m3-elevation-1">
+                📤
+              </div>
+              <div className="text-lg sm:text-xl font-semibold text-m3-on-surface mb-1">
                 Drop file here to send
               </div>
-              <div className="text-xs text-[#444746] dark:text-[#c4c7c5] mb-4">
-                Transfer happens instantly over the local network / WebRTC (no server limits)
+              <div className="text-xs sm:text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+                Fast peer-to-peer transmission over local network or direct WebRTC. Zero server limits.
               </div>
               <button 
                 type="button" 
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 active:scale-[0.98]"
                 onClick={(e) => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
                 }}
               >
-                📁 Choose File
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Choose File
               </button>
               <input
                 ref={fileInputRef}
@@ -431,32 +512,36 @@ export default function CrushDrop() {
 
             {/* Outgoing File Progress */}
             {fileToSend && (
-              <div className="bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-6 shadow-sm">
+              <div className="bg-m3-surface-container border border-m3-outline-variant/60 rounded-3xl p-6 shadow-m3-elevation-1">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate max-w-[70%]">
-                    Sending: <span className="font-semibold">{fileToSend.name}</span>
-                  </span>
-                  <span className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-lg">📤</span>
+                    <span className="text-sm font-medium text-m3-on-surface truncate">
+                      Sending: <span className="font-semibold">{fileToSend.name}</span>
+                    </span>
+                  </div>
+                  <span className="text-xs text-m3-on-surface-variant font-mono flex-shrink-0 ml-3">
                     {formatBytes(fileToSend.size)}
                   </span>
                 </div>
                 
-                {/* M3 Linear Progress */}
-                <div className="w-full h-2.5 bg-[#f0f4f9] dark:bg-[#28292a] rounded-full overflow-hidden mb-3 border border-[#c7c7c7]/30 dark:border-[#444746]/50">
+                {/* M3 Linear Progress Bar */}
+                <div className="w-full h-2.5 bg-m3-surface-container-highest rounded-full overflow-hidden mb-3 border border-m3-outline-variant/40">
                   <div 
-                    className="h-full bg-[#0b57d0] dark:bg-[#a8c7fa] rounded-full transition-all duration-150"
+                    className="h-full bg-m3-primary rounded-full transition-all duration-150"
                     style={{ width: `${transferProgress}%` }}
                   />
                 </div>
 
-                <div className="flex justify-between text-xs text-[#444746] dark:text-[#c4c7c5] font-medium">
+                <div className="flex justify-between items-center text-xs text-m3-on-surface-variant font-medium">
                   <span>{transferProgress}% Complete</span>
-                  <span className="font-mono">{transferSpeed}</span>
+                  <span className="font-mono text-m3-on-surface">{transferSpeed}</span>
                 </div>
 
                 {transferProgress === 0 && (
                   <button 
-                    className="w-full mt-4 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm flex items-center justify-center gap-2"
+                    type="button"
+                    className="w-full mt-4 py-3 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 flex items-center justify-center gap-2 active:scale-[0.98]"
                     onClick={sendFile}
                   >
                     🚀 Send Now
@@ -467,34 +552,37 @@ export default function CrushDrop() {
 
             {/* Incoming File Progress */}
             {incomingFile && (
-              <div className="bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-3xl p-6 shadow-sm">
+              <div className="bg-m3-surface-container border border-m3-outline-variant/60 rounded-3xl p-6 shadow-m3-elevation-1">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] truncate max-w-[70%]">
-                    Receiving: <span className="font-semibold">{incomingFile.name}</span>
-                  </span>
-                  <span className="text-xs text-[#444746] dark:text-[#c4c7c5] font-mono">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-lg">📥</span>
+                    <span className="text-sm font-medium text-m3-on-surface truncate">
+                      Receiving: <span className="font-semibold">{incomingFile.name}</span>
+                    </span>
+                  </div>
+                  <span className="text-xs text-m3-on-surface-variant font-mono flex-shrink-0 ml-3">
                     {formatBytes(incomingFile.size)}
                   </span>
                 </div>
                 
-                {/* M3 Linear Progress */}
-                <div className="w-full h-2.5 bg-[#f0f4f9] dark:bg-[#28292a] rounded-full overflow-hidden mb-3 border border-[#c7c7c7]/30 dark:border-[#444746]/50">
+                {/* M3 Linear Progress Bar */}
+                <div className="w-full h-2.5 bg-m3-surface-container-highest rounded-full overflow-hidden mb-3 border border-m3-outline-variant/40">
                   <div 
-                    className="h-full bg-[#137333] dark:bg-[#81c995] rounded-full transition-all duration-150"
+                    className="h-full bg-emerald-500 rounded-full transition-all duration-150"
                     style={{ width: `${incomingFile.progress}%` }}
                   />
                 </div>
 
-                <div className="flex justify-between text-xs text-[#444746] dark:text-[#c4c7c5] font-medium">
+                <div className="flex justify-between items-center text-xs text-m3-on-surface-variant font-medium">
                   <span>{incomingFile.progress}% Complete</span>
-                  <span className="font-mono">{transferSpeed}</span>
+                  <span className="font-mono text-m3-on-surface">{transferSpeed}</span>
                 </div>
 
                 {downloadReadyUrl && (
                   <a
                     href={downloadReadyUrl}
                     download={downloadReadyName}
-                    className="w-full mt-4 py-3 rounded-full text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] transition-all shadow-sm flex items-center justify-center gap-2 no-underline"
+                    className="w-full mt-4 py-3 rounded-full text-sm font-medium bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-m3-elevation-1 flex items-center justify-center gap-2 no-underline active:scale-[0.98]"
                   >
                     💾 Save Received File
                   </a>
@@ -505,7 +593,15 @@ export default function CrushDrop() {
           </div>
         )}
 
-      </div>
+        {/* Security & Privacy Notice */}
+        <div className="mt-12 text-center text-xs text-m3-on-surface-variant/80 flex items-center justify-center gap-1.5">
+          <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Direct browser-to-browser encrypted transfer via WebRTC. Files are never stored on any server.
+        </div>
+
+      </main>
     </div>
   );
 }
