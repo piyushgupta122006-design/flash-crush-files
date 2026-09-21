@@ -1,4 +1,4 @@
-// PDFImageOCR.jsx — 100% Client-Side PDF & Image OCR Text Extractor (tesseract.js WebAssembly)
+// PDFImageOCR.jsx — 100% Client-Side PDF & Image OCR Text Extractor (Material Design 3)
 import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWorker } from "tesseract.js";
@@ -390,43 +390,70 @@ export default function PDFImageOCR({ auth }) {
   const selectedLang = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
 
   return (
-    <div className="compressor-page">
-      {/* ── Tool Bar ── */}
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <span className="tool-page-title">🔍 OCR Text Extractor</span>
-        <span className="tool-page-meta">{file ? fmt(file.size) : "No file"}</span>
-      </div>
-
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ background: "var(--m3-sky)" }}>🔍</div>
-            <h1 className="comp-title">PDF & Image OCR</h1>
-          </div>
-          <p className="comp-sub">
-            Extract editable text from scanned PDFs, photos, and documents — 100% in your browser, zero uploads.
-          </p>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top App Bar ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-display font-semibold text-m3-on-surface-variant hover:text-m3-on-surface bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/50 transition-all duration-200 active:scale-95 shadow-sm"
+        >
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🔍</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF & Image OCR</span>
         </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          {file ? `${fmt(file.size)} · ${fileType === "pdf" ? `${pdfPages.length} Pages` : "Image"}` : "WebAssembly Tesseract"}
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {!file && (
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+              🔍
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+              PDF & Image OCR
+            </h1>
+            <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
+              Extract editable text from scanned PDFs, photos, and documents — 100% in your browser, zero uploads.
+            </p>
+          </div>
+        )}
 
         {/* ── Drop Zone ── */}
         {!file && (
-          <div className="comp-card">
+          <div className="max-w-2xl mx-auto bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-all">
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center group ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary/10 scale-[1.01]"
+                  : "border-m3-outline-variant/80 hover:border-m3-primary hover:bg-m3-primary/5"
+              }`}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <span className="drop-icon">🔍</span>
-              <div className="drop-main">Drop PDF or Image Here</div>
-              <div className="drop-sub">Supports PDF, JPG, PNG, WebP, BMP, TIFF, GIF — up to {MAX_SIZE_MB} MB</div>
-              <div className="drop-btn-row">
-                <button type="button" className="drop-btn" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
-                  Browse Files
-                </button>
+              <div className="w-16 h-16 rounded-2xl bg-m3-primary/10 group-hover:bg-m3-primary/15 text-m3-primary text-3xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
+                🔍
               </div>
+              <div className="font-display font-bold text-lg sm:text-xl text-m3-on-surface mb-1">
+                Drop PDF or Image Here
+              </div>
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6 max-w-sm">
+                Supports PDF, JPG, PNG, WebP, BMP, TIFF, GIF — up to {MAX_SIZE_MB} MB
+              </p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-semibold text-sm shadow-sm hover:shadow active:scale-95 transition-all"
+                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+              >
+                <span>Browse Files</span>
+              </button>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -439,162 +466,246 @@ export default function PDFImageOCR({ auth }) {
         )}
 
         {error && (
-          <div style={{ background: "#FEE2E2", border: 'none', borderRadius: 'var(--radius-full)', padding: "12px 18px", marginTop: "16px", color: "#B91C1C", fontWeight: 700, maxWidth: "680px", width: "100%", boxShadow: "3px 3px 0px #1a1a1a" }}>
-            ⚠️ {error}
+          <div className="max-w-4xl mx-auto my-4 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/30 flex items-center justify-between gap-3 text-sm font-medium">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⚠</span>
+              <span>{error}</span>
+            </div>
+            <button
+              onClick={() => setError("")}
+              className="text-xs font-bold px-2 py-1 rounded hover:bg-m3-error/10 transition-colors"
+            >
+              ✕
+            </button>
           </div>
         )}
 
         {/* ── Main OCR Workspace ── */}
         {file && (
-          <div className="ocr-workspace" style={{ maxWidth: "900px", width: "100%", marginTop: "16px" }}>
+          <div className="max-w-6xl mx-auto flex flex-col gap-6 mt-4">
 
-            {/* Language Selector */}
-            <div className="ocr-controls-bar">
-              <div className="ocr-lang-selector" onClick={() => setShowLangPicker(!showLangPicker)}>
-                <span style={{ fontSize: "1.1rem" }}>{selectedLang.flag}</span>
-                <span style={{ fontWeight: 700 }}>{selectedLang.label}</span>
-                <span className="nav-chevron">{showLangPicker ? "▲" : "▼"}</span>
-              </div>
-
-              {showLangPicker && (
-                <div className="ocr-lang-dropdown">
-                  {LANGUAGES.map(l => (
-                    <button
-                      key={l.code}
-                      type="button"
-                      className={`ocr-lang-option${l.code === lang ? " active" : ""}`}
-                      onClick={() => { setLang(l.code); setShowLangPicker(false); }}
-                    >
-                      <span>{l.flag}</span>
-                      <span>{l.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+            {/* Language Selector & Controls Bar */}
+            <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-4 sm:p-5 shadow-m3-elevation-1 flex flex-wrap items-center justify-between gap-4 relative">
+              
+              {/* Language Selector Dropdown */}
+              <div className="relative">
                 <button
                   type="button"
-                  className="btn-compress"
-                  style={{ width: "auto", padding: "10px 24px", fontSize: "0.88rem" }}
+                  className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface text-sm font-medium transition-all cursor-pointer shadow-sm active:scale-95"
+                  onClick={() => setShowLangPicker(!showLangPicker)}
+                >
+                  <span className="text-lg">{selectedLang.flag}</span>
+                  <span className="font-display font-semibold">{selectedLang.label}</span>
+                  <span className="text-xs text-m3-on-surface-variant ml-1">{showLangPicker ? "▲" : "▼"}</span>
+                </button>
+
+                {showLangPicker && (
+                  <div className="absolute top-full left-0 mt-2 w-64 max-h-72 overflow-y-auto bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-2xl p-1.5 shadow-m3-elevation-3 z-50 scrollbar-thin animate-fadeIn">
+                    {LANGUAGES.map(l => (
+                      <button
+                        key={l.code}
+                        type="button"
+                        className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-xs sm:text-sm text-left transition-colors ${
+                          l.code === lang
+                            ? "bg-m3-primary/15 text-m3-primary font-bold"
+                            : "text-m3-on-surface hover:bg-m3-surface-container-highest"
+                        }`}
+                        onClick={() => { setLang(l.code); setShowLangPicker(false); }}
+                      >
+                        <span className="text-base">{l.flag}</span>
+                        <span>{l.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 disabled:opacity-50 text-m3-on-primary font-display font-semibold text-sm shadow-sm hover:shadow active:scale-95 transition-all"
                   onClick={runOCR}
                   disabled={processing}
                 >
-                  {processing ? "⏳ Extracting…" : "🔍 Extract Text"}
+                  <span>{processing ? "⏳" : "🔍"}</span>
+                  <span>{processing ? "Extracting…" : "Extract Text"}</span>
                 </button>
 
                 {fileType === "pdf" && pdfPages.length > 1 && (
                   <button
                     type="button"
-                    className="btn-compress"
-                    style={{ width: "auto", padding: "10px 24px", fontSize: "0.88rem", background: "var(--m3-lavender)", color: "#1a1a1a" }}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-m3-secondary-container hover:bg-m3-secondary-container/80 disabled:opacity-50 text-m3-on-secondary-container font-display font-semibold text-sm shadow-sm active:scale-95 transition-all"
                     onClick={runOCRAllPages}
                     disabled={processing}
                   >
-                    {processing ? "⏳ Processing…" : `📄 OCR All ${pdfPages.length} Pages`}
+                    <span>📄</span>
+                    <span>{processing ? "Processing…" : `OCR All ${pdfPages.length} Pages`}</span>
                   </button>
                 )}
 
                 <button
                   type="button"
-                  className="back-btn"
-                  style={{ marginLeft: "auto" }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-display font-medium text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-high transition-colors"
                   onClick={resetAll}
                 >
-                  ✕ Reset
+                  <span>✕</span>
+                  <span>Reset</span>
                 </button>
               </div>
             </div>
 
             {/* Progress Bar */}
             {processing && (
-              <div className="ocr-progress-wrap">
-                <div className="ocr-progress-bar">
-                  <div className="ocr-progress-fill" style={{ width: `${progress}%` }} />
-                </div>
-                <div className="ocr-progress-label">
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1 animate-pulse">
+                <div className="flex items-center justify-between mb-2 text-xs font-display font-medium text-m3-on-surface">
                   <span>{progressMsg}</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{progress}%</span>
+                  <span className="font-mono font-bold text-m3-primary text-sm">{progress}%</span>
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-m3-primary transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
                 </div>
               </div>
             )}
 
-            {/* PDF Page Thumbnails */}
+            {/* PDF Page Strip */}
             {fileType === "pdf" && pdfPages.length > 1 && (
-              <div className="ocr-page-strip">
-                <div className="ocr-page-strip-label">Pages ({pdfPages.length})</div>
-                <div className="ocr-page-strip-scroll">
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-4 sm:p-5 shadow-m3-elevation-1 flex flex-col gap-2">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    Pages ({pdfPages.length})
+                  </span>
+                  <span className="text-xs text-m3-on-surface-variant">
+                    Click a page to preview and extract
+                  </span>
+                </div>
+                <div className="flex gap-3 overflow-x-auto pb-2 pt-1 scrollbar-thin">
                   {pdfPages.map((p, idx) => (
                     <div
                       key={idx}
-                      className={`ocr-page-thumb${idx === selectedPage ? " active" : ""}`}
+                      className={`w-16 h-20 shrink-0 cursor-pointer rounded-xl overflow-hidden relative transition-all active:scale-95 ${
+                        idx === selectedPage
+                          ? "ring-2 ring-m3-primary border border-m3-primary shadow-sm"
+                          : "border border-m3-outline-variant/60 opacity-60 hover:opacity-100 hover:border-m3-outline"
+                      }`}
                       onClick={() => handlePageSelect(idx)}
                     >
-                      <img src={p.dataUrl} alt={`Page ${p.pageNum}`} />
-                      <span className="ocr-page-num">{p.pageNum}</span>
+                      <img src={p.dataUrl} alt={`Page ${p.pageNum}`} className="w-full h-full object-cover pointer-events-none select-none" />
+                      <div className="absolute bottom-0 right-0 bg-m3-surface-container-highest/90 text-m3-on-surface text-[10px] font-mono px-1.5 py-0.5 rounded-tl-md font-bold">
+                        {p.pageNum}
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Split Layout: Preview + Text */}
-            <div className="ocr-split-layout">
-              {/* Left: Document Preview */}
-              <div className="ocr-preview-pane">
-                <div className="ocr-preview-header">
-                  <span>📄 Document Preview</span>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem", color: "var(--text-sub)" }}>
+            {/* Split Layout: Document Preview + Extracted Text */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+              
+              {/* Left Column: Document Preview */}
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1 flex flex-col">
+                <div className="flex items-center justify-between mb-3 border-b border-m3-outline-variant/40 pb-2">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    📄 Document Preview
+                  </span>
+                  <span className="text-xs font-mono text-m3-on-surface-variant bg-m3-surface-container px-2 py-0.5 rounded-full">
                     {fileType === "pdf" ? `Page ${selectedPage + 1} / ${pdfPages.length}` : file?.name}
                   </span>
                 </div>
-                <div className="ocr-preview-img-wrap">
-                  {previewUrl && <img src={previewUrl} alt="Preview" className="ocr-preview-img" />}
+                <div className="flex-1 min-h-[380px] max-h-[580px] rounded-2xl bg-m3-surface-container-highest/30 dark:bg-m3-surface-container-lowest/70 p-4 flex items-center justify-center overflow-auto border border-m3-outline-variant/30">
+                  {previewUrl && (
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="max-w-full max-h-[520px] object-contain rounded-lg shadow-m3-elevation-1"
+                    />
+                  )}
                 </div>
               </div>
 
-              {/* Right: Extracted Text */}
-              <div className="ocr-text-pane">
-                <div className="ocr-text-header">
-                  <span>📝 Extracted Text</span>
+              {/* Right Column: Extracted Text */}
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1 flex flex-col">
+                <div className="flex items-center justify-between mb-3 border-b border-m3-outline-variant/40 pb-2">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    📝 Extracted Text
+                  </span>
                   {ocrDone && (
-                    <span className="ocr-confidence-badge" style={{ background: confidence >= 80 ? "var(--m3-mint)" : confidence >= 50 ? "var(--m3-yellow)" : "var(--m3-coral)" }}>
+                    <span
+                      className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border ${
+                        confidence >= 80
+                          ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
+                          : confidence >= 50
+                          ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30"
+                          : "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30"
+                      }`}
+                    >
                       {confidence}% Confidence
                     </span>
                   )}
                 </div>
                 <textarea
-                  className="ocr-textarea"
+                  className="w-full flex-1 min-h-[340px] p-4 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/70 text-m3-on-surface font-mono text-xs sm:text-sm leading-relaxed placeholder:text-m3-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-m3-primary resize-y transition-all"
                   value={ocrText}
                   onChange={(e) => setOcrText(e.target.value)}
                   placeholder={ocrDone ? "(No text detected)" : "Extracted text will appear here after OCR processing…"}
                   readOnly={!ocrDone}
                 />
                 {ocrDone && (
-                  <div className="ocr-stats-bar">
+                  <div className="flex items-center gap-4 mt-3 pt-3 border-t border-m3-outline-variant/40 text-xs text-m3-on-surface-variant font-medium flex-wrap">
                     <span>📊 {wordCount.toLocaleString()} words</span>
                     <span>🔤 {charCount.toLocaleString()} chars</span>
                     <span>🌐 {selectedLang.label}</span>
                   </div>
                 )}
               </div>
+
             </div>
 
-            {/* ── Export Actions ── */}
+            {/* Export Actions */}
             {ocrDone && ocrText.trim() && (
-              <div className="ocr-export-bar">
-                <button type="button" className="ocr-export-btn" onClick={copyToClipboard} style={{ background: copied ? "var(--m3-mint)" : "var(--bg-surface)" }}>
-                  {copied ? "✅ Copied!" : "📋 Copy Text"}
-                </button>
-                <button type="button" className="ocr-export-btn" onClick={downloadTxt}>
-                  📄 Download .TXT
-                </button>
-                <button type="button" className="ocr-export-btn" onClick={downloadDoc}>
-                  📝 Download .DOC
-                </button>
-                <button type="button" className="ocr-export-btn" onClick={downloadJson}>
-                  🗂️ Download .JSON
-                </button>
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-4 sm:p-5 shadow-m3-elevation-1 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-display font-semibold transition-all active:scale-95 shadow-sm ${
+                      copied
+                        ? "bg-emerald-600 text-white"
+                        : "bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary"
+                    }`}
+                    onClick={copyToClipboard}
+                  >
+                    <span>{copied ? "✅" : "📋"}</span>
+                    <span>{copied ? "Copied!" : "Copy Text"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-display font-semibold border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface transition-all active:scale-95 shadow-sm"
+                    onClick={downloadTxt}
+                  >
+                    <span>📄</span>
+                    <span>Download .TXT</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-display font-semibold border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface transition-all active:scale-95 shadow-sm"
+                    onClick={downloadDoc}
+                  >
+                    <span>📝</span>
+                    <span>Download .DOC</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-display font-semibold border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface transition-all active:scale-95 shadow-sm"
+                    onClick={downloadJson}
+                  >
+                    <span>🗂️</span>
+                    <span>Download .JSON</span>
+                  </button>
+                </div>
 
                 {auth?.authStatus === "signedin" && auth?.uploadToDrive && (
                   <ActionButtons
@@ -606,6 +717,7 @@ export default function PDFImageOCR({ auth }) {
                 )}
               </div>
             )}
+
           </div>
         )}
       </div>
