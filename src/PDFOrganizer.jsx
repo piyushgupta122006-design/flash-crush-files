@@ -294,125 +294,205 @@ export default function PDFOrganizer({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Organize & Rotate PDF</div>
-        <div className="tool-page-meta">Drag · Rotate · Delete · Reorder</div>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top Bar with Back Navigation ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">🔄</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">Organize & Rotate PDF</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Max {MAX_SIZE_MB} MB · Visual Reorder
+        </div>
+      </header>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(245, 158, 11, 0.4)", boxShadow: "0 0 20px rgba(245, 158, 11, 0.3)" }}>
-              🔄
-            </div>
-            <div className="comp-title">PDF Page Organizer & Rotator</div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            🔄
           </div>
-          <p className="comp-sub">Drag to reorder, rotate (90°/180°/270°), or delete pages. Export the reorganized PDF.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            Organize & Rotate PDF Pages
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+            Drag to reorder, rotate individual pages (90° / 180° / 270°), or delete pages. 100% private, on-device processing.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Main Container Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`rounded-3xl border-2 border-dashed p-8 sm:p-14 text-center transition-all duration-300 cursor-pointer group ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/30"
+                  : "border-m3-outline-variant hover:border-m3-primary bg-m3-surface-container/40 hover:bg-m3-surface-container/80"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">🔄</span>
-              <p className="drop-main">{dragging ? "Drop your PDF here!" : "Drag & drop your PDF to organize"}</p>
-              <p className="drop-sub">Reorder, rotate & delete pages visually · max {MAX_SIZE_MB} MB</p>
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])}
+              />
+              <div className="w-20 h-20 rounded-full bg-m3-primary/10 text-m3-primary text-4xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                🔄
+              </div>
+              <div className="text-xl sm:text-2xl font-display font-bold text-m3-on-surface mb-2">
+                {dragging ? "Drop your PDF here!" : "Drag & drop your PDF to organize"}
+              </div>
+              <div className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+                Reorder, rotate & delete pages visually · Max {MAX_SIZE_MB} MB
+              </div>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse PDF</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
-                  <DriveIconSmall />{drivePickLabel()}
+              <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  className="px-8 py-3.5 rounded-full bg-m3-primary text-m3-on-primary font-semibold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 hover:bg-m3-primary/90 active:scale-95 transition-all duration-200 flex items-center gap-2"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <span>📁</span>
+                  <span>Browse PDF</span>
+                </button>
+                <button
+                  type="button"
+                  className="rounded-full px-5 py-3 text-sm font-semibold bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/80 text-m3-on-surface shadow-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-60"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
+                  <DriveIconSmall />
+                  <span>{drivePickLabel()}</span>
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && (
+                <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm max-w-md mx-auto">
+                  <span>⚠</span>
+                  <span>{errorMsg}</span>
+                </div>
+              )}
             </div>
           )}
 
           {/* ── Loading Progress ── */}
           {stage === "loading" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Loading PDF pages...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Loading PDF pages...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && (stage === "loaded" || stage === "done" || stage === "building" || (stage === "error" && file)) && (
-            <div className="file-row">
-              <div className="file-icon">📄</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)} · {pages.length} pages</div>
+            <div className="bg-m3-surface-container rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 mb-6 border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-12 h-12 rounded-xl bg-m3-primary/10 text-m3-primary text-2xl flex items-center justify-center flex-shrink-0">
+                  📄
+                </div>
+                <div className="min-w-0">
+                  <div className="font-display font-bold text-sm sm:text-base text-m3-on-surface truncate">
+                    {file.name}
+                  </div>
+                  <div className="text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    {fmt(file.size)} · {pages.length} pages
+                  </div>
+                </div>
               </div>
-              {stage !== "building" && <button className="close-btn" onClick={reset}>✕</button>}
+              {stage !== "building" && (
+                <button
+                  type="button"
+                  className="p-2.5 rounded-full hover:bg-m3-error-container hover:text-m3-on-error-container text-m3-on-surface-variant transition-all text-sm active:scale-95"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           )}
 
           {/* ── Error inside loaded state ── */}
           {stage === "error" && file && errorMsg && (
-            <div style={{ padding: "0 20px 10px" }}>
-              <div className="error-box">⚠ {errorMsg}</div>
+            <div className="mb-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/20 font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
+              <span>⚠</span>
+              <span>{errorMsg}</span>
             </div>
           )}
 
           {/* ── Toolbar ── */}
           {(stage === "loaded" || stage === "done") && pages.length > 0 && (
-            <div style={{
-              display: "flex", flexWrap: "wrap", gap: "8px", padding: "0 20px 12px",
-              alignItems: "center", justifyContent: "space-between"
-            }}>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", display: "flex", alignItems: "center" }}>
-                  {activeCount} active · {deletedCount} deleted
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4 p-3.5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold text-m3-on-surface uppercase tracking-wider">
+                  Pages:
                 </span>
-              </div>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                <span className="text-xs font-mono font-bold text-m3-primary bg-m3-primary-container px-2.5 py-0.5 rounded-full">
+                  {activeCount} active
+                </span>
                 {deletedCount > 0 && (
-                  <button onClick={undoAllDeletes} style={{
-                    padding: "5px 12px", background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)",
-                    borderRadius: 'var(--radius-full)', color: "#34d399", fontSize: "11px", fontWeight: 700, cursor: "pointer"
-                  }}>↩ Undo All Deletes</button>
+                  <span className="text-xs font-mono font-bold text-m3-error bg-m3-error-container px-2.5 py-0.5 rounded-full">
+                    {deletedCount} deleted
+                  </span>
                 )}
-                <button onClick={resetAllRotations} style={{
-                  padding: "5px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 'var(--radius-full)', color: "#94a3b8", fontSize: "11px", fontWeight: 700, cursor: "pointer"
-                }}>Reset Rotations</button>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                {deletedCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={undoAllDeletes}
+                    className="px-3.5 py-1.5 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-high hover:bg-m3-surface-container text-m3-on-surface text-xs font-semibold shadow-xs transition-all active:scale-95 flex items-center gap-1.5"
+                  >
+                    <span>↩</span>
+                    <span>Undo All Deletes</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={resetAllRotations}
+                  className="px-3.5 py-1.5 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface text-xs font-semibold shadow-xs transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  <span>🔄</span>
+                  <span>Reset Rotations</span>
+                </button>
               </div>
             </div>
           )}
 
           {/* ── Visual Page Grid with Drag & Drop ── */}
           {(stage === "loaded" || stage === "done") && pages.length > 0 && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <div style={{ fontSize: "11px", fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px" }}>
-                Drag to reorder · Click buttons to rotate or delete
+            <div className="my-6">
+              <div className="text-xs font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <span>Drag cards to reorder</span>
+                <span>·</span>
+                <span>Click buttons to rotate or delete</span>
               </div>
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(130px, 100%), 1fr))",
-                gap: "12px", maxHeight: "480px", overflowY: "auto", padding: "8px",
-                borderRadius: "var(--radius-md)", background: "#FFFBEB",
-                border: 'none'
-              }}>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4 max-h-[520px] overflow-y-auto p-3 sm:p-4 rounded-2xl bg-m3-surface-container/30 border border-m3-outline-variant/40">
                 {pages.map((p, idx) => (
                   <div
                     key={p.id}
@@ -420,130 +500,107 @@ export default function PDFOrganizer({ auth }) {
                     onDragStart={() => handleDragStart(idx)}
                     onDragOver={(e) => handleDragOver(e, idx)}
                     onDragEnd={handleDragEnd}
-                    style={{
-                      position: "relative",
-                      border: dragOverIdx === idx ? "2px solid #FF6B9D" : p.deleted ? "2px solid #EF4444" : "2px solid #1a1a1a",
-                      borderRadius: 'var(--radius-full)',
-                      overflow: "hidden",
-                      opacity: p.deleted ? 0.4 : dragIdx === idx ? 0.5 : 1,
-                      transition: "all 0.15s ease",
-                      background: p.deleted ? "#FEE2E2" : "#FFFFFF",
-                      boxShadow: dragOverIdx === idx ? "4px 4px 0px #1a1a1a" : "2px 2px 0px #1a1a1a",
-                      cursor: p.deleted ? "default" : "grab",
-                    }}
+                    className={`relative rounded-2xl overflow-hidden transition-all duration-200 border group ${
+                      dragOverIdx === idx
+                        ? "border-2 border-m3-primary ring-2 ring-m3-primary/30 shadow-m3-elevation-2 scale-[1.02]"
+                        : p.deleted
+                        ? "border-2 border-m3-error bg-m3-error-container/20 opacity-40 grayscale"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container hover:border-m3-outline shadow-xs"
+                    } ${p.deleted ? "cursor-default" : "cursor-grab active:cursor-grabbing"} ${
+                      dragIdx === idx ? "opacity-50" : "opacity-100"
+                    }`}
                   >
                     {/* Thumbnail */}
-                    <div style={{
-                      aspectRatio: "3/4", overflow: "hidden",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      background: "#F3F4F6",
-                    }}>
+                    <div className="aspect-[3/4] overflow-hidden flex items-center justify-center bg-white p-2.5">
                       <img
                         src={p.thumbUrl}
                         alt={`Page ${p.pageNum}`}
+                        className="max-w-full max-h-full object-contain transition-transform duration-300 pointer-events-none"
                         style={{
-                          maxWidth: "100%", maxHeight: "100%", objectFit: "contain",
                           transform: `rotate(${p.rotation}deg)`,
-                          transition: "transform 0.3s ease",
                         }}
                         draggable={false}
                       />
                     </div>
 
                     {/* Page Number Badge */}
-                    <span style={{
-                      position: "absolute", top: "5px", left: "5px",
-                      background: p.deleted ? "#EF4444" : "#FFD93D",
-                      color: p.deleted ? "#FFFFFF" : "#1a1a1a",
-                      border: 'none',
-                      fontSize: "10px", fontWeight: 800, fontFamily: "'JetBrains Mono', monospace",
-                      padding: "2px 6px", borderRadius: 'var(--radius-full)',
-                    }}>
+                    <span
+                      className={`absolute top-2 left-2 font-mono font-bold text-xs px-2.5 py-0.5 rounded-full shadow-xs border border-m3-outline-variant/40 backdrop-blur-xs ${
+                        p.deleted ? "bg-m3-error text-m3-on-error" : "bg-m3-surface/90 text-m3-on-surface"
+                      }`}
+                    >
                       {p.deleted ? "DEL" : `#${idx + 1}`}
                     </span>
 
                     {/* Original page number */}
-                    <span style={{
-                      position: "absolute", top: "5px", right: "5px",
-                      background: "#FFFFFF", color: "#525252",
-                      border: 'none',
-                      fontSize: "9px", fontWeight: 700, fontFamily: "'JetBrains Mono', monospace",
-                      padding: "2px 5px", borderRadius: 'var(--radius-full)',
-                    }}>
+                    <span className="absolute top-2 right-2 bg-neutral-900/75 text-white font-mono font-semibold text-[10px] px-2 py-0.5 rounded-full backdrop-blur-xs">
                       P{p.pageNum}
                     </span>
 
                     {/* Rotation badge */}
                     {p.rotation !== 0 && !p.deleted && (
-                      <span style={{
-                        position: "absolute", bottom: "38px", right: "5px",
-                        background: "#D8B4FE", color: "#1a1a1a",
-                        border: 'none',
-                        fontSize: "9px", fontWeight: 800, padding: "2px 6px",
-                        borderRadius: 'var(--radius-full)',
-                      }}>
+                      <span className="absolute bottom-12 right-2 bg-m3-tertiary text-m3-on-tertiary font-mono font-bold text-[10px] px-2 py-0.5 rounded-full shadow-xs">
                         {p.rotation}°
                       </span>
                     )}
 
                     {/* Action Buttons */}
-                    <div style={{
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      gap: "3px", padding: "5px 4px",
-                      background: "#FFFFFF",
-                      borderTop: "2px solid #1a1a1a",
-                    }}>
-                      {/* Move Up */}
-                      <button onClick={() => movePage(idx, -1)} disabled={idx === 0 || p.deleted}
+                    <div className="flex items-center justify-between gap-1 p-2 bg-m3-surface-container-high border-t border-m3-outline-variant/50">
+                      {/* Move Left */}
+                      <button
+                        type="button"
+                        onClick={() => movePage(idx, -1)}
+                        disabled={idx === 0 || p.deleted}
                         title="Move Left"
-                        style={{
-                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
-                          background: "#F3F4F6", color: "#1a1a1a",
-                          cursor: idx === 0 || p.deleted ? "not-allowed" : "pointer",
-                          fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
-                          opacity: idx === 0 || p.deleted ? 0.3 : 1,
-                        }}>◀</button>
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-m3-surface-container hover:bg-m3-surface-container-highest text-m3-on-surface text-xs border border-m3-outline-variant/60 transition-all disabled:opacity-25 disabled:cursor-not-allowed active:scale-90"
+                      >
+                        ◀
+                      </button>
 
                       {/* Rotate Left */}
-                      <button onClick={() => rotatePage(p.id, -90)} disabled={p.deleted}
+                      <button
+                        type="button"
+                        onClick={() => rotatePage(p.id, -90)}
+                        disabled={p.deleted}
                         title="Rotate Left 90°"
-                        style={{
-                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
-                          background: "#D8B4FE", color: "#1a1a1a",
-                          cursor: p.deleted ? "not-allowed" : "pointer",
-                          fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>↺</button>
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-m3-primary/10 hover:bg-m3-primary/20 text-m3-primary text-xs border border-m3-primary/20 transition-all disabled:opacity-25 disabled:cursor-not-allowed active:scale-90"
+                      >
+                        ↺
+                      </button>
 
                       {/* Rotate Right */}
-                      <button onClick={() => rotatePage(p.id, 90)} disabled={p.deleted}
+                      <button
+                        type="button"
+                        onClick={() => rotatePage(p.id, 90)}
+                        disabled={p.deleted}
                         title="Rotate Right 90°"
-                        style={{
-                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
-                          background: "#D8B4FE", color: "#1a1a1a",
-                          cursor: p.deleted ? "not-allowed" : "pointer",
-                          fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>↻</button>
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-m3-primary/10 hover:bg-m3-primary/20 text-m3-primary text-xs border border-m3-primary/20 transition-all disabled:opacity-25 disabled:cursor-not-allowed active:scale-90"
+                      >
+                        ↻
+                      </button>
 
-                      {/* Move Down */}
-                      <button onClick={() => movePage(idx, 1)} disabled={idx === pages.length - 1 || p.deleted}
+                      {/* Move Right */}
+                      <button
+                        type="button"
+                        onClick={() => movePage(idx, 1)}
+                        disabled={idx === pages.length - 1 || p.deleted}
                         title="Move Right"
-                        style={{
-                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
-                          background: "#F3F4F6", color: "#1a1a1a",
-                          cursor: idx === pages.length - 1 || p.deleted ? "not-allowed" : "pointer",
-                          fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
-                          opacity: idx === pages.length - 1 || p.deleted ? 0.3 : 1,
-                        }}>▶</button>
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-m3-surface-container hover:bg-m3-surface-container-highest text-m3-on-surface text-xs border border-m3-outline-variant/60 transition-all disabled:opacity-25 disabled:cursor-not-allowed active:scale-90"
+                      >
+                        ▶
+                      </button>
 
                       {/* Delete / Restore */}
-                      <button onClick={() => deletePage(p.id)}
+                      <button
+                        type="button"
+                        onClick={() => deletePage(p.id)}
                         title={p.deleted ? "Restore Page" : "Delete Page"}
-                        style={{
-                          width: "24px", height: "24px", borderRadius: 'var(--radius-full)', border: 'none',
-                          background: p.deleted ? "#6EE7B7" : "#FEE2E2",
-                          color: "#1a1a1a", cursor: "pointer",
-                          fontSize: "11px", display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
+                        className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all active:scale-90 ${
+                          p.deleted
+                            ? "bg-m3-tertiary-container hover:bg-m3-tertiary/20 text-m3-on-tertiary-container"
+                            : "bg-m3-error-container/40 hover:bg-m3-error-container text-m3-on-error-container"
+                        }`}
+                      >
                         {p.deleted ? "↩" : "✕"}
                       </button>
                     </div>
@@ -555,12 +612,25 @@ export default function PDFOrganizer({ auth }) {
 
           {/* ── Build Button ── */}
           {(stage === "loaded" || stage === "done") && (
-            <div className="action-wrap">
-              <button className="btn-compress" onClick={buildPDF} disabled={activeCount === 0}>
-                {stage === "done" ? "🔁 Rebuild Organized PDF" : `⚡ Build Organized PDF (${activeCount} pages)`}
+            <div className="my-6">
+              <button
+                type="button"
+                className={`w-full py-4 rounded-full font-display font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 ${
+                  activeCount === 0
+                    ? "bg-m3-surface-container-highest text-m3-on-surface-variant/50 cursor-not-allowed border border-m3-outline-variant/40"
+                    : "bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] cursor-pointer"
+                }`}
+                onClick={buildPDF}
+                disabled={activeCount === 0}
+              >
+                <span>
+                  {stage === "done"
+                    ? "🔁 Rebuild Organized PDF"
+                    : `⚡ Build Organized PDF (${activeCount} page${activeCount > 1 ? "s" : ""})`}
+                </span>
               </button>
               {!hasChanges && stage !== "done" && (
-                <div style={{ textAlign: "center", fontSize: "12px", color: "var(--text-sub)", marginTop: "8px" }}>
+                <div className="text-center text-xs text-m3-on-surface-variant/80 mt-2.5">
                   ℹ Drag, rotate, or delete pages above before building.
                 </div>
               )}
@@ -569,49 +639,62 @@ export default function PDFOrganizer({ auth }) {
 
           {/* ── Building Progress ── */}
           {stage === "building" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Building reorganized PDF...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Building reorganized PDF...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{ margin: "10px 0 20px", background: "rgba(245,158,11,0.08)", borderColor: "rgba(245,158,11,0.3)" }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Original</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+            <>
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Original</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
                       {pages.length} Pages · {fmt(file.size)}
-                    </span>
+                    </div>
                   </div>
-                  <div className="result-arrow">→</div>
-                  <div>
-                    <span className="result-label">Organized</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "#fbbf24" }}>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Organized</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
                       {resultInfo}
-                    </span>
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{ background: "rgba(245,158,11,0.18)", borderColor: "#f59e0b", color: "#fbbf24" }}>
-                  🔄 PDF Reorganized Successfully
+                <div className="text-center mt-3">
+                  <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
+                    🔄 PDF Reorganized Successfully
+                  </span>
                 </div>
               </div>
 
-              <ActionButtons blob={resultBlob} fileName={resultName} onReset={reset} auth={auth} />
-            </div>
+              <ActionButtons
+                blob={resultBlob}
+                fileName={resultName}
+                onReset={reset}
+                auth={auth}
+                toolName="PDF Organizer"
+              />
+            </>
           )}
 
-          <div className="comp-footer">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · PDF Page Organizer Tool</span>
-            <span>100% in-browser processing · Zero server uploads</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
         </div>
       </div>
