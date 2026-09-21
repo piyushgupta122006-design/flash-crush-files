@@ -1,4 +1,4 @@
-// PDFSignStudio.jsx — 100% Client-Side Digital E-Sign Studio (Neo-Brutalism)
+// PDFSignStudio.jsx — 100% Client-Side Digital E-Sign Studio (Material Design 3)
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PDFDocument } from "pdf-lib";
@@ -185,7 +185,7 @@ function DraggableElement({ el, updateElement, removeElement }) {
 
   return (
     <div
-      className={`sign-element ${isDragging ? "dragging" : ""}`}
+      className={`sign-element ${isDragging ? "dragging ring-2 ring-m3-primary shadow-lg" : "hover:ring-1 hover:ring-m3-primary/60"} group transition-shadow`}
       style={{
         position: "absolute",
         left: `${el.x}%`,
@@ -193,38 +193,43 @@ function DraggableElement({ el, updateElement, removeElement }) {
         width: `${el.width}%`,
         height: `${el.height}%`,
         cursor: "move",
-        border: "2px dashed rgba(0,0,0,0.3)",
+        border: isDragging ? "2px dashed var(--md-sys-color-primary, #0b57d0)" : "2px dashed rgba(11,87,208,0.5)",
         boxSizing: "border-box",
         zIndex: 10,
       }}
       onPointerDown={handlePointerDown}
     >
-      <img src={el.dataUrl} alt="element" style={{ width: "100%", height: "100%", objectFit: "fill", pointerEvents: "none" }} />
+      <img src={el.dataUrl} alt="element" className="w-full h-full object-fill pointer-events-none select-none" />
       
       {/* Delete Button */}
       <div 
-        className="sign-element-delete"
+        className="sign-element-delete w-6 h-6 rounded-full bg-m3-error text-m3-on-error shadow-m3-elevation-1 flex items-center justify-center cursor-pointer text-xs font-bold hover:scale-110 active:scale-95 transition-transform"
         onClick={(e) => { e.stopPropagation(); removeElement(el.id); }}
+        title="Delete element"
         style={{
-          position: "absolute", top: "-12px", right: "-12px", background: "#ff4444", color: "#fff",
-          width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center",
-          justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold", border: 'none',
+          position: "absolute",
+          top: "-12px",
+          right: "-12px",
           zIndex: 20
         }}
       >
-        ×
+        ✕
       </div>
 
       {/* Resize Handle (bottom-right) */}
       <div
-        className="resize-handle"
+        className="resize-handle w-5 h-5 rounded-full bg-m3-primary text-m3-on-primary border-2 border-white shadow-m3-elevation-1 cursor-nwse-resize hover:scale-125 active:scale-110 transition-transform flex items-center justify-center"
         onPointerDown={handleResizeDown}
+        title="Resize element"
         style={{
-          position: "absolute", bottom: "-8px", right: "-8px", width: "16px", height: "16px",
-          background: "#0891b2", borderRadius: "50%", cursor: "nwse-resize", border: 'none',
+          position: "absolute",
+          bottom: "-10px",
+          right: "-10px",
           zIndex: 20
         }}
-      />
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-white block pointer-events-none"></span>
+      </div>
     </div>
   );
 }
@@ -499,21 +504,35 @@ export default function PDFSignStudio({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      {/* ── Tool Bar ── */}
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <span className="tool-page-title">✍️ PDF E-Sign Studio</span>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top App Bar ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-display font-semibold text-m3-on-surface-variant hover:text-m3-on-surface bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/50 transition-all duration-200 active:scale-95 shadow-sm"
+        >
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">✍️</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF E-Sign Studio</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Draw · Type · Stamp
+        </div>
+      </header>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1200px" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {!file && (
-          <div className="comp-header">
-            <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>✍️</div>
-              <h1 className="comp-title">Digital E-Sign Studio</h1>
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+              ✍️
             </div>
-            <p className="comp-sub">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+              Digital E-Sign Studio
+            </h1>
+            <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
               Sign PDFs securely in your browser. Draw, type, or upload signatures. Add date and status stamps. Zero server uploads.
             </p>
           </div>
@@ -521,97 +540,185 @@ export default function PDFSignStudio({ auth }) {
 
         {/* ── Initial Drop Zone ── */}
         {!file && !processing && !resultBlob && (
-          <div className="comp-card">
+          <div className="max-w-2xl mx-auto bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-10 shadow-m3-elevation-1 transition-all">
             <div
-              className="drop-zone"
+              className="border-2 border-dashed border-m3-outline-variant/80 hover:border-m3-primary hover:bg-m3-primary/5 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center group"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); }}
             >
-              <span className="drop-icon">📄</span>
-              <div className="drop-main">Drop PDF Here to Sign</div>
-              <div className="drop-sub">100% private in-browser processing</div>
-              <button type="button" className="drop-btn" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
-                Browse Files
+              <div className="w-16 h-16 rounded-2xl bg-m3-primary/10 group-hover:bg-m3-primary/15 text-m3-primary text-3xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
+                📄
+              </div>
+              <div className="font-display font-bold text-lg sm:text-xl text-m3-on-surface mb-1">
+                Drop PDF Here to Sign
+              </div>
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6 max-w-sm">
+                100% private in-browser client-side signing. Max {MAX_SIZE_MB}MB.
+              </p>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-semibold text-sm shadow-sm hover:shadow active:scale-95 transition-all"
+                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+              >
+                <span>Browse Files</span>
               </button>
               <input ref={fileInputRef} type="file" accept=".pdf" style={{ display: "none" }} onChange={(e) => handleFile(e.target.files?.[0])} />
             </div>
           </div>
         )}
 
+        {/* ── Processing State ── */}
         {processing && (
-          <div className="processing-state" style={{ marginTop: "40px" }}>
-            <div className="spinner"></div>
-            <p>Processing Document...</p>
+          <div className="max-w-md mx-auto my-12 p-8 rounded-3xl bg-m3-surface-container-low border border-m3-outline-variant/60 shadow-m3-elevation-1 text-center">
+            <div className="w-12 h-12 rounded-full border-4 border-m3-primary/30 border-t-m3-primary animate-spin mx-auto mb-4"></div>
+            <p className="text-sm font-display font-semibold text-m3-on-surface animate-pulse">Processing Document...</p>
+            <p className="text-xs text-m3-on-surface-variant mt-1">Rendering vector pages & flattening layers</p>
           </div>
         )}
 
+        {/* ── Error Banner ── */}
         {error && (
-          <div className="error-banner" style={{ background: "#FEE2E2", border: 'none', padding: "12px", borderRadius: 'var(--radius-full)', color: "#B91C1C", fontWeight: "bold", marginTop: "20px" }}>
-            ⚠ {error}
+          <div className="max-w-2xl mx-auto my-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/30 flex items-center justify-between gap-3 text-sm font-medium">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">⚠</span>
+              <span>{error}</span>
+            </div>
+            <button
+              onClick={() => setError("")}
+              className="text-xs font-bold px-2 py-1 rounded hover:bg-m3-error/10 transition-colors"
+            >
+              ✕
+            </button>
           </div>
         )}
 
         {/* ── Main Workspace ── */}
         {file && !processing && !resultBlob && (
-          <div className="sign-workspace" style={{ width: "100%", display: "flex", gap: "20px", marginTop: "10px", flexWrap: "wrap", alignItems: "flex-start" }}>
+          <div className="w-full flex flex-col lg:flex-row gap-6 mt-4 items-start">
             
-            {/* Left Sidebar: Controls & Stamps */}
-            <div className="sign-sidebar" style={{ width: "260px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
+            {/* Left Sidebar: Controls, Stamps & Export */}
+            <div className="w-full lg:w-72 shrink-0 flex flex-col gap-4">
               
-              <div className="comp-card" style={{ padding: "16px" }}>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: "12px", borderBottom: "2px solid var(--border-color)", paddingBottom: "6px" }}>Signatures</h3>
-                <button className="btn-compress" style={{ width: "100%", padding: "10px", fontSize: "0.9rem", display: "flex", justifyContent: "center", gap: "8px" }} onClick={() => setShowSignModal(true)}>
-                  <span>➕</span> Create Signature
+              {/* Card 1: Signatures */}
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1">
+                <div className="flex items-center justify-between mb-3 border-b border-m3-outline-variant/40 pb-2">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    Signatures
+                  </span>
+                  <span className="text-xs font-mono text-m3-on-surface-variant bg-m3-surface-container px-2 py-0.5 rounded-full">
+                    {elements.length} placed
+                  </span>
+                </div>
+                <button
+                  className="w-full py-3 px-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-semibold text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow active:scale-95 transition-all"
+                  onClick={() => setShowSignModal(true)}
+                >
+                  <span className="text-base">➕</span>
+                  <span>Create Signature</span>
                 </button>
               </div>
 
-              <div className="comp-card" style={{ padding: "16px" }}>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: "12px", borderBottom: "2px solid var(--border-color)", paddingBottom: "6px" }}>Quick Stamps</h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  <button className="btn-reset" style={{ textAlign: "left", padding: "8px 12px" }} onClick={addDateStamp}>📅 Today's Date</button>
-                  <button className="btn-reset" style={{ textAlign: "left", padding: "8px 12px" }} onClick={() => addStatusStamp("APPROVED", "#059669")}>✅ Approved</button>
-                  <button className="btn-reset" style={{ textAlign: "left", padding: "8px 12px" }} onClick={() => addStatusStamp("CONFIDENTIAL", "#B91C1C")}>🔒 Confidential</button>
-                  <button className="btn-reset" style={{ textAlign: "left", padding: "8px 12px" }} onClick={addCustomInitials}>🔤 Custom Text</button>
+              {/* Card 2: Quick Stamps */}
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1">
+                <div className="mb-3 border-b border-m3-outline-variant/40 pb-2">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    Quick Stamps
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface text-xs sm:text-sm font-medium flex items-center gap-2.5 transition-all active:scale-95 text-left"
+                    onClick={addDateStamp}
+                  >
+                    <span>📅</span>
+                    <span>Today's Date</span>
+                  </button>
+                  <button
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition-all active:scale-95 text-left"
+                    onClick={() => addStatusStamp("APPROVED", "#059669")}
+                  >
+                    <span>✅</span>
+                    <span>Approved Stamp</span>
+                  </button>
+                  <button
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-rose-500/40 bg-rose-500/5 hover:bg-rose-500/10 text-rose-700 dark:text-rose-300 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition-all active:scale-95 text-left"
+                    onClick={() => addStatusStamp("CONFIDENTIAL", "#B91C1C")}
+                  >
+                    <span>🔒</span>
+                    <span>Confidential Stamp</span>
+                  </button>
+                  <button
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface text-xs sm:text-sm font-medium flex items-center gap-2.5 transition-all active:scale-95 text-left"
+                    onClick={addCustomInitials}
+                  >
+                    <span>🔤</span>
+                    <span>Custom Text / Initials</span>
+                  </button>
                 </div>
               </div>
 
-              <div className="comp-card" style={{ padding: "16px" }}>
-                <button className="btn-compress" style={{ width: "100%", background: "var(--m3-sky)" }} onClick={exportPDF}>
-                  💾 Finish & Save PDF
+              {/* Card 3: Finish & Export Action */}
+              <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-5 shadow-m3-elevation-1 flex flex-col gap-3">
+                <button
+                  className="w-full py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-sm shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+                  onClick={exportPDF}
+                >
+                  <span>💾</span>
+                  <span>Finish & Save PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={resetAll}
+                  className="w-full py-2 px-4 rounded-full text-xs font-display font-medium text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-high transition-colors text-center"
+                >
+                  Change Document
                 </button>
               </div>
 
             </div>
 
             {/* Right Side: PDF Viewer & Thumbnail Strip */}
-            <div className="sign-pdf-area" style={{ flex: 1, minWidth: "300px", display: "flex", flexDirection: "column", gap: "12px", background: "var(--bg-surface)", padding: "16px", borderRadius: 'var(--radius-full)', border: "var(--border-thin)" }}>
+            <div className="flex-1 min-w-0 w-full bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-4 sm:p-6 shadow-m3-elevation-1 flex flex-col gap-4">
               
-              {/* Thumbnails */}
-              <div style={{ display: "flex", gap: "10px", overflowX: "auto", paddingBottom: "10px", borderBottom: "2px solid var(--border-color)" }}>
-                {pdfPages.map(p => (
-                  <div key={p.pageNum} 
-                       onClick={() => setSelectedPage(p.pageNum)}
-                       style={{ 
-                         width: "60px", height: "80px", flexShrink: 0, cursor: "pointer", 
-                         border: selectedPage === p.pageNum ? "3px solid var(--m3-sky)" : "2px solid var(--border-color)",
-                         borderRadius: 'var(--radius-full)', overflow: "hidden", position: "relative",
-                         opacity: selectedPage === p.pageNum ? 1 : 0.6
-                       }}>
-                    <img src={p.dataUrl} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
-                    <div style={{ position: "absolute", bottom: 0, right: 0, background: "var(--text-main)", color: "var(--bg-main)", fontSize: "10px", padding: "2px 4px", fontWeight: "bold" }}>{p.pageNum}</div>
-                  </div>
-                ))}
+              {/* Page Strip Header & Thumbnails */}
+              <div className="border-b border-m3-outline-variant/40 pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant">
+                    Page {selectedPage} of {pdfPages.length}
+                  </span>
+                  <span className="text-xs text-m3-on-surface-variant hidden sm:inline">
+                    Click & drag elements to position · Drag bottom-right corner to resize
+                  </span>
+                </div>
+                <div className="flex gap-3 overflow-x-auto pb-2 pt-1 scrollbar-thin">
+                  {pdfPages.map(p => (
+                    <div
+                      key={p.pageNum} 
+                      onClick={() => setSelectedPage(p.pageNum)}
+                      className={`w-16 h-20 shrink-0 cursor-pointer rounded-xl overflow-hidden relative transition-all active:scale-95 ${
+                        selectedPage === p.pageNum
+                          ? "ring-2 ring-m3-primary shadow-sm border border-m3-primary"
+                          : "border border-m3-outline-variant/60 opacity-60 hover:opacity-100 hover:border-m3-outline"
+                      }`}
+                    >
+                      <img src={p.dataUrl} alt={`Page ${p.pageNum}`} className="w-full h-full object-cover pointer-events-none select-none" />
+                      <div className="absolute bottom-0 right-0 bg-m3-surface-container-highest/90 text-m3-on-surface text-[10px] font-mono px-1.5 py-0.5 rounded-tl-md font-bold">
+                        {p.pageNum}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Active Page Canvas Area */}
-              <div style={{ flex: 1, display: "flex", justifyContent: "center", overflow: "auto", background: "var(--bg-main)", padding: "20px", borderRadius: 'var(--radius-full)' }}>
-                <div style={{ position: "relative", boxShadow: "var(--shadow-lg)", border: 'none', background: "#fff", alignSelf: "flex-start" }}>
+              <div className="flex-1 flex justify-center items-start overflow-auto bg-m3-surface-container-highest/30 dark:bg-m3-surface-container-lowest/70 p-4 sm:p-8 rounded-2xl min-h-[500px]">
+                <div className="relative shadow-m3-elevation-2 rounded-lg bg-white overflow-visible self-start">
                   {pdfPages.find(p => p.pageNum === selectedPage) && (
-                    <div id={`pdf-page-${selectedPage}`} style={{ position: "relative", width: "100%", maxWidth: "800px" }}>
+                    <div id={`pdf-page-${selectedPage}`} className="relative w-full max-w-[800px]">
                       <img 
                         src={pdfPages.find(p => p.pageNum === selectedPage).dataUrl} 
-                        style={{ width: "100%", display: "block", pointerEvents: "none" }} 
+                        className="w-full block pointer-events-none select-none rounded-lg"
                         alt="PDF Page" 
                       />
                       {/* Render Draggable Elements for this page */}
@@ -628,60 +735,141 @@ export default function PDFSignStudio({ auth }) {
 
         {/* ── Signature Creation Modal ── */}
         {showSignModal && (
-          <div style={{
-            position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
-            background: "rgba(0,0,0,0.7)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center"
-          }}>
-            <div className="comp-card" style={{ width: "90%", maxWidth: "600px", padding: "24px", background: "var(--bg-card)", boxShadow: "8px 8px 0 #000" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px" }}>
-                <h2 style={{ fontSize: "1.4rem", margin: 0 }}>Create Signature</h2>
-                <button onClick={() => setShowSignModal(false)} style={{ background: "none", border: "none", fontSize: "1.2rem", cursor: "pointer", color: "var(--text-main)" }}>✕</button>
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-xl bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-3xl p-6 shadow-m3-elevation-3 transition-all animate-fadeIn">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-display font-bold text-m3-on-surface">Create Signature</h2>
+                <button
+                  onClick={() => setShowSignModal(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-highest transition-colors text-base"
+                >
+                  ✕
+                </button>
               </div>
 
-              {/* Tabs */}
-              <div style={{ display: "flex", gap: "8px", marginBottom: "16px", borderBottom: "2px solid var(--border-color)", paddingBottom: "8px" }}>
-                <button className={`btn-reset ${signTab === "draw" ? "active" : ""}`} style={{ background: signTab === "draw" ? "var(--m3-yellow)" : "", padding: "6px 16px", color: signTab === "draw" ? "#000" : "" }} onClick={() => setSignTab("draw")}>✍️ Draw</button>
-                <button className={`btn-reset ${signTab === "type" ? "active" : ""}`} style={{ background: signTab === "type" ? "var(--m3-sky)" : "", padding: "6px 16px", color: signTab === "type" ? "#000" : "" }} onClick={() => setSignTab("type")}>⌨️ Type</button>
-                <button className={`btn-reset ${signTab === "upload" ? "active" : ""}`} style={{ background: signTab === "upload" ? "var(--m3-mint)" : "", padding: "6px 16px", color: signTab === "upload" ? "#000" : "" }} onClick={() => setSignTab("upload")}>📷 Upload</button>
+              {/* Segmented Tabs */}
+              <div className="flex p-1 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 mb-6 gap-1">
+                <button
+                  className={`flex-1 py-2 rounded-xl text-xs sm:text-sm font-display font-medium text-center transition-all flex items-center justify-center gap-1.5 ${
+                    signTab === "draw"
+                      ? "bg-m3-surface-container-lowest text-m3-on-surface shadow-sm font-bold"
+                      : "text-m3-on-surface-variant hover:text-m3-on-surface"
+                  }`}
+                  onClick={() => setSignTab("draw")}
+                >
+                  <span>✍️</span>
+                  <span>Draw</span>
+                </button>
+                <button
+                  className={`flex-1 py-2 rounded-xl text-xs sm:text-sm font-display font-medium text-center transition-all flex items-center justify-center gap-1.5 ${
+                    signTab === "type"
+                      ? "bg-m3-surface-container-lowest text-m3-on-surface shadow-sm font-bold"
+                      : "text-m3-on-surface-variant hover:text-m3-on-surface"
+                  }`}
+                  onClick={() => setSignTab("type")}
+                >
+                  <span>⌨️</span>
+                  <span>Type</span>
+                </button>
+                <button
+                  className={`flex-1 py-2 rounded-xl text-xs sm:text-sm font-display font-medium text-center transition-all flex items-center justify-center gap-1.5 ${
+                    signTab === "upload"
+                      ? "bg-m3-surface-container-lowest text-m3-on-surface shadow-sm font-bold"
+                      : "text-m3-on-surface-variant hover:text-m3-on-surface"
+                  }`}
+                  onClick={() => setSignTab("upload")}
+                >
+                  <span>📷</span>
+                  <span>Upload</span>
+                </button>
               </div>
 
               {/* Draw Tab */}
               {signTab === "draw" && (
                 <div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                    <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-m3-on-surface-variant font-medium">Ink Color:</span>
                       {["#000000", "#1a365d", "#b91c1c"].map(c => (
-                        <div key={c} onClick={() => setPenColor(c)} style={{ width: "24px", height: "24px", background: c, borderRadius: "50%", cursor: "pointer", border: penColor === c ? "3px solid #f59e0b" : "2px solid #000" }} title="Color" />
+                        <div
+                          key={c}
+                          onClick={() => setPenColor(c)}
+                          className={`w-6 h-6 rounded-full cursor-pointer transition-transform ${
+                            penColor === c ? "ring-2 ring-m3-primary ring-offset-2 ring-offset-m3-surface-container-high scale-110" : "hover:scale-105"
+                          }`}
+                          style={{ backgroundColor: c }}
+                          title={`Select color ${c}`}
+                        />
                       ))}
                     </div>
-                    <button className="btn-reset" style={{ padding: "4px 8px", fontSize: "0.8rem" }} onClick={clearDraw}>Clear Pad</button>
+                    <button
+                      className="px-3 py-1 rounded-full text-xs font-display font-medium text-m3-error hover:bg-m3-error/10 border border-m3-error/30 transition-all"
+                      onClick={clearDraw}
+                    >
+                      Clear Pad
+                    </button>
                   </div>
                   <canvas 
                     ref={canvasRef} 
-                    width={500} height={200} 
-                    style={{ width: "100%", border: 'none', borderRadius: 'var(--radius-full)', background: "#fff", touchAction: "none", cursor: "crosshair" }}
-                    onPointerDown={startDraw} onPointerMove={draw} onPointerUp={endDraw} onPointerOut={endDraw}
+                    width={500}
+                    height={200} 
+                    className="w-full rounded-2xl border border-m3-outline-variant/80 bg-white shadow-inner cursor-crosshair touch-none"
+                    onPointerDown={startDraw}
+                    onPointerMove={draw}
+                    onPointerUp={endDraw}
+                    onPointerOut={endDraw}
                   />
+                  <p className="text-[11px] text-m3-on-surface-variant text-center mt-2">
+                    Draw smoothly using mouse, touchpad, or finger on touchscreens
+                  </p>
                 </div>
               )}
 
               {/* Type Tab */}
               {signTab === "type" && (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  <input type="text" value={typeText} onChange={e => setTypeText(e.target.value)} placeholder="Type your name..." style={{ padding: "12px", fontSize: "1.1rem", border: 'none', borderRadius: 'var(--radius-full)', background: "var(--bg-main)", color: "var(--text-main)" }} />
-                  <div style={{ display: "flex", gap: "8px" }}>
-                     {["#000000", "#1a365d", "#b91c1c"].map(c => (
-                        <div key={c} onClick={() => setPenColor(c)} style={{ width: "24px", height: "24px", background: c, borderRadius: "50%", cursor: "pointer", border: penColor === c ? "3px solid #f59e0b" : "2px solid #000" }} />
-                      ))}
+                <div className="flex flex-col gap-4">
+                  <input
+                    type="text"
+                    value={typeText}
+                    onChange={e => setTypeText(e.target.value)}
+                    placeholder="Type your name here..."
+                    className="w-full px-4 py-3 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/70 text-m3-on-surface placeholder:text-m3-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-m3-primary text-base font-medium transition-all"
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-m3-on-surface-variant font-medium">Font Color:</span>
+                    {["#000000", "#1a365d", "#b91c1c"].map(c => (
+                      <div
+                        key={c}
+                        onClick={() => setPenColor(c)}
+                        className={`w-6 h-6 rounded-full cursor-pointer transition-transform ${
+                          penColor === c ? "ring-2 ring-m3-primary ring-offset-2 ring-offset-m3-surface-container-high scale-110" : "hover:scale-105"
+                        }`}
+                        style={{ backgroundColor: c }}
+                      />
+                    ))}
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "10px" }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {[
                       { label: "Caveat", val: "40px 'Caveat', cursive" },
                       { label: "Dancing Script", val: "40px 'Dancing Script', cursive" },
                       { label: "Pacifico", val: "30px 'Pacifico', cursive" },
                       { label: "Serif", val: "italic bold 40px 'Georgia', serif" }
                     ].map(f => (
-                      <button key={f.label} onClick={() => setTypeFont(f.val)} style={{ padding: "16px", border: typeFont === f.val ? "3px solid var(--m3-yellow)" : "2px solid var(--border-color)", borderRadius: 'var(--radius-full)', background: "#fff", fontSize: "1.5rem", fontFamily: f.val.split("px ")[1] || "inherit", color: penColor, cursor: "pointer" }}>
+                      <button
+                        key={f.label}
+                        type="button"
+                        onClick={() => setTypeFont(f.val)}
+                        className={`p-4 rounded-2xl border text-center transition-all cursor-pointer bg-white dark:bg-white/95 ${
+                          typeFont === f.val
+                            ? "border-2 border-m3-primary ring-1 ring-m3-primary shadow-sm"
+                            : "border-m3-outline-variant/60 hover:border-m3-outline"
+                        }`}
+                        style={{
+                          fontSize: "1.4rem",
+                          fontFamily: f.val.split("px ")[1] || "inherit",
+                          color: penColor
+                        }}
+                      >
                         {typeText || "Signature"}
                       </button>
                     ))}
@@ -691,25 +879,40 @@ export default function PDFSignStudio({ auth }) {
 
               {/* Upload Tab */}
               {signTab === "upload" && (
-                <div style={{ textAlign: "center", padding: "20px", border: "2px dashed var(--border-color)", borderRadius: 'var(--radius-full)' }}>
-                  <input type="file" accept="image/png, image/jpeg" onChange={e => {
-                    const f = e.target.files[0];
-                    if (f) setUploadImg(URL.createObjectURL(f));
-                  }} style={{ marginBottom: "16px" }} />
+                <div className="p-6 rounded-2xl border-2 border-dashed border-m3-outline-variant/80 text-center bg-m3-surface-container/30">
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={e => {
+                      const f = e.target.files[0];
+                      if (f) setUploadImg(URL.createObjectURL(f));
+                    }}
+                    className="block w-full text-xs text-m3-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-m3-primary file:text-m3-on-primary hover:file:bg-m3-primary/90 cursor-pointer"
+                  />
                   {uploadImg && (
-                    <div style={{ marginTop: "16px" }}>
-                      <img src={uploadImg} style={{ maxHeight: "120px", border: 'none', borderRadius: 'var(--radius-full)' }} alt="uploaded signature" />
-                      <label style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "12px", fontWeight: "bold" }}>
-                        <input type="checkbox" checked={removeBg} onChange={e => setRemoveBg(e.target.checked)} />
-                        Remove White Background
+                    <div className="mt-4 flex flex-col items-center">
+                      <div className="p-2 rounded-xl bg-white shadow-sm border border-m3-outline-variant/50 max-w-[240px]">
+                        <img src={uploadImg} alt="uploaded signature" className="max-h-24 object-contain rounded" />
+                      </div>
+                      <label className="inline-flex items-center gap-2 mt-3 cursor-pointer text-xs font-display font-medium text-m3-on-surface">
+                        <input
+                          type="checkbox"
+                          checked={removeBg}
+                          onChange={e => setRemoveBg(e.target.checked)}
+                          className="rounded text-m3-primary focus:ring-m3-primary"
+                        />
+                        <span>Remove White Background (Auto-transparent)</span>
                       </label>
                     </div>
                   )}
                 </div>
               )}
 
-              <button className="btn-compress" style={{ width: "100%", marginTop: "24px", padding: "12px", fontSize: "1.1rem" }} onClick={confirmSignature}>
-                Use Signature
+              <button
+                className="w-full mt-6 py-3.5 px-6 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-semibold text-sm shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2"
+                onClick={confirmSignature}
+              >
+                <span>Use Signature</span>
               </button>
             </div>
           </div>
@@ -717,18 +920,24 @@ export default function PDFSignStudio({ auth }) {
 
         {/* ── Results Output ── */}
         {resultBlob && (
-          <div className="comp-card" style={{ maxWidth: "700px", margin: "20px auto", padding: "30px", textAlign: "center" }}>
-             <div style={{ fontSize: "4rem", marginBottom: "16px" }}>🎉</div>
-             <h2 style={{ fontSize: "1.6rem", marginBottom: "8px" }}>Signed Successfully!</h2>
-             <p style={{ color: "var(--text-sub)", marginBottom: "24px" }}>Your document has been cryptographically flattened with your signatures.</p>
-             <ActionButtons 
-                auth={auth} 
-                blob={resultBlob} 
-                fileName={resultName} 
-                resultMime="application/pdf"
-                onReset={resetAll} 
-                toolName="PDF E-Sign Studio" 
-             />
+          <div className="max-w-2xl mx-auto bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-8 sm:p-10 shadow-m3-elevation-2 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-600 text-3xl flex items-center justify-center mx-auto mb-4">
+              🎉
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-m3-on-surface mb-2">
+              Signed Successfully!
+            </h2>
+            <p className="text-sm text-m3-on-surface-variant mb-6 max-w-md mx-auto">
+              Your document has been cryptographically flattened with your signatures and stamps.
+            </p>
+            <ActionButtons 
+              auth={auth} 
+              blob={resultBlob} 
+              fileName={resultName} 
+              resultMime="application/pdf"
+              onReset={resetAll} 
+              toolName="PDF E-Sign Studio" 
+            />
           </div>
         )}
 
