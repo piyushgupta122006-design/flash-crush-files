@@ -646,48 +646,86 @@ export default function PDFWatermark({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">PDF Watermark Studio</div>
-        <div className="tool-page-meta">Add & Remove Watermarks · Page Numbers</div>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top App Bar ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-display font-semibold text-m3-on-surface-variant hover:text-m3-on-surface bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/50 transition-all duration-200 active:scale-95 shadow-sm"
+        >
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🏷️</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF Watermark Studio</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Add & Remove · Page Numbers
+        </div>
+      </header>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(236, 72, 153, 0.4)", boxShadow: "0 0 20px rgba(236, 72, 153, 0.3)" }}>
-              🏷️
-            </div>
-            <div className="comp-title">PDF Watermark & Remover Studio</div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* ── Hero Header ── */}
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            🏷️
           </div>
-          <p className="comp-sub">Stamp custom watermarks & page numbers, or cleanly erase unwanted watermarks with live preview.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            PDF Watermark & Remover Studio
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
+            Stamp custom watermarks & page numbers, or cleanly erase unwanted watermarks with live preview. 100% private, on-device processing.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Outer Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-8 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Action Switcher: ADD WATERMARK vs REMOVE WATERMARK ── */}
           {(stage === "idle" || stage === "loaded" || stage === "done" || stage === "error") && (
-            <div className="level-wrap" style={{ marginBottom: "16px" }}>
-              <span className="level-label">Choose Action</span>
-              <div className="level-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+            <div className="mb-6">
+              <span className="block text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant mb-3">
+                1. Choose Action
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setMainAction("add")}
-                  className={`level-btn${mainAction === "add" ? " active" : ""}`}
+                  className={`flex flex-col items-start text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                    mainAction === "add"
+                      ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                      : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                  }`}
                 >
-                  <span style={{ fontSize: "1.4rem" }}>🏷️</span>
-                  <span className="level-name">Add Watermark & Numbers</span>
-                  <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>Stamp text, angle, opacity & page numbers</span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-2xl">🏷️</span>
+                    <span className="font-display font-bold text-sm sm:text-base text-m3-on-surface">
+                      Add Watermark & Numbers
+                    </span>
+                  </div>
+                  <span className="text-xs text-m3-on-surface-variant leading-relaxed">
+                    Stamp text, angle, opacity & page numbers
+                  </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setMainAction("remove")}
-                  className={`level-btn${mainAction === "remove" ? " active" : ""}`}
+                  className={`flex flex-col items-start text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                    mainAction === "remove"
+                      ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                      : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                  }`}
                 >
-                  <span style={{ fontSize: "1.4rem" }}>🧹</span>
-                  <span className="level-name">Remove Watermark</span>
-                  <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>Erase faint watermarks, stamps & text</span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-2xl">🧹</span>
+                    <span className="font-display font-bold text-sm sm:text-base text-m3-on-surface">
+                      Remove Watermark
+                    </span>
+                  </div>
+                  <span className="text-xs text-m3-on-surface-variant leading-relaxed">
+                    Erase faint watermarks, stamps & text
+                  </span>
                 </button>
               </div>
             </div>
@@ -696,145 +734,211 @@ export default function PDFWatermark({ auth }) {
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 p-8 sm:p-12 text-center cursor-pointer mb-6 ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/20 scale-[0.99]"
+                  : "border-m3-outline-variant/80 hover:border-m3-primary bg-m3-surface-container/50 hover:bg-m3-surface-container"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">{mainAction === "add" ? "🏷️" : "🧹"}</span>
-              <p className="drop-main">
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])}
+              />
+              <span className="text-4xl sm:text-5xl mb-3 block transform group-hover:scale-110 transition-transform">
+                {mainAction === "add" ? "🏷️" : "🧹"}
+              </span>
+              <p className="text-lg sm:text-xl font-display font-bold text-m3-on-surface mb-1.5">
                 {dragging
                   ? "Drop your PDF here!"
                   : mainAction === "add"
-                    ? "Drag & drop PDF to add watermark"
-                    : "Drag & drop PDF to remove watermark"}
+                  ? "Drag & drop PDF to add watermark"
+                  : "Drag & drop PDF to remove watermark"}
               </p>
-              <p className="drop-sub">
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6">
                 {mainAction === "add"
-                  ? "Add custom watermarks & page numbering · max 50 MB"
-                  : "Remove faint watermarks, stamps & cleaner export · max 50 MB"}
+                  ? "Add custom watermarks & page numbering · Max 50 MB"
+                  : "Remove faint watermarks, stamps & cleaner export · Max 50 MB"}
               </p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse PDF</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
-                  <DriveIconSmall />{drivePickLabel()}
+              <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  className="px-6 py-3 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-95 transition-all flex items-center gap-2"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <span>📁</span>
+                  <span>Browse PDF</span>
+                </button>
+                <button
+                  type="button"
+                  className="px-5 py-3 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface font-display font-semibold text-sm shadow-sm active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
+                  <DriveIconSmall />
+                  <span>{drivePickLabel()}</span>
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && (
+                <div className="mt-4 p-3 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium">
+                  ⚠ {errorMsg}
+                </div>
+              )}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && (stage === "loaded" || stage === "done" || stage === "processing" || (stage === "error" && file)) && (
-            <div className="file-row">
-              <div className="file-icon">📄</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)} · {totalPages} pages</div>
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/60 shadow-sm mb-6 transition-all">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-m3-surface flex items-center justify-center text-xl shadow-xs border border-m3-outline-variant/40 flex-shrink-0">
+                  📄
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-display font-bold text-m3-on-surface truncate">
+                    {file.name}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    <span>{fmt(file.size)}</span>
+                    <span>·</span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md font-semibold text-[11px] bg-m3-primary/10 text-m3-primary border border-m3-primary/20">
+                      {totalPages} pages
+                    </span>
+                  </div>
+                </div>
               </div>
-              {stage !== "processing" && <button className="close-btn" onClick={reset}>✕</button>}
+              {stage !== "processing" && (
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-m3-on-surface-variant hover:text-m3-error hover:bg-m3-error-container/40 transition-colors flex-shrink-0 ml-2 cursor-pointer"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           )}
 
           {/* ── Error Box inside loaded state ── */}
           {stage === "error" && file && errorMsg && (
-            <div style={{ padding: "0 20px 10px" }}>
-              <div className="error-box">⚠ {errorMsg}</div>
+            <div className="mb-6 p-3.5 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium flex items-center gap-2">
+              <span className="text-base">⚠</span>
+              <span>{errorMsg}</span>
             </div>
           )}
 
           {/* ── CONTROLS & LIVE PREVIEW GRID ── */}
           {(stage === "loaded" || stage === "done") && (
-            <div style={{ padding: "0 20px 16px" }}>
+            <div className="mb-6">
 
-              {/* ── SECTION 1: IF MAIN ACTION == ADD WATERMARK ── */}
+              {/* ── SECTION 1: IF MAIN ACTION == ADD WATERMARK SUB-TABS ── */}
               {mainAction === "add" && (
-                <>
-                  {/* Mode Sub-Toggles */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: "8px", marginBottom: "16px" }}>
-                    <button
-                      type="button"
-                      onClick={() => { setToolTab("both"); setEnableWatermark(true); setEnablePageNum(true); }}
-                      className={`level-btn${toolTab === "both" ? " active" : ""}`}
-                    >
-                      <span style={{ fontSize: "1.2rem" }}>✨</span>
-                      <span className="level-name">Watermark + Numbers</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setToolTab("watermark"); setEnableWatermark(true); setEnablePageNum(false); }}
-                      className={`level-btn${toolTab === "watermark" ? " active" : ""}`}
-                    >
-                      <span style={{ fontSize: "1.2rem" }}>🏷️</span>
-                      <span className="level-name">Watermark Only</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => { setToolTab("pagenumber"); setEnableWatermark(false); setEnablePageNum(true); }}
-                      className={`level-btn${toolTab === "pagenumber" ? " active" : ""}`}
-                    >
-                      <span style={{ fontSize: "1.2rem" }}>🔢</span>
-                      <span className="level-name">Page Numbers Only</span>
-                    </button>
-                  </div>
-                </>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-6">
+                  <button
+                    type="button"
+                    onClick={() => { setToolTab("both"); setEnableWatermark(true); setEnablePageNum(true); }}
+                    className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border text-xs sm:text-sm font-display font-semibold transition-all cursor-pointer ${
+                      toolTab === "both"
+                        ? "border-m3-primary bg-m3-primary text-m3-on-primary shadow-sm"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
+                  >
+                    <span>✨</span>
+                    <span>Watermark + Numbers</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setToolTab("watermark"); setEnableWatermark(true); setEnablePageNum(false); }}
+                    className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border text-xs sm:text-sm font-display font-semibold transition-all cursor-pointer ${
+                      toolTab === "watermark"
+                        ? "border-m3-primary bg-m3-primary text-m3-on-primary shadow-sm"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
+                  >
+                    <span>🏷️</span>
+                    <span>Watermark Only</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setToolTab("pagenumber"); setEnableWatermark(false); setEnablePageNum(true); }}
+                    className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl border text-xs sm:text-sm font-display font-semibold transition-all cursor-pointer ${
+                      toolTab === "pagenumber"
+                        ? "border-m3-primary bg-m3-primary text-m3-on-primary shadow-sm"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
+                  >
+                    <span>🔢</span>
+                    <span>Page Numbers Only</span>
+                  </button>
+                </div>
               )}
 
-              {/* ── SECTION 2: IF MAIN ACTION == REMOVE WATERMARK ── */}
+              {/* ── SECTION 2: IF MAIN ACTION == REMOVE WATERMARK SUB-TABS ── */}
               {mainAction === "remove" && (
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: "8px", marginBottom: "16px" }}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-6">
                   <button
                     type="button"
                     onClick={() => setRemoveMethod("faint")}
-                    className={`level-btn${removeMethod === "faint" ? " active" : ""}`}
+                    className={`flex flex-col items-center text-center p-3 rounded-2xl border transition-all cursor-pointer ${
+                      removeMethod === "faint"
+                        ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
                   >
-                    <span style={{ fontSize: "1.2rem" }}>🌟</span>
-                    <span className="level-name">Faint Cleaner</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--text-sub)" }}>Remove light background watermark</span>
+                    <span className="text-xl mb-1">🌟</span>
+                    <span className="font-display font-bold text-xs sm:text-sm text-m3-on-surface">Faint Cleaner</span>
+                    <span className="text-[11px] text-m3-on-surface-variant mt-0.5">Remove light background watermark</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setRemoveMethod("stamp")}
-                    className={`level-btn${removeMethod === "stamp" ? " active" : ""}`}
+                    className={`flex flex-col items-center text-center p-3 rounded-2xl border transition-all cursor-pointer ${
+                      removeMethod === "stamp"
+                        ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
                   >
-                    <span style={{ fontSize: "1.2rem" }}>✂️</span>
-                    <span className="level-name">Stamp / Banner Eraser</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--text-sub)" }}>Erase CamScanner / footer stamps</span>
+                    <span className="text-xl mb-1">✂️</span>
+                    <span className="font-display font-bold text-xs sm:text-sm text-m3-on-surface">Stamp / Banner Eraser</span>
+                    <span className="text-[11px] text-m3-on-surface-variant mt-0.5">Erase CamScanner / footer stamps</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setRemoveMethod("keyword")}
-                    className={`level-btn${removeMethod === "keyword" ? " active" : ""}`}
+                    className={`flex flex-col items-center text-center p-3 rounded-2xl border transition-all cursor-pointer ${
+                      removeMethod === "keyword"
+                        ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                        : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                    }`}
                   >
-                    <span style={{ fontSize: "1.2rem" }}>🔤</span>
-                    <span className="level-name">Text Layer Strip</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--text-sub)" }}>Strip watermark annotation layers</span>
+                    <span className="text-xl mb-1">🔤</span>
+                    <span className="font-display font-bold text-xs sm:text-sm text-m3-on-surface">Text Layer Strip</span>
+                    <span className="text-[11px] text-m3-on-surface-variant mt-0.5">Strip watermark annotation layers</span>
                   </button>
                 </div>
               )}
 
               {/* ── Two Column Layout: Settings on Left, Live Preview on Right ── */}
-              <div className="passport-split-layout">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-                {/* Left Column: Settings Controls */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {/* Left Column: Settings Controls (7 cols) */}
+                <div className="lg:col-span-7 flex flex-col gap-5">
 
-                  {/* ── ADD MODE SETTINGS ── */}
+                  {/* ── ADD MODE: WATERMARK SETTINGS ── */}
                   {mainAction === "add" && enableWatermark && (
-                    <div style={{
-                      padding: "14px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: 'var(--radius-full)',
-                    }}>
-                      <div style={{ fontSize: "12px", fontWeight: 800, color: "#f472b6", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                        <span>🏷️</span> Watermark Text
+                    <div className="p-5 rounded-2xl bg-m3-surface-container/60 border border-m3-outline-variant/60 shadow-xs">
+                      <div className="text-xs font-display font-bold text-pink-500 dark:text-pink-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span>🏷️</span>
+                        <span>Watermark Text</span>
                       </div>
 
                       <input
@@ -842,172 +946,185 @@ export default function PDFWatermark({ auth }) {
                         value={wmText}
                         onChange={(e) => setWmText(e.target.value)}
                         placeholder="CONFIDENTIAL"
-                        style={{
-                          width: "100%", padding: "10px 14px", boxSizing: "border-box",
-                          background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)",
-                          borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "13px", color: "#fff", outline: "none", marginBottom: "10px",
-                        }}
+                        className="w-full px-4 py-3 rounded-xl bg-m3-surface border border-m3-outline-variant/80 text-m3-on-surface font-mono text-sm placeholder:text-m3-on-surface-variant/50 focus:outline-none focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 transition-all mb-3"
                       />
 
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "12px" }}>
-                        {PRESET_WATERMARKS.map(txt => (
+                      {/* Presets */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {PRESET_WATERMARKS.map((txt) => (
                           <button
                             key={txt}
                             type="button"
                             onClick={() => setWmText(txt)}
-                            style={{
-                              padding: "3px 8px", background: wmText === txt ? "rgba(236,72,153,0.3)" : "rgba(255,255,255,0.05)",
-                              border: wmText === txt ? "1px solid #ec4899" : "1px solid rgba(255,255,255,0.1)",
-                              borderRadius: 'var(--radius-full)', color: wmText === txt ? "#f472b6" : "#94a3b8",
-                              fontSize: "10px", fontWeight: 700, cursor: "pointer",
-                            }}
+                            className={`px-3 py-1 rounded-full text-[11px] font-mono font-bold transition-all cursor-pointer ${
+                              wmText === txt
+                                ? "bg-pink-500/20 text-pink-600 dark:text-pink-300 border border-pink-500/50"
+                                : "bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface border border-m3-outline-variant/50 hover:bg-m3-surface-container-high"
+                            }`}
                           >
                             {txt}
                           </button>
                         ))}
                       </div>
 
-                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                      <div className="flex flex-col gap-3.5">
+                        {/* Size */}
                         <div>
-                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                            <span>Size</span>
-                            <span style={{ color: "#fff", fontWeight: 700 }}>{wmSize}px</span>
+                          <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1.5">
+                            <span className="font-display font-medium">Size</span>
+                            <span className="font-mono font-bold text-m3-on-surface">{wmSize}px</span>
                           </div>
-                          <input type="range" min="16" max="96" value={wmSize} onChange={(e) => setWmSize(Number(e.target.value))} style={{ width: "100%", accentColor: "#ec4899" }} />
+                          <input
+                            type="range"
+                            min="16"
+                            max="96"
+                            value={wmSize}
+                            onChange={(e) => setWmSize(Number(e.target.value))}
+                            className="w-full accent-m3-primary h-1.5 bg-m3-surface-variant rounded-lg cursor-pointer"
+                          />
                         </div>
 
+                        {/* Rotation */}
                         <div>
-                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                            <span>Rotation Angle</span>
-                            <span style={{ color: "#fff", fontWeight: 700 }}>{wmRotation}°</span>
+                          <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1.5">
+                            <span className="font-display font-medium">Rotation Angle</span>
+                            <span className="font-mono font-bold text-m3-on-surface">{wmRotation}°</span>
                           </div>
-                          <input type="range" min="-90" max="90" value={wmRotation} onChange={(e) => setWmRotation(Number(e.target.value))} style={{ width: "100%", accentColor: "#ec4899" }} />
+                          <input
+                            type="range"
+                            min="-90"
+                            max="90"
+                            value={wmRotation}
+                            onChange={(e) => setWmRotation(Number(e.target.value))}
+                            className="w-full accent-m3-primary h-1.5 bg-m3-surface-variant rounded-lg cursor-pointer"
+                          />
                         </div>
 
+                        {/* Opacity */}
                         <div>
-                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                            <span>Opacity</span>
-                            <span style={{ color: "#fff", fontWeight: 700 }}>{wmOpacity}%</span>
+                          <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1.5">
+                            <span className="font-display font-medium">Opacity</span>
+                            <span className="font-mono font-bold text-m3-on-surface">{wmOpacity}%</span>
                           </div>
-                          <input type="range" min="5" max="100" value={wmOpacity} onChange={(e) => setWmOpacity(Number(e.target.value))} style={{ width: "100%", accentColor: "#ec4899" }} />
+                          <input
+                            type="range"
+                            min="5"
+                            max="100"
+                            value={wmOpacity}
+                            onChange={(e) => setWmOpacity(Number(e.target.value))}
+                            className="w-full accent-m3-primary h-1.5 bg-m3-surface-variant rounded-lg cursor-pointer"
+                          />
                         </div>
 
+                        {/* Color */}
                         <div>
-                          <span style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "6px" }}>Color</span>
-                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                            {PRESET_COLORS.map(c => (
+                          <span className="block text-xs font-display font-medium text-m3-on-surface-variant mb-2">Color</span>
+                          <div className="flex items-center gap-2">
+                            {PRESET_COLORS.map((c) => (
                               <button
                                 key={c.hex}
                                 type="button"
                                 onClick={() => setWmColor(c.hex)}
-                                style={{
-                                  width: "22px", height: "22px", borderRadius: "50%",
-                                  background: c.hex, border: wmColor === c.hex ? "2px solid #fff" : "2px solid transparent",
-                                  cursor: "pointer", transform: wmColor === c.hex ? "scale(1.15)" : "scale(1)",
-                                }}
+                                className={`w-7 h-7 rounded-full cursor-pointer transition-transform ${
+                                  wmColor === c.hex ? "scale-110 ring-2 ring-m3-primary ring-offset-2 ring-offset-m3-surface" : "hover:scale-105"
+                                }`}
+                                style={{ backgroundColor: c.hex }}
                                 title={c.label}
                               />
                             ))}
-                            <input
-                              type="color"
-                              value={wmColor}
-                              onChange={(e) => setWmColor(e.target.value)}
-                              style={{ width: "24px", height: "24px", padding: 0, border: "none", background: "none", cursor: "pointer", marginLeft: "4px" }}
-                              title="Custom Color"
-                            />
+                            <div className="relative ml-2">
+                              <input
+                                type="color"
+                                value={wmColor}
+                                onChange={(e) => setWmColor(e.target.value)}
+                                className="w-8 h-8 rounded-full p-0 border border-m3-outline-variant/60 cursor-pointer overflow-hidden bg-transparent"
+                                title="Custom Color"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
 
+                  {/* ── ADD MODE: PAGE NUMBERING SETTINGS ── */}
                   {mainAction === "add" && enablePageNum && (
-                    <div style={{
-                      padding: "14px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: 'var(--radius-full)',
-                    }}>
-                      <div style={{ fontSize: "12px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                        <span>🔢</span> Page Numbering
+                    <div className="p-5 rounded-2xl bg-m3-surface-container/60 border border-m3-outline-variant/60 shadow-xs">
+                      <div className="text-xs font-display font-bold text-sky-500 dark:text-sky-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span>🔢</span>
+                        <span>Page Numbering</span>
                       </div>
 
-                      <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Format</label>
+                      <label className="block text-xs font-display font-medium text-m3-on-surface-variant mb-1.5">
+                        Format
+                      </label>
                       <select
                         value={numFormat}
                         onChange={(e) => setNumFormat(e.target.value)}
-                        style={{
-                          width: "100%", padding: "8px 12px", background: "rgba(255,255,255,0.06)",
-                          border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)',
-                          color: "#fff", fontSize: "12px", outline: "none", marginBottom: "10px",
-                        }}
+                        className="w-full px-4 py-2.5 rounded-xl bg-m3-surface border border-m3-outline-variant/80 text-m3-on-surface font-mono text-xs focus:outline-none focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 mb-3 cursor-pointer"
                       >
-                        <option value="Page {n} of {total}" style={{ background: "#0f172a" }}>Page 1 of {totalPages || 10}</option>
-                        <option value="{n} / {total}" style={{ background: "#0f172a" }}>1 / {totalPages || 10}</option>
-                        <option value="Page {n}" style={{ background: "#0f172a" }}>Page 1</option>
-                        <option value="- {n} -" style={{ background: "#0f172a" }}>- 1 -</option>
-                        <option value="{n}" style={{ background: "#0f172a" }}>1 (Number only)</option>
+                        <option value="Page {n} of {total}">Page 1 of {totalPages || 10}</option>
+                        <option value="{n} / {total}">1 / {totalPages || 10}</option>
+                        <option value="Page {n}">Page 1</option>
+                        <option value="- {n} -">- 1 -</option>
+                        <option value="{n}">1 (Number only)</option>
                       </select>
 
-                      <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Position</label>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4px", marginBottom: "10px" }}>
+                      <label className="block text-xs font-display font-medium text-m3-on-surface-variant mb-1.5">
+                        Position
+                      </label>
+                      <div className="grid grid-cols-3 gap-2 mb-3.5">
                         {[
                           { id: "bottom-left", label: "Bottom Left" },
                           { id: "bottom-center", label: "Bottom Center" },
                           { id: "bottom-right", label: "Bottom Right" },
                           { id: "top-center", label: "Top Center" },
                           { id: "top-right", label: "Top Right" },
-                        ].map(pos => (
+                        ].map((pos) => (
                           <button
                             key={pos.id}
                             type="button"
                             onClick={() => setNumPosition(pos.id)}
-                            style={{
-                              padding: "6px", background: numPosition === pos.id ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
-                              border: numPosition === pos.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                              borderRadius: 'var(--radius-full)', color: numPosition === pos.id ? "#38bdf8" : "#94a3b8",
-                              fontSize: "10px", fontWeight: 700, cursor: "pointer",
-                            }}
+                            className={`p-2 rounded-xl text-xs font-display font-semibold transition-all cursor-pointer border ${
+                              numPosition === pos.id
+                                ? "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500 shadow-xs"
+                                : "bg-m3-surface text-m3-on-surface-variant hover:text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container"
+                            }`}
                           >
                             {pos.label}
                           </button>
                         ))}
                       </div>
 
-                      <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "#cbd5e1", cursor: "pointer" }}>
+                      <label className="flex items-center gap-2.5 text-xs text-m3-on-surface font-medium cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={skipFirstPage}
                           onChange={(e) => setSkipFirstPage(e.target.checked)}
-                          style={{ accentColor: "#38bdf8" }}
+                          className="w-4 h-4 rounded accent-m3-primary cursor-pointer"
                         />
-                        Skip first page (Cover / Title page)
+                        <span>Skip first page (Cover / Title page)</span>
                       </label>
                     </div>
                   )}
 
                   {/* ── REMOVE MODE SETTINGS ── */}
                   {mainAction === "remove" && (
-                    <div style={{
-                      padding: "14px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                      borderRadius: 'var(--radius-full)',
-                    }}>
+                    <div className="p-5 rounded-2xl bg-m3-surface-container/60 border border-m3-outline-variant/60 shadow-xs">
                       {removeMethod === "faint" && (
                         <>
-                          <div style={{ fontSize: "12px", fontWeight: 800, color: "#a855f7", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                            <span>🌟</span> Faint Watermark Cleaner
+                          <div className="text-xs font-display font-bold text-purple-500 dark:text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <span>🌟</span>
+                            <span>Faint Watermark Cleaner</span>
                           </div>
-                          <p style={{ fontSize: "12px", color: "var(--text-sub)", marginBottom: "12px" }}>
-                            Erases faint background diagonal text/stamps while enhancing foreground text contrast.
+                          <p className="text-xs text-m3-on-surface-variant mb-4 leading-relaxed">
+                            Erases faint background diagonal text and stamps while enhancing foreground text contrast.
                           </p>
 
-                          <div style={{ marginBottom: "14px" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                              <span>Cleaning Strength / Sensitivity</span>
-                              <span style={{ color: "#c084fc", fontWeight: 700 }}>
+                          <div className="mb-4">
+                            <div className="flex justify-between text-xs text-m3-on-surface-variant mb-1.5">
+                              <span className="font-display font-medium">Cleaning Strength / Sensitivity</span>
+                              <span className="font-mono font-bold text-purple-600 dark:text-purple-400">
                                 {cleanSensitivity <= 175 ? "Aggressive" : cleanSensitivity <= 205 ? "Balanced" : "Gentle"} ({cleanSensitivity})
                               </span>
                             </div>
@@ -1017,27 +1134,25 @@ export default function PDFWatermark({ auth }) {
                               max="230"
                               value={cleanSensitivity}
                               onChange={(e) => setCleanSensitivity(Number(e.target.value))}
-                              style={{ width: "100%", accentColor: "#a855f7" }}
+                              className="w-full accent-purple-500 h-1.5 bg-m3-surface-variant rounded-lg cursor-pointer"
                             />
                           </div>
 
-                          <div style={{ display: "flex", gap: "6px" }}>
+                          <div className="flex gap-2">
                             {[
                               { label: "Gentle (215)", val: 215 },
                               { label: "Balanced (195)", val: 195 },
                               { label: "Aggressive (175)", val: 175 },
-                            ].map(p => (
+                            ].map((p) => (
                               <button
                                 key={p.val}
                                 type="button"
                                 onClick={() => setCleanSensitivity(p.val)}
-                                style={{
-                                  flex: 1, padding: "5px 4px",
-                                  background: cleanSensitivity === p.val ? "rgba(168,85,247,0.25)" : "rgba(255,255,255,0.05)",
-                                  border: cleanSensitivity === p.val ? "1px solid #a855f7" : "1px solid rgba(255,255,255,0.1)",
-                                  borderRadius: 'var(--radius-full)', color: cleanSensitivity === p.val ? "#c084fc" : "#94a3b8",
-                                  fontSize: "10px", fontWeight: 700, cursor: "pointer",
-                                }}
+                                className={`flex-1 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer border ${
+                                  cleanSensitivity === p.val
+                                    ? "bg-purple-500/20 text-purple-600 dark:text-purple-300 border-purple-500 shadow-xs"
+                                    : "bg-m3-surface text-m3-on-surface-variant hover:text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container"
+                                }`}
                               >
                                 {p.label}
                               </button>
@@ -1048,31 +1163,32 @@ export default function PDFWatermark({ auth }) {
 
                       {removeMethod === "stamp" && (
                         <>
-                          <div style={{ fontSize: "12px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                            <span>✂️</span> Stamp & Banner Eraser
+                          <div className="text-xs font-display font-bold text-sky-500 dark:text-sky-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <span>✂️</span>
+                            <span>Stamp & Banner Eraser</span>
                           </div>
-                          <p style={{ fontSize: "12px", color: "var(--text-sub)", marginBottom: "12px" }}>
+                          <p className="text-xs text-m3-on-surface-variant mb-3 leading-relaxed">
                             Select the banner area to cleanly erase watermark stamps across all pages.
                           </p>
 
-                          <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "6px" }}>Erase Region</label>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                          <label className="block text-xs font-display font-medium text-m3-on-surface-variant mb-2">
+                            Erase Region
+                          </label>
+                          <div className="flex flex-col gap-2">
                             {[
                               { id: "bottom-banner", label: "Bottom Stamp / Footer (e.g. Scanned with CamScanner)" },
                               { id: "top-banner", label: "Top Banner / Header Watermark" },
                               { id: "bottom-right", label: "Bottom Right Corner Stamp" },
-                            ].map(r => (
+                            ].map((r) => (
                               <button
                                 key={r.id}
                                 type="button"
                                 onClick={() => setStampRegion(r.id)}
-                                style={{
-                                  padding: "8px 12px", textAlign: "left",
-                                  background: stampRegion === r.id ? "rgba(56,189,248,0.2)" : "rgba(255,255,255,0.04)",
-                                  border: stampRegion === r.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                                  borderRadius: 'var(--radius-full)', color: stampRegion === r.id ? "#38bdf8" : "#cbd5e1",
-                                  fontSize: "11px", fontWeight: 700, cursor: "pointer",
-                                }}
+                                className={`p-3 text-left rounded-xl text-xs font-display font-medium transition-all cursor-pointer border ${
+                                  stampRegion === r.id
+                                    ? "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500 shadow-xs"
+                                    : "bg-m3-surface text-m3-on-surface-variant hover:text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container"
+                                }`}
                               >
                                 {r.label}
                               </button>
@@ -1083,26 +1199,28 @@ export default function PDFWatermark({ auth }) {
 
                       {removeMethod === "keyword" && (
                         <>
-                          <div style={{ fontSize: "12px", fontWeight: 800, color: "#34d399", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-                            <span>🔤</span> Watermark Layer Stripper
+                          <div className="text-xs font-display font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                            <span>🔤</span>
+                            <span>Watermark Layer Stripper</span>
                           </div>
-                          <p style={{ fontSize: "12px", color: "var(--text-sub)", marginBottom: "12px" }}>
+                          <p className="text-xs text-m3-on-surface-variant mb-3 leading-relaxed">
                             Strips overlay annotations and watermark metadata directly from the PDF structure.
                           </p>
 
-                          <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "6px" }}>Common Watermarks</label>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginBottom: "12px" }}>
-                            {PRESET_REMOVE_KEYWORDS.map(kw => (
+                          <label className="block text-xs font-display font-medium text-m3-on-surface-variant mb-2">
+                            Common Watermarks
+                          </label>
+                          <div className="flex flex-wrap gap-1.5">
+                            {PRESET_REMOVE_KEYWORDS.map((kw) => (
                               <button
                                 key={kw}
                                 type="button"
                                 onClick={() => setRemoveKeyword(kw)}
-                                style={{
-                                  padding: "4px 8px", background: removeKeyword === kw ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.05)",
-                                  border: removeKeyword === kw ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.1)",
-                                  borderRadius: 'var(--radius-full)', color: removeKeyword === kw ? "#34d399" : "#94a3b8",
-                                  fontSize: "10px", fontWeight: 700, cursor: "pointer",
-                                }}
+                                className={`px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer border ${
+                                  removeKeyword === kw
+                                    ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border-emerald-500 shadow-xs"
+                                    : "bg-m3-surface text-m3-on-surface-variant hover:text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container"
+                                }`}
                               >
                                 {kw}
                               </button>
@@ -1114,65 +1232,66 @@ export default function PDFWatermark({ auth }) {
                   )}
                 </div>
 
-                {/* Right Column: Live Visual Preview */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      {mainAction === "add" ? "Live Stamped Preview" : "Live Cleaned Preview"} (Page {previewPage} of {totalPages})
+                {/* Right Column: Live Visual Preview (5 cols) */}
+                <div className="lg:col-span-5 flex flex-col">
+                  <div className="w-full flex items-center justify-between mb-2">
+                    <span className="text-xs font-display font-bold text-m3-on-surface-variant uppercase tracking-wider">
+                      {mainAction === "add" ? "Live Stamped Preview" : "Live Cleaned Preview"}
                     </span>
                     {totalPages > 1 && (
-                      <div style={{ display: "flex", gap: "4px" }}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const p = Math.max(1, previewPage - 1);
-                            setPreviewPage(p);
-                          }}
-                          disabled={previewPage <= 1}
-                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "10px", cursor: previewPage <= 1 ? "not-allowed" : "pointer" }}
-                        >
-                          ◀ Prev
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const p = Math.min(totalPages, previewPage + 1);
-                            setPreviewPage(p);
-                          }}
-                          disabled={previewPage >= totalPages}
-                          style={{ padding: "2px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "10px", cursor: previewPage >= totalPages ? "not-allowed" : "pointer" }}
-                        >
-                          Next ▶
-                        </button>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono text-m3-on-surface-variant">
+                          {previewPage} / {totalPages}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setPreviewPage(Math.max(1, previewPage - 1))}
+                            disabled={previewPage <= 1}
+                            className="px-2 py-1 rounded-md text-[11px] font-mono bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant/60 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                          >
+                            ◀ Prev
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPreviewPage(Math.min(totalPages, previewPage + 1))}
+                            disabled={previewPage >= totalPages}
+                            className="px-2 py-1 rounded-md text-[11px] font-mono bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant/60 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                          >
+                            Next ▶
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
 
                   {/* Canvas Container */}
-                  <div style={{
-                    width: "100%", maxHeight: "380px", overflow: "hidden",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "#0a0a0a", borderRadius: 'var(--radius-full)',
-                    border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
-                    padding: "8px", boxSizing: "border-box"
-                  }}>
+                  <div className="w-full min-h-[340px] max-h-[460px] flex items-center justify-center p-3 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/60 shadow-sm overflow-hidden">
                     <canvas
                       ref={previewCanvasRef}
-                      style={{ maxWidth: "100%", maxHeight: "360px", objectFit: "contain", borderRadius: 'var(--radius-full)' }}
+                      className="max-w-full max-h-[430px] object-contain rounded-lg shadow-sm"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="action-wrap" style={{ marginTop: "20px" }}>
+              <div className="mt-8">
                 <button
-                  className="btn-compress"
+                  type="button"
+                  className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] cursor-pointer transition-all flex items-center justify-center gap-2"
                   onClick={mainAction === "add" ? applyWatermarkAndPageNumbers : removeWatermarkFromPDF}
                 >
-                  {mainAction === "add"
-                    ? (stage === "done" ? "🔁 Re-Apply Watermark & Numbers" : `⚡ Apply Watermark to All ${totalPages} Pages`)
-                    : (stage === "done" ? "🔁 Re-Clean Watermark" : `🧹 Remove Watermark from All ${totalPages} Pages`)}
+                  <span>{mainAction === "add" ? "⚡" : "🧹"}</span>
+                  <span>
+                    {mainAction === "add"
+                      ? stage === "done"
+                        ? "Re-Apply Watermark & Numbers"
+                        : `Apply Watermark to All ${totalPages} Pages`
+                      : stage === "done"
+                      ? "Re-Clean Watermark"
+                      : `Remove Watermark from All ${totalPages} Pages`}
+                  </span>
                 </button>
               </div>
             </div>
@@ -1180,59 +1299,68 @@ export default function PDFWatermark({ auth }) {
 
           {/* ── Processing Bar ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">
+            <div className="mb-6 p-6 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50">
+              <div className="flex items-center justify-between text-xs font-display font-semibold mb-2">
+                <span className="text-m3-on-surface">
                   {mainAction === "add" ? "Applying Watermark & Numbers..." : "Cleaning & Removing Watermark..."}
                 </span>
-                <span className="progress-pct">{progress}%</span>
+                <span className="font-mono font-bold text-m3-primary">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-variant overflow-hidden">
+                <div
+                  className="h-full bg-m3-primary transition-all duration-300 rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant mt-2 animate-pulse font-mono">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result Box ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: mainAction === "add" ? "rgba(236, 72, 153, 0.08)" : "rgba(168, 85, 247, 0.08)",
-                borderColor: mainAction === "add" ? "rgba(236, 72, 153, 0.3)" : "rgba(168, 85, 247, 0.3)",
-              }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Original</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+            <div className="mb-6">
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Original</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
                       {totalPages} Pages · {fmt(file.size)}
-                    </span>
+                    </div>
                   </div>
-                  <div className="result-arrow">→</div>
-                  <div>
-                    <span className="result-label">Output</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800,
-                      color: mainAction === "add" ? "#f472b6" : "#c084fc"
-                    }}>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Output</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
                       {resultInfo}
-                    </span>
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: mainAction === "add" ? "rgba(236, 72, 153, 0.18)" : "rgba(168, 85, 247, 0.18)",
-                  borderColor: mainAction === "add" ? "#ec4899" : "#a855f7",
-                  color: mainAction === "add" ? "#f472b6" : "#c084fc",
-                }}>
-                  {mainAction === "add" ? "🏷️ Watermark & Numbers Applied" : "🧹 Watermark Removed Successfully"}
+                <div className="text-center mt-3">
+                  <span
+                    className={`rounded-full px-4 py-1.5 text-xs font-mono font-bold inline-block border shadow-xs ${
+                      mainAction === "add"
+                        ? "bg-m3-tertiary-container text-m3-on-tertiary-container border-m3-tertiary/20"
+                        : "bg-m3-primary-container text-m3-on-primary-container border-m3-primary/20"
+                    }`}
+                  >
+                    {mainAction === "add" ? "🏷️ Watermark & Numbers Applied" : "🧹 Watermark Removed Successfully"}
+                  </span>
                 </div>
               </div>
 
-              <ActionButtons blob={resultBlob} fileName={resultName} onReset={reset} auth={auth} />
+              <ActionButtons
+                blob={resultBlob}
+                fileName={resultName}
+                onReset={reset}
+                auth={auth}
+                toolName="PDF Watermark Studio"
+              />
             </div>
           )}
 
-          <div className="comp-footer">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · PDF Watermark & Remover Studio</span>
             <span>100% in-browser processing · Zero server uploads</span>
           </div>
