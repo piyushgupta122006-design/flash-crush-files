@@ -254,32 +254,51 @@ export default function ImageToPDF({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top Bar with Back Navigation ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">📄</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">Image to PDF</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Max {MAX_SIZE_MB} MB · JPG · PNG · WebP
+        </div>
+      </header>
 
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">Image to PDF Converter</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · JPG · PNG · WebP</div>
-      </div>
-
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ background: "linear-gradient(135deg, #dcfce7, #bbf7d0)", color: "#16a34a" }}>
-              🖼️
-            </div>
-            <div className="comp-title">Image to PDF</div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* ── Hero Header ── */}
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            📄
           </div>
-          <p className="comp-sub">Combine and convert your images into a beautiful single PDF document.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            Image to PDF Converter
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
+            Combine and convert your images into a clean, printable PDF document. 100% private, on-device processing.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Outer Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-8 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone (Idle / Empty state) ── */}
           {(stage === "idle" || (stage === "error" && images.length === 0)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
-              style={{ "--dz-accent": "#16a34a", "--dz-bg": "rgba(22,163,74,0.04)" }}
+              className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 p-8 sm:p-12 text-center cursor-pointer ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/20 scale-[0.99]"
+                  : "border-m3-outline-variant/80 hover:border-m3-primary bg-m3-surface-container/50 hover:bg-m3-surface-container"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
@@ -293,47 +312,55 @@ export default function ImageToPDF({ auth }) {
                 hidden
                 onChange={(e) => addFiles(Array.from(e.target.files))}
               />
-              <span className="drop-icon">🖼️</span>
-              <p className="drop-main">
+              <span className="text-4xl sm:text-5xl mb-3 block transform group-hover:scale-110 transition-transform">
+                🖼️
+              </span>
+              <p className="text-lg sm:text-xl font-display font-bold text-m3-on-surface mb-1.5">
                 {dragging ? "Drop your images here!" : "Drag & drop images here"}
               </p>
-              <p className="drop-sub">JPG, PNG, WebP · Select multiple files</p>
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6">
+                JPG, PNG, WebP · Select multiple photos or documents
+              </p>
 
               {stage !== "error" && (
-                <div className="drop-btn-row">
+                <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
                   <button
-                    className="drop-btn"
-                    style={{ background: "linear-gradient(135deg, #16a34a, #15803d)", boxShadow: "0 3px 12px rgba(22,163,74,0.25)" }}
+                    type="button"
+                    className="px-6 py-3 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-95 transition-all flex items-center gap-2"
                     onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
                   >
-                    📁 Browse Images
+                    <span>📁</span>
+                    <span>Browse Images</span>
                   </button>
                   <button
-                    className="drop-btn-drive"
+                    type="button"
+                    className="px-5 py-3 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface font-display font-semibold text-sm shadow-sm active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={(e) => { e.stopPropagation(); handleDrivePick(); }}
                     disabled={pickLoading || auth.authStatus === "loading"}
                   >
                     <DriveIconSmall />
-                    {drivePickLabel()}
+                    <span>{drivePickLabel()}</span>
                   </button>
                 </div>
               )}
 
               {stage === "error" && (
-                <div className="error-box">⚠ {errorMsg}</div>
+                <div className="mt-4 p-3 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium">
+                  ⚠ {errorMsg}
+                </div>
               )}
             </div>
           )}
 
           {/* ── Thumbnail Grid & Controls ── */}
           {(stage === "ready" || stage === "done" || stage === "generating") && images.length > 0 && (
-            <div style={{ padding: "20px 20px 0" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-                <span style={{ fontSize: "13px", fontWeight: "700", color: "var(--text)" }}>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3.5">
+                <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface">
                   Selected Images ({images.length})
                 </span>
                 {stage !== "generating" && stage !== "done" && (
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="flex items-center gap-2">
                     <input
                       ref={addMoreRef}
                       type="file"
@@ -343,22 +370,16 @@ export default function ImageToPDF({ auth }) {
                       onChange={(e) => addFiles(Array.from(e.target.files))}
                     />
                     <button
+                      type="button"
                       onClick={() => addMoreRef.current?.click()}
-                      style={{
-                        padding: "5px 12px", background: "rgba(22,163,74,0.08)",
-                        border: "1px solid rgba(22,163,74,0.25)", borderRadius: 'var(--radius-full)',
-                        color: "#16a34a", fontSize: "12px", fontWeight: "600", cursor: "pointer"
-                      }}
+                      className="px-3.5 py-1.5 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-primary text-xs font-semibold shadow-xs transition-all active:scale-95"
                     >
                       + Add More
                     </button>
                     <button
+                      type="button"
                       onClick={reset}
-                      style={{
-                        padding: "5px 10px", background: "rgba(239,68,68,0.08)",
-                        border: "1px solid rgba(239,68,68,0.20)", borderRadius: 'var(--radius-full)',
-                        color: "#dc2626", fontSize: "12px", fontWeight: "600", cursor: "pointer"
-                      }}
+                      className="px-3 py-1.5 rounded-full bg-m3-error-container/40 hover:bg-m3-error-container text-m3-on-error-container text-xs font-semibold shadow-xs transition-all active:scale-95"
                     >
                       Clear All
                     </button>
@@ -366,33 +387,20 @@ export default function ImageToPDF({ auth }) {
                 )}
               </div>
 
-              {/* Thumbnails list */}
-              <div style={{
-                display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
-                gap: "10px", maxHeight: "260px", overflowY: "auto", padding: "8px",
-                borderRadius: "var(--radius-md)", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)"
-              }}>
+              {/* Thumbnails grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-h-72 overflow-y-auto p-3 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40">
                 {images.map((img, idx) => (
                   <div
                     key={img.id}
-                    style={{
-                      position: "relative", borderRadius: 'var(--radius-full)', overflow: "hidden",
-                      border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)",
-                      aspectRatio: "1/1", display: "flex", alignItems: "center", justifyContent: "center"
-                    }}
+                    className="relative rounded-xl overflow-hidden border border-m3-outline-variant/60 bg-m3-surface-container-highest aspect-square flex items-center justify-center group shadow-xs hover:shadow-sm transition-all"
                   >
                     <img
                       src={img.preview}
                       alt={`Image ${idx + 1}`}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      className="w-full h-full object-cover"
                     />
                     {/* Index badge */}
-                    <span style={{
-                      position: "absolute", top: "4px", left: "4px",
-                      background: "rgba(0,0,0,0.75)", color: "#34d399", fontSize: "10px",
-                      padding: "2px 7px", borderRadius: 'var(--radius-full)', fontWeight: "800",
-                      fontFamily: "'JetBrains Mono', monospace"
-                    }}>
+                    <span className="absolute top-1.5 left-1.5 bg-m3-surface/85 backdrop-blur-sm text-m3-on-surface text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-m3-outline-variant/40">
                       {idx + 1}
                     </span>
 
@@ -400,31 +408,20 @@ export default function ImageToPDF({ auth }) {
                       <>
                         {/* Remove button */}
                         <button
+                          type="button"
                           onClick={() => removeImage(img.id)}
-                          style={{
-                            position: "absolute", top: "4px", right: "4px",
-                            width: "20px", height: "20px", borderRadius: "50%",
-                            background: "rgba(244,63,94,0.9)", color: "#fff", border: "none",
-                            fontSize: "11px", display: "flex", alignItems: "center",
-                            justifyContent: "center", cursor: "pointer"
-                          }}
+                          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-m3-error-container/90 hover:bg-m3-error-container text-m3-on-error-container flex items-center justify-center text-xs font-bold transition-all active:scale-90 shadow-xs"
                           title="Remove image"
                         >
                           ✕
                         </button>
                         {/* Reorder buttons */}
-                        <div style={{
-                          position: "absolute", bottom: "4px", left: "4px", right: "4px",
-                          display: "flex", justifyContent: "space-between", gap: "4px"
-                        }}>
+                        <div className="absolute bottom-1.5 inset-x-1.5 flex justify-between gap-1 opacity-90 group-hover:opacity-100 transition-opacity">
                           {idx > 0 && (
                             <button
+                              type="button"
                               onClick={() => moveImage(idx, -1)}
-                              style={{
-                                flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
-                                color: "#fff", border: "none", borderRadius: 'var(--radius-full)',
-                                fontSize: "10px", cursor: "pointer"
-                              }}
+                              className="flex-1 py-1 rounded-full bg-m3-surface/85 backdrop-blur-sm hover:bg-m3-surface text-m3-on-surface text-[10px] font-bold border border-m3-outline-variant/40 flex items-center justify-center transition-all active:scale-95"
                               title="Move back"
                             >
                               ◀
@@ -432,12 +429,9 @@ export default function ImageToPDF({ auth }) {
                           )}
                           {idx < images.length - 1 && (
                             <button
+                              type="button"
                               onClick={() => moveImage(idx, 1)}
-                              style={{
-                                flex: 1, padding: "3px 0", background: "rgba(0,0,0,0.75)",
-                                color: "#fff", border: "none", borderRadius: 'var(--radius-full)',
-                                fontSize: "10px", cursor: "pointer"
-                              }}
+                              className="flex-1 py-1 rounded-full bg-m3-surface/85 backdrop-blur-sm hover:bg-m3-surface text-m3-on-surface text-[10px] font-bold border border-m3-outline-variant/40 flex items-center justify-center transition-all active:scale-95"
                               title="Move forward"
                             >
                               ▶
@@ -454,63 +448,53 @@ export default function ImageToPDF({ auth }) {
 
           {/* ── Page Options ── */}
           {(stage === "ready" || stage === "done") && images.length > 0 && (
-            <div className="level-wrap">
-              <span className="level-label">Page Layout Options</span>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px", marginBottom: "12px" }}>
+            <div className="p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50 my-6 shadow-sm">
+              <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-primary mb-3.5 block">
+                Page Layout Options
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
+                  <label className="text-xs font-bold uppercase text-m3-on-surface-variant block mb-1.5">
                     Orientation
-                  </span>
+                  </label>
                   <select
                     value={orientation}
                     onChange={(e) => setOrientation(e.target.value)}
-                    style={{
-                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
-                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
-                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
-                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-m3-outline-variant/80 bg-m3-surface text-m3-on-surface text-xs sm:text-sm font-medium focus:outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all cursor-pointer"
                   >
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="auto">Auto-detect</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="portrait">Portrait</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="landscape">Landscape</option>
+                    <option value="auto">Auto-detect</option>
+                    <option value="portrait">Portrait</option>
+                    <option value="landscape">Landscape</option>
                   </select>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
+                  <label className="text-xs font-bold uppercase text-m3-on-surface-variant block mb-1.5">
                     Margin
-                  </span>
+                  </label>
                   <select
                     value={margin}
                     onChange={(e) => setMargin(e.target.value)}
-                    style={{
-                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
-                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
-                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
-                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-m3-outline-variant/80 bg-m3-surface text-m3-on-surface text-xs sm:text-sm font-medium focus:outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all cursor-pointer"
                   >
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="none">No Margin</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="small">Small (15pt)</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="normal">Standard (30pt)</option>
+                    <option value="none">No Margin (0pt)</option>
+                    <option value="small">Small (15pt)</option>
+                    <option value="normal">Standard (30pt)</option>
                   </select>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", color: "var(--text-sub)", display: "block", marginBottom: "6px" }}>
+                  <label className="text-xs font-bold uppercase text-m3-on-surface-variant block mb-1.5">
                     Page Size
-                  </span>
+                  </label>
                   <select
                     value={pageSize}
                     onChange={(e) => setPageSize(e.target.value)}
-                    style={{
-                      width: "100%", padding: "10px 12px", borderRadius: 'var(--radius-full)',
-                      border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)",
-                      fontSize: "12.5px", fontFamily: "inherit", outline: "none", color: "#ffffff"
-                    }}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-m3-outline-variant/80 bg-m3-surface text-m3-on-surface text-xs sm:text-sm font-medium focus:outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all cursor-pointer"
                   >
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="a4">A4 Standard</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="fit">Fit to Image</option>
-                    <option style={{ background: "#0d1222", color: "#fff" }} value="letter">US Letter</option>
+                    <option value="a4">A4 Standard</option>
+                    <option value="fit">Fit to Image</option>
+                    <option value="letter">US Letter</option>
                   </select>
                 </div>
               </div>
@@ -519,48 +503,59 @@ export default function ImageToPDF({ auth }) {
 
           {/* ── Generate Action Button ── */}
           {(stage === "ready" || stage === "done") && images.length > 0 && (
-            <div className="action-wrap">
+            <div className="my-6">
               <button
-                className="btn-compress"
-                style={{ background: "linear-gradient(135deg, #16a34a, #15803d)", boxShadow: "0 4px 20px rgba(22,163,74,0.28)" }}
+                type="button"
+                className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 onClick={convertToPDF}
               >
-                {stage === "done" ? "🔁 Re-generate PDF" : `📄 Convert ${images.length} Image${images.length > 1 ? "s" : ""} to PDF`}
+                <span>
+                  {stage === "done" ? "🔁 Re-generate PDF" : `📄 Convert ${images.length} Image${images.length > 1 ? "s" : ""} to PDF`}
+                </span>
               </button>
             </div>
           )}
 
           {/* ── Progress Bar ── */}
           {stage === "generating" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Generating PDF document...</span>
-                <span className="progress-pct" style={{ color: "#16a34a" }}>{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Generating PDF document...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%`, background: "linear-gradient(90deg, #4ade80, #16a34a)" }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result ── */}
           {stage === "done" && result && (
             <>
-              <div className="result-box" style={{ background: "rgba(22,163,74,0.06)", borderColor: "rgba(22,163,74,0.20)" }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Total Images</span>
-                    <span className="result-val-orig">{result.pageCount} Pages</span>
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Total Images</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
+                      {result.pageCount} Pages
+                    </div>
                   </div>
-                  <div className="result-arrow" style={{ color: "#16a34a" }}>→</div>
-                  <div>
-                    <span className="result-label">PDF Size</span>
-                    <span className="result-val-comp" style={{ color: "#16a34a" }}>{fmt(result.pdfSize)}</span>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">PDF Size</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
+                      {fmt(result.pdfSize)}
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{ marginTop: "12px" }}>
-                  <span style={{ color: "#16a34a", background: "rgba(22,163,74,0.08)", borderColor: "rgba(22,163,74,0.25)" }}>
+                <div className="text-center mt-3">
+                  <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
                     🎉 PDF Generated Successfully!
                   </span>
                 </div>
@@ -571,13 +566,14 @@ export default function ImageToPDF({ auth }) {
                 fileName={getFileName()}
                 onReset={reset}
                 auth={auth}
+                toolName="Image to PDF"
               />
             </>
           )}
 
-          <div className="comp-footer">
-            <span>Flash Crush-Files · Image to PDF</span>
-            <span>Files never leave your browser</span>
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
+            <span>FlashCrush · Image to PDF Tool</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
         </div>
       </div>
