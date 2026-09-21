@@ -47,8 +47,8 @@ function loadPdfJs() {
 }
 
 const MODES = [
-  { id: "unlock", label: "🔓 Unlock PDF", desc: "Remove password from a locked PDF" },
-  { id: "protect", label: "🔒 Protect PDF", desc: "Add password to an open PDF" },
+  { id: "unlock", label: "Unlock PDF", desc: "Remove password from a locked PDF" },
+  { id: "protect", label: "Protect PDF", desc: "Add password to an open PDF" },
 ];
 
 export default function PDFSecurity({ auth }) {
@@ -311,42 +311,74 @@ export default function PDFSecurity({ auth }) {
     : (password.trim().length >= 4 && password === confirmPassword && isLocked === false);
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">PDF Security</div>
-        <div className="tool-page-meta">Lock & Unlock · Password Protection</div>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top App Bar ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-display font-semibold text-m3-on-surface-variant hover:text-m3-on-surface bg-m3-surface-container hover:bg-m3-surface-container-high border border-m3-outline-variant/50 transition-all duration-200 active:scale-95 shadow-sm"
+        >
+          <span>←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🔐</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF Security</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Lock & Unlock · AES-256
+        </div>
+      </header>
 
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(56, 189, 248, 0.4)", boxShadow: "0 0 20px rgba(56, 189, 248, 0.3)" }}>
-              🔐
-            </div>
-            <div className="comp-title">PDF Password Protect & Unlock</div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* ── Hero Header ── */}
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            🔐
           </div>
-          <p className="comp-sub">Remove passwords from locked PDFs or add password protection to open files.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            PDF Password Protect & Unlock
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
+            Remove passwords from locked PDFs or secure open files with AES-256 password encryption. 100% private, on-device processing.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Outer Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-8 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Mode Selector ── */}
           {(stage === "idle" || stage === "ready" || stage === "done" || stage === "error") && (
-            <div className="level-wrap">
-              <span className="level-label">1. Choose Action</span>
-              <div className="level-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
-                {MODES.map((m) => (
-                  <button
-                    key={m.id}
-                    className={`level-btn${mode === m.id ? " active" : ""}`}
-                    onClick={() => { setMode(m.id); setErrorMsg(""); }}
-                  >
-                    <span style={{ fontSize: "1.5rem" }}>{m.id === "unlock" ? "🔓" : "🔒"}</span>
-                    <span className="level-name">{m.label}</span>
-                    <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>{m.desc}</span>
-                  </button>
-                ))}
+            <div className="mb-6">
+              <span className="block text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface-variant mb-3">
+                1. Choose Action
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {MODES.map((m) => {
+                  const isActive = mode === m.id;
+                  return (
+                    <button
+                      key={m.id}
+                      type="button"
+                      className={`flex flex-col items-start text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? "border-m3-primary bg-m3-primary/10 text-m3-on-surface shadow-sm ring-1 ring-m3-primary"
+                          : "border-m3-outline-variant/60 bg-m3-surface-container/60 hover:bg-m3-surface-container text-m3-on-surface-variant hover:text-m3-on-surface"
+                      }`}
+                      onClick={() => { setMode(m.id); setErrorMsg(""); }}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-2xl">{m.id === "unlock" ? "🔓" : "🔒"}</span>
+                        <span className="font-display font-bold text-sm sm:text-base text-m3-on-surface">
+                          {m.label}
+                        </span>
+                      </div>
+                      <span className="text-xs text-m3-on-surface-variant leading-relaxed">
+                        {m.desc}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -354,117 +386,168 @@ export default function PDFSecurity({ auth }) {
           {/* ── Drop Zone ── */}
           {(stage === "idle" || (stage === "error" && !file)) && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 p-8 sm:p-12 text-center cursor-pointer mb-6 ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/20 scale-[0.99]"
+                  : "border-m3-outline-variant/80 hover:border-m3-primary bg-m3-surface-container/50 hover:bg-m3-surface-container"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">{mode === "unlock" ? "🔓" : "🔒"}</span>
-              <p className="drop-main">{dragging ? "Drop your PDF here!" :
-                mode === "unlock" ? "Drop your locked PDF here" : "Drop your PDF to protect"}</p>
-              <p className="drop-sub">
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])}
+              />
+              <span className="text-4xl sm:text-5xl mb-3 block transform group-hover:scale-110 transition-transform">
+                {mode === "unlock" ? "🔓" : "🔒"}
+              </span>
+              <p className="text-lg sm:text-xl font-display font-bold text-m3-on-surface mb-1.5">
+                {dragging
+                  ? "Drop your PDF here!"
+                  : mode === "unlock"
+                  ? "Drop your locked PDF here"
+                  : "Drop your PDF to protect"}
+              </p>
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6">
                 {mode === "unlock"
                   ? "Upload a password-protected PDF to remove its password"
-                  : "Upload an open PDF to add password protection"} · max {MAX_SIZE_MB} MB
+                  : "Upload an open PDF to add password protection"} · Max {MAX_SIZE_MB} MB
               </p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>📁 Browse PDF</button>
-                <button className="drop-btn-drive" onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
-                  <DriveIconSmall />{drivePickLabel()}
+              <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  className="px-6 py-3 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-95 transition-all flex items-center gap-2"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <span>📁</span>
+                  <span>Browse PDF</span>
+                </button>
+                <button
+                  type="button"
+                  className="px-5 py-3 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface font-display font-semibold text-sm shadow-sm active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleDrivePick}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
+                  <DriveIconSmall />
+                  <span>{drivePickLabel()}</span>
                 </button>
               </div>
 
-              {stage === "error" && <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>}
+              {stage === "error" && (
+                <div className="mt-4 p-3 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium">
+                  ⚠ {errorMsg}
+                </div>
+              )}
             </div>
           )}
 
           {/* ── File Row ── */}
           {file && stage !== "idle" && !(stage === "error" && !file) && (
-            <div className="file-row">
-              <div className="file-icon">{isLocked ? "🔒" : "📄"}</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">
-                  {fmt(file.size)} ·{" "}
-                  <span style={{ color: isLocked ? "#f87171" : "#34d399", fontWeight: 700 }}>
-                    {isLocked === null ? "Checking..." : isLocked ? "🔒 Password Protected" : "🔓 Not Locked"}
-                  </span>
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/60 shadow-sm mb-6 transition-all">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-m3-surface flex items-center justify-center text-xl shadow-xs border border-m3-outline-variant/40 flex-shrink-0">
+                  {isLocked ? "🔒" : "📄"}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-display font-bold text-m3-on-surface truncate">
+                    {file.name}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    <span>{fmt(file.size)}</span>
+                    <span>·</span>
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded-md font-semibold text-[11px] ${
+                        isLocked === null
+                          ? "bg-m3-surface-variant text-m3-on-surface-variant"
+                          : isLocked
+                          ? "bg-m3-error-container/60 text-m3-error border border-m3-error/20"
+                          : "bg-m3-tertiary-container/60 text-m3-on-tertiary-container border border-m3-tertiary/20"
+                      }`}
+                    >
+                      {isLocked === null ? "Checking..." : isLocked ? "🔒 Password Protected" : "🔓 Not Locked"}
+                    </span>
+                  </div>
                 </div>
               </div>
-              {stage !== "processing" && <button className="close-btn" onClick={reset}>✕</button>}
+              {stage !== "processing" && (
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-m3-on-surface-variant hover:text-m3-error hover:bg-m3-error-container/40 transition-colors flex-shrink-0 ml-2"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           )}
 
           {/* ── Error inside ready state ── */}
           {(stage === "ready" || stage === "error") && file && errorMsg && (
-            <div style={{ padding: "0 20px 10px" }}>
-              <div className="error-box">⚠ {errorMsg}</div>
+            <div className="mb-6 p-3.5 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium flex items-center gap-2">
+              <span className="text-base">⚠</span>
+              <span>{errorMsg}</span>
             </div>
           )}
 
           {/* ── Password Input (Unlock mode) ── */}
           {(stage === "ready" || stage === "done") && mode === "unlock" && isLocked && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+            <div className="mb-6 p-5 rounded-2xl bg-m3-surface-container/60 border border-m3-outline-variant/60">
+              <label className="block text-xs font-display font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5">
                 2. Enter the PDF Password
               </label>
-              <div style={{ position: "relative" }}>
+              <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setErrorMsg(""); }}
                   placeholder="Enter PDF password..."
-                  style={{
-                    width: "100%", padding: "14px 50px 14px 16px", boxSizing: "border-box",
-                    background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "14px", color: "#fff", outline: "none",
-                  }}
-                  onFocus={(e) => { e.target.style.borderColor = "#38bdf8"; e.target.style.boxShadow = "0 0 20px rgba(56,189,248,0.3)"; }}
-                  onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.boxShadow = "none"; }}
+                  className="w-full px-4 py-3.5 pr-12 rounded-xl bg-m3-surface border border-m3-outline-variant/80 text-m3-on-surface font-mono text-sm placeholder:text-m3-on-surface-variant/50 focus:outline-none focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 transition-all"
                   onKeyDown={(e) => { if (e.key === "Enter" && canExecute) unlockPDF(); }}
                 />
-                <button onClick={() => setShowPassword(!showPassword)} style={{
-                  position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)",
-                  background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "16px",
-                }}>{showPassword ? "🙈" : "👁"}</button>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-m3-on-surface-variant hover:text-m3-on-surface text-lg p-1 transition-colors"
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "🙈" : "👁"}
+                </button>
               </div>
             </div>
           )}
 
           {/* ── Password Input (Protect mode) ── */}
           {(stage === "ready" || stage === "done") && mode === "protect" && isLocked === false && (
-            <div style={{ padding: "0 20px 16px" }}>
-              <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+            <div className="mb-6 p-5 rounded-2xl bg-m3-surface-container/60 border border-m3-outline-variant/60">
+              <label className="block text-xs font-display font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5">
                 2. Set a Password (min 4 characters)
               </label>
-              <div style={{ position: "relative", marginBottom: "10px" }}>
+              <div className="relative mb-4">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setErrorMsg(""); }}
                   placeholder="Enter new password..."
-                  style={{
-                    width: "100%", padding: "14px 50px 14px 16px", boxSizing: "border-box",
-                    background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.12)",
-                    borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "14px", color: "#fff", outline: "none",
-                  }}
-                  onFocus={(e) => { e.target.style.borderColor = "#8b5cf6"; e.target.style.boxShadow = "0 0 20px rgba(139,92,246,0.3)"; }}
-                  onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.12)"; e.target.style.boxShadow = "none"; }}
+                  className="w-full px-4 py-3.5 pr-12 rounded-xl bg-m3-surface border border-m3-outline-variant/80 text-m3-on-surface font-mono text-sm placeholder:text-m3-on-surface-variant/50 focus:outline-none focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20 transition-all"
                 />
-                <button onClick={() => setShowPassword(!showPassword)} style={{
-                  position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)",
-                  background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "16px",
-                }}>{showPassword ? "🙈" : "👁"}</button>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-m3-on-surface-variant hover:text-m3-on-surface text-lg p-1 transition-colors"
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "🙈" : "👁"}
+                </button>
               </div>
 
-              <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "8px" }}>
+              <label className="block text-xs font-display font-bold text-m3-on-surface-variant uppercase tracking-wider mb-2.5">
                 Confirm Password
               </label>
               <input
@@ -472,42 +555,60 @@ export default function PDFSecurity({ auth }) {
                 value={confirmPassword}
                 onChange={(e) => { setConfirmPassword(e.target.value); setErrorMsg(""); }}
                 placeholder="Re-enter password..."
-                style={{
-                  width: "100%", padding: "14px 16px", boxSizing: "border-box",
-                  background: "rgba(255,255,255,0.05)",
-                  border: `1.5px solid ${confirmPassword && confirmPassword !== password ? "rgba(244,63,94,0.5)" : "rgba(255,255,255,0.12)"}`,
-                  borderRadius: 'var(--radius-full)', fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "14px", color: "#fff", outline: "none",
-                }}
+                className={`w-full px-4 py-3.5 rounded-xl bg-m3-surface border text-m3-on-surface font-mono text-sm placeholder:text-m3-on-surface-variant/50 focus:outline-none transition-all ${
+                  confirmPassword && confirmPassword !== password
+                    ? "border-m3-error focus:ring-2 focus:ring-m3-error/20"
+                    : "border-m3-outline-variant/80 focus:border-m3-primary focus:ring-2 focus:ring-m3-primary/20"
+                }`}
                 onKeyDown={(e) => { if (e.key === "Enter" && canExecute) protectPDF(); }}
               />
+
               {confirmPassword && confirmPassword !== password && (
-                <div style={{ fontSize: "12px", color: "#f87171", marginTop: "6px" }}>
-                  ⚠ Passwords do not match
+                <div className="text-xs text-m3-error font-medium mt-2 flex items-center gap-1.5">
+                  <span>⚠</span>
+                  <span>Passwords do not match</span>
                 </div>
               )}
               {password.length > 0 && password.length < 4 && (
-                <div style={{ fontSize: "12px", color: "#fbbf24", marginTop: "6px" }}>
-                  ⚠ Password must be at least 4 characters
+                <div className="text-xs text-amber-500 dark:text-amber-400 font-medium mt-2 flex items-center gap-1.5">
+                  <span>⚠</span>
+                  <span>Password must be at least 4 characters</span>
                 </div>
               )}
 
               {/* Password strength indicator */}
               {password.length >= 4 && (
-                <div style={{ marginTop: "10px" }}>
-                  <div style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
-                    {[1, 2, 3, 4].map(level => (
-                      <div key={level} style={{
-                        flex: 1, height: "4px", borderRadius: 'var(--radius-full)',
-                        background: password.length >= level * 3
-                          ? level <= 1 ? "#f87171" : level <= 2 ? "#fbbf24" : level <= 3 ? "#34d399" : "#06b6d4"
-                          : "rgba(255,255,255,0.1)",
-                        transition: "background 0.3s",
-                      }} />
-                    ))}
+                <div className="mt-3.5">
+                  <div className="flex gap-1.5 mb-1.5">
+                    {[1, 2, 3, 4].map((level) => {
+                      const filled = password.length >= level * 3;
+                      const colors = [
+                        "bg-m3-error",
+                        "bg-amber-500",
+                        "bg-emerald-500",
+                        "bg-m3-primary",
+                      ];
+                      return (
+                        <div
+                          key={level}
+                          className={`flex-1 h-1 rounded-full transition-colors duration-300 ${
+                            filled ? colors[level - 1] : "bg-m3-outline-variant/40"
+                          }`}
+                        />
+                      );
+                    })}
                   </div>
-                  <span style={{ fontSize: "11px", color: "var(--text-sub)" }}>
-                    Strength: {password.length < 6 ? "Weak" : password.length < 9 ? "Medium" : password.length < 12 ? "Strong" : "Very Strong"}
+                  <span className="text-[11px] font-medium text-m3-on-surface-variant">
+                    Strength:{" "}
+                    <span className="font-bold text-m3-on-surface">
+                      {password.length < 6
+                        ? "Weak"
+                        : password.length < 9
+                        ? "Medium"
+                        : password.length < 12
+                        ? "Strong"
+                        : "Very Strong"}
+                    </span>
                   </span>
                 </div>
               )}
@@ -516,69 +617,97 @@ export default function PDFSecurity({ auth }) {
 
           {/* ── Action Button ── */}
           {(stage === "ready" || stage === "done") && file && (
-            <div className="action-wrap">
-              <button className="btn-compress" onClick={mode === "unlock" ? unlockPDF : protectPDF}
-                disabled={!canExecute}>
-                {mode === "unlock"
-                  ? (stage === "done" ? "🔁 Re-unlock PDF" : "🔓 Unlock & Remove Password")
-                  : (stage === "done" ? "🔁 Re-protect PDF" : "🔒 Protect with Password")}
+            <div className="mb-6">
+              <button
+                type="button"
+                className={`w-full py-4 rounded-full font-display font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 ${
+                  canExecute
+                    ? "bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] cursor-pointer"
+                    : "opacity-40 cursor-not-allowed bg-m3-surface-variant text-m3-on-surface-variant"
+                }`}
+                onClick={mode === "unlock" ? unlockPDF : protectPDF}
+                disabled={!canExecute}
+              >
+                <span>{mode === "unlock" ? "🔓" : "🔒"}</span>
+                <span>
+                  {mode === "unlock"
+                    ? stage === "done"
+                      ? "Re-unlock PDF"
+                      : "Unlock & Remove Password"
+                    : stage === "done"
+                    ? "Re-protect PDF"
+                    : "Protect with Password"}
+                </span>
               </button>
             </div>
           )}
 
           {/* ── Progress ── */}
           {stage === "processing" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">{mode === "unlock" ? "Unlocking PDF..." : "Protecting PDF..."}</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="mb-6 p-6 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/50">
+              <div className="flex items-center justify-between text-xs font-display font-semibold mb-2">
+                <span className="text-m3-on-surface">
+                  {mode === "unlock" ? "Unlocking PDF..." : "Protecting PDF..."}
+                </span>
+                <span className="font-mono font-bold text-m3-primary">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-variant overflow-hidden">
+                <div
+                  className="h-full bg-m3-primary transition-all duration-300 rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs text-m3-on-surface-variant mt-2 animate-pulse font-mono">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Result ── */}
           {stage === "done" && resultBlob && (
-            <div style={{ padding: "0 20px 20px" }}>
-              <div className="result-box" style={{
-                margin: "10px 0 20px",
-                background: mode === "unlock" ? "rgba(16,185,129,0.08)" : "rgba(56,189,248,0.08)",
-                borderColor: mode === "unlock" ? "rgba(16,185,129,0.3)" : "rgba(56,189,248,0.3)",
-              }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Original</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800, color: "var(--text-muted)" }}>
+            <div className="mb-6">
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Original</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
                       {isLocked ? "🔒 Locked" : "🔓 Open"} · {fmt(file.size)}
-                    </span>
+                    </div>
                   </div>
-                  <div className="result-arrow">→</div>
-                  <div>
-                    <span className="result-label">Output</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.1rem", fontWeight: 800,
-                      color: mode === "unlock" ? "#34d399" : "#38bdf8"
-                    }}>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Output</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
                       {resultInfo}
-                    </span>
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{
-                  background: mode === "unlock" ? "rgba(16,185,129,0.18)" : "rgba(56,189,248,0.18)",
-                  borderColor: mode === "unlock" ? "#10b981" : "#38bdf8",
-                  color: mode === "unlock" ? "#34d399" : "#38bdf8",
-                }}>
-                  {mode === "unlock" ? "🔓 Password Removed Successfully" : "🔒 Password Protection Added"}
+                <div className="text-center mt-3">
+                  <span
+                    className={`rounded-full px-4 py-1.5 text-xs font-mono font-bold inline-block border shadow-xs ${
+                      mode === "unlock"
+                        ? "bg-m3-tertiary-container text-m3-on-tertiary-container border-m3-tertiary/20"
+                        : "bg-m3-primary-container text-m3-on-primary-container border-m3-primary/20"
+                    }`}
+                  >
+                    {mode === "unlock"
+                      ? "🔓 Password Removed Successfully"
+                      : "🔒 Password Protection Added"}
+                  </span>
                 </div>
               </div>
 
-              <ActionButtons blob={resultBlob} fileName={resultName} onReset={reset} auth={auth} />
+              <ActionButtons
+                blob={resultBlob}
+                fileName={resultName}
+                onReset={reset}
+                auth={auth}
+                toolName="PDF Security"
+              />
             </div>
           )}
 
-          <div className="comp-footer">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · PDF Security Tool</span>
             <span>100% in-browser processing · Zero server uploads</span>
           </div>
