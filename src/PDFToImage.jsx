@@ -259,162 +259,259 @@ export default function PDFToImage({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface font-sans transition-colors duration-300 pb-20">
+      {/* ── Top Bar with Back Navigation ── */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 flex items-center justify-between transition-colors">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface text-sm font-semibold transition-all duration-200 shadow-sm active:scale-95"
+          onClick={() => navigate("/")}
+        >
+          <span className="text-base leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="p-1.5 rounded-xl bg-m3-primary/10 text-m3-primary text-base">🖼️</span>
+          <span className="text-base sm:text-lg font-display font-bold text-m3-on-surface">PDF to Images</span>
+        </div>
+        <div className="text-xs font-mono font-medium text-m3-on-surface-variant bg-m3-surface-container px-3 py-1 rounded-full border border-m3-outline-variant/50 hidden sm:block">
+          Max {MAX_SIZE_MB} MB · High Res · ZIP
+        </div>
+      </header>
 
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">PDF to Images</div>
-        <div className="tool-page-meta">Max {MAX_SIZE_MB} MB · High Res · ZIP</div>
-      </div>
-
-      <div className="compressor-wrap">
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(6, 182, 212, 0.4)", boxShadow: "0 0 20px rgba(6, 182, 212, 0.3)" }}>
-              🖼️
-            </div>
-            <div className="comp-title">PDF to Images</div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* ── Hero Header ── */}
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center p-3.5 rounded-2xl bg-m3-primary/10 text-m3-primary text-3xl mb-4 shadow-sm">
+            🖼️
           </div>
-          <p className="comp-sub">Convert every page of your PDF into crisp JPG, PNG, or WebP images with 1-click ZIP download.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold tracking-tight text-m3-on-surface mb-3">
+            PDF to Images Converter
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto leading-relaxed">
+            Convert every page of your PDF into crisp JPG, PNG, or WebP images with 1-click ZIP download. 100% private, on-device processing.
+          </p>
         </div>
 
-        <div className="comp-card">
+        {/* ── Outer Card ── */}
+        <div className="bg-m3-surface-container-low border border-m3-outline-variant/60 rounded-3xl p-6 sm:p-8 shadow-m3-elevation-1 transition-colors">
 
           {/* ── Drop Zone ── */}
           {(stage === "idle" || stage === "error") && (
             <div
-              className={`drop-zone${dragging ? " dragging" : ""}`}
+              className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 p-8 sm:p-12 text-center cursor-pointer ${
+                dragging
+                  ? "border-m3-primary bg-m3-primary-container/20 scale-[0.99]"
+                  : "border-m3-outline-variant/80 hover:border-m3-primary bg-m3-surface-container/50 hover:bg-m3-surface-container"
+              }`}
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
             >
-              <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden
-                onChange={(e) => handleFile(e.target.files[0])} />
-              <span className="drop-icon">📑</span>
-              <p className="drop-main">{dragging ? "Drop your PDF here!" : "Drag & drop your PDF document here"}</p>
-              <p className="drop-sub">Select PDF to extract high-resolution images · max {MAX_SIZE_MB} MB</p>
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                hidden
+                onChange={(e) => handleFile(e.target.files[0])}
+              />
+              <span className="text-4xl sm:text-5xl mb-3 block transform group-hover:scale-110 transition-transform">
+                📑
+              </span>
+              <p className="text-lg sm:text-xl font-display font-bold text-m3-on-surface mb-1.5">
+                {dragging ? "Drop your PDF here!" : "Drag & drop your PDF document here"}
+              </p>
+              <p className="text-xs sm:text-sm text-m3-on-surface-variant mb-6">
+                Extract high-resolution images page by page · Max {MAX_SIZE_MB} MB
+              </p>
 
-              <div className="drop-btn-row" onClick={(e) => e.stopPropagation()}>
-                <button className="drop-btn" onClick={() => inputRef.current?.click()}>
-                  📁 Browse PDF
+              <div className="flex flex-wrap items-center justify-center gap-3" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  className="px-6 py-3 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-95 transition-all flex items-center gap-2"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <span>📁</span>
+                  <span>Browse PDF</span>
                 </button>
-                <button className="drop-btn-drive"
+                <button
+                  type="button"
+                  className="px-5 py-3 rounded-full border border-m3-outline-variant/80 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface font-display font-semibold text-sm shadow-sm active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleDrivePick}
-                  disabled={pickLoading || auth.authStatus === "loading"}>
-                  <DriveIconSmall />{drivePickLabel()}
+                  disabled={pickLoading || auth.authStatus === "loading"}
+                >
+                  <DriveIconSmall />
+                  <span>{drivePickLabel()}</span>
                 </button>
               </div>
 
               {stage === "error" && (
-                <div className="error-box" style={{ marginTop: 14 }}>⚠ {errorMsg}</div>
+                <div className="mt-4 p-3 rounded-xl bg-m3-error-container/40 border border-m3-error/30 text-m3-on-error-container text-xs sm:text-sm font-medium">
+                  ⚠ {errorMsg}
+                </div>
               )}
             </div>
           )}
 
           {/* ── Selected File Row ── */}
           {(stage === "ready" || stage === "done" || stage === "converting") && file && (
-            <div className="file-row">
-              <div className="file-icon">📄</div>
-              <div className="file-info">
-                <div className="file-name">{file.name}</div>
-                <div className="file-size">{fmt(file.size)}</div>
+            <div className="bg-m3-surface-container rounded-2xl p-4 sm:p-5 border border-m3-outline-variant/50 flex items-center justify-between gap-4 mb-6 shadow-sm">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="p-2.5 rounded-xl bg-m3-primary/10 text-m3-primary text-xl flex-shrink-0">
+                  📄
+                </div>
+                <div className="min-w-0">
+                  <div className="font-display font-bold text-sm sm:text-base text-m3-on-surface truncate">
+                    {file.name}
+                  </div>
+                  <div className="text-xs font-mono text-m3-on-surface-variant mt-0.5">
+                    {fmt(file.size)}
+                  </div>
+                </div>
               </div>
               {stage !== "converting" && (
-                <button className="close-btn" onClick={reset}>✕</button>
+                <button
+                  type="button"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-m3-on-surface-variant hover:text-m3-error hover:bg-m3-error-container/30 transition-colors text-sm font-bold flex-shrink-0"
+                  onClick={reset}
+                  title="Remove file"
+                >
+                  ✕
+                </button>
               )}
             </div>
           )}
 
           {/* ── Output Format & Quality Selectors ── */}
           {(stage === "ready" || stage === "done") && (
-            <div className="level-wrap">
-              <span className="level-label">1. Choose Output Image Format</span>
-              <div className="level-grid" style={{ marginBottom: "16px" }}>
-                {FORMATS.map((f) => (
-                  <button
-                    key={f.id}
-                    className={`level-btn${format === f.id ? " active" : ""}`}
-                    onClick={() => setFormat(f.id)}
-                  >
-                    <span className="level-name">.{f.label}</span>
-                    <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>{f.desc}</span>
-                  </button>
-                ))}
+            <div className="space-y-6 my-6">
+              <div>
+                <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-primary mb-3 block">
+                  1. Choose Output Image Format
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {FORMATS.map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      className={`p-4 rounded-2xl text-left transition-all duration-200 cursor-pointer ${
+                        format === f.id
+                          ? "border-2 border-m3-primary bg-m3-primary-container text-m3-on-primary-container shadow-sm"
+                          : "border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface"
+                      }`}
+                      onClick={() => setFormat(f.id)}
+                    >
+                      <div className="font-display font-bold text-base mb-1">
+                        .{f.label}
+                      </div>
+                      <div className={`text-xs ${format === f.id ? "text-m3-on-primary-container/80" : "text-m3-on-surface-variant"}`}>
+                        {f.desc}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <span className="level-label">2. Image Quality &amp; Resolution</span>
-              <div className="level-grid">
-                {RESOLUTIONS.map((r) => (
-                  <button
-                    key={r.id}
-                    className={`level-btn${resolution === r.id ? " active" : ""}`}
-                    onClick={() => setResolution(r.id)}
-                  >
-                    <span className="level-name">{r.label}</span>
-                    <span style={{ fontSize: "0.72rem", color: "var(--text-sub)" }}>{r.desc}</span>
-                  </button>
-                ))}
+              <div>
+                <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-primary mb-3 block">
+                  2. Image Quality &amp; Resolution
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {RESOLUTIONS.map((r) => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      className={`p-4 rounded-2xl text-left transition-all duration-200 cursor-pointer ${
+                        resolution === r.id
+                          ? "border-2 border-m3-primary bg-m3-primary-container text-m3-on-primary-container shadow-sm"
+                          : "border border-m3-outline-variant/70 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface"
+                      }`}
+                      onClick={() => setResolution(r.id)}
+                    >
+                      <div className="font-display font-bold text-base mb-1">
+                        {r.label}
+                      </div>
+                      <div className={`text-xs ${resolution === r.id ? "text-m3-on-primary-container/80" : "text-m3-on-surface-variant"}`}>
+                        {r.desc}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
           {/* ── Convert Button ── */}
           {(stage === "ready" || stage === "done") && (
-            <div className="action-wrap">
-              <button className="btn-compress" onClick={convertPDF}>
-                {stage === "done" ? "🔁 Re-convert PDF to Images" : "⚡ Convert PDF to Images"}
+            <div className="my-6">
+              <button
+                type="button"
+                className="w-full py-4 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-base shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                onClick={convertPDF}
+              >
+                <span>
+                  {stage === "done" ? "🔁 Re-convert PDF to Images" : "⚡ Convert PDF to Images"}
+                </span>
               </button>
             </div>
           )}
 
           {/* ── Progress Bar ── */}
           {stage === "converting" && (
-            <div className="progress-wrap">
-              <div className="progress-header">
-                <span className="progress-title">Converting PDF pages to images...</span>
-                <span className="progress-pct">{progress}%</span>
+            <div className="my-6 p-5 rounded-2xl bg-m3-surface-container border border-m3-outline-variant/40 shadow-sm">
+              <div className="flex items-center justify-between text-xs font-semibold text-m3-on-surface mb-2.5">
+                <span>Converting PDF pages to images...</span>
+                <span className="font-mono text-m3-primary font-bold text-sm">{progress}%</span>
               </div>
-              <div className="progress-track">
-                <div className="progress-bar" style={{ width: `${progress}%` }} />
+              <div className="w-full h-2 rounded-full bg-m3-surface-container-highest overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-m3-primary transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-              <p className="progress-msg">{progressMsg}</p>
+              <p className="text-xs font-medium text-m3-on-surface-variant mt-2.5 text-center animate-pulse">
+                {progressMsg}
+              </p>
             </div>
           )}
 
           {/* ── Results & Page Gallery ── */}
           {stage === "done" && pages.length > 0 && (
-            <div style={{ padding: "0 20px 20px" }}>
+            <>
               {/* Summary Stats Banner */}
-              <div className="result-box" style={{ margin: "10px 0 20px", background: "rgba(6, 182, 212, 0.08)", borderColor: "rgba(6, 182, 212, 0.3)" }}>
-                <div className="result-grid">
-                  <div>
-                    <span className="result-label">Total Pages</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.3rem", fontWeight: 800, color: "#fff" }}>
+              <div className="rounded-2xl bg-m3-surface-container p-6 my-6 border border-m3-outline-variant/50 shadow-sm">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 py-3">
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-on-surface-variant mb-1">Total Pages</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-on-surface">
                       {pages.length} Pages
-                    </span>
+                    </div>
                   </div>
-                  <div className="result-arrow">→</div>
-                  <div>
-                    <span className="result-label">Total Images Size</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "1.3rem", fontWeight: 800, color: "var(--cyan-neon)" }}>
+                  <div className="text-xl text-m3-outline font-bold">→</div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-m3-primary mb-1">Total Images Size</div>
+                    <div className="text-base sm:text-lg font-mono font-bold text-m3-primary">
                       {fmt(pages.reduce((acc, p) => acc + p.size, 0))}
-                    </span>
+                    </div>
                   </div>
                 </div>
-                <div className="result-badge" style={{ background: "rgba(6, 182, 212, 0.18)", borderColor: "var(--cyan-neon)", color: "#38bdf8" }}>
-                  <span>🎉 Converted to .{format.toUpperCase()} Successfully</span>
+                <div className="text-center mt-3">
+                  <span className="rounded-full px-4 py-1.5 text-xs font-mono font-bold bg-m3-tertiary-container text-m3-on-tertiary-container inline-block border border-m3-tertiary/20 shadow-xs">
+                    🎉 Converted to .{format.toUpperCase()} Successfully
+                  </span>
                 </div>
               </div>
 
-              {/* 1-Click ZIP Download & Google Drive */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
+              {/* 1-Click ZIP Download & Google Drive ActionButtons */}
+              <div className="flex flex-col gap-3 mb-8">
                 <button
-                  className="btn-download"
+                  type="button"
+                  className="w-full py-3.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-m3-elevation-1 hover:shadow-m3-elevation-2 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   onClick={downloadZip}
-                  style={{ background: "linear-gradient(135deg, #06b6d4, #3b82f6)" }}
                 >
-                  📦 Download All {pages.length} Pages as .ZIP
+                  <span>📦</span>
+                  <span>Download All {pages.length} Pages as .ZIP</span>
                 </button>
 
                 {zipBlob && (
@@ -423,95 +520,52 @@ export default function PDFToImage({ auth }) {
                     fileName={`${file.name.replace(/\.[^.]+$/, "")}_images.zip`}
                     onReset={reset}
                     auth={auth}
+                    toolName="PDF to Images"
                   />
                 )}
               </div>
 
               {/* Pages Grid */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                  <span style={{ fontSize: "13px", fontWeight: "700", color: "#fff", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div className="my-6">
+                <div className="flex justify-between items-center mb-3.5">
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-m3-on-surface">
                     Converted Pages Preview ({pages.length})
                   </span>
-                  <span style={{ fontSize: "12px", color: "var(--text-sub)" }}>
+                  <span className="text-xs text-m3-on-surface-variant font-medium">
                     Click thumbnail to zoom
                   </span>
                 </div>
 
-                <div style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(min(140px, 100%), 1fr))",
-                  gap: "14px",
-                  maxHeight: "380px",
-                  overflowY: "auto",
-                  padding: "8px",
-                  borderRadius: "var(--radius-md)",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid rgba(255, 255, 255, 0.06)"
-                }}>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-96 overflow-y-auto p-3 rounded-2xl bg-m3-surface-container-low border border-m3-outline-variant/40">
                   {pages.map((p) => (
                     <div
                       key={p.pageNum}
-                      style={{
-                        background: "rgba(255, 255, 255, 0.04)",
-                        border: "1px solid rgba(255, 255, 255, 0.08)",
-                        borderRadius: "var(--radius-sm)",
-                        overflow: "hidden",
-                        display: "flex",
-                        flexDirection: "column",
-                        transition: "all 0.2s ease"
-                      }}
+                      className="rounded-xl bg-m3-surface-container border border-m3-outline-variant/60 overflow-hidden flex flex-col group hover:shadow-md transition-all"
                     >
                       {/* Image Thumbnail */}
                       <div
                         onClick={() => setPreviewModal(p)}
-                        style={{
-                          position: "relative",
-                          aspectRatio: "3/4",
-                          cursor: "zoom-in",
-                          overflow: "hidden",
-                          background: "#000"
-                        }}
+                        className="relative aspect-[3/4] cursor-zoom-in overflow-hidden bg-m3-surface-container-highest flex items-center justify-center"
                       >
                         <img
                           src={p.url}
                           alt={`Page ${p.pageNum}`}
-                          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                          className="w-full h-full object-contain"
                         />
-                        <span style={{
-                          position: "absolute",
-                          top: "6px",
-                          left: "6px",
-                          background: "rgba(0,0,0,0.75)",
-                          color: "var(--cyan-neon)",
-                          fontSize: "10px",
-                          fontWeight: "800",
-                          fontFamily: "'JetBrains Mono', monospace",
-                          padding: "2px 8px",
-                          borderRadius: 'var(--radius-full)'
-                        }}>
+                        <span className="absolute top-1.5 left-1.5 bg-m3-surface/85 backdrop-blur-sm text-m3-on-surface text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-m3-outline-variant/40">
                           Page {p.pageNum}
                         </span>
                       </div>
 
                       {/* Footer & Download Single Page */}
-                      <div style={{ padding: "8px 10px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "4px" }}>
-                        <span style={{ fontSize: "11px", color: "var(--text-sub)", fontFamily: "'JetBrains Mono', monospace" }}>
+                      <div className="p-2 sm:p-2.5 flex items-center justify-between gap-1 border-t border-m3-outline-variant/30">
+                        <span className="text-[11px] font-mono text-m3-on-surface-variant truncate">
                           {fmt(p.size)}
                         </span>
                         <button
+                          type="button"
                           onClick={() => downloadSinglePage(p)}
-                          style={{
-                            padding: "4px 8px",
-                            background: "rgba(6, 182, 212, 0.15)",
-                            border: 'none',
-                            color: "#38bdf8",
-                            borderRadius: 'var(--radius-full)',
-                            fontSize: "11px",
-                            fontWeight: "700",
-                            cursor: "pointer",
-                            transition: "all 0.2s"
-                          }}
+                          className="px-2.5 py-1 rounded-full text-xs font-semibold bg-m3-secondary-container text-m3-on-secondary-container hover:bg-m3-secondary-container/80 transition-all active:scale-95 flex-shrink-0"
                           title="Download this page"
                         >
                           ⬇ Save
@@ -521,13 +575,12 @@ export default function PDFToImage({ auth }) {
                   ))}
                 </div>
               </div>
-
-            </div>
+            </>
           )}
 
-          <div className="comp-footer">
+          <div className="flex items-center justify-between text-xs text-m3-on-surface-variant/70 pt-6 mt-6 border-t border-m3-outline-variant/30">
             <span>FlashCrush · PDF to Images Tool</span>
-            <span>100% in-browser processing · Zero server uploads</span>
+            <span>100% Client-Side · Zero Server Uploads</span>
           </div>
 
         </div>
@@ -537,31 +590,29 @@ export default function PDFToImage({ auth }) {
       {previewModal && (
         <div
           onClick={() => setPreviewModal(null)}
-          style={{
-            position: "fixed", inset: 0, zIndex: 3000,
-            background: "rgba(0,0,0,0.6)",
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            padding: "20px"
-          }}
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center p-4 transition-all"
         >
-          <div style={{ position: "relative", maxWidth: "90vw", maxHeight: "85vh", display: "flex", flexDirection: "column", alignItems: "center" }} onClick={(e) => e.stopPropagation()}>
+          <div
+            className="relative max-w-4xl max-h-[90vh] flex flex-col items-center p-4 sm:p-6 rounded-3xl bg-m3-surface-container border border-m3-outline-variant/50 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
               src={previewModal.url}
               alt={`Page ${previewModal.pageNum}`}
-              style={{ maxWidth: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: 'var(--radius-full)', border: 'none', boxShadow: "8px 8px 0px #1a1a1a" }}
+              className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-md"
             />
-            <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
               <button
-                className="btn-download"
+                type="button"
+                className="px-5 py-2.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-display font-bold text-sm shadow-sm active:scale-95 transition-all"
                 onClick={() => downloadSinglePage(previewModal)}
-                style={{ padding: "8px 20px", fontSize: "0.88rem" }}
               >
                 ⬇ Download Page {previewModal.pageNum} ({format.toUpperCase()})
               </button>
               <button
-                className="btn-reset"
+                type="button"
+                className="px-5 py-2.5 rounded-full border border-m3-outline-variant bg-m3-surface-container-low hover:bg-m3-surface-container text-m3-on-surface font-display font-semibold text-sm shadow-sm active:scale-95 transition-all"
                 onClick={() => setPreviewModal(null)}
-                style={{ padding: "8px 18px", fontSize: "0.88rem" }}
               >
                 ✕ Close
               </button>
