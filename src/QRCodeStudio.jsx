@@ -392,112 +392,146 @@ export default function QRCodeStudio({ auth }) {
   };
 
   return (
-    <div className="compressor-page">
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <div className="tool-page-title">QR Code Studio</div>
-        <div className="tool-page-meta">Gradients · Shapes · Logos · Wi-Fi & vCard</div>
-      </div>
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors duration-200">
+      {/* Top App Bar */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 transition-colors">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <button 
+            type="button"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98] shadow-m3-elevation-1"
+            onClick={() => navigate("/")}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Tools
+          </button>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1150px" }}>
-        <div className="comp-header">
-          <div className="comp-title-row">
-            <div className="comp-icon-badge" style={{ borderColor: "rgba(139, 92, 246, 0.4)", boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)" }}>
-              📱
-            </div>
-            <div className="comp-title">Custom QR Code Studio</div>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">📱</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight text-m3-on-surface">
+              QR Code Studio
+            </span>
           </div>
-          <p className="comp-sub">Create branded, high-resolution QR codes with vibrant gradients, custom dot shapes, and center logos.</p>
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Custom Shapes &amp; Logos
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col">
+        {/* Header Hero */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-m3-primary/10 text-m3-primary border border-m3-primary/20 text-3xl mb-3 shadow-m3-elevation-1">
+            📱
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-m3-on-surface">
+            Custom QR Code Studio
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed">
+            Create branded, high-resolution QR codes with vibrant gradients, custom dot shapes, and center logos. 100% in-browser generation.
+          </p>
         </div>
 
-        <div className="comp-card" style={{ padding: "20px" }}>
+        <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-8 shadow-m3-elevation-1 mb-8">
 
           {/* 1. QR Content Type Tabs */}
-          <div style={{ marginBottom: "18px" }}>
-            <span className="level-label" style={{ marginBottom: "8px", display: "block" }}>1. Choose QR Content Type</span>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "6px" }}>
+          <div className="mb-8">
+            <label className="text-xs font-bold uppercase tracking-wider text-m3-primary mb-3 block">
+              1. Choose QR Content Type
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
               {QR_TYPES.map(t => (
                 <button
                   key={t.id}
                   type="button"
-                  className={`level-btn${qrType === t.id ? " active" : ""}`}
                   onClick={() => setQrType(t.id)}
-                  style={{ padding: "8px 6px" }}
+                  className={`p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all active:scale-[0.98] border ${
+                    qrType === t.id
+                      ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary ring-1 ring-m3-primary/30 shadow-sm font-semibold"
+                      : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                  }`}
                 >
-                  <span style={{ fontSize: "1.1rem" }}>{t.icon}</span>
-                  <span className="level-name" style={{ fontSize: "0.8rem" }}>{t.label}</span>
+                  <span className="text-xl">{t.icon}</span>
+                  <span className="text-xs font-medium text-center">{t.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Two Column Layout: Editor (Left) vs Real-Time Canvas (Right) */}
-          <div className="studio-split-layout">
+          {/* Two Column Split Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
             {/* Left Column: Content Inputs & Customization */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div className="lg:col-span-7 flex flex-col gap-6">
 
-              {/* Dynamic Content Input Box */}
-              <div style={{
-                padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-              }}>
-                <div style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", marginBottom: "10px" }}>
-                  2. Enter Content ({qrType.toUpperCase()})
+              {/* 2. Dynamic Content Input Card */}
+              <div className="bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 p-5 shadow-sm">
+                <div className="text-xs font-bold uppercase tracking-wider text-m3-primary mb-3 flex items-center justify-between">
+                  <span>2. Enter Content ({qrType.toUpperCase()})</span>
+                  <span className="text-[10px] font-mono text-m3-on-surface-variant/70 lowercase">instant live update</span>
                 </div>
 
                 {/* URL */}
                 {qrType === "url" && (
                   <div>
-                    <label style={{ fontSize: "11px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Website / Landing Page URL</label>
+                    <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-medium">
+                      Website / Landing Page URL
+                    </label>
                     <input
                       type="url"
                       value={urlText}
                       onChange={(e) => setUrlText(e.target.value)}
                       placeholder="https://yourwebsite.com"
-                      style={{
-                        width: "100%", padding: "10px 14px", background: "#0f172a", border: "1.5px solid rgba(56,189,248,0.3)",
-                        borderRadius: 'var(--radius-full)', color: "#fff", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", outline: "none", boxSizing: "border-box"
-                      }}
+                      className="w-full px-4 py-2.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface font-mono outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all placeholder:text-m3-outline"
                     />
                   </div>
                 )}
 
                 {/* Wi-Fi */}
                 {qrType === "wifi" && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div className="flex flex-col gap-3">
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Network Name (SSID)</label>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Network Name (SSID)</label>
                       <input
                         type="text"
                         value={wifiSsid}
                         onChange={(e) => setWifiSsid(e.target.value)}
                         placeholder="Home / Office Wi-Fi"
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all placeholder:text-m3-outline"
                       />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Password</label>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Password</label>
                       <input
                         type="text"
                         value={wifiPass}
                         onChange={(e) => setWifiPass(e.target.value)}
                         placeholder="Wi-Fi Password"
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all placeholder:text-m3-outline"
                       />
                     </div>
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
                       <select
                         value={wifiAuth}
                         onChange={(e) => setWifiAuth(e.target.value)}
-                        style={{ padding: "6px 10px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none" }}
+                        className="px-3 py-1.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs font-medium text-m3-on-surface outline-none focus:border-m3-primary"
                       >
                         <option value="WPA">WPA / WPA2</option>
                         <option value="WEP">WEP</option>
                         <option value="nopass">Open (No Password)</option>
                       </select>
-                      <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", color: "#cbd5e1", cursor: "pointer" }}>
-                        <input type="checkbox" checked={wifiHidden} onChange={(e) => setWifiHidden(e.target.checked)} />
+                      <label className="flex items-center gap-2 text-xs text-m3-on-surface-variant cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={wifiHidden}
+                          onChange={(e) => setWifiHidden(e.target.checked)}
+                          className="rounded border-m3-outline text-m3-primary focus:ring-m3-primary"
+                        />
                         Hidden SSID
                       </label>
                     </div>
@@ -506,96 +540,170 @@ export default function QRCodeStudio({ auth }) {
 
                 {/* vCard */}
                 {qrType === "vcard" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Full Name</label>
-                      <input type="text" placeholder="Piyush Gupta" value={vcardName} onChange={(e) => setVcardName(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Full Name</label>
+                      <input
+                        type="text"
+                        placeholder="Piyush Gupta"
+                        value={vcardName}
+                        onChange={(e) => setVcardName(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Phone Number</label>
-                      <input type="tel" placeholder="+91 9876543210" value={vcardPhone} onChange={(e) => setVcardPhone(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Phone Number</label>
+                      <input
+                        type="tel"
+                        placeholder="+91 9876543210"
+                        value={vcardPhone}
+                        onChange={(e) => setVcardPhone(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Email</label>
-                      <input type="email" placeholder="hello@company.com" value={vcardEmail} onChange={(e) => setVcardEmail(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Email Address</label>
+                      <input
+                        type="email"
+                        placeholder="hello@company.com"
+                        value={vcardEmail}
+                        onChange={(e) => setVcardEmail(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Company / Org</label>
-                      <input type="text" placeholder="Design Studio" value={vcardOrg} onChange={(e) => setVcardOrg(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Company / Org</label>
+                      <input
+                        type="text"
+                        placeholder="Design Studio"
+                        value={vcardOrg}
+                        onChange={(e) => setVcardOrg(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                   </div>
                 )}
 
                 {/* WhatsApp */}
                 {qrType === "whatsapp" && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <div className="flex flex-col gap-3">
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Phone Number (with country code)</label>
-                      <input type="tel" placeholder="+919876543210" value={waPhone} onChange={(e) => setWaPhone(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Phone Number (with country code)</label>
+                      <input
+                        type="tel"
+                        placeholder="+919876543210"
+                        value={waPhone}
+                        onChange={(e) => setWaPhone(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Pre-filled Message (Optional)</label>
-                      <input type="text" placeholder="Hi, I would like to inquire about..." value={waMsg} onChange={(e) => setWaMsg(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Pre-filled Message (Optional)</label>
+                      <input
+                        type="text"
+                        placeholder="Hi, I would like to inquire about..."
+                        value={waMsg}
+                        onChange={(e) => setWaMsg(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                   </div>
                 )}
 
                 {/* UPI Payment */}
                 {qrType === "upi" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>UPI ID / VPA</label>
-                      <input type="text" placeholder="username@okhdfcbank" value={upiVpa} onChange={(e) => setUpiVpa(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">UPI ID / VPA</label>
+                      <input
+                        type="text"
+                        placeholder="username@okhdfcbank"
+                        value={upiVpa}
+                        onChange={(e) => setUpiVpa(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                     <div>
-                      <label style={{ fontSize: "10px", color: "#94a3b8" }}>Amount (Optional ₹)</label>
-                      <input type="number" placeholder="500" value={upiAmount} onChange={(e) => setUpiAmount(e.target.value)}
-                        style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }} />
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Amount (Optional ₹)</label>
+                      <input
+                        type="number"
+                        placeholder="500"
+                        value={upiAmount}
+                        onChange={(e) => setUpiAmount(e.target.value)}
+                        className="w-full px-3 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
                     </div>
                   </div>
                 )}
 
                 {/* Plain Text */}
                 {qrType === "text" && (
-                  <textarea
-                    rows={3}
-                    placeholder="Enter any text, note, crypto wallet address..."
-                    value={plainText}
-                    onChange={(e) => setPlainText(e.target.value)}
-                    style={{ width: "100%", padding: "8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", outline: "none", boxSizing: "border-box" }}
-                  />
+                  <div>
+                    <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Plain Text Content</label>
+                    <textarea
+                      rows={3}
+                      placeholder="Enter any text, note, crypto wallet address..."
+                      value={plainText}
+                      onChange={(e) => setPlainText(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                    />
+                  </div>
+                )}
+
+                {/* Email */}
+                {qrType === "email" && (
+                  <div className="flex flex-col gap-3">
+                    <div>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Recipient Email</label>
+                      <input
+                        type="email"
+                        placeholder="contact@example.com"
+                        value={emailTo}
+                        onChange={(e) => setEmailTo(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Subject Line</label>
+                      <input
+                        type="text"
+                        placeholder="Inquiry regarding..."
+                        value={emailSub}
+                        onChange={(e) => setEmailSub(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1 font-medium">Email Body</label>
+                      <textarea
+                        rows={2}
+                        placeholder="Hello, I am reaching out to..."
+                        value={emailBody}
+                        onChange={(e) => setEmailBody(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary placeholder:text-m3-outline"
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
 
               {/* 3. Color Themes & Gradients */}
-              <div style={{
-                padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-              }}>
-                <div style={{ fontSize: "11px", fontWeight: 800, color: "#a855f7", textTransform: "uppercase", marginBottom: "10px" }}>
-                  3. Color Themes & Gradients
+              <div className="bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 p-5 shadow-sm">
+                <div className="text-xs font-bold uppercase tracking-wider text-m3-primary mb-3">
+                  3. Color Themes &amp; Gradients
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: "6px", marginBottom: "12px" }}>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
                   {COLOR_THEMES.map(th => (
                     <button
                       key={th.id}
                       type="button"
                       onClick={() => handleThemeSelect(th.id)}
-                      style={{
-                        padding: "8px 6px",
-                        background: selectedTheme === th.id ? "rgba(168,85,247,0.25)" : "rgba(255,255,255,0.04)",
-                        border: selectedTheme === th.id ? "1.5px solid #a855f7" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: 'var(--radius-full)', color: selectedTheme === th.id ? "#c084fc" : "#cbd5e1",
-                        fontSize: "11px", fontWeight: 700, cursor: "pointer",
-                      }}
+                      className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all active:scale-[0.98] ${
+                        selectedTheme === th.id
+                          ? "bg-m3-primary/15 text-m3-primary border-m3-primary ring-1 ring-m3-primary/30"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                     >
                       {th.label}
                     </button>
@@ -603,34 +711,46 @@ export default function QRCodeStudio({ auth }) {
                 </div>
 
                 {/* Custom Color Pickers */}
-                <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-                  <div>
-                    <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "2px" }}>Gradient Start</label>
-                    <input type="color" value={dotColor1} onChange={(e) => { setDotColor1(e.target.value); setSelectedTheme("custom"); }} style={{ width: "32px", height: "32px", padding: 0, border: "none", background: "none", cursor: "pointer" }} />
+                <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-m3-outline-variant/30">
+                  <div className="flex items-center gap-2.5">
+                    <input 
+                      type="color" 
+                      value={dotColor1} 
+                      onChange={(e) => { setDotColor1(e.target.value); setSelectedTheme("custom"); }} 
+                      className="w-8 h-8 rounded-full cursor-pointer border border-m3-outline-variant/60 p-0 bg-transparent overflow-hidden" 
+                    />
+                    <span className="text-xs text-m3-on-surface-variant font-medium">Gradient Start</span>
                   </div>
-                  <div>
-                    <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "2px" }}>Gradient End</label>
-                    <input type="color" value={dotColor2} onChange={(e) => { setDotColor2(e.target.value); setSelectedTheme("custom"); }} style={{ width: "32px", height: "32px", padding: 0, border: "none", background: "none", cursor: "pointer" }} />
+                  <div className="flex items-center gap-2.5">
+                    <input 
+                      type="color" 
+                      value={dotColor2} 
+                      onChange={(e) => { setDotColor2(e.target.value); setSelectedTheme("custom"); }} 
+                      className="w-8 h-8 rounded-full cursor-pointer border border-m3-outline-variant/60 p-0 bg-transparent overflow-hidden" 
+                    />
+                    <span className="text-xs text-m3-on-surface-variant font-medium">Gradient End</span>
                   </div>
-                  <div>
-                    <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "2px" }}>Background</label>
-                    <input type="color" value={bgColor} onChange={(e) => { setBgColor(e.target.value); setSelectedTheme("custom"); }} style={{ width: "32px", height: "32px", padding: 0, border: "none", background: "none", cursor: "pointer" }} />
+                  <div className="flex items-center gap-2.5">
+                    <input 
+                      type="color" 
+                      value={bgColor} 
+                      onChange={(e) => { setBgColor(e.target.value); setSelectedTheme("custom"); }} 
+                      className="w-8 h-8 rounded-full cursor-pointer border border-m3-outline-variant/60 p-0 bg-transparent overflow-hidden" 
+                    />
+                    <span className="text-xs text-m3-on-surface-variant font-medium">Background</span>
                   </div>
                 </div>
               </div>
 
               {/* 4. Shapes & Center Logo */}
-              <div style={{
-                padding: "16px", background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 'var(--radius-full)'
-              }}>
-                <div style={{ fontSize: "11px", fontWeight: 800, color: "#10b981", textTransform: "uppercase", marginBottom: "10px" }}>
-                  4. QR Dot Shapes & Center Logo
+              <div className="bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 p-5 shadow-sm">
+                <div className="text-xs font-bold uppercase tracking-wider text-m3-primary mb-3">
+                  4. QR Dot Shapes, Corners &amp; Center Logo
                 </div>
 
                 {/* Dot Shapes */}
-                <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Module Dot Shape</label>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(60px, 1fr))", gap: "6px", marginBottom: "12px" }}>
+                <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-medium">Module Dot Shape</label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
                   {[
                     { id: "rounded", label: "Rounded" },
                     { id: "dots", label: "Dots (Circle)" },
@@ -641,21 +761,43 @@ export default function QRCodeStudio({ auth }) {
                       key={s.id}
                       type="button"
                       onClick={() => setDotShape(s.id)}
-                      style={{
-                        padding: "6px", fontSize: "10px", fontWeight: 700,
-                        background: dotShape === s.id ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.04)",
-                        border: dotShape === s.id ? "1px solid #10b981" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: 'var(--radius-full)', color: dotShape === s.id ? "#34d399" : "#94a3b8", cursor: "pointer"
-                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all active:scale-[0.98] ${
+                        dotShape === s.id
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold shadow-xs"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                     >
                       {s.label}
                     </button>
                   ))}
                 </div>
 
+                {/* Corner Eye Shapes */}
+                <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-medium">Corner Eye Shape</label>
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  {[
+                    { id: "rounded", label: "Rounded Eye" },
+                    { id: "circle", label: "Circle Eye" },
+                    { id: "square", label: "Square Eye" },
+                  ].map(c => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => setCornerShape(c.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all active:scale-[0.98] ${
+                        cornerShape === c.id
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold shadow-xs"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
+                    >
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+
                 {/* Center Logo Presets */}
-                <label style={{ fontSize: "10px", color: "#94a3b8", display: "block", marginBottom: "4px" }}>Center Badge / Logo</label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-medium">Center Badge / Logo</label>
+                <div className="flex flex-wrap gap-2">
                   {[
                     { id: "none", label: "None" },
                     { id: "url", label: "🔗 Link" },
@@ -668,12 +810,11 @@ export default function QRCodeStudio({ auth }) {
                       key={lg.id}
                       type="button"
                       onClick={() => setLogoType(lg.id)}
-                      style={{
-                        padding: "5px 10px", fontSize: "11px", fontWeight: 700,
-                        background: logoType === lg.id ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
-                        border: logoType === lg.id ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: 'var(--radius-full)', color: logoType === lg.id ? "#38bdf8" : "#94a3b8", cursor: "pointer"
-                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all active:scale-[0.98] ${
+                        logoType === lg.id
+                          ? "bg-m3-primary/15 text-m3-primary border-m3-primary font-semibold"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                     >
                       {lg.label}
                     </button>
@@ -681,30 +822,32 @@ export default function QRCodeStudio({ auth }) {
                   <button
                     type="button"
                     onClick={() => logoInputRef.current?.click()}
-                    style={{
-                      padding: "5px 10px", fontSize: "11px", fontWeight: 700,
-                      background: logoType === "custom" ? "rgba(56,189,248,0.25)" : "rgba(255,255,255,0.04)",
-                      border: logoType === "custom" ? "1px solid #38bdf8" : "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 'var(--radius-full)', color: logoType === "custom" ? "#38bdf8" : "#94a3b8", cursor: "pointer"
-                    }}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all active:scale-[0.98] ${
+                      logoType === "custom"
+                        ? "bg-m3-primary/15 text-m3-primary border-m3-primary font-semibold"
+                        : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                    }`}
                   >
                     <input ref={logoInputRef} type="file" accept="image/*" hidden onChange={handleLogoUpload} />
                     🖼️ Upload Custom Logo
                   </button>
                 </div>
               </div>
+
             </div>
 
             {/* Right Column: Live Interactive QR Canvas Preview & Actions */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <div className="lg:col-span-5 flex flex-col items-center">
+
+              {/* Header with Resolution Selector */}
+              <div className="w-full flex items-center justify-between mb-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-m3-on-surface-variant">
                   Live Real-Time Preview
                 </span>
                 <select
                   value={resolution}
                   onChange={(e) => setResolution(Number(e.target.value))}
-                  style={{ padding: "4px 8px", background: "#0f172a", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 'var(--radius-full)', color: "#fff", fontSize: "11px", outline: "none" }}
+                  className="px-3 py-1.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-xs font-medium text-m3-on-surface outline-none focus:border-m3-primary"
                 >
                   <option value={512}>512 × 512 px</option>
                   <option value={1024}>1024 × 1024 px (HD)</option>
@@ -713,44 +856,34 @@ export default function QRCodeStudio({ auth }) {
               </div>
 
               {/* Canvas Container */}
-              <div style={{
-                width: "100%", minHeight: "360px", display: "flex", alignItems: "center", justifyContent: "center",
-                background: "#080c16", borderRadius: 'var(--radius-full)', border: "1.5px solid rgba(139, 92, 246, 0.35)",
-                boxShadow: "0 15px 35px rgba(0,0,0,0.6)", padding: "20px", boxSizing: "border-box"
-              }}>
+              <div className="w-full min-h-[360px] p-6 rounded-3xl bg-m3-surface-container-lowest border border-m3-outline-variant/60 shadow-m3-elevation-2 flex items-center justify-center">
                 <canvas
                   ref={canvasRef}
-                  style={{ maxWidth: "100%", maxHeight: "340px", objectFit: "contain", borderRadius: 'var(--radius-full)', boxShadow: "0 10px 30px rgba(0,0,0,0.8)" }}
+                  className="max-w-full max-h-[340px] object-contain rounded-2xl shadow-m3-elevation-1"
                 />
               </div>
 
               {/* Quick Action Buttons */}
-              <div style={{ display: "flex", gap: "8px", width: "100%", marginTop: "14px" }}>
+              <div className="flex gap-2.5 w-full mt-4">
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  style={{
-                    flex: 1, padding: "10px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: 'var(--radius-full)', color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
-                  }}
+                  className="flex-1 py-2.5 px-3 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all shadow-sm active:scale-[0.98] flex items-center justify-center gap-1.5"
                 >
-                  {copied ? "✅ Copied to Clipboard!" : "📋 Copy Image"}
+                  {copied ? "✅ Copied!" : "📋 Copy Image"}
                 </button>
                 <button
                   type="button"
                   onClick={downloadSVG}
-                  style={{
-                    flex: 1, padding: "10px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: 'var(--radius-full)', color: "#fff", fontWeight: 700, fontSize: "12px", cursor: "pointer"
-                  }}
+                  className="flex-1 py-2.5 px-3 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all shadow-sm active:scale-[0.98] flex items-center justify-center gap-1.5"
                 >
-                  📐 Download SVG (Vector)
+                  📐 Download SVG
                 </button>
               </div>
 
               {/* Main ActionButtons (Download PNG & Save to Drive) */}
               {resultBlob && (
-                <div style={{ width: "100%", marginTop: "14px" }}>
+                <div className="w-full mt-4">
                   <ActionButtons
                     blob={resultBlob}
                     fileName={resultName}
@@ -759,15 +892,28 @@ export default function QRCodeStudio({ auth }) {
                   />
                 </div>
               )}
+
             </div>
+
           </div>
 
-          <div className="comp-footer" style={{ marginTop: "24px" }}>
+          {/* Footer inside card */}
+          <div className="mt-8 pt-4 border-t border-m3-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-m3-on-surface-variant/80">
             <span>FlashCrush · Custom QR Code Studio</span>
             <span>100% in-browser generation · Zero server tracking</span>
           </div>
+
         </div>
-      </div>
+
+        {/* Security / Privacy Notice */}
+        <div className="mt-2 mb-8 text-center text-xs text-m3-on-surface-variant/80 flex items-center justify-center gap-1.5">
+          <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          All QR generation, styling, and canvas rendering are performed 100% locally in your browser.
+        </div>
+
+      </main>
     </div>
   );
 }
