@@ -444,123 +444,161 @@ export default function DocumentScanner({ auth }) {
   const activePage = pages[activePageIndex];
 
   return (
-    <div className="compressor-page">
-      {/* Top Bar */}
-      <div className="tool-page-bar">
-        <button type="button" className="back-btn" onClick={() => navigate("/")}>
-          ← Back
-        </button>
-        <div className="comp-title-badge">
-          <span>📷 Document Scanner (Cam to PDF)</span>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col font-sans bg-m3-surface text-m3-on-surface transition-colors duration-200">
+      {/* Top App Bar */}
+      <header className="sticky top-0 z-30 bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 px-4 lg:px-8 py-3.5 transition-colors">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <button 
+            type="button"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98] shadow-m3-elevation-1"
+            onClick={() => navigate("/")}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Tools
+          </button>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1150px" }}>
-        {/* Header */}
-        <div className="comp-header">
-          <div className="comp-icon-badge">
-            <span style={{ fontSize: "1.8rem" }}>📷</span>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">📷</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight text-m3-on-surface">
+              Document Scanner
+            </span>
           </div>
-          <h1 className="comp-title">In-Browser Document Scanner</h1>
-          <p className="comp-subtitle">
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              CamScanner to PDF
+            </span>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col">
+        {/* Header Hero */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-m3-primary/10 text-m3-primary border border-m3-primary/20 text-3xl mb-3 shadow-m3-elevation-1">
+            📷
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-m3-on-surface">
+            In-Browser Document Scanner
+          </h1>
+          <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed">
             Scan notes, documents &amp; receipts with your camera or photos. Magic B&amp;W contrast, multi-page capture &amp; 1-click clean PDF export. Zero server uploads.
           </p>
         </div>
 
         {/* ── Exported PDF Hero Screen (When PDF is ready) ── */}
         {pdfResult && (
-          <div className="vc-workspace-card anim-pop" style={{ marginBottom: "24px" }}>
-            <div className="vc-result-header-box">
-              <div className="vc-result-title-row">
-                <div className="vc-result-icon">🎉</div>
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-8 shadow-m3-elevation-2 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-m3-outline-variant/40">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-2xl flex items-center justify-center shadow-m3-elevation-1">
+                  🎉
+                </div>
                 <div>
-                  <h2 className="vc-result-heading">Document PDF Ready!</h2>
-                  <div className="vc-result-subtext">{pdfResult.name} · {pdfResult.pageCount} Pages</div>
+                  <h2 className="text-xl font-bold text-m3-on-surface">Document PDF Ready!</h2>
+                  <div className="text-xs sm:text-sm text-m3-on-surface-variant font-mono mt-0.5">
+                    {pdfResult.name} · {pdfResult.pageCount} Pages
+                  </div>
                 </div>
               </div>
 
-              {/* Stats Card */}
-              <div className="vc-stats-summary-grid">
-                <div className="vc-stat-card">
-                  <span className="vc-stat-label">Total Pages</span>
-                  <span className="vc-stat-val-new">{pdfResult.pageCount}</span>
+              {/* Stats Summary Grid */}
+              <div className="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto">
+                <div className="bg-m3-surface-container-high px-4 py-2.5 rounded-2xl border border-m3-outline-variant/50 flex flex-col items-center">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-m3-on-surface-variant">Pages</span>
+                  <span className="text-sm font-bold text-m3-on-surface">{pdfResult.pageCount}</span>
                 </div>
-                <div className="vc-stat-card vc-stat-card-highlight">
-                  <span className="vc-stat-label">File Size</span>
-                  <span className="vc-stat-val-saved">{formatBytes(pdfResult.size)}</span>
+                <div className="bg-emerald-500/10 dark:bg-emerald-500/20 px-4 py-2.5 rounded-2xl border border-emerald-500/30 flex flex-col items-center">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-emerald-700 dark:text-emerald-300">File Size</span>
+                  <span className="text-sm font-bold text-emerald-700 dark:text-emerald-300 font-mono">{formatBytes(pdfResult.size)}</span>
                 </div>
-                <div className="vc-stat-card">
-                  <span className="vc-stat-label">Format</span>
-                  <span className="vc-stat-val-new">Standard A4</span>
+                <div className="bg-m3-surface-container-high px-4 py-2.5 rounded-2xl border border-m3-outline-variant/50 flex flex-col items-center">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-m3-on-surface-variant">Format</span>
+                  <span className="text-sm font-bold text-m3-on-surface">A4 PDF</span>
                 </div>
               </div>
+            </div>
 
-              {/* Download Buttons */}
-              <div className="vc-result-actions-row">
-                <button
-                  type="button"
-                  className="btn-download-video-large"
-                  onClick={downloadPDF}
-                >
-                  💾 Download Clean PDF ({formatBytes(pdfResult.size)})
-                </button>
-                <button
-                  type="button"
-                  className="vc-btn-secondary"
-                  onClick={() => setPdfResult(null)}
-                >
-                  ➕ Add More Pages
-                </button>
-                <button
-                  type="button"
-                  className="vc-btn-secondary"
-                  onClick={clearAllPages}
-                >
-                  🔄 Start Fresh Scan
-                </button>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-3 pt-6">
+              <button
+                type="button"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 active:scale-[0.98]"
+                onClick={downloadPDF}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                💾 Download Clean PDF ({formatBytes(pdfResult.size)})
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
+                onClick={() => setPdfResult(null)}
+              >
+                ➕ Add More Pages
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-error border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
+                onClick={clearAllPages}
+              >
+                🔄 Start Fresh Scan
+              </button>
             </div>
           </div>
         )}
 
-        {/* ── Main Scanner Workspace Grid ── */}
-        <div className="scanner-workspace-card anim-pop">
-          <div className="scanner-grid">
+        {/* ── Main Scanner Workspace Card ── */}
+        <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-8 shadow-m3-elevation-1 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Left Column: Camera / Live Viewport */}
-            <div className="scanner-camera-column">
-              <div className="scanner-viewport-box">
+            <div className="flex flex-col min-w-0 w-full">
+              <div className="relative w-full aspect-[4/3] bg-black/95 rounded-2xl overflow-hidden border border-m3-outline-variant/50 shadow-inner flex items-center justify-center">
                 <div
-                  className="scanner-video-container"
+                  className="w-full h-full relative"
                   style={{ display: cameraActive ? "block" : "none" }}
                 >
                   <video
                     ref={videoRef}
-                    className="scanner-live-video"
+                    className="w-full h-full object-cover"
                     autoPlay
                     playsInline
                     muted
                   />
                   {/* Viewfinder Guide Overlay */}
-                  <div className="scanner-viewfinder-overlay">
-                    <div className="scanner-guide-box">
-                      <span className="scanner-corner tl" />
-                      <span className="scanner-corner tr" />
-                      <span className="scanner-corner bl" />
-                      <span className="scanner-corner br" />
-                      <div className="scanner-guide-text">Align Document Inside Frame</div>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+                    <div className="w-[88%] h-[86%] rounded-2xl border-2 border-dashed border-white/70 relative flex items-end justify-center pb-3">
+                      {/* 4 Corner Markers */}
+                      <span className="absolute -top-0.5 -left-0.5 w-4 h-4 border-t-3 border-l-3 border-m3-primary rounded-tl-md" />
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 border-t-3 border-r-3 border-m3-primary rounded-tr-md" />
+                      <span className="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-b-3 border-l-3 border-m3-primary rounded-bl-md" />
+                      <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-3 border-r-3 border-m3-primary rounded-br-md" />
+                      <div className="bg-black/75 backdrop-blur-md text-white text-[11px] font-medium px-3 py-1 rounded-full border border-white/20 shadow-sm">
+                        Align Document Inside Frame
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {!cameraActive && (
-                  <div className="scanner-camera-off-box">
-                    <div style={{ fontSize: "2.8rem", marginBottom: "12px" }}>📷</div>
-                    <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>Camera is currently inactive</div>
-                    {cameraError && <div className="scanner-error-text">{cameraError}</div>}
+                  <div className="flex flex-col items-center justify-center p-6 text-center text-white/90">
+                    <div className="w-16 h-16 rounded-2xl bg-white/10 text-3xl flex items-center justify-center mb-3 shadow-sm">
+                      📷
+                    </div>
+                    <div className="font-semibold text-base text-white">Camera is currently inactive</div>
+                    {cameraError && (
+                      <div className="mt-2 text-xs bg-m3-error-container text-m3-on-error-container px-3 py-1.5 rounded-xl border border-m3-error/30 max-w-xs">
+                        {cameraError}
+                      </div>
+                    )}
                     <button
                       type="button"
-                      className="scanner-action-btn"
-                      style={{ marginTop: "16px" }}
+                      className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary transition-all shadow-m3-elevation-1 active:scale-[0.98]"
                       onClick={() => startCamera()}
                     >
                       ▶️ Enable Camera
@@ -570,24 +608,24 @@ export default function DocumentScanner({ auth }) {
               </div>
 
               {/* Camera Controls Bar */}
-              <div className="scanner-controls-bar">
+              <div className="flex flex-col items-center gap-3 mt-4">
                 {cameraActive && (
                   <button
                     type="button"
-                    className="scanner-shutter-btn"
+                    className="inline-flex items-center justify-center gap-2.5 px-8 py-3 rounded-full text-base font-semibold bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-2 transition-all active:scale-[0.98]"
                     onClick={snapCurrentFrame}
                     title="Capture Document Page"
                   >
-                    <span className="scanner-shutter-inner">📸</span>
-                    <span className="scanner-shutter-text">Capture Page</span>
+                    <span className="text-lg">📸</span>
+                    <span>Capture Page</span>
                   </button>
                 )}
 
-                <div className="scanner-secondary-btns">
+                <div className="flex items-center gap-2 flex-wrap justify-center">
                   {cameraActive && hasMultipleCameras && (
                     <button
                       type="button"
-                      className="scanner-icon-btn"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
                       onClick={toggleCameraFacing}
                       title="Flip Camera (Front/Back)"
                     >
@@ -597,7 +635,7 @@ export default function DocumentScanner({ auth }) {
 
                   <button
                     type="button"
-                    className="scanner-icon-btn"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
                     onClick={() => fileInputRef.current?.click()}
                     title="Upload photos from device"
                   >
@@ -608,14 +646,14 @@ export default function DocumentScanner({ auth }) {
                     type="file"
                     accept="image/*"
                     multiple
-                    style={{ display: "none" }}
+                    className="hidden"
                     onChange={handleFileUpload}
                   />
 
                   {cameraActive && (
                     <button
                       type="button"
-                      className="scanner-icon-btn"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
                       onClick={stopCamera}
                       title="Pause Camera"
                     >
@@ -627,18 +665,18 @@ export default function DocumentScanner({ auth }) {
             </div>
 
             {/* Right Column: Active Page Preview & Filters */}
-            <div className="scanner-preview-column">
-              <div className="scanner-preview-header">
-                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+            <div className="flex flex-col min-w-0 w-full">
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="font-semibold text-sm text-m3-on-surface">
                   {pages.length > 0
                     ? `Page ${activePageIndex + 1} of ${pages.length}`
                     : "Scanned Document Preview"}
                 </div>
                 {pages.length > 0 && (
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      className="scanner-mini-btn"
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface border border-m3-outline-variant/50 transition-all active:scale-[0.98]"
                       onClick={rotateActivePage}
                       title="Rotate 90° Clockwise"
                     >
@@ -646,7 +684,7 @@ export default function DocumentScanner({ auth }) {
                     </button>
                     <button
                       type="button"
-                      className="scanner-mini-btn scanner-btn-danger"
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-m3-error-container hover:bg-m3-error-container/80 text-m3-on-error-container border border-m3-error/30 transition-all active:scale-[0.98]"
                       onClick={() => deletePage(activePageIndex)}
                       title="Delete this page"
                     >
@@ -657,55 +695,73 @@ export default function DocumentScanner({ auth }) {
               </div>
 
               {/* Active Image Display */}
-              <div className="scanner-active-image-wrap">
+              <div className="w-full aspect-[4/3] bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 overflow-hidden flex items-center justify-center p-3 shadow-inner">
                 {activePage ? (
                   <img
                     src={activePage.previewUrl}
                     alt={`Scanned page ${activePageIndex + 1}`}
-                    className="scanner-active-img"
+                    className="max-w-full max-h-full object-contain rounded-xl shadow-sm"
                   />
                 ) : (
-                  <div className="scanner-empty-preview">
-                    <div style={{ fontSize: "2.4rem", marginBottom: "8px" }}>📄</div>
-                    <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text-muted)" }}>
+                  <div className="flex flex-col items-center justify-center text-center p-6">
+                    <div className="text-4xl mb-2">📄</div>
+                    <div className="font-semibold text-sm text-m3-on-surface">
                       No pages captured yet.
                     </div>
-                    <div style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                    <div className="text-xs text-m3-on-surface-variant mt-1 max-w-xs">
                       Click 📸 Capture Page or 📁 Upload Photos to start building your PDF.
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Filter Selection Chips (CamScanner filters) */}
+              {/* Filter Selection Chips */}
               {activePage && (
-                <div className="scanner-filter-selector">
-                  <div className="scanner-filter-title">⚡ Document Filters:</div>
-                  <div className="scanner-filter-pills">
+                <div className="mt-4">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-m3-on-surface-variant mb-2">
+                    ⚡ Document Filters:
+                  </div>
+                  <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
-                      className={`scanner-filter-pill ${activePage.filter === "magic" ? "active" : ""}`}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm border active:scale-[0.98] ${
+                        activePage.filter === "magic"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                       onClick={() => setPageFilter("magic")}
                     >
                       ✨ Magic B&amp;W
                     </button>
                     <button
                       type="button"
-                      className={`scanner-filter-pill ${activePage.filter === "color" ? "active" : ""}`}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm border active:scale-[0.98] ${
+                        activePage.filter === "color"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                       onClick={() => setPageFilter("color")}
                     >
                       🎨 Vivid Color
                     </button>
                     <button
                       type="button"
-                      className={`scanner-filter-pill ${activePage.filter === "grayscale" ? "active" : ""}`}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm border active:scale-[0.98] ${
+                        activePage.filter === "grayscale"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                       onClick={() => setPageFilter("grayscale")}
                     >
                       🔲 Grayscale
                     </button>
                     <button
                       type="button"
-                      className={`scanner-filter-pill ${activePage.filter === "original" ? "active" : ""}`}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shadow-sm border active:scale-[0.98] ${
+                        activePage.filter === "original"
+                          ? "bg-m3-secondary-container text-m3-on-secondary-container border-m3-primary font-semibold"
+                          : "bg-m3-surface-container-high hover:bg-m3-surface-container-highest text-m3-on-surface-variant border-m3-outline-variant/50"
+                      }`}
                       onClick={() => setPageFilter("original")}
                     >
                       📷 Original
@@ -718,34 +774,38 @@ export default function DocumentScanner({ auth }) {
 
           {/* ── Multi-Page Thumbnail Strip at Bottom ── */}
           {pages.length > 0 && (
-            <div className="scanner-bottom-section">
-              <div className="scanner-strip-header">
-                <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>
+            <div className="w-full mt-6 pt-5 border-t border-m3-outline-variant/40">
+              <div className="flex items-center justify-between mb-3">
+                <div className="font-semibold text-sm text-m3-on-surface">
                   📑 Scanned Pages ({pages.length})
                 </div>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <button
-                    type="button"
-                    className="scanner-text-link"
-                    onClick={clearAllPages}
-                  >
-                    Clear All
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="text-xs font-medium text-m3-error hover:underline"
+                  onClick={clearAllPages}
+                >
+                  Clear All
+                </button>
               </div>
 
-              <div className="scanner-thumbnail-strip">
+              <div className="flex items-center gap-3 overflow-x-auto pb-3">
                 {pages.map((p, idx) => (
                   <div
                     key={p.id}
-                    className={`scanner-thumb-card ${idx === activePageIndex ? "active" : ""}`}
+                    className={`relative flex-shrink-0 w-20 h-28 rounded-xl overflow-hidden cursor-pointer border-2 transition-all shadow-sm ${
+                      idx === activePageIndex
+                        ? "border-m3-primary ring-2 ring-m3-primary/30 scale-105 shadow-m3-elevation-1"
+                        : "border-m3-outline-variant/50 hover:border-m3-outline opacity-80 hover:opacity-100"
+                    }`}
                     onClick={() => setActivePageIndex(idx)}
                   >
-                    <img src={p.previewUrl} alt={`Thumbnail ${idx + 1}`} className="scanner-thumb-img" />
-                    <div className="scanner-thumb-badge">{idx + 1}</div>
+                    <img src={p.previewUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    <div className="absolute top-1 left-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                      {idx + 1}
+                    </div>
                     <button
                       type="button"
-                      className="scanner-thumb-del"
+                      className="absolute top-1 right-1 bg-black/60 hover:bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                         deletePage(idx);
@@ -759,23 +819,23 @@ export default function DocumentScanner({ auth }) {
 
                 {/* Add Next Page Quick Tile */}
                 <div
-                  className="scanner-thumb-add-tile"
+                  className="flex-shrink-0 w-20 h-28 rounded-xl border-2 border-dashed border-m3-outline-variant/60 hover:border-m3-primary bg-m3-surface-container-high/40 hover:bg-m3-surface-container-high flex flex-col items-center justify-center gap-1 cursor-pointer transition-all text-m3-on-surface-variant hover:text-m3-primary"
                   onClick={() => {
                     if (cameraActive) snapCurrentFrame();
                     else fileInputRef.current?.click();
                   }}
                   title="Add next page"
                 >
-                  <span style={{ fontSize: "1.4rem" }}>➕</span>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800 }}>Next Page</span>
+                  <span className="text-xl">➕</span>
+                  <span className="text-[11px] font-medium">Next Page</span>
                 </div>
               </div>
 
               {/* Export to PDF Action Bar */}
-              <div className="scanner-export-bar">
+              <div className="mt-5">
                 <button
                   type="button"
-                  className="scanner-btn-export-pdf"
+                  className="w-full py-3.5 rounded-full text-sm sm:text-base font-semibold transition-all shadow-m3-elevation-1 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary"
                   disabled={isExporting || pages.length === 0}
                   onClick={exportToPDF}
                 >
@@ -785,7 +845,15 @@ export default function DocumentScanner({ auth }) {
             </div>
           )}
         </div>
-      </div>
+
+        {/* Security / Privacy Notice */}
+        <div className="mt-2 mb-8 text-center text-xs text-m3-on-surface-variant/80 flex items-center justify-center gap-1.5">
+          <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          All document scanning, image filtering, and PDF assembly are performed 100% locally in your browser. Zero server uploads.
+        </div>
+      </main>
     </div>
   );
 }
