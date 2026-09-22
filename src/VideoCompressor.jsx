@@ -1,7 +1,8 @@
-// VideoCompressor.jsx — 100% In-Browser Video & Audio Compressor (Neo-Brutalism)
+// VideoCompressor.jsx — 100% In-Browser Video & Audio Compressor (Material Design 3)
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addHistoryRecord } from "./historyDB";
+import ActionButtons from "./ActionButtons";
 
 function formatBytes(bytes) {
   if (!bytes || isNaN(bytes)) return "0 B";
@@ -432,22 +433,47 @@ export default function VideoCompressor({ auth }) {
   }, [fileUrl, resultUrl]);
 
   return (
-    <div className="compressor-page">
-      {/* ── Top Bar ── */}
-      <div className="tool-page-bar">
-        <button className="back-btn" onClick={() => navigate("/")}>← Back</button>
-        <span className="tool-page-title">🎬 Video &amp; Audio Compressor</span>
-      </div>
+    <div className="min-h-screen bg-m3-surface text-m3-on-surface flex flex-col transition-colors duration-200">
+      {/* ── Top App Bar (M3 Standard) ── */}
+      <header className="sticky top-0 z-30 w-full bg-m3-surface/85 backdrop-blur-md border-b border-m3-outline-variant/40 transition-colors">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <button
+            onClick={() => navigate("/")}
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-m3-on-surface-variant hover:text-m3-primary hover:bg-m3-surface-container-high px-3 py-1.5 rounded-full border border-m3-outline-variant/60 transition-all active:scale-95"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Tools
+          </button>
 
-      <div className="compressor-wrap" style={{ maxWidth: "1100px" }}>
-        {/* ── Header (When no file is selected) ── */}
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">🎬</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight text-m3-on-surface">
+              Video &amp; Audio Compressor
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container border border-m3-outline-variant/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              100% In-Browser Engine
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col">
+        {/* ── Header Hero (When no file is selected) ── */}
         {!file && (
-          <div className="comp-header">
-            <div className="comp-title-row">
-              <div className="comp-icon-badge" style={{ background: "var(--m3-yellow)" }}>🎬</div>
-              <h1 className="comp-title">Video &amp; Audio Compressor</h1>
+          <div className="mb-8 text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-m3-primary/10 text-m3-primary border border-m3-primary/20 text-3xl mb-3 shadow-m3-elevation-1">
+              🎬
             </div>
-            <p className="comp-sub">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-m3-on-surface">
+              Video &amp; Audio Compressor
+            </h1>
+            <p className="text-sm sm:text-base text-m3-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed">
               100% on-device video compression. WhatsApp &amp; Discord 16MB auto-fit, resolution scaling &amp; trim. Zero server uploads.
             </p>
           </div>
@@ -455,36 +481,46 @@ export default function VideoCompressor({ auth }) {
 
         {/* ── Drop Zone (When idle or error) ── */}
         {!file && (
-          <div className="comp-card">
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-10 shadow-m3-elevation-1 mb-8">
             <div
-              className="drop-zone"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => {
                 e.preventDefault();
                 if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
               }}
+              className="border-2 border-dashed border-m3-outline-variant hover:border-m3-primary rounded-2xl p-8 sm:p-12 transition-all bg-m3-surface-container-low hover:bg-m3-surface-container/60 cursor-pointer flex flex-col items-center justify-center gap-4 text-center group"
             >
-              <span className="drop-icon">🎬</span>
-              <div className="drop-main">Drop Video or Audio Here to Compress</div>
-              <div className="drop-sub">Supports MP4, WebM, MOV, MP3, WAV · Max 500 MB · 100% Local Processing</div>
-              <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "16px", flexWrap: "wrap" }}>
+              <div className="w-16 h-16 rounded-2xl bg-m3-primary/10 text-m3-primary flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
+                🎬
+              </div>
+              <div>
+                <div className="text-lg sm:text-xl font-semibold text-m3-on-surface">
+                  Drop Video or Audio Here to Compress
+                </div>
+                <div className="text-xs sm:text-sm text-m3-on-surface-variant mt-1">
+                  Supports MP4, WebM, MOV, MP3, WAV · Max 500 MB · 100% Local Processing
+                </div>
+              </div>
+              <div className="flex items-center gap-3 mt-2 flex-wrap justify-center">
                 <button
                   type="button"
-                  className="drop-btn"
                   onClick={e => {
                     e.stopPropagation();
                     fileInputRef.current?.click();
                   }}
+                  className="px-6 py-2.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-medium text-sm shadow-m3-elevation-1 transition-all active:scale-95"
                 >
                   Browse Video
                 </button>
                 {auth?.authStatus === "signedin" && (
                   <button
                     type="button"
-                    className="drop-btn"
-                    style={{ background: "#fff" }}
-                    onClick={e => { e.stopPropagation(); handleDrivePick(); }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleDrivePick();
+                    }}
+                    className="px-5 py-2.5 rounded-full bg-m3-surface-container-highest border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-high font-medium text-sm transition-all"
                   >
                     📁 Pick from Drive
                   </button>
@@ -494,7 +530,7 @@ export default function VideoCompressor({ auth }) {
                 ref={fileInputRef}
                 type="file"
                 accept="video/*,audio/*,.mp4,.webm,.mov,.mkv,.avi,.mp3,.wav"
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={e => {
                   if (e.target.files?.[0]) handleFile(e.target.files[0]);
                 }}
@@ -505,146 +541,188 @@ export default function VideoCompressor({ auth }) {
 
         {/* ── Ready / Compressing State ── */}
         {file && (stage === "ready" || stage === "compressing") && (
-          <div className="vc-workspace-card">
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-8 shadow-m3-elevation-1 mb-8">
             {/* Top Info Bar */}
-            <div className="vc-info-bar">
-              <div className="vc-file-name-wrap">
-                <span className="vc-type-badge">{isAudio ? "🎵 AUDIO" : "🎬 VIDEO"}</span>
-                <span className="vc-file-name">{file.name}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-m3-outline-variant/50">
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-m3-secondary-container text-m3-on-secondary-container shrink-0">
+                  {isAudio ? "🎵 AUDIO" : "🎬 VIDEO"}
+                </span>
+                <span className="font-semibold text-base text-m3-on-surface truncate">
+                  {file.name}
+                </span>
               </div>
-              <div className="vc-meta-pills">
-                <span className="vc-meta-pill">Original: <strong>{formatBytes(file.size)}</strong></span>
-                <span className="vc-meta-pill">Duration: <strong>{formatTime(duration)}</strong></span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs px-3 py-1 rounded-xl bg-m3-surface-container-high border border-m3-outline-variant/40 text-m3-on-surface-variant">
+                  Original: <strong className="text-m3-on-surface font-semibold">{formatBytes(file.size)}</strong>
+                </span>
+                <span className="text-xs px-3 py-1 rounded-xl bg-m3-surface-container-high border border-m3-outline-variant/40 text-m3-on-surface-variant">
+                  Duration: <strong className="text-m3-on-surface font-semibold">{formatTime(duration)}</strong>
+                </span>
                 {!isAudio && (
-                  <span className="vc-meta-pill">Resolution: <strong>{origWidth} × {origHeight}</strong></span>
+                  <span className="text-xs px-3 py-1 rounded-xl bg-m3-surface-container-high border border-m3-outline-variant/40 text-m3-on-surface-variant">
+                    Resolution: <strong className="text-m3-on-surface font-semibold">{origWidth} × {origHeight}</strong>
+                  </span>
                 )}
                 <button
                   type="button"
-                  className="vc-btn-change"
                   onClick={() => {
                     setFile(null);
                     setStage("idle");
                   }}
+                  className="text-xs font-medium px-3.5 py-1 rounded-full border border-m3-outline-variant text-m3-on-surface hover:bg-m3-surface-container-highest transition-colors"
                 >
                   Change File
                 </button>
               </div>
             </div>
 
-            {/* Main Split: Left Player / Right Settings */}
-            <div className="vc-split-grid">
+            {/* Main Split: Left Player & Trim / Right Settings */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-6">
               {/* Left Column: Video Preview & Trimming */}
-              <div className="vc-player-col">
-                <div className="vc-video-container">
+              <div className="lg:col-span-6 flex flex-col gap-6">
+                <div className="bg-black/95 rounded-2xl overflow-hidden border border-m3-outline-variant/50 shadow-inner flex items-center justify-center aspect-video">
                   <video
                     ref={videoPreviewRef}
                     src={fileUrl}
                     controls
-                    className="vc-preview-video"
+                    className="w-full h-full object-contain"
                   />
                 </div>
 
                 {/* Trimming Controls */}
-                <div className="vc-trim-box">
-                  <div className="vc-trim-header">
+                <div className="bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 p-4 shadow-sm">
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-m3-primary mb-3">
                     <span>✂️ Trim Range</span>
-                    <span>{formatTime(trimStart)} — {formatTime(trimEnd)} (Duration: {formatTime(trimEnd - trimStart)})</span>
+                    <span className="font-mono text-[11px] text-m3-on-surface-variant normal-case">
+                      {formatTime(trimStart)} — {formatTime(trimEnd)} (Duration: {formatTime(trimEnd - trimStart)})
+                    </span>
                   </div>
-                  <div className="vc-trim-slider-wrap">
-                    <input
-                      type="range"
-                      min="0"
-                      max={Math.floor(duration)}
-                      value={trimStart}
-                      className="vc-range-slider"
-                      onChange={e => {
-                        const val = Number(e.target.value);
-                        if (val < trimEnd) setTrimStart(val);
-                      }}
-                    />
-                    <input
-                      type="range"
-                      min="0"
-                      max={Math.floor(duration)}
-                      value={trimEnd}
-                      className="vc-range-slider"
-                      onChange={e => {
-                        const val = Number(e.target.value);
-                        if (val > trimStart) setTrimEnd(val);
-                      }}
-                    />
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-m3-on-surface-variant w-10 font-mono">Start</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max={Math.floor(duration)}
+                        value={trimStart}
+                        className="w-full accent-m3-primary cursor-pointer"
+                        onChange={e => {
+                          const val = Number(e.target.value);
+                          if (val < trimEnd) setTrimStart(val);
+                        }}
+                      />
+                      <span className="text-xs font-mono text-m3-on-surface w-12 text-right">{formatTime(trimStart)}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-m3-on-surface-variant w-10 font-mono">End</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max={Math.floor(duration)}
+                        value={trimEnd}
+                        className="w-full accent-m3-primary cursor-pointer"
+                        onChange={e => {
+                          const val = Number(e.target.value);
+                          if (val > trimStart) setTrimEnd(val);
+                        }}
+                      />
+                      <span className="text-xs font-mono text-m3-on-surface w-12 text-right">{formatTime(trimEnd)}</span>
+                    </div>
                   </div>
-                  <div className="vc-trim-hint">Drag sliders to cut unwanted start/end parts during compression.</div>
+                  <div className="text-[11px] text-m3-on-surface-variant/80 mt-2">
+                    Drag sliders to cut unwanted start/end parts during compression.
+                  </div>
                 </div>
               </div>
 
               {/* Right Column: Presets & Controls */}
-              <div className="vc-controls-col">
-                <div className="vc-section-title">⚡ Compression Presets</div>
+              <div className="lg:col-span-6 flex flex-col gap-6">
+                <div className="text-xs font-bold uppercase tracking-wider text-m3-primary">
+                  ⚡ Compression Presets
+                </div>
 
-                <div className="vc-preset-grid">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Preset 1: WhatsApp 16MB */}
                   <div
-                    className={`vc-preset-card ${preset === "whatsapp" ? "active" : ""}`}
+                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 active:scale-[0.98] ${
+                      preset === "whatsapp"
+                        ? "bg-m3-secondary-container/70 border-m3-primary ring-1 ring-m3-primary/30 text-m3-on-surface shadow-sm"
+                        : "bg-m3-surface-container-high border-m3-outline-variant/50 text-m3-on-surface hover:bg-m3-surface-container-highest"
+                    }`}
                     onClick={() => applyPreset("whatsapp")}
                   >
-                    <div className="vc-preset-icon">📱</div>
-                    <div className="vc-preset-info">
-                      <div className="vc-preset-name">WhatsApp &amp; Discord 16MB</div>
-                      <div className="vc-preset-sub">Guaranteed under 16MB for instant sharing</div>
+                    <span className="text-2xl shrink-0 mt-0.5">📱</span>
+                    <div>
+                      <div className="text-sm font-semibold text-m3-on-surface">WhatsApp &amp; Discord 16MB</div>
+                      <div className="text-xs text-m3-on-surface-variant mt-0.5 leading-snug">Guaranteed under 16MB for instant sharing</div>
                     </div>
                   </div>
 
                   {/* Preset 2: Extreme 480p */}
                   <div
-                    className={`vc-preset-card ${preset === "extreme" ? "active" : ""}`}
+                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 active:scale-[0.98] ${
+                      preset === "extreme"
+                        ? "bg-m3-secondary-container/70 border-m3-primary ring-1 ring-m3-primary/30 text-m3-on-surface shadow-sm"
+                        : "bg-m3-surface-container-high border-m3-outline-variant/50 text-m3-on-surface hover:bg-m3-surface-container-highest"
+                    }`}
                     onClick={() => applyPreset("extreme")}
                   >
-                    <div className="vc-preset-icon">🚀</div>
-                    <div className="vc-preset-info">
-                      <div className="vc-preset-name">Extreme Compression</div>
-                      <div className="vc-preset-sub">480p resolution · ~75–85% smaller</div>
+                    <span className="text-2xl shrink-0 mt-0.5">🚀</span>
+                    <div>
+                      <div className="text-sm font-semibold text-m3-on-surface">Extreme Compression</div>
+                      <div className="text-xs text-m3-on-surface-variant mt-0.5 leading-snug">480p resolution · ~75–85% smaller</div>
                     </div>
                   </div>
 
                   {/* Preset 3: Balanced 720p */}
                   <div
-                    className={`vc-preset-card ${preset === "balanced" ? "active" : ""}`}
+                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 active:scale-[0.98] ${
+                      preset === "balanced"
+                        ? "bg-m3-secondary-container/70 border-m3-primary ring-1 ring-m3-primary/30 text-m3-on-surface shadow-sm"
+                        : "bg-m3-surface-container-high border-m3-outline-variant/50 text-m3-on-surface hover:bg-m3-surface-container-highest"
+                    }`}
                     onClick={() => applyPreset("balanced")}
                   >
-                    <div className="vc-preset-icon">🟡</div>
-                    <div className="vc-preset-info">
-                      <div className="vc-preset-name">Balanced Quality</div>
-                      <div className="vc-preset-sub">720p HD · ~50–65% smaller</div>
+                    <span className="text-2xl shrink-0 mt-0.5">🟡</span>
+                    <div>
+                      <div className="text-sm font-semibold text-m3-on-surface">Balanced Quality</div>
+                      <div className="text-xs text-m3-on-surface-variant mt-0.5 leading-snug">720p HD · ~50–65% smaller</div>
                     </div>
                   </div>
 
                   {/* Preset 4: High */}
                   <div
-                    className={`vc-preset-card ${preset === "high" ? "active" : ""}`}
+                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 active:scale-[0.98] ${
+                      preset === "high"
+                        ? "bg-m3-secondary-container/70 border-m3-primary ring-1 ring-m3-primary/30 text-m3-on-surface shadow-sm"
+                        : "bg-m3-surface-container-high border-m3-outline-variant/50 text-m3-on-surface hover:bg-m3-surface-container-highest"
+                    }`}
                     onClick={() => applyPreset("high")}
                   >
-                    <div className="vc-preset-icon">🟢</div>
-                    <div className="vc-preset-info">
-                      <div className="vc-preset-name">High Quality</div>
-                      <div className="vc-preset-sub">Original resolution · ~30–45% smaller</div>
+                    <span className="text-2xl shrink-0 mt-0.5">🟢</span>
+                    <div>
+                      <div className="text-sm font-semibold text-m3-on-surface">High Quality</div>
+                      <div className="text-xs text-m3-on-surface-variant mt-0.5 leading-snug">Original resolution · ~30–45% smaller</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Custom Fine-Tuning */}
-                <div className="vc-custom-box">
-                  <div className="vc-custom-header">
-                    <span>⚙️ Target Settings</span>
+                <div className="bg-m3-surface-container-low rounded-2xl border border-m3-outline-variant/50 p-4 shadow-sm flex flex-col gap-4">
+                  <div className="text-xs font-bold uppercase tracking-wider text-m3-primary">
+                    ⚙️ Target Settings
                   </div>
 
-                  <div className="vc-fields-grid">
+                  <div className="flex flex-col gap-4">
                     {/* Resolution */}
-                    <div className="vc-field">
-                      <label>Target Resolution</label>
+                    <div>
+                      <label className="text-xs text-m3-on-surface-variant block mb-1.5 font-medium">
+                        Target Resolution
+                      </label>
                       <select
                         value={targetRes}
-                        className="vc-select"
+                        className="w-full px-3.5 py-2.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all disabled:opacity-50"
                         onChange={e => setTargetRes(e.target.value)}
                         disabled={stage === "compressing"}
                       >
@@ -657,22 +735,22 @@ export default function VideoCompressor({ auth }) {
                     </div>
 
                     {/* Bitrate */}
-                    <div className="vc-field">
-                      <label>
-                        Video Bitrate: <strong>{videoBitrateKbps} kbps</strong>
+                    <div>
+                      <div className="flex items-center justify-between text-xs text-m3-on-surface-variant mb-1.5 font-medium">
+                        <span>Video Bitrate: <strong className="text-m3-on-surface font-semibold">{videoBitrateKbps} kbps</strong></span>
                         {origBitrateKbps > 0 && (
-                          <span className="vc-bitrate-orig-hint">
+                          <span className="text-[11px] font-mono text-m3-on-surface-variant/70">
                             (Original: ~{origBitrateKbps} kbps)
                           </span>
                         )}
-                      </label>
+                      </div>
                       <input
                         type="range"
                         min="100"
                         max="4000"
                         step="50"
                         value={videoBitrateKbps}
-                        className="vc-range-slider"
+                        className="w-full accent-m3-primary cursor-pointer disabled:opacity-50"
                         onChange={e => {
                           setVideoBitrateKbps(Number(e.target.value));
                           setPreset("custom");
@@ -682,13 +760,14 @@ export default function VideoCompressor({ auth }) {
                     </div>
 
                     {/* Audio Bitrate & Mute */}
-                    <div className="vc-field-checkbox">
-                      <label className="vc-checkbox-label">
+                    <div className="pt-1">
+                      <label className="flex items-center gap-2.5 text-xs text-m3-on-surface cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={muteAudio}
                           onChange={e => setMuteAudio(e.target.checked)}
                           disabled={stage === "compressing"}
+                          className="w-4 h-4 rounded text-m3-primary accent-m3-primary border-m3-outline-variant focus:ring-m3-primary"
                         />
                         <span>Mute Audio Track (Maximum file size reduction)</span>
                       </label>
@@ -700,7 +779,7 @@ export default function VideoCompressor({ auth }) {
                 {stage === "ready" && (
                   <button
                     type="button"
-                    className="btn-start-compress"
+                    className="w-full py-3.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-semibold text-sm sm:text-base shadow-m3-elevation-2 flex items-center justify-center gap-2 transition-all active:scale-[0.99]"
                     onClick={startCompression}
                   >
                     ⚡ Start In-Browser Compression
@@ -709,17 +788,20 @@ export default function VideoCompressor({ auth }) {
 
                 {/* Progress Bar (During Compression) */}
                 {stage === "compressing" && (
-                  <div className="vc-progress-box">
-                    <div className="vc-progress-header">
-                      <span>{progressMsg}</span>
-                      <span className="vc-progress-pct">{progress}%</span>
+                  <div className="bg-m3-surface-container-high rounded-2xl border border-m3-outline-variant/60 p-5 shadow-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm font-medium text-m3-on-surface mb-2">
+                      <span className="truncate pr-2">{progressMsg}</span>
+                      <span className="font-mono font-bold text-m3-primary shrink-0">{progress}%</span>
                     </div>
-                    <div className="vc-progress-track">
-                      <div className="vc-progress-fill" style={{ width: `${progress}%` }} />
+                    <div className="w-full h-3 bg-m3-surface-container-highest rounded-full overflow-hidden p-0.5">
+                      <div
+                        className="h-full bg-m3-primary rounded-full transition-all duration-200"
+                        style={{ width: `${progress}%` }}
+                      />
                     </div>
                     <button
                       type="button"
-                      className="vc-btn-cancel"
+                      className="mt-4 w-full py-2.5 rounded-full border border-m3-error/50 text-m3-error hover:bg-m3-error/10 font-medium text-xs sm:text-sm transition-colors"
                       onClick={cancelCompression}
                     >
                       Cancel Compression
@@ -731,8 +813,9 @@ export default function VideoCompressor({ auth }) {
 
             {/* Error Message */}
             {errorMsg && (
-              <div className="vc-error-banner">
-                <span>⚠️ {errorMsg}</span>
+              <div className="mt-6 p-4 rounded-2xl bg-m3-error-container text-m3-on-error-container border border-m3-error/30 text-xs sm:text-sm flex items-center gap-2">
+                <span>⚠️</span>
+                <span>{errorMsg}</span>
               </div>
             )}
           </div>
@@ -740,54 +823,65 @@ export default function VideoCompressor({ auth }) {
 
         {/* ── Dedicated Compression Completed Screen (At Top!) ── */}
         {file && stage === "done" && resultBlob && (
-          <div className="vc-workspace-card anim-pop">
-            <div className="vc-result-header-box">
-              <div className="vc-result-title-row">
-                <div className="vc-result-icon">🎉</div>
+          <div className="bg-m3-surface-container rounded-3xl border border-m3-outline-variant/60 p-6 sm:p-8 shadow-m3-elevation-2 mb-8 flex flex-col gap-6 animate-in fade-in duration-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-m3-outline-variant/50">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-2xl shadow-sm shrink-0">
+                  🎉
+                </div>
                 <div>
-                  <h2 className="vc-result-heading">Video Compression Complete!</h2>
-                  <div className="vc-result-subtext">{file.name}</div>
+                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-m3-on-surface">
+                    Video Compression Complete!
+                  </h2>
+                  <div className="text-xs text-m3-on-surface-variant truncate max-w-sm sm:max-w-md">
+                    {file.name}
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Big Saved Stats Summary Grid */}
-              <div className="vc-stats-summary-grid">
-                <div className="vc-stat-card">
-                  <span className="vc-stat-label">Original Size</span>
-                  <span className="vc-stat-val-orig">{formatBytes(file.size)}</span>
-                </div>
-                <div className="vc-stat-arrow">➔</div>
-                <div className="vc-stat-card">
-                  <span className="vc-stat-label">Compressed Size</span>
-                  <span className="vc-stat-val-new">{formatBytes(resultBlob.size)}</span>
-                </div>
-                {resultBlob.size < file.size ? (
-                  <div className="vc-stat-card vc-stat-card-highlight">
-                    <span className="vc-stat-label">Space Saved</span>
-                    <span className="vc-stat-val-saved">
-                      {Math.round(((file.size - resultBlob.size) / file.size) * 100)}% OFF
-                    </span>
-                  </div>
-                ) : (
-                  <div className="vc-stat-card vc-stat-card-warn">
-                    <span className="vc-stat-label">Status</span>
-                    <span className="vc-stat-val-warn">Already Optimized</span>
-                  </div>
-                )}
+            {/* Big Saved Stats Summary Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+              <div className="bg-m3-surface-container-high rounded-2xl p-4 text-center border border-m3-outline-variant/40">
+                <div className="text-xs text-m3-on-surface-variant font-medium">Original Size</div>
+                <div className="text-lg font-bold text-m3-on-surface mt-1">{formatBytes(file.size)}</div>
               </div>
 
-              {/* Notice if output was not smaller */}
-              {resultBlob.size >= file.size && (
-                <div className="vc-warn-inline-note">
-                  ℹ️ Note: The original video was already heavily compressed. Try re-compressing with a lower bitrate.
+              <div className="bg-m3-primary/10 rounded-2xl p-4 text-center border border-m3-primary/20">
+                <div className="text-xs text-m3-primary font-medium">Compressed Size</div>
+                <div className="text-lg font-bold text-m3-primary mt-1">{formatBytes(resultBlob.size)}</div>
+              </div>
+
+              {resultBlob.size < file.size ? (
+                <div className="bg-emerald-500/10 rounded-2xl p-4 text-center border border-emerald-500/20">
+                  <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Space Saved</div>
+                  <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                    {Math.round(((file.size - resultBlob.size) / file.size) * 100)}% OFF
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-amber-500/10 rounded-2xl p-4 text-center border border-amber-500/20">
+                  <div className="text-xs text-amber-600 dark:text-amber-400 font-medium">Status</div>
+                  <div className="text-sm font-bold text-amber-600 dark:text-amber-400 mt-1">
+                    Already Optimized
+                  </div>
                 </div>
               )}
+            </div>
 
-              {/* Primary & Secondary Action Buttons */}
-              <div className="vc-result-actions-row">
+            {/* Notice if output was not smaller */}
+            {resultBlob.size >= file.size && (
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-800 dark:text-amber-300">
+                ℹ️ Note: The original video was already heavily compressed. Try re-compressing with a lower bitrate or smaller resolution.
+              </div>
+            )}
+
+            {/* Primary & Secondary Action Buttons */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  className="btn-download-video-large"
+                  className="flex-1 sm:flex-initial px-6 py-3.5 rounded-full bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary font-semibold text-sm sm:text-base shadow-m3-elevation-2 flex items-center justify-center gap-2 transition-all active:scale-[0.99]"
                   onClick={handleDownload}
                 >
                   💾 Download Compressed Video ({formatBytes(resultBlob.size)})
@@ -795,8 +889,7 @@ export default function VideoCompressor({ auth }) {
                 {resultBlob.size >= file.size && (
                   <button
                     type="button"
-                    className="vc-btn-secondary"
-                    style={{ background: "#fef08a", borderColor: "#1a1a1a" }}
+                    className="px-5 py-3 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-900 dark:text-amber-200 font-medium text-xs sm:text-sm hover:bg-amber-500/25 transition-colors"
                     onClick={() => {
                       setVideoBitrateKbps(prev => Math.max(80, Math.floor(prev * 0.5)));
                       setPreset("custom");
@@ -808,14 +901,14 @@ export default function VideoCompressor({ auth }) {
                 )}
                 <button
                   type="button"
-                  className="vc-btn-secondary"
+                  className="px-5 py-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant/60 text-m3-on-surface hover:bg-m3-surface-container-highest font-medium text-xs sm:text-sm transition-colors"
                   onClick={() => setStage("ready")}
                 >
                   ⚙️ Adjust Settings &amp; Re-compress
                 </button>
                 <button
                   type="button"
-                  className="vc-btn-secondary"
+                  className="px-5 py-3 rounded-full bg-m3-surface-container-high border border-m3-outline-variant/60 text-m3-on-surface hover:bg-m3-surface-container-highest font-medium text-xs sm:text-sm transition-colors"
                   onClick={() => {
                     setFile(null);
                     setResultBlob(null);
@@ -825,24 +918,48 @@ export default function VideoCompressor({ auth }) {
                   ➕ Compress Another Video
                 </button>
               </div>
+
+              {/* ActionButtons Component for Google Drive & Web Share */}
+              <div className="w-full pt-2">
+                <ActionButtons
+                  blob={resultBlob}
+                  fileName={`${file?.name?.replace(/\.[^/.]+$/, "") || "video"}_compressed_${targetRes}.${resultMime.includes("mp4") ? "mp4" : "webm"}`}
+                  onReset={() => {
+                    setFile(null);
+                    setResultBlob(null);
+                    setStage("idle");
+                  }}
+                  auth={auth}
+                />
+              </div>
             </div>
 
             {/* Compressed Video Player Preview */}
-            <div className="vc-result-player-container">
-              <div className="vc-result-player-label">🎬 Compressed Video Preview:</div>
-              <div className="vc-result-player-wrap">
+            <div className="pt-2">
+              <div className="text-xs font-bold uppercase tracking-wider text-m3-primary mb-3">
+                🎬 Compressed Video Preview:
+              </div>
+              <div className="bg-black/95 rounded-2xl overflow-hidden border border-m3-outline-variant/50 max-w-2xl mx-auto shadow-inner aspect-video flex items-center justify-center">
                 <video
                   ref={resultVideoRef}
                   src={resultUrl}
                   controls
                   autoPlay
-                  className="vc-result-video"
+                  className="w-full h-full object-contain"
                 />
               </div>
             </div>
           </div>
         )}
-      </div>
+
+        {/* ── Local Security Footer Badge ── */}
+        <div className="mt-auto pt-8 flex items-center justify-center gap-2 text-xs text-m3-on-surface-variant">
+          <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clipRule="evenodd" />
+          </svg>
+          <span>100% In-Browser Video Compression · Zero Server Uploads · Files Never Leave Your Device</span>
+        </div>
+      </main>
     </div>
   );
 }
