@@ -126,32 +126,32 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
       onClick={handleBackdrop}
       className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all animate-[fadeIn_0.15s_ease-out]"
     >
-      <div className="w-full max-w-md rounded-3xl bg-[#ffffff] dark:bg-[#1e1f20] p-6 sm:p-8 border border-[#c7c7c7] dark:border-[#444746] shadow-md font-sans relative overflow-hidden">
+      <div className="w-full max-w-md rounded-3xl bg-m3-surface-container p-6 sm:p-8 border border-m3-outline-variant/60 shadow-m3-elevation-3 font-sans relative overflow-hidden text-m3-on-surface">
         
         {/* Close button */}
         <button 
-          className="absolute top-4 right-4 p-2 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f4f9] dark:hover:bg-[#28292a] transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-full text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-highest transition-colors"
           onClick={onClose} 
           title="Cancel"
         >
           <CloseIcon />
         </button>
 
-        <div className="text-xl sm:text-2xl font-normal text-[#1f1f1f] dark:text-[#e3e3e3] mb-1.5 flex items-center gap-2.5 tracking-tight">
+        <div className="text-xl sm:text-2xl font-normal text-m3-on-surface mb-1.5 flex items-center gap-2.5 tracking-tight">
           <DriveIcon size={20} />
           Save to Google Drive
         </div>
-        <div className="text-sm text-[#444746] dark:text-[#c4c7c5] mb-6">
+        <div className="text-sm text-m3-on-surface-variant mb-6">
           Rename your file and choose where to save it.
         </div>
 
         {/* File name input */}
-        <label className="block text-[11px] font-bold tracking-wide uppercase text-[#444746] dark:text-[#c4c7c5] mb-2">
+        <label className="block text-[11px] font-bold tracking-wide uppercase text-m3-primary mb-2">
           File Name
         </label>
         <input
           ref={inputRef}
-          className="w-full px-4 py-3 bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-xl text-sm text-[#1f1f1f] dark:text-[#e3e3e3] outline-none focus:border-[#0b57d0] dark:focus:border-[#a8c7fa] transition-colors shadow-sm"
+          className="w-full px-4 py-3 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-xl text-sm text-m3-on-surface outline-none focus:border-m3-primary focus:ring-1 focus:ring-m3-primary transition-all placeholder:text-m3-outline shadow-sm"
           value={fileName}
           onChange={e => { setFileName(e.target.value); setError(""); }}
           onKeyDown={e => { if (e.key === "Enter") handleConfirm(); }}
@@ -159,17 +159,17 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
           spellCheck={false}
         />
 
-        <div className="h-px w-full bg-[#c7c7c7]/50 dark:bg-[#444746]/60 my-6" />
+        <div className="h-px w-full bg-m3-outline-variant/40 my-6" />
 
         {/* Folder picker */}
-        <label className="block text-[11px] font-bold tracking-wide uppercase text-[#444746] dark:text-[#c4c7c5] mb-2">
+        <label className="block text-[11px] font-bold tracking-wide uppercase text-m3-primary mb-2">
           Save Location
         </label>
         <button
-          className={`w-full flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl text-sm font-medium transition-colors text-left disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl text-sm font-medium transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed ${
             folder 
-              ? "bg-[#c2e7ff] dark:bg-[#004a77] border-[#0b57d0] dark:border-[#a8c7fa] text-[#001d35] dark:text-[#c2e7ff] border-solid" 
-              : "bg-[#f0f4f9] dark:bg-[#28292a] border-[#c7c7c7] dark:border-[#444746] text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#e9eef6] dark:hover:bg-[#333537] hover:border-[#0b57d0] dark:hover:border-[#a8c7fa]"
+              ? "bg-m3-secondary-container border-m3-primary text-m3-on-secondary-container border-solid shadow-sm" 
+              : "bg-m3-surface-container-high border-m3-outline-variant/70 text-m3-on-surface hover:bg-m3-surface-container-highest hover:border-m3-primary"
           }`}
           onClick={handlePickFolder}
           disabled={pickingFolder}
@@ -184,15 +184,15 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
         </button>
 
         {!folder && (
-          <div className="flex items-center gap-2 text-xs text-[#444746] dark:text-[#c4c7c5] bg-[#f0f4f9] dark:bg-[#28292a] border border-[#c7c7c7] dark:border-[#444746] rounded-xl px-3 py-2 mt-3">
+          <div className="flex items-center gap-2 text-xs text-m3-on-surface-variant bg-m3-surface-container-low border border-m3-outline-variant/40 rounded-xl px-3 py-2 mt-3">
             <span>ℹ️</span> If no folder is selected, the file will be saved to your Drive root.
           </div>
         )}
         {folder && (
-          <div className="text-xs text-[#444746] dark:text-[#c4c7c5] mt-2 ml-1">
-            Will save to: <strong className="text-[#1f1f1f] dark:text-[#e3e3e3]">{folder.name}</strong> &nbsp;
+          <div className="text-xs text-m3-on-surface-variant mt-2 ml-1">
+            Will save to: <strong className="text-m3-on-surface">{folder.name}</strong> &nbsp;
             <span
-              className="text-[#0b57d0] dark:text-[#a8c7fa] cursor-pointer hover:underline"
+              className="text-m3-primary cursor-pointer hover:underline"
               onClick={() => setFolder(null)}
             >
               clear
@@ -201,7 +201,7 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
         )}
 
         {error && (
-          <div className="text-xs text-[#ba1a1a] dark:text-[#ffb4ab] bg-[#ffdad6] dark:bg-[#93000a] border border-[#ffb4ab] dark:border-[#ffdad6] rounded-xl px-3 py-2.5 mt-4 font-medium">
+          <div className="text-xs text-m3-on-error-container bg-m3-error-container border border-m3-error/40 rounded-xl px-3 py-2.5 mt-4 font-medium">
             ⚠ {error}
           </div>
         )}
@@ -209,14 +209,14 @@ function DriveUploadModal({ initialFileName, auth, onConfirm, onClose }) {
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mt-8">
           <button 
-            className="flex-1 px-4 py-2.5 bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] rounded-full text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f8fafd] dark:hover:bg-[#28292a] transition-colors shadow-sm"
+            className="flex-1 px-4 py-2.5 bg-m3-surface-container-high border border-m3-outline-variant/60 rounded-full text-sm font-medium text-m3-on-surface hover:bg-m3-surface-container-highest transition-colors shadow-sm active:scale-95"
             onClick={onClose} 
             type="button"
           >
             Cancel
           </button>
           <button 
-            className="flex-[2] px-4 py-2.5 bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] border border-transparent rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors shadow-sm"
+            className="flex-[2] px-4 py-2.5 bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary border border-transparent rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-all shadow-m3-elevation-1 active:scale-95"
             onClick={handleConfirm} 
             type="button"
           >
@@ -409,11 +409,11 @@ export default function ActionButtons({
         />
       )}
 
-      <div className="flex flex-col gap-3 w-full font-sans mt-8">
+      <div className="flex flex-col gap-3 w-full font-sans mt-6">
         
         {/* Download */}
         <button 
-          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-[#0b57d0] hover:bg-[#0842a0] text-white dark:bg-[#a8c7fa] dark:text-[#062e6f] dark:hover:bg-[#d3e3fd] shadow-sm transition-all flex items-center justify-center gap-2"
+          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-m3-primary hover:bg-m3-primary/90 text-m3-on-primary shadow-m3-elevation-1 hover:shadow-m3-elevation-2 transition-all active:scale-[0.99] flex items-center justify-center gap-2"
           onClick={handleDownload}
         >
           ⬇ Download file
@@ -421,14 +421,14 @@ export default function ActionButtons({
 
         {/* Save to Drive */}
         <button
-          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f8fafd] dark:hover:bg-[#28292a] shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-full py-3.5 px-4 text-sm font-medium bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant/60 hover:bg-m3-surface-container-highest shadow-sm transition-all active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleDriveClick}
           disabled={isDriveDisabled}
         >
           <DriveIcon />
           {auth?.authStatus === "loading" ? "Signing in…" : driveButtonLabel()}
           {isSignedIn && driveStatus === "idle" && (
-            <span className="ml-auto opacity-50">
+            <span className="ml-auto opacity-60">
               <EditIcon />
             </span>
           )}
@@ -436,15 +436,15 @@ export default function ActionButtons({
 
         {/* Drive feedback */}
         {driveStatus === "success" && driveLink && (
-          <div className="mt-1 px-4 py-3 rounded-xl bg-[#c2e7ff]/30 dark:bg-[#004a77]/30 border border-[#c2e7ff] dark:border-[#004a77] text-[#001d35] dark:text-[#c2e7ff] text-sm font-medium flex items-center justify-between">
+          <div className="mt-1 px-4 py-3 rounded-2xl bg-m3-secondary-container/60 border border-m3-primary/30 text-m3-on-secondary-container text-sm font-medium flex items-center justify-between shadow-sm">
             <span>✓ Saved to {auth?.user?.email || "your Drive"}!</span>
-            <a href={driveLink} target="_blank" rel="noopener noreferrer" className="font-bold hover:underline">
+            <a href={driveLink} target="_blank" rel="noopener noreferrer" className="font-bold hover:underline text-m3-primary">
               Open in Drive →
             </a>
           </div>
         )}
         {driveStatus === "error" && driveError && (
-          <div className="mt-1 px-4 py-3 rounded-xl bg-[#ffdad6]/30 dark:bg-[#93000a]/30 border border-[#ffdad6] dark:border-[#93000a] text-[#ba1a1a] dark:text-[#ffb4ab] text-sm font-medium flex items-center justify-between">
+          <div className="mt-1 px-4 py-3 rounded-2xl bg-m3-error-container/60 border border-m3-error/30 text-m3-on-error-container text-sm font-medium flex items-center justify-between shadow-sm">
             <span>⚠ {driveError}</span>
             <span
               className="cursor-pointer underline font-bold"
@@ -457,10 +457,10 @@ export default function ActionButtons({
 
         {/* Share */}
         <button 
-          className={`w-full rounded-full py-3.5 px-4 text-sm font-medium transition-all flex items-center justify-center gap-2 shadow-sm ${
+          className={`w-full rounded-full py-3.5 px-4 text-sm font-medium transition-all active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm ${
             shared 
-              ? 'bg-[#c2e7ff] dark:bg-[#004a77] text-[#001d35] dark:text-[#c2e7ff] border border-transparent' 
-              : 'bg-[#ffffff] dark:bg-[#1e1f20] text-[#1f1f1f] dark:text-[#e3e3e3] border border-[#c7c7c7] dark:border-[#444746] hover:bg-[#f8fafd] dark:hover:bg-[#28292a]'
+              ? 'bg-m3-secondary-container text-m3-on-secondary-container border border-m3-primary/40' 
+              : 'bg-m3-surface-container-high text-m3-on-surface border border-m3-outline-variant/60 hover:bg-m3-surface-container-highest'
           }`} 
           onClick={handleShare}
         >
@@ -468,12 +468,14 @@ export default function ActionButtons({
         </button>
 
         {/* Reset */}
-        <button 
-          className="w-full rounded-full py-3 px-4 text-sm font-medium bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] shadow-sm transition-all flex items-center justify-center gap-2 mt-2" 
-          onClick={onReset}
-        >
-          ↺ Process another file
-        </button>
+        {onReset && (
+          <button 
+            className="w-full rounded-full py-3 px-4 text-sm font-medium bg-m3-surface-container-low text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-high border border-m3-outline-variant/40 shadow-sm transition-all active:scale-[0.99] flex items-center justify-center gap-2 mt-1" 
+            onClick={onReset}
+          >
+            ↺ Process another file
+          </button>
+        )}
 
       </div>
     </>
