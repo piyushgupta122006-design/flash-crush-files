@@ -1,4 +1,4 @@
-// CommandPalette.jsx — Spotlight-style Neo-Brutalist Instant Search (Ctrl + K)
+// CommandPalette.jsx — Material Design 3 Spotlight-style Instant Search (Ctrl + K)
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -362,22 +362,22 @@ export default function CommandPalette({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] pb-4 px-4 bg-[#1f1f1f]/60 backdrop-blur-sm transition-opacity font-sans" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] pb-4 px-4 bg-black/60 backdrop-blur-sm transition-opacity font-sans" onClick={onClose}>
       <div
         ref={modalRef}
-        className="w-full max-w-2xl bg-[#ffffff] dark:bg-[#1e1f20] rounded-3xl shadow-xl border border-[#c7c7c7] dark:border-[#444746] overflow-hidden flex flex-col"
+        className="w-full max-w-2xl bg-m3-surface-container rounded-3xl shadow-m3-elevation-3 border border-m3-outline-variant/60 overflow-hidden flex flex-col text-m3-on-surface transition-colors"
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Command Palette"
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3 border-b border-[#c7c7c7] dark:border-[#444746] bg-[#f8fafd] dark:bg-[#131314]">
-          <span className="text-xl text-[#444746] dark:text-[#c4c7c5] mr-3">🔍</span>
+        <div className="flex items-center px-4 py-3 border-b border-m3-outline-variant/40 bg-m3-surface-container-low">
+          <span className="text-xl text-m3-primary mr-3">🔍</span>
           <input
             ref={inputRef}
             type="text"
-            className="flex-1 bg-transparent border-none outline-none text-lg text-[#1f1f1f] dark:text-[#e3e3e3] placeholder-[#444746] dark:placeholder-[#c4c7c5] font-sans"
+            className="flex-1 bg-transparent border-none outline-none focus:outline-none focus:ring-0 focus-visible:outline-none text-base sm:text-lg text-m3-on-surface placeholder:text-m3-outline font-sans shadow-none"
             placeholder="Type a tool, keyword, or action..."
             value={query}
             onChange={e => {
@@ -389,7 +389,7 @@ export default function CommandPalette({
           {query && (
             <button
               type="button"
-              className="p-1 rounded-full text-[#444746] dark:text-[#c4c7c5] hover:bg-[#e9eef6] dark:hover:bg-[#333537] transition-all ml-2"
+              className="p-1 rounded-full text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-highest transition-all ml-2"
               onClick={() => {
                 setQuery("");
                 inputRef.current?.focus();
@@ -399,7 +399,7 @@ export default function CommandPalette({
               ✕
             </button>
           )}
-          <kbd className="hidden sm:inline-block ml-3 px-2 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] text-[#444746] dark:text-[#c4c7c5] font-mono text-[10px] font-medium shadow-sm">
+          <kbd className="hidden sm:inline-block ml-3 px-2 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 text-m3-on-surface-variant font-mono text-[10px] font-medium shadow-sm">
             ESC
           </kbd>
         </div>
@@ -414,8 +414,8 @@ export default function CommandPalette({
                   key={cmd.id}
                   className={`flex items-center gap-4 px-4 py-3 my-1 mx-1 rounded-2xl cursor-pointer transition-colors ${
                     isSelected 
-                      ? "bg-[#c2e7ff] dark:bg-[#004a77]" 
-                      : "hover:bg-[#f0f4f9] dark:hover:bg-[#28292a]"
+                      ? "bg-m3-secondary-container text-m3-on-secondary-container ring-1 ring-m3-primary/30 shadow-sm" 
+                      : "hover:bg-m3-surface-container-high text-m3-on-surface"
                   }`}
                   onClick={() => handleSelect(cmd)}
                   onMouseEnter={() => setSelectedIndex(idx)}
@@ -425,29 +425,29 @@ export default function CommandPalette({
                     <div className="flex items-center gap-2 mb-0.5">
                       <span className={`text-sm font-medium truncate ${
                         isSelected 
-                          ? "text-[#001d35] dark:text-[#c2e7ff]" 
-                          : "text-[#1f1f1f] dark:text-[#e3e3e3]"
+                          ? "text-m3-on-secondary-container font-semibold" 
+                          : "text-m3-on-surface"
                       }`}>
                         {cmd.label}
                       </span>
                       <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide flex-shrink-0 uppercase ${
                         isSelected 
-                          ? "bg-[#001d35]/10 text-[#001d35] dark:bg-[#c2e7ff]/10 dark:text-[#c2e7ff]"
-                          : "bg-[#f0f4f9] dark:bg-[#28292a] text-[#444746] dark:text-[#c4c7c5] border border-[#c7c7c7] dark:border-[#444746]"
+                          ? "bg-m3-on-secondary-container/10 text-m3-on-secondary-container"
+                          : "bg-m3-surface-container-high text-m3-on-surface-variant border border-m3-outline-variant/60"
                       }`}>
                         {cmd.category}
                       </span>
                     </div>
                     <div className={`text-[11px] truncate ${
                       isSelected 
-                        ? "text-[#001d35]/80 dark:text-[#c2e7ff]/80" 
-                        : "text-[#444746] dark:text-[#c4c7c5]"
+                        ? "text-m3-on-secondary-container/80" 
+                        : "text-m3-on-surface-variant"
                     }`}>
                       {cmd.desc}
                     </div>
                   </div>
                   {isSelected && (
-                    <span className="text-[#0b57d0] dark:text-[#a8c7fa] text-lg font-bold flex-shrink-0 ml-2">↵</span>
+                    <span className="text-m3-primary text-lg font-bold flex-shrink-0 ml-2">↵</span>
                   )}
                 </div>
               );
@@ -455,10 +455,10 @@ export default function CommandPalette({
           ) : (
             <div className="flex flex-col items-center justify-center p-8 text-center">
               <div className="text-3xl mb-3 opacity-80">🔎</div>
-              <div className="text-sm font-medium text-[#1f1f1f] dark:text-[#e3e3e3] mb-1">
+              <div className="text-sm font-medium text-m3-on-surface mb-1">
                 No tools found for "{query}"
               </div>
-              <div className="text-xs text-[#444746] dark:text-[#c4c7c5]">
+              <div className="text-xs text-m3-on-surface-variant">
                 Try searching "pdf", "compress", "crop", "sign", or "drop"
               </div>
             </div>
@@ -466,19 +466,19 @@ export default function CommandPalette({
         </div>
 
         {/* Footer shortcuts hint */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#f8fafd] dark:bg-[#131314] border-t border-[#c7c7c7] dark:border-[#444746] text-[11px] text-[#444746] dark:text-[#c4c7c5]">
+        <div className="flex items-center justify-between px-4 py-3 bg-m3-surface-container-low border-t border-m3-outline-variant/40 text-[11px] text-m3-on-surface-variant">
           <div className="hidden sm:flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↑</kbd>
-              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↓</kbd>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 shadow-sm font-mono text-[9px] font-bold text-m3-on-surface-variant">↑</kbd>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 shadow-sm font-mono text-[9px] font-bold text-m3-on-surface-variant">↓</kbd>
               Navigate
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">↵</kbd>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 shadow-sm font-mono text-[9px] font-bold text-m3-on-surface-variant">↵</kbd>
               Open
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded-md bg-[#ffffff] dark:bg-[#1e1f20] border border-[#c7c7c7] dark:border-[#444746] shadow-sm font-mono text-[9px] font-bold">ESC</kbd>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 shadow-sm font-mono text-[9px] font-bold text-m3-on-surface-variant">ESC</kbd>
               Close
             </span>
           </div>
