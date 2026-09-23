@@ -1,39 +1,59 @@
 // App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer (Google Material Design 3)
 import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import "./styles.css";
 import { useAuth } from "./useAuth";
 import HomePage, { LogoMark } from "./HomePage";
-import PDFCompressor   from "./PDFCompressor";
-import ImageCompressor from "./ImageCompressor";
-import ImageConverter  from "./ImageConverter";
-import ImageToPDF      from "./ImageToPDF";
-import PDFMerger       from "./PDFMerger";
-import PDFToImage      from "./PDFToImage";
-import SplitPDF        from "./SplitPDF";
-import PDFOrganizer    from "./PDFOrganizer";
-import PDFSecurity     from "./PDFSecurity";
-import PDFWatermark    from "./PDFWatermark";
-import BulkImageCompressor from "./BulkImageCompressor";
-import PassportResizer     from "./PassportResizer";
-import ImageCropResize    from "./ImageCropResize";
-import BackgroundRemover  from "./BackgroundRemover";
-import QRCodeStudio       from "./QRCodeStudio";
-import PDFImageOCR        from "./PDFImageOCR";
-import PDFSignStudio      from "./PDFSignStudio";
-import ImageUpscaler      from "./ImageUpscaler";
-import SVGVectorizer      from "./SVGVectorizer";
-import EXIFCleaner        from "./EXIFCleaner";
-import CrushDrop          from "./CrushDrop";
-import LocalHistory       from "./LocalHistory";
-import VideoCompressor   from "./VideoCompressor";
-import DocumentScanner  from "./DocumentScanner";
+
+// ── Lazy-loaded Route Components for Code-Splitting ──
+const PDFCompressor       = lazy(() => import("./PDFCompressor"));
+const ImageCompressor     = lazy(() => import("./ImageCompressor"));
+const ImageConverter      = lazy(() => import("./ImageConverter"));
+const ImageToPDF          = lazy(() => import("./ImageToPDF"));
+const PDFMerger           = lazy(() => import("./PDFMerger"));
+const PDFToImage          = lazy(() => import("./PDFToImage"));
+const SplitPDF            = lazy(() => import("./SplitPDF"));
+const PDFOrganizer        = lazy(() => import("./PDFOrganizer"));
+const PDFSecurity         = lazy(() => import("./PDFSecurity"));
+const PDFWatermark        = lazy(() => import("./PDFWatermark"));
+const BulkImageCompressor = lazy(() => import("./BulkImageCompressor"));
+const PassportResizer     = lazy(() => import("./PassportResizer"));
+const ImageCropResize     = lazy(() => import("./ImageCropResize"));
+const BackgroundRemover   = lazy(() => import("./BackgroundRemover"));
+const QRCodeStudio        = lazy(() => import("./QRCodeStudio"));
+const PDFImageOCR         = lazy(() => import("./PDFImageOCR"));
+const PDFSignStudio       = lazy(() => import("./PDFSignStudio"));
+const ImageUpscaler       = lazy(() => import("./ImageUpscaler"));
+const SVGVectorizer       = lazy(() => import("./SVGVectorizer"));
+const EXIFCleaner         = lazy(() => import("./EXIFCleaner"));
+const CrushDrop           = lazy(() => import("./CrushDrop"));
+const LocalHistory        = lazy(() => import("./LocalHistory"));
+const VideoCompressor     = lazy(() => import("./VideoCompressor"));
+const DocumentScanner     = lazy(() => import("./DocumentScanner"));
+
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
 import { setPendingFile, consumePendingFile } from "./clipboardStore";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
 import { useTheme }       from "./useTheme";
+
+// ── Material Design 3 Route Loading Fallback ──
+function M3RouteFallback() {
+  return (
+    <div className="min-h-[55vh] flex flex-col items-center justify-center p-8 text-center font-sans">
+      <div className="relative w-12 h-12 mb-4 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full border-[3.5px] border-m3-surface-container-high border-t-m3-primary animate-spin" />
+      </div>
+      <div className="text-sm font-medium text-m3-on-surface tracking-wide">
+        Loading tool...
+      </div>
+      <div className="text-xs text-m3-on-surface-variant mt-1">
+        Preparing high-speed on-device engine
+      </div>
+    </div>
+  );
+}
 
 function GoogleIcon() {
   return (
@@ -752,38 +772,44 @@ export default function App() {
 
       {/* ── Routes ── */}
       <main style={{ flex: 1 }}>
-        <Routes>
-          <Route path="/"              element={<HomePage auth={auth} />} />
-          <Route path="/pdf"           element={<PDFCompressor auth={auth} />} />
-          <Route path="/merge-pdf"     element={<PDFMerger auth={auth} />} />
-          <Route path="/image"         element={<ImageCompressor auth={auth} />} />
-          <Route path="/convert"       element={<ImageConverter auth={auth} />} />
-          <Route path="/img2pdf"       element={<ImageToPDF auth={auth} />} />
-          <Route path="/pdf-to-img"    element={<PDFToImage auth={auth} />} />
-          <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
-          <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
-          <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
-          <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
-          <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
-          <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
-          <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
-          <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
-          <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
-          <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
-          <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
-          <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
-          <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
-          <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
-          <Route path="/drop"              element={<CrushDrop auth={auth} />} />
-          <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
-          <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
-          <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
-          <Route path="*"                  element={<HomePage auth={auth} />} />
-        </Routes>
+        <Suspense fallback={<M3RouteFallback />}>
+          <Routes>
+            <Route path="/"              element={<HomePage auth={auth} />} />
+            <Route path="/pdf"           element={<PDFCompressor auth={auth} />} />
+            <Route path="/merge-pdf"     element={<PDFMerger auth={auth} />} />
+            <Route path="/image"         element={<ImageCompressor auth={auth} />} />
+            <Route path="/convert"       element={<ImageConverter auth={auth} />} />
+            <Route path="/img2pdf"       element={<ImageToPDF auth={auth} />} />
+            <Route path="/pdf-to-img"    element={<PDFToImage auth={auth} />} />
+            <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
+            <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
+            <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
+            <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
+            <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
+            <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
+            <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
+            <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
+            <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
+            <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
+            <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
+            <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
+            <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
+            <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
+            <Route path="/drop"              element={<CrushDrop auth={auth} />} />
+            <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
+            <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
+            <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
+            <Route path="*"                  element={<HomePage auth={auth} />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* ── Offline Local History Drawer ── */}
-      <LocalHistory auth={auth} isOpen={showHistoryDrawer} onClose={() => setShowHistoryDrawer(false)} />
+      {showHistoryDrawer && (
+        <Suspense fallback={null}>
+          <LocalHistory auth={auth} isOpen={showHistoryDrawer} onClose={() => setShowHistoryDrawer(false)} />
+        </Suspense>
+      )}
 
       {/* ── Command Palette (Ctrl+K) ── */}
       <CommandPalette
