@@ -1,4 +1,4 @@
-// ClipboardPasteModal.jsx — Neo-Brutalist Quick Action Modal for Pasted Files (Ctrl + V)
+// ClipboardPasteModal.jsx — Material Design 3 Quick Action Modal for Pasted Files (Ctrl + V)
 import { useState, useEffect, useRef } from "react";
 
 function formatBytes(bytes) {
@@ -103,72 +103,105 @@ export default function ClipboardPasteModal({ file, onClose, onSelectTool }) {
   const actions = isVideo ? VIDEO_ACTIONS : isImage ? IMAGE_ACTIONS : isPdf ? PDF_ACTIONS : [];
 
   return (
-    <div className="clipboard-modal-overlay" onClick={onClose}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm transition-opacity font-sans" onClick={onClose}>
       <div
         ref={modalRef}
-        className="clipboard-modal"
+        className="w-full max-w-2xl max-h-[90vh] bg-m3-surface-container rounded-3xl shadow-m3-elevation-3 border border-m3-outline-variant/60 overflow-hidden flex flex-col text-m3-on-surface transition-colors"
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Pasted File Action Selector"
       >
         {/* Header */}
-        <div className="clipboard-modal-header">
-          <div className="clipboard-modal-title">
-            <span className="clipboard-modal-badge">📋 CLIPBOARD DETECTED</span>
-            <h3>Where would you like to use this {isImage ? "image" : isPdf ? "PDF" : "file"}?</h3>
+        <div className="flex items-start justify-between px-5 sm:px-6 py-4 sm:py-5 border-b border-m3-outline-variant/40 bg-m3-surface-container-low gap-3">
+          <div className="flex flex-col">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-m3-secondary-container text-m3-on-secondary-container border border-m3-primary/30 w-fit mb-1.5 shadow-sm">
+              <span>📋</span>
+              <span>Clipboard Detected</span>
+            </span>
+            <h3 className="text-lg sm:text-xl font-normal text-m3-on-surface tracking-tight leading-snug">
+              Where would you like to use this {isImage ? "image" : isPdf ? "PDF" : "file"}?
+            </h3>
           </div>
-          <button type="button" className="clipboard-close-btn" onClick={onClose} title="Close (ESC)">
+          <button
+            type="button"
+            className="w-8 h-8 rounded-full text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-highest transition-colors flex items-center justify-center flex-shrink-0 text-sm font-semibold"
+            onClick={onClose}
+            title="Close (ESC)"
+          >
             ✕
           </button>
         </div>
 
         {/* File Card Info */}
-        <div className="clipboard-file-info-card">
-          {previewUrl && (
-            <div className="clipboard-thumb-wrap">
-              <img src={previewUrl} alt="Pasted clipboard preview" className="clipboard-thumb-img" />
+        <div className="flex items-center gap-4 px-5 sm:px-6 py-3.5 bg-m3-surface-container border-b border-m3-outline-variant/40">
+          {previewUrl ? (
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-m3-surface-container-high border border-m3-outline-variant/60 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <img src={previewUrl} alt="Pasted clipboard preview" className="w-full h-full object-cover" />
             </div>
-          )}
-          {!previewUrl && (
-            <div className="clipboard-thumb-wrap clipboard-pdf-icon">
+          ) : (
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-m3-surface-container-high border border-m3-outline-variant/60 flex items-center justify-center flex-shrink-0 shadow-sm text-2xl sm:text-3xl text-m3-primary">
               <span>📄</span>
             </div>
           )}
-          <div className="clipboard-file-details">
-            <div className="clipboard-file-name">{file.name || (isImage ? "Pasted_Screenshot.png" : "Pasted_Document.pdf")}</div>
-            <div className="clipboard-file-meta">
-              <span className="clipboard-meta-pill">{formatBytes(file.size)}</span>
-              <span className="clipboard-meta-pill">{file.type || (isImage ? "image/png" : "application/pdf")}</span>
-              <span className="clipboard-meta-ready">⚡ Ready to Process</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-medium text-sm sm:text-base text-m3-on-surface truncate break-all mb-1">
+              {file.name || (isImage ? "Pasted_Screenshot.png" : "Pasted_Document.pdf")}
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-2 py-0.5 rounded-full bg-m3-surface-container-high text-m3-on-surface-variant border border-m3-outline-variant/40 font-mono text-[11px]">
+                {formatBytes(file.size)}
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-m3-surface-container-high text-m3-on-surface-variant border border-m3-outline-variant/40 font-mono text-[11px]">
+                {file.type || (isImage ? "image/png" : "application/pdf")}
+              </span>
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-green-600 dark:text-green-400 bg-green-500/10 px-2.5 py-0.5 rounded-full">
+                ⚡ Ready to Process
+              </span>
             </div>
           </div>
         </div>
 
         {/* Actions Grid */}
-        <div className="clipboard-actions-header">Select a Tool to Process Immediately:</div>
-        <div className="clipboard-actions-grid">
+        <div className="px-5 sm:px-6 pt-3.5 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-m3-on-surface-variant/80">
+          Select a Tool to Process Immediately:
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 px-5 sm:px-6 py-2 overflow-y-auto max-h-[320px] overscroll-contain">
           {actions.map((act) => (
             <button
               key={act.path}
               type="button"
-              className="clipboard-tool-btn"
+              className="group flex items-center gap-3.5 p-3 rounded-2xl bg-m3-surface-container-low hover:bg-m3-surface-container-high active:bg-m3-secondary-container/40 border border-m3-outline-variant/40 hover:border-m3-primary/40 text-left transition-all duration-150 cursor-pointer shadow-sm hover:shadow-m3-elevation-1"
               onClick={() => onSelectTool(act.path)}
             >
-              <span className="clipboard-tool-icon">{act.icon}</span>
-              <div className="clipboard-tool-text">
-                <div className="clipboard-tool-label">{act.label}</div>
-                <div className="clipboard-tool-desc">{act.desc}</div>
+              <div className="w-10 h-10 rounded-xl bg-m3-surface-container-highest group-hover:bg-m3-primary/10 flex items-center justify-center text-xl flex-shrink-0 transition-colors">
+                <span className="clipboard-tool-icon">{act.icon}</span>
               </div>
-              <span className="clipboard-tool-arrow">➜</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-m3-on-surface group-hover:text-m3-primary transition-colors truncate">
+                  {act.label}
+                </div>
+                <div className="text-[11px] text-m3-on-surface-variant truncate block mt-0.5">
+                  {act.desc}
+                </div>
+              </div>
+              <span className="text-m3-outline group-hover:text-m3-primary group-hover:translate-x-0.5 transition-all text-sm font-bold flex-shrink-0 ml-1">
+                ➜
+              </span>
             </button>
           ))}
         </div>
 
         {/* Footer */}
-        <div className="clipboard-modal-footer">
-          <span>Press <kbd className="cmd-mini-kbd">ESC</kbd> or click outside to cancel</span>
-          <button type="button" className="clipboard-cancel-btn" onClick={onClose}>
+        <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-m3-surface-container-low border-t border-m3-outline-variant/40 text-xs text-m3-on-surface-variant">
+          <span className="flex items-center gap-1.5">
+            Press <kbd className="px-1.5 py-0.5 rounded-md bg-m3-surface-container-high border border-m3-outline-variant/60 shadow-sm font-mono text-[10px] font-bold text-m3-on-surface-variant">ESC</kbd> or click outside to cancel
+          </span>
+          <button
+            type="button"
+            className="px-4 py-1.5 rounded-full text-xs font-medium text-m3-on-surface-variant hover:text-m3-on-surface hover:bg-m3-surface-container-highest border border-m3-outline-variant/60 transition-colors"
+            onClick={onClose}
+          >
             Cancel
           </button>
         </div>
