@@ -1,5 +1,5 @@
-// FlashCrush Service Worker v3 — Complete Offline PWA Caching for Desktop & Mobile
-const CACHE_NAME = "flashcrush-cache-v3";
+// FlashCrush Service Worker v4 — Complete Offline PWA Caching for Desktop & Mobile
+const CACHE_NAME = "flashcrush-cache-v4";
 
 const PRECACHE_ASSETS = [
   "/",
@@ -40,13 +40,16 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Ignore non-GET, Google Drive upload/API endpoints, and browser extensions
+  // Ignore non-GET, Google Auth/Drive endpoints, WebRTC signaling, and browser extensions
   if (
     req.method !== "GET" ||
     url.protocol.startsWith("chrome") ||
     url.protocol.startsWith("edge") ||
     url.hostname.includes("googleapis.com") ||
     url.hostname.includes("accounts.google.com") ||
+    url.hostname.includes("apis.google.com") ||
+    url.hostname.includes("google.com") ||
+    url.hostname.includes("gstatic.com") ||
     url.hostname.includes("peerjs.com") ||
     url.hostname.includes("metered.ca")
   ) {

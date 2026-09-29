@@ -232,7 +232,14 @@ export function useAuth() {
               resolve(true);
             },
             error_callback: (err) => {
-              setAuthError("Sign-in pop-up was blocked. Please allow popups in your browser address bar.");
+              console.warn("[FlashCrush] Google OAuth error_callback:", err);
+              if (err?.type === "popup_blocked") {
+                setAuthError("Sign-in pop-up was blocked. Please allow popups in your browser address bar.");
+              } else if (err?.type === "popup_closed") {
+                setAuthError("Sign-in was cancelled or the pop-up was closed.");
+              } else {
+                setAuthError(err?.message || "Sign-in failed. Please try again.");
+              }
               setAuthStatus("idle");
               resolve(false);
             },
