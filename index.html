@@ -23,7 +23,6 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://nanocrush.vercel.app/" />
     <meta name="google-site-verification" content="8qtmD0p7C0NyIPpXQpFyeO-w_TzzLnLPycMB66SB40M" />
-    <meta name="strix-verification" content="strix-verify-81d114dc58bc975b5b456f9c25c85837" />
 
     <!-- ══════════════════════════════════════
          FAVICONS & PWA MANIFEST
@@ -144,9 +143,18 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
 
-    <!-- Google Fonts: Roboto (Body/Components) & Outfit (Brand/Headings) -->
+    <!-- Preload Critical Fonts & Material Symbols (Outfit, Roboto, JetBrains Mono, Material Symbols) -->
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      crossorigin />
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" />
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      crossorigin />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
 
     <!-- Prevent Theme Flash (FOUC) on Load -->
     <script>
