@@ -37,6 +37,7 @@ import { setPendingFile, consumePendingFile } from "./clipboardStore";
 import { getAllHistoryRecords } from "./historyDB";
 import { usePWA }         from "./usePWA";
 import { useTheme }       from "./useTheme";
+import ErrorBoundary      from "./ErrorBoundary";
 
 // ── Material Design 3 Route Loading Fallback ──
 function M3RouteFallback() {
@@ -772,36 +773,38 @@ export default function App() {
 
       {/* ── Routes ── */}
       <main style={{ flex: 1 }}>
-        <Suspense fallback={<M3RouteFallback />}>
-          <Routes>
-            <Route path="/"              element={<HomePage auth={auth} />} />
-            <Route path="/pdf"           element={<PDFCompressor auth={auth} />} />
-            <Route path="/merge-pdf"     element={<PDFMerger auth={auth} />} />
-            <Route path="/image"         element={<ImageCompressor auth={auth} />} />
-            <Route path="/convert"       element={<ImageConverter auth={auth} />} />
-            <Route path="/img2pdf"       element={<ImageToPDF auth={auth} />} />
-            <Route path="/pdf-to-img"    element={<PDFToImage auth={auth} />} />
-            <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
-            <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
-            <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
-            <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
-            <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
-            <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
-            <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
-            <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
-            <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
-            <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
-            <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
-            <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
-            <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
-            <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
-            <Route path="/drop"              element={<CrushDrop auth={auth} />} />
-            <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
-            <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
-            <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
-            <Route path="*"                  element={<HomePage auth={auth} />} />
-          </Routes>
-        </Suspense>
+        <ErrorBoundary key={location.pathname}>
+          <Suspense fallback={<M3RouteFallback />}>
+            <Routes>
+              <Route path="/"              element={<HomePage auth={auth} />} />
+              <Route path="/pdf"           element={<PDFCompressor auth={auth} />} />
+              <Route path="/merge-pdf"     element={<PDFMerger auth={auth} />} />
+              <Route path="/image"         element={<ImageCompressor auth={auth} />} />
+              <Route path="/convert"       element={<ImageConverter auth={auth} />} />
+              <Route path="/img2pdf"       element={<ImageToPDF auth={auth} />} />
+              <Route path="/pdf-to-img"    element={<PDFToImage auth={auth} />} />
+              <Route path="/split-pdf"     element={<SplitPDF auth={auth} />} />
+              <Route path="/organize-pdf"  element={<PDFOrganizer auth={auth} />} />
+              <Route path="/pdf-security"  element={<PDFSecurity auth={auth} />} />
+              <Route path="/pdf-watermark" element={<PDFWatermark auth={auth} />} />
+              <Route path="/bulk-compress"     element={<BulkImageCompressor auth={auth} />} />
+              <Route path="/passport-resizer"  element={<PassportResizer auth={auth} />} />
+              <Route path="/image-crop"        element={<ImageCropResize auth={auth} />} />
+              <Route path="/bg-remover"        element={<BackgroundRemover auth={auth} />} />
+              <Route path="/qr-studio"         element={<QRCodeStudio auth={auth} />} />
+              <Route path="/ocr"               element={<PDFImageOCR auth={auth} />} />
+              <Route path="/sign-pdf"          element={<PDFSignStudio auth={auth} />} />
+              <Route path="/upscaler"          element={<ImageUpscaler auth={auth} />} />
+              <Route path="/vectorize"         element={<SVGVectorizer auth={auth} />} />
+              <Route path="/exif-cleaner"      element={<EXIFCleaner auth={auth} />} />
+              <Route path="/drop"              element={<CrushDrop auth={auth} />} />
+              <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
+              <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
+              <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
+              <Route path="*"                  element={<HomePage auth={auth} />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       {/* ── Offline Local History Drawer ── */}
