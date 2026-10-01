@@ -142,21 +142,24 @@ export function useAuth() {
   const gisReadyRef = useRef(false);
   const gapiPickerReadyRef = useRef(false);
 
-  // Restore or sync Firebase Auth state
+  const isSigningOutRef = useRef(false);
+
+  // Restore or sync Firebase Auth state (Run once on mount)
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (fbUser) => {
-      if (fbUser && !user) {
-        setUser({
+      if (isSigningOutRef.current) return;
+      if (fbUser) {
+        setUser(prev => prev || {
           name: fbUser.displayName,
           email: fbUser.email,
           picture: fbUser.photoURL,
           uid: fbUser.uid,
         });
-        setAuthStatus("signedin");
+        setAuthStatus(prev => (prev === "signedin" ? prev : "signedin"));
       }
     });
     return unsub;
-  }, [user]);
+  }, []);
 
   const ensureGisReady = useCallback(async () => {
     if (window.google?.accounts?.oauth2) {
@@ -262,6 +265,7 @@ export function useAuth() {
 
   // ── Sign Out ────────────────────────────────────────────────────────────────
   const signOut = useCallback(async () => {
+    isSigningOutRef.current = true;
     driveTokenRef.current = { accessToken: null, expiresAt: 0 };
     clearAuthState();
     setUser(null);
@@ -269,6 +273,9 @@ export function useAuth() {
     try {
       await fbSignOut(auth);
     } catch { /* ignore */ }
+    finally {
+      isSigningOutRef.current = false;
+    }
   }, []);
 
   const clearDriveToken = useCallback(() => {
