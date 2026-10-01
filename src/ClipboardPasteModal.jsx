@@ -31,6 +31,7 @@ const PDF_ACTIONS = [
   { path: "/organize-pdf", label: "Organize & Rotate", icon: "🔄", desc: "Reorder & rotate pages visually" },
   { path: "/pdf-security", label: "Lock & Unlock", icon: "🔐", desc: "AES-256 password protection" },
   { path: "/pdf-watermark", label: "Watermark", icon: "🏷️", desc: "Add stamp & page numbers" },
+  { path: "/pdf-to-ppt", label: "PDF to PowerPoint", icon: "📊", desc: "Convert PDF pages to 16:9 PPTX slides" },
   { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
 ];
 
