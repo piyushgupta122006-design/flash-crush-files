@@ -30,6 +30,7 @@ const CrushDrop           = lazy(() => import("./CrushDrop"));
 const LocalHistory        = lazy(() => import("./LocalHistory"));
 const VideoCompressor     = lazy(() => import("./VideoCompressor"));
 const DocumentScanner     = lazy(() => import("./DocumentScanner"));
+const PDFToPPT             = lazy(() => import("./PDFToPPT"));
 
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
@@ -78,6 +79,7 @@ const PDF_TOOLS = [
   { path: "/ocr", label: "OCR Text Extract", desc: "Extract text from scanned PDFs & photos", icon: "🔍" },
   { path: "/sign-pdf", label: "PDF E-Sign Studio", desc: "Draw, type, or upload signatures & stamps", icon: "✍️" },
   { path: "/scan-pdf", label: "Doc Scanner (Camera)", desc: "Scan documents & notes directly to PDF", icon: "📷" },
+  { path: "/pdf-to-ppt", label: "PDF to PowerPoint", desc: "Convert PDF pages to 16:9 PPTX slides", icon: "📊" },
 ];
 
 const IMAGE_TOOLS = [
@@ -809,6 +811,7 @@ export default function App() {
               <Route path="/drop"              element={<CrushDrop auth={auth} />} />
               <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
               <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
+              <Route path="/pdf-to-ppt"        element={<PDFToPPT auth={auth} />} />
               <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
               <Route path="*"                  element={<HomePage auth={auth} />} />
             </Routes>
