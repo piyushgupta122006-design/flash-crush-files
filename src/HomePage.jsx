@@ -142,6 +142,17 @@ function IconPdf2Img() {
   );
 }
 
+function IconPPT() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <line x1="8" y1="21" x2="16" y2="21" />
+      <line x1="12" y1="17" x2="12" y2="21" />
+      <path d="M9 7h4a2 2 0 0 1 0 4H9V7z" />
+    </svg>
+  );
+}
+
 function IconSplit() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -387,6 +398,7 @@ export default function HomePage() {
     { path: "/img2pdf", category: "pdf", title: "Image to PDF", desc: "Convert one or multiple images into a professional PDF document. Custom margins and page fit.", icon: <IconImg2Pdf />, tags: ["Multi-Image", "A4 & Letter", "Instant"], cta: "Convert to PDF" },
     { path: "/convert", category: "image", title: "Image Converter", desc: "Convert between JPG, PNG, WebP, AVIF, SVG, BMP, and GIF with adjustable quality and instant download.", icon: <IconConvert />, tags: ["All Formats", "Lossless Mode"], cta: "Convert Format" },
     { path: "/pdf-to-img", category: "pdf", title: "PDF to Images", desc: "Extract every page of your PDF into high-resolution JPG, PNG, or WebP images with 1-click ZIP download.", icon: <IconPdf2Img />, tags: ["PDF → JPG/PNG", "1-Click ZIP", "Up to 300 DPI"], cta: "Extract Images" },
+    { path: "/pdf-to-ppt", category: "pdf", title: "PDF to PowerPoint", desc: "Convert PDF pages into crisp 16:9 widescreen PowerPoint presentation slides (.pptx). 100% on-device.", icon: <IconPPT />, tags: ["PDF → PPTX", "16:9 Slides", "100% Private"], cta: "Convert to PPT" },
     { path: "/split-pdf", category: "pdf", title: "Split & Extract PDF", desc: "Extract specific pages, split into individual PDFs, or chunk into groups with page thumbnails.", icon: <IconSplit />, tags: ["Extract Pages", "Split All", "ZIP Output"], cta: "Split PDF" },
     { path: "/organize-pdf", category: "pdf", title: "PDF Organizer & Rotator", desc: "Visually reorder, rotate 90/180/270°, delete individual pages, or duplicate pages in real-time.", icon: <IconOrganize />, tags: ["Visual Reorder", "Rotate Pages", "Instant Save"], cta: "Organize Pages" },
     { path: "/pdf-security", category: "pdf", title: "PDF Password Lock & Unlock", desc: "Encrypt PDF with AES-256 password protection, or unlock password-protected PDFs in browser.", icon: <IconLock />, tags: ["AES-256 Lock", "Remove Password", "100% Private"], cta: "Protect PDF" },
