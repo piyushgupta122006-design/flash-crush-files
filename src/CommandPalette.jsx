@@ -94,6 +94,15 @@ const ALL_COMMANDS = [
     path: "/sign-pdf",
     keywords: ["sign", "signature", "e-sign", "stamp", "draw", "contract", "initial", "form"]
   },
+  {
+    id: "pdf-to-ppt",
+    label: "PDF to PowerPoint (PPTX)",
+    desc: "Convert PDF document pages to 16:9 Microsoft PowerPoint presentation slides",
+    category: "PDF",
+    icon: "📊",
+    path: "/pdf-to-ppt",
+    keywords: ["ppt", "pptx", "powerpoint", "slides", "presentation", "slide deck", "keynote", "convert"]
+  },
 
   // ── Image Tools ──
   {
