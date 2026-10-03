@@ -26,7 +26,7 @@ export default defineConfig({
             if (id.includes('peerjs') || id.includes('firebase')) {
               return 'network-vendor';
             }
-            if (id.includes('pptxgenjs')) {
+            if (id.includes('pptxgenjs') || id.includes('docx')) {
               return 'doc-convert-vendor';
             }
           }
