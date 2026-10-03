@@ -103,6 +103,15 @@ const ALL_COMMANDS = [
     path: "/pdf-to-ppt",
     keywords: ["ppt", "pptx", "powerpoint", "slides", "presentation", "slide deck", "keynote", "convert"]
   },
+  {
+    id: "pdf-to-word",
+    label: "PDF to Word (DOCX)",
+    desc: "Convert PDF document pages to editable Microsoft Word documents with fluid paragraphs",
+    category: "PDF",
+    icon: "📝",
+    path: "/pdf2word",
+    keywords: ["word", "docx", "pdf to word", "pdf2word", "office", "convert", "editable", "text"]
+  },
 
   // ── Image Tools ──
   {
