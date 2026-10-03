@@ -32,6 +32,7 @@ const PDF_ACTIONS = [
   { path: "/pdf-security", label: "Lock & Unlock", icon: "🔐", desc: "AES-256 password protection" },
   { path: "/pdf-watermark", label: "Watermark", icon: "🏷️", desc: "Add stamp & page numbers" },
   { path: "/pdf-to-ppt", label: "PDF to PowerPoint", icon: "📊", desc: "Convert PDF pages to 16:9 PPTX slides" },
+  { path: "/pdf2word", label: "PDF to Word", icon: "📝", desc: "Convert PDF to editable Word document" },
   { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
 ];
 
