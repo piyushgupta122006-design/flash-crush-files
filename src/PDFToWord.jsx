@@ -241,6 +241,37 @@ export default function PDFToWord({ auth }) {
         }
       }
 
+      // Profile document-wide baseline intra-line spacing across pages
+      const globalIntraDeltas = [];
+      for (const { rawItems } of pagesData) {
+        if (rawItems.length < 2) continue;
+        const sorted = [...rawItems].sort((a, b) => a.y - b.y || a.x - b.x);
+        const tempLines = [];
+        for (const item of sorted) {
+          let line = tempLines.find(
+            (l) => Math.abs(l.y - item.y) <= Math.max(3, item.fontSize * 0.35)
+          );
+          if (line) {
+            line.items.push(item);
+            line.y = (line.y * (line.items.length - 1) + item.y) / line.items.length;
+          } else {
+            tempLines.push({ y: item.y, items: [item] });
+          }
+        }
+        tempLines.sort((a, b) => a.y - b.y);
+        for (let i = 0; i < tempLines.length - 1; i++) {
+          const dy = tempLines[i + 1].y - tempLines[i].y;
+          if (dy >= bodyFontSize * 0.75 && dy <= bodyFontSize * 1.65) {
+            globalIntraDeltas.push(dy);
+          }
+        }
+      }
+      globalIntraDeltas.sort((a, b) => a - b);
+      const docNormalLineHeight =
+        globalIntraDeltas.length > 0
+          ? globalIntraDeltas[Math.floor(globalIntraDeltas.length / 2)]
+          : bodyFontSize * 1.25;
+
       setProgress(50);
       setProgressMsg("Reconstructing fluid paragraphs & document flow...");
 
@@ -325,19 +356,30 @@ export default function PDFToWord({ auth }) {
 
         if (processedLines.length === 0) continue;
 
-        // 4. Calculate median vertical line-height for this page
-        const lineDeltas = [];
+        // 4. Calculate normal intra-line height and block gap threshold for this page
+        const intraDeltas = [];
+        const allPositiveDeltas = [];
         for (let i = 0; i < processedLines.length - 1; i++) {
           const dy = processedLines[i + 1].y - processedLines[i].y;
-          if (dy > 0 && dy < bodyFontSize * 3.5) {
-            lineDeltas.push(dy);
+          if (dy > 3) {
+            allPositiveDeltas.push(dy);
+            if (dy >= bodyFontSize * 0.75 && dy <= bodyFontSize * 1.65) {
+              intraDeltas.push(dy);
+            }
           }
         }
-        lineDeltas.sort((a, b) => a - b);
-        const medianLineHeight =
-          lineDeltas.length > 0
-            ? lineDeltas[Math.floor(lineDeltas.length / 2)]
-            : bodyFontSize * 1.3;
+        intraDeltas.sort((a, b) => a - b);
+        allPositiveDeltas.sort((a, b) => a - b);
+
+        const normalLineHeight =
+          intraDeltas.length >= 2
+            ? intraDeltas[Math.floor(intraDeltas.length / 2)]
+            : allPositiveDeltas.length > 0
+            ? allPositiveDeltas[Math.floor(allPositiveDeltas.length * 0.25)] || allPositiveDeltas[0]
+            : docNormalLineHeight;
+
+        // Rule 1: Strict Block Gap Detection threshold (>= 1.38x - 1.4x of normal/median line-height)
+        const gapThreshold = normalLineHeight * 1.38;
 
         // 5. Reconstruct Fluid Paragraphs with Strict Structural Boundaries
         const paragraphs = [];
@@ -414,7 +456,7 @@ export default function PDFToWord({ auth }) {
             // Rule 2: Previous item was a bullet/list item. Never merge non-bullet or return to normal text into it
             const dy = line.y - currentPara.lastY;
             const isIndentedSubLine =
-              dy <= medianLineHeight * 1.3 &&
+              dy < gapThreshold &&
               line.x > currentPara.firstX + 8 &&
               !/^[A-Z]/.test(cleanText);
             if (!isIndentedSubLine) {
@@ -425,14 +467,14 @@ export default function PDFToWord({ auth }) {
             isNewParagraph = true;
           } else {
             const dy = line.y - currentPara.lastY;
-            // Rule 1: Vertical gap > 1.3x median line-height
-            if (dy > medianLineHeight * 1.3) {
+            // Rule 1: Strict Block Gap Detection: dy >= 1.4x normal line-height represents explicit empty line
+            if (dy >= gapThreshold) {
               isNewParagraph = true;
             } else if (lineIsBold !== currentPara.isBold) {
-              // Rule 1: Sudden change in font weight (e.g. Bold titles vs normal body)
+              // Sudden change in font weight (e.g. Bold titles vs normal body)
               isNewParagraph = true;
             } else if (Math.abs(lineFontSize - currentPara.fontSize) >= 1.5) {
-              // Rule 1: Sudden change in font size
+              // Sudden change in font size
               isNewParagraph = true;
             }
           }
