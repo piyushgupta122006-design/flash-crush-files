@@ -1,5 +1,5 @@
 // App.jsx — FlashCrush with Categorized Dropdown Navigation & Mobile Drawer (Google Material Design 3)
-import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import "./styles.css";
 import { useAuth } from "./useAuth";
@@ -31,6 +31,7 @@ const LocalHistory        = lazy(() => import("./LocalHistory"));
 const VideoCompressor     = lazy(() => import("./VideoCompressor"));
 const DocumentScanner     = lazy(() => import("./DocumentScanner"));
 const PDFToPPT             = lazy(() => import("./PDFToPPT"));
+const PDFToWord            = lazy(() => import("./PDFToWord"));
 
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
@@ -80,6 +81,7 @@ const PDF_TOOLS = [
   { path: "/sign-pdf", label: "PDF E-Sign Studio", desc: "Draw, type, or upload signatures & stamps", icon: "✍️" },
   { path: "/scan-pdf", label: "Doc Scanner (Camera)", desc: "Scan documents & notes directly to PDF", icon: "📷" },
   { path: "/pdf-to-ppt", label: "PDF to PowerPoint", desc: "Convert PDF pages to 16:9 PPTX slides", icon: "📊" },
+  { path: "/pdf2word", label: "PDF to Word", desc: "Convert PDF to editable Word document (.docx)", icon: "📝" },
 ];
 
 const IMAGE_TOOLS = [
@@ -812,6 +814,8 @@ export default function App() {
               <Route path="/video-compress"    element={<VideoCompressor auth={auth} />} />
               <Route path="/scan-pdf"          element={<DocumentScanner auth={auth} />} />
               <Route path="/pdf-to-ppt"        element={<PDFToPPT auth={auth} />} />
+              <Route path="/pdf2word"          element={<PDFToWord auth={auth} />} />
+              <Route path="/pdf-to-word"       element={<Navigate to="/pdf2word" replace />} />
               <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
               <Route path="*"                  element={<HomePage auth={auth} />} />
             </Routes>
