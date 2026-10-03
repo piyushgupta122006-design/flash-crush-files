@@ -339,53 +339,100 @@ export default function PDFToWord({ auth }) {
             ? lineDeltas[Math.floor(lineDeltas.length / 2)]
             : bodyFontSize * 1.3;
 
-        // 5. Reconstruct Fluid Paragraphs without hardcoded breaks
+        // 5. Reconstruct Fluid Paragraphs with Strict Structural Boundaries
         const paragraphs = [];
         let currentPara = null;
 
         const finalizeCurrentPara = () => {
           if (!currentPara || currentPara.runs.length === 0) return;
+          // If paragraph is a heading, drop trailing spaces from the last run
+          if (currentPara.headingLevel && currentPara.runs.length > 0) {
+            const last = currentPara.runs[currentPara.runs.length - 1];
+            last.text = last.text.trimEnd();
+          }
           paragraphs.push(currentPara);
           currentPara = null;
         };
 
+        const BULLET_REGEX =
+          /^\s*[\u2022\u00b7\u25cf\u25cb\u25a0\u2023\u2219\u2043\-\*\uf0b7]/;
+        const NUMBERED_REGEX = /^\s*(\d{1,3}[\.\)]|[a-zA-Z][\.\)])\s+/;
+        const BULLET_STRIP_REGEX =
+          /^\s*[\u2022\u00b7\u25cf\u25cb\u25a0\u2023\u2219\u2043\-\*\uf0b7]\s*/;
+        const SECTION_KEYWORD_REGEX =
+          /^(aim|theory|conclusion|objective|procedure|results?|discussion|abstract|introduction|summary|overview|methodology|references?|background|materials?|apparatus|observation|precautions?):?$/i;
+
         for (let i = 0; i < processedLines.length; i++) {
           const line = processedLines[i];
           const text = line.text;
+          const cleanText = text.trim();
+          if (!cleanText) continue;
+
+          const lineIsBold =
+            line.runs.length > 0 &&
+            line.runs.every((r) => r.isBold || r.text.trim() === "");
+          const lineFontSize = line.fontSize;
+
+          // Check if line is a bullet or numbered list item (test both raw line.text and cleanText)
+          const isBullet =
+            BULLET_REGEX.test(line.text) || BULLET_REGEX.test(cleanText);
+          const isNumbered =
+            NUMBERED_REGEX.test(line.text) || NUMBERED_REGEX.test(cleanText);
+          const isList = isBullet || isNumbered;
+
+          // Check for isolated section headings (Aim, Theory, Conclusion, etc.)
+          const isSectionKeyword = SECTION_KEYWORD_REGEX.test(cleanText);
+          const isShortIsolatedTitle =
+            cleanText.length < 65 &&
+            (lineIsBold || lineFontSize >= bodyFontSize * 1.1) &&
+            !/[.!?]$/.test(cleanText);
 
           // Determine if this line is a heading
           let headingLevel = null;
           if (detectHeadings) {
-            if (line.fontSize >= bodyFontSize * 1.5) {
+            if (lineFontSize >= bodyFontSize * 1.5) {
               headingLevel = HeadingLevel.HEADING_1;
-            } else if (line.fontSize >= bodyFontSize * 1.25) {
+            } else if (lineFontSize >= bodyFontSize * 1.25) {
               headingLevel = HeadingLevel.HEADING_2;
             } else if (
-              line.fontSize >= bodyFontSize * 1.1 ||
-              (line.runs.every((r) => r.isBold) && text.length < 90 && !/[.!?]$/.test(text))
+              isSectionKeyword ||
+              isShortIsolatedTitle ||
+              lineFontSize >= bodyFontSize * 1.1
             ) {
               headingLevel = HeadingLevel.HEADING_3;
             }
           }
 
-          // Check if line is a bullet or numbered list item
-          const isBullet = /^[\u2022\u25E6\u25AA\u2023\u2219\*\-]\s+(.*)/.test(text);
-          const isNumbered = /^(\d{1,3}[\.\)]|[a-zA-Z][\.\)])\s+(.*)/.test(text);
-          const isList = isBullet || isNumbered;
-
-          // Decide if we should start a new paragraph
+          // Decide if we MUST start a new paragraph (Rule 1, 2, 3)
           let isNewParagraph = false;
           if (!currentPara) {
             isNewParagraph = true;
-          } else if (headingLevel !== null || currentPara.headingLevel !== null) {
+          } else if (isList) {
+            // Rule 2: Jab bhi koi line is bullet regex se match kare, strictly ek naya paragraph/list item initialize karo
             isNewParagraph = true;
-          } else if (isList || currentPara.isList) {
+          } else if (currentPara.isList) {
+            // Rule 2: Previous item was a bullet/list item. Never merge non-bullet or return to normal text into it
+            const dy = line.y - currentPara.lastY;
+            const isIndentedSubLine =
+              dy <= medianLineHeight * 1.3 &&
+              line.x > currentPara.firstX + 8 &&
+              !/^[A-Z]/.test(cleanText);
+            if (!isIndentedSubLine) {
+              isNewParagraph = true;
+            }
+          } else if (headingLevel !== null || currentPara.headingLevel !== null) {
+            // Rule 1 & 3: Never merge anything into a heading, or a heading into previous text
             isNewParagraph = true;
           } else {
-            // Check vertical gap from previous line
             const dy = line.y - currentPara.lastY;
-            if (dy > medianLineHeight * 1.65) {
-              // Obvious intentional paragraph gap in document
+            // Rule 1: Vertical gap > 1.3x median line-height
+            if (dy > medianLineHeight * 1.3) {
+              isNewParagraph = true;
+            } else if (lineIsBold !== currentPara.isBold) {
+              // Rule 1: Sudden change in font weight (e.g. Bold titles vs normal body)
+              isNewParagraph = true;
+            } else if (Math.abs(lineFontSize - currentPara.fontSize) >= 1.5) {
+              // Rule 1: Sudden change in font size
               isNewParagraph = true;
             }
           }
@@ -396,13 +443,16 @@ export default function PDFToWord({ auth }) {
               headingLevel,
               isList,
               isBullet,
-              runs: [...line.runs],
+              isBold: lineIsBold,
+              fontSize: lineFontSize,
+              firstX: line.x,
+              runs: line.runs.map((r) => ({ ...r })),
               lastY: line.y,
-              lastText: line.text,
+              lastText: cleanText,
             };
           } else {
             // Merge line into ongoing fluid paragraph
-            let runsToAdd = [...line.runs];
+            let runsToAdd = line.runs.map((r) => ({ ...r }));
 
             // Smart de-hyphenation: check if previous line ended with hyphen and next line starts with lowercase
             let dehyphenated = false;
@@ -420,22 +470,32 @@ export default function PDFToWord({ auth }) {
               if (lastRun && !lastRun.text.endsWith(" ") && !runsToAdd[0]?.text.startsWith(" ")) {
                 currentPara.runs.push({
                   text: " ",
-                  isBold: false,
+                  isBold: currentPara.isBold,
                   isItalic: false,
-                  fontSize: line.fontSize,
+                  fontSize: lineFontSize,
                 });
               }
             }
 
             currentPara.runs.push(...runsToAdd);
             currentPara.lastY = line.y;
-            currentPara.lastText = line.text;
+            currentPara.lastText = cleanText;
           }
         }
         finalizeCurrentPara();
 
         // Convert constructed paragraphs to docx Paragraph objects
         for (const p of paragraphs) {
+          // If bullet item, strip leading bullet marker character from runs so native Word bullet doesn't duplicate
+          if (p.isBullet && p.runs.length > 0) {
+            if (BULLET_STRIP_REGEX.test(p.runs[0].text)) {
+              p.runs[0].text = p.runs[0].text.replace(BULLET_STRIP_REGEX, "");
+              if (!p.runs[0].text.trim() && p.runs.length > 1) {
+                p.runs.shift();
+              }
+            }
+          }
+
           // Merge adjacent runs with identical styling to optimize docx XML size
           const mergedRuns = [];
           for (const r of p.runs) {
@@ -450,6 +510,18 @@ export default function PDFToWord({ auth }) {
             } else {
               mergedRuns.push({ ...r });
             }
+          }
+
+          // If bullet item, ensure leading bullet symbol is completely stripped from mergedRuns[0]
+          if (p.isBullet && mergedRuns.length > 0) {
+            mergedRuns[0].text = mergedRuns[0].text.replace(BULLET_STRIP_REGEX, "");
+          }
+
+          // If heading, ensure trailing space is dropped
+          if (p.headingLevel && mergedRuns.length > 0) {
+            mergedRuns[mergedRuns.length - 1].text = mergedRuns[
+              mergedRuns.length - 1
+            ].text.trimEnd();
           }
 
           // Count words
@@ -473,8 +545,8 @@ export default function PDFToWord({ auth }) {
             children: textRunElements,
             spacing: {
               line: 276, // 1.15 line spacing
-              before: p.headingLevel ? 200 : 0,
-              after: p.headingLevel ? 100 : 120, // 6pt after normal paragraph
+              before: p.headingLevel ? 240 : 0,
+              after: p.headingLevel ? 120 : p.isList ? 60 : 120,
             },
           };
 
