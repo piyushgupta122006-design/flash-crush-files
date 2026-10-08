@@ -33,6 +33,7 @@ const PDF_ACTIONS = [
   { path: "/pdf-watermark", label: "Watermark", icon: "🏷️", desc: "Add stamp & page numbers" },
   { path: "/pdf-to-ppt", label: "PDF to PowerPoint", icon: "📊", desc: "Convert PDF pages to 16:9 PPTX slides" },
   { path: "/pdf2word", label: "PDF to Word", icon: "📝", desc: "Convert PDF to editable Word document" },
+  { path: "/pdf2excel", label: "PDF to Excel / CSV", icon: "📈", desc: "Extract structured tables into Excel (.xlsx) & CSV" },
   { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
 ];
 
