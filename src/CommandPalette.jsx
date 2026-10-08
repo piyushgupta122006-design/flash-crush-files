@@ -112,6 +112,15 @@ const ALL_COMMANDS = [
     path: "/pdf2word",
     keywords: ["word", "docx", "pdf to word", "pdf2word", "office", "convert", "editable", "text"]
   },
+  {
+    id: "pdf-to-excel",
+    label: "PDF to Excel / CSV",
+    desc: "Extract structured tables into organized Excel (.xlsx) and CSV sheets with Table Block Isolation",
+    category: "PDF",
+    icon: "📈",
+    path: "/pdf2excel",
+    keywords: ["excel", "xlsx", "csv", "spreadsheet", "table", "pdf to excel", "pdf2excel", "sheet"]
+  },
 
   // ── Image Tools ──
   {
