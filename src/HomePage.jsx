@@ -175,6 +175,16 @@ function IconExcel() {
   );
 }
 
+function IconMarkdown() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M7 8v8l3-3 3 3V8" />
+      <path d="M17 12l-2 2m0-4v4" />
+    </svg>
+  );
+}
+
 function IconSplit() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -423,6 +433,7 @@ export default function HomePage() {
     { path: "/pdf-to-ppt", category: "pdf", title: "PDF to PowerPoint", desc: "Convert PDF pages into crisp 16:9 widescreen PowerPoint presentation slides (.pptx). 100% on-device.", icon: <IconPPT />, tags: ["PDF → PPTX", "16:9 Slides", "100% Private"], cta: "Convert to PPT" },
     { path: "/pdf2word", category: "pdf", title: "PDF to Word (DOCX)", desc: "Convert PDF documents into editable Word (.docx) files with fluid paragraphs & heading hierarchy.", icon: <IconWord />, tags: ["PDF → DOCX", "Fluid Flow", "100% Private"], cta: "Convert to Word" },
     { path: "/pdf2excel", category: "pdf", title: "PDF to Excel & CSV", desc: "Extract structured tables into organized Excel (.xlsx) & CSV sheets with Table Block Isolation.", icon: <IconExcel />, tags: ["PDF → XLSX / CSV", "2D Matrix", "100% Private"], cta: "Convert to Excel" },
+    { path: "/txt2pdf", category: "pdf", title: "Text & Markdown to PDF", desc: "Convert text & markdown into clean, text-searchable A4 PDFs with vector typography, tables & code blocks.", icon: <IconMarkdown />, tags: ["MD / TXT → PDF", "100% Vector", "100% Private"], cta: "Convert to PDF" },
     { path: "/split-pdf", category: "pdf", title: "Split & Extract PDF", desc: "Extract specific pages, split into individual PDFs, or chunk into groups with page thumbnails.", icon: <IconSplit />, tags: ["Extract Pages", "Split All", "ZIP Output"], cta: "Split PDF" },
     { path: "/organize-pdf", category: "pdf", title: "PDF Organizer & Rotator", desc: "Visually reorder, rotate 90/180/270°, delete individual pages, or duplicate pages in real-time.", icon: <IconOrganize />, tags: ["Visual Reorder", "Rotate Pages", "Instant Save"], cta: "Organize Pages" },
     { path: "/pdf-security", category: "pdf", title: "PDF Password Lock & Unlock", desc: "Encrypt PDF with AES-256 password protection, or unlock password-protected PDFs in browser.", icon: <IconLock />, tags: ["AES-256 Lock", "Remove Password", "100% Private"], cta: "Protect PDF" },

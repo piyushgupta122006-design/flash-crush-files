@@ -33,6 +33,7 @@ const DocumentScanner     = lazy(() => import("./DocumentScanner"));
 const PDFToPPT             = lazy(() => import("./PDFToPPT"));
 const PDFToWord            = lazy(() => import("./PDFToWord"));
 const PDFToExcel           = lazy(() => import("./PDFToExcel"));
+const TextToPDF            = lazy(() => import("./TextToPDF"));
 
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
@@ -84,6 +85,7 @@ const PDF_TOOLS = [
   { path: "/pdf-to-ppt", label: "PDF to PowerPoint", desc: "Convert PDF pages to 16:9 PPTX slides", icon: "📊" },
   { path: "/pdf2word", label: "PDF to Word", desc: "Convert PDF to editable Word document (.docx)", icon: "📝" },
   { path: "/pdf2excel", label: "PDF to Excel / CSV", desc: "Extract structured tables into Excel (.xlsx) & CSV", icon: "📈" },
+  { path: "/txt2pdf", label: "Text/Markdown to PDF", desc: "Convert text & markdown to native vector A4 PDF", icon: "📄" },
 ];
 
 const IMAGE_TOOLS = [
@@ -820,6 +822,9 @@ export default function App() {
               <Route path="/pdf-to-word"       element={<Navigate to="/pdf2word" replace />} />
               <Route path="/pdf2excel"         element={<PDFToExcel auth={auth} />} />
               <Route path="/pdf-to-excel"      element={<Navigate to="/pdf2excel" replace />} />
+              <Route path="/txt2pdf"           element={<TextToPDF auth={auth} />} />
+              <Route path="/text-to-pdf"       element={<Navigate to="/txt2pdf" replace />} />
+              <Route path="/markdown-to-pdf"   element={<Navigate to="/txt2pdf" replace />} />
               <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
               <Route path="*"                  element={<HomePage auth={auth} />} />
             </Routes>

@@ -34,6 +34,12 @@ const PDF_ACTIONS = [
   { path: "/pdf-to-ppt", label: "PDF to PowerPoint", icon: "📊", desc: "Convert PDF pages to 16:9 PPTX slides" },
   { path: "/pdf2word", label: "PDF to Word", icon: "📝", desc: "Convert PDF to editable Word document" },
   { path: "/pdf2excel", label: "PDF to Excel / CSV", icon: "📈", desc: "Extract structured tables into Excel (.xlsx) & CSV" },
+  { path: "/txt2pdf", label: "Text/Markdown to PDF", icon: "📄", desc: "Convert text & markdown to native vector A4 PDF" },
+  { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
+];
+
+const TEXT_ACTIONS = [
+  { path: "/txt2pdf", label: "Text/Markdown to PDF", icon: "📄", desc: "Convert text & markdown to native vector A4 PDF" },
   { path: "/drop", label: "CrushDrop P2P", icon: "🌐", desc: "AirDrop directly to phone or laptop" },
 ];
 
@@ -49,6 +55,7 @@ export default function ClipboardPasteModal({ file, onClose, onSelectTool }) {
   const isImage = file?.type?.startsWith("image/") || file?.name?.match(/\.(jpe?g|png|webp|avif|bmp|svg)$/i);
   const isPdf = file?.type === "application/pdf" || file?.name?.match(/\.pdf$/i);
   const isVideo = file?.type?.startsWith("video/") || file?.type?.startsWith("audio/") || file?.name?.match(/\.(mp4|webm|mov|mkv|avi|mp3|wav)$/i);
+  const isText = file?.type?.startsWith("text/") || file?.name?.match(/\.(md|markdown|txt)$/i);
 
   // Generate image preview
   useEffect(() => {
@@ -103,7 +110,7 @@ export default function ClipboardPasteModal({ file, onClose, onSelectTool }) {
 
   if (!file) return null;
 
-  const actions = isVideo ? VIDEO_ACTIONS : isImage ? IMAGE_ACTIONS : isPdf ? PDF_ACTIONS : [];
+  const actions = isVideo ? VIDEO_ACTIONS : isImage ? IMAGE_ACTIONS : isPdf ? PDF_ACTIONS : isText ? TEXT_ACTIONS : [];
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm transition-opacity font-sans" onClick={onClose}>

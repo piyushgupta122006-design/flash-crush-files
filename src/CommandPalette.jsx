@@ -121,6 +121,15 @@ const ALL_COMMANDS = [
     path: "/pdf2excel",
     keywords: ["excel", "xlsx", "csv", "spreadsheet", "table", "pdf to excel", "pdf2excel", "sheet"]
   },
+  {
+    id: "txt-to-pdf",
+    label: "Text & Markdown to PDF",
+    desc: "Convert text & markdown to native vector A4 PDF with searchable text & M3 styles",
+    category: "PDF",
+    icon: "📄",
+    path: "/txt2pdf",
+    keywords: ["markdown", "md", "text", "txt", "txt2pdf", "readme", "notes", "pdf", "convert", "vector"]
+  },
 
   // ── Image Tools ──
   {
