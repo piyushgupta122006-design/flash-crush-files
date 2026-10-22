@@ -424,6 +424,7 @@ export default function HomePage() {
   ];
 
   const ALL_TOOLS = [
+    { path: "/pdf-editor", category: "pdf", title: "PDF Studio & Editor", desc: "100% vector PDF editor. Edit text with smart whiteout, add shapes, annotate, e-sign with stamps, and organize pages.", icon: <IconPDF />, tags: ["✍️ Text Edit", "📑 Organize", "✍️ E-Sign"], cta: "Open PDF Studio" },
     { path: "/pdf", category: "pdf", title: "PDF Compressor", desc: "Shrink bulky PDF files by up to 80% with lossless clarity. Supports Low, Medium & High presets.", icon: <IconPDF />, tags: [".PDF", "Up to 30 MB", "Smart Fallback"], cta: "Compress PDF" },
     { path: "/merge-pdf", category: "pdf", title: "PDF Merger", desc: "Combine multiple PDF files into one clean document. Drag and reorder pages effortlessly.", icon: <IconMerge />, tags: ["Multi-PDF", "Drag & Drop", "Fast Merge"], cta: "Merge PDFs" },
     { path: "/image", category: "image", title: "Image Compressor", desc: "Compress JPG, PNG, and WebP images. Set custom target file sizes (e.g. exactly 50 KB) with live comparison.", icon: <IconImage />, tags: ["JPG / PNG / WebP", "Exact KB Target"], cta: "Compress Image" },

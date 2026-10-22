@@ -34,6 +34,7 @@ const PDFToPPT             = lazy(() => import("./PDFToPPT"));
 const PDFToWord            = lazy(() => import("./PDFToWord"));
 const PDFToExcel           = lazy(() => import("./PDFToExcel"));
 const TextToPDF            = lazy(() => import("./TextToPDF"));
+const PDFEditor            = lazy(() => import("./PDFEditor"));
 
 import CommandPalette   from "./CommandPalette";
 import ClipboardPasteModal from "./ClipboardPasteModal";
@@ -72,6 +73,7 @@ function GoogleIcon() {
 }
 
 const PDF_TOOLS = [
+  { path: "/pdf-editor", label: "PDF Studio & Editor", desc: "Edit text, annotate, e-sign & organize pages", icon: "✍️" },
   { path: "/pdf", label: "PDF Compressor", desc: "Reduce PDF size with extreme compression", icon: "⚡" },
   { path: "/merge-pdf", label: "Merge PDF", desc: "Combine multiple PDF files into one", icon: "📑" },
   { path: "/split-pdf", label: "Split & Extract", desc: "Extract pages or split all to ZIP", icon: "✂️" },
@@ -825,6 +827,9 @@ export default function App() {
               <Route path="/txt2pdf"           element={<TextToPDF auth={auth} />} />
               <Route path="/text-to-pdf"       element={<Navigate to="/txt2pdf" replace />} />
               <Route path="/markdown-to-pdf"   element={<Navigate to="/txt2pdf" replace />} />
+              <Route path="/pdf-editor"        element={<PDFEditor auth={auth} />} />
+              <Route path="/edit-pdf"          element={<Navigate to="/pdf-editor" replace />} />
+              <Route path="/pdf-edit"          element={<Navigate to="/pdf-editor" replace />} />
               <Route path="/history"           element={<LocalHistory auth={auth} isPage={true} />} />
               <Route path="*"                  element={<HomePage auth={auth} />} />
             </Routes>

@@ -5,6 +5,15 @@ import { useNavigate } from "react-router-dom";
 const ALL_COMMANDS = [
   // ── PDF Tools ──
   {
+    id: "pdf-editor",
+    label: "PDF Studio & Editor",
+    desc: "100% vector PDF editor: edit text, whiteout, shapes, e-sign & organize pages",
+    category: "PDF",
+    icon: "✍️",
+    path: "/pdf-editor",
+    keywords: ["editor", "edit pdf", "annotate", "whiteout", "text", "sign", "signature", "stamp", "organize", "reorder", "rotate"]
+  },
+  {
     id: "pdf-compress",
     label: "PDF Compressor",
     desc: "Reduce PDF file size with high-efficiency local compression",
