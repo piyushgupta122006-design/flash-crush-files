@@ -142,6 +142,45 @@ function measureTextWidthPt(text, fontSize, cssFontStack, bold, italic) {
   }
 }
 
+// ── Soft-Wrap Word-Breaking Helper for Vector Export ──────────────────────────
+function wrapTextToLines(text, maxWidthPt, fontObj, fontSize) {
+  if (!text) return [];
+  const paragraphs = text.split("\n");
+  const resultLines = [];
+
+  const getWidth = (str) => {
+    try {
+      if (fontObj && typeof fontObj.widthOfTextAtSize === "function") {
+        return fontObj.widthOfTextAtSize(str, fontSize);
+      }
+    } catch {}
+    return measureTextWidthPt(str, fontSize, "Helvetica, Arial, sans-serif", false, false);
+  };
+
+  for (const para of paragraphs) {
+    if (!para.trim()) {
+      resultLines.push("");
+      continue;
+    }
+    const words = para.split(" ");
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const testLine = currentLine + " " + word;
+      if (getWidth(testLine) <= maxWidthPt) {
+        currentLine = testLine;
+      } else {
+        resultLines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    resultLines.push(currentLine);
+  }
+
+  return resultLines;
+}
+
 // ── Dynamic PDF Font & Metadata Introspection Engine ──────────────────────────
 function introspectPdfFont(pdfPage, pdfDoc, item, stylesDict) {
   const tx = item.transform || [12, 0, 0, 12, 0, 0];
@@ -362,6 +401,8 @@ export default function PDFEditor({ auth }) {
   // Canvas Refs & Append Ref
   const drawCanvasRef = useRef(null);
   const isDrawingRef = useRef(false);
+  const drawLastPtRef = useRef(null);
+  const drawLastMidRef = useRef(null);
   const fileInputRef = useRef(null);
   const appendInputRef = useRef(null);
 
@@ -982,7 +1023,7 @@ export default function PDFEditor({ auth }) {
           }
         }
 
-        // 3. Draw Vector Text (with WinAnsi Sanitizer & Rotation mapping)
+        // 3. Draw Vector Text (with WinAnsi Sanitizer, Multi-Line Wrap & Rotation mapping)
         for (const ann of pageAnnotations) {
           if (ann.type === "text" && ann.text) {
             const safeText = sanitizeToWinAnsi(ann.text);
@@ -991,15 +1032,26 @@ export default function PDFEditor({ auth }) {
             const fontSize = ann.fontSize || 14;
             const textX = ann.fillColor ? ann.x + 3 : ann.x;
             const textY = ann.fillColor ? ann.y + 2 : ann.y;
-            const textCoords = getPdfTextCoords(textX, textY, fontSize, pageW, pageH, totalRotation);
 
-            newPage.drawText(safeText, {
-              x: textCoords.x,
-              y: textCoords.y,
-              size: fontSize,
-              font: chosenFont,
-              color: rgb(rgbColor.r, rgbColor.g, rgbColor.b),
-              rotate: degrees(textCoords.rotateAngle),
+            const effectiveW = ann.origWidth ? Math.max(ann.origWidth, ann.width || 0) : (ann.width || 0);
+            const maxWidthPt = Math.max(30, effectiveW - 6);
+            const lines = wrapTextToLines(safeText, maxWidthPt, chosenFont, fontSize);
+            const lineSpacing = fontSize * 1.25;
+
+            lines.forEach((lineStr, lineIdx) => {
+              if (!lineStr || !lineStr.trim()) return;
+              const lineX = textX;
+              const lineY = textY + (lineIdx * lineSpacing);
+              const textCoords = getPdfTextCoords(lineX, lineY, fontSize, pageW, pageH, totalRotation);
+
+              newPage.drawText(lineStr, {
+                x: textCoords.x,
+                y: textCoords.y,
+                size: fontSize,
+                font: chosenFont,
+                color: rgb(rgbColor.r, rgbColor.g, rgbColor.b),
+                rotate: degrees(textCoords.rotateAngle),
+              });
             });
           }
         }
@@ -1652,34 +1704,78 @@ export default function PDFEditor({ auth }) {
                       height={200}
                       className="w-full h-full"
                       onMouseDown={(e) => {
-                        isDrawingRef.current = true;
-                        setHasDrawn(true);
                         const canvas = drawCanvasRef.current;
+                        if (!canvas) return;
                         const ctx = canvas.getContext("2d");
                         const rect = canvas.getBoundingClientRect();
-                        ctx.beginPath();
-                        ctx.moveTo(
-                          (e.clientX - rect.left) * (canvas.width / rect.width),
-                          (e.clientY - rect.top) * (canvas.height / rect.height)
-                        );
+                        const pt = {
+                          x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                          y: (e.clientY - rect.top) * (canvas.height / rect.height),
+                        };
+                        drawLastPtRef.current = pt;
+                        drawLastMidRef.current = pt;
+                        isDrawingRef.current = true;
+                        setHasDrawn(true);
                         ctx.strokeStyle = penColor;
                         ctx.lineWidth = penWidth;
                         ctx.lineCap = "round";
                         ctx.lineJoin = "round";
                       }}
                       onMouseMove={(e) => {
-                        if (!isDrawingRef.current) return;
+                        if (!isDrawingRef.current || !drawLastPtRef.current) return;
                         const canvas = drawCanvasRef.current;
                         const ctx = canvas.getContext("2d");
                         const rect = canvas.getBoundingClientRect();
-                        ctx.lineTo(
-                          (e.clientX - rect.left) * (canvas.width / rect.width),
-                          (e.clientY - rect.top) * (canvas.height / rect.height)
-                        );
+                        const pt = {
+                          x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                          y: (e.clientY - rect.top) * (canvas.height / rect.height),
+                        };
+                        const pPrev = drawLastPtRef.current;
+                        const prevMid = drawLastMidRef.current;
+                        const currMid = { x: (pPrev.x + pt.x) / 2, y: (pPrev.y + pt.y) / 2 };
+
+                        ctx.beginPath();
+                        ctx.moveTo(prevMid.x, prevMid.y);
+                        ctx.quadraticCurveTo(pPrev.x, pPrev.y, currMid.x, currMid.y);
                         ctx.stroke();
+
+                        drawLastPtRef.current = pt;
+                        drawLastMidRef.current = currMid;
                       }}
-                      onMouseUp={() => (isDrawingRef.current = false)}
-                      onMouseLeave={() => (isDrawingRef.current = false)}
+                      onMouseUp={() => {
+                        if (isDrawingRef.current && drawLastPtRef.current && drawLastMidRef.current) {
+                          const canvas = drawCanvasRef.current;
+                          const ctx = canvas?.getContext("2d");
+                          if (ctx) {
+                            const pPrev = drawLastPtRef.current;
+                            const prevMid = drawLastMidRef.current;
+                            ctx.beginPath();
+                            ctx.moveTo(prevMid.x, prevMid.y);
+                            ctx.lineTo(pPrev.x, pPrev.y);
+                            ctx.stroke();
+                          }
+                        }
+                        isDrawingRef.current = false;
+                        drawLastPtRef.current = null;
+                        drawLastMidRef.current = null;
+                      }}
+                      onMouseLeave={() => {
+                        if (isDrawingRef.current && drawLastPtRef.current && drawLastMidRef.current) {
+                          const canvas = drawCanvasRef.current;
+                          const ctx = canvas?.getContext("2d");
+                          if (ctx) {
+                            const pPrev = drawLastPtRef.current;
+                            const prevMid = drawLastMidRef.current;
+                            ctx.beginPath();
+                            ctx.moveTo(prevMid.x, prevMid.y);
+                            ctx.lineTo(pPrev.x, pPrev.y);
+                            ctx.stroke();
+                          }
+                        }
+                        isDrawingRef.current = false;
+                        drawLastPtRef.current = null;
+                        drawLastMidRef.current = null;
+                      }}
                     />
                   </div>
                   <div className="flex items-center justify-between text-xs">
@@ -1829,6 +1925,7 @@ function PDFPageView({
 
   // Active inline editing state for smart whiteout text
   const [editingTextId, setEditingTextId] = useState(null);
+  const [dragRect, setDragRect] = useState(null);
   const lastBlurTimeRef = useRef(0);
 
   // IntersectionObserver: Only render when visible
@@ -1882,17 +1979,20 @@ function PDFPageView({
         const tx = item.transform || [12, 0, 0, 12, 0, 0];
         const [vx, vy] = unscaledVp.convertToViewportPoint(tx[4], tx[5]);
         const fontSize = fontInfo.fontSize;
-        // Section 2 Bug 3: Tighten Vertical Patch Bounds
-        const boxHeight = fontSize * 1.08;
+        // Tighten vertical bounds to cap-height and baseline
+        const boxHeight = fontSize * 0.98;
         return {
           str: item.str,
           x: vx,
-          y: vy - fontSize * 0.84, // Baseline to top-left Y
+          y: vy - fontSize * 0.82, // Baseline to top-left Y
           width: item.width || 0,
           height: boxHeight,
           ...fontInfo,
         };
       });
+
+      // Sort raw items top-to-bottom, left-to-right
+      rawItems.sort((a, b) => (Math.abs(a.y - b.y) < 3 ? a.x - b.x : a.y - b.y));
 
       // Merge adjacent text fragments on the same line with space & gap handling
       const merged = [];
@@ -1918,14 +2018,97 @@ function PDFPageView({
         }
       }
 
-      setTextItems(merged);
+      // Vertical Paragraph Clustering: Group consecutive lines into unified ParagraphBlocks
+      const clustered = [];
+      for (const line of merged) {
+        if (!clustered.length) {
+          clustered.push({
+            isMultiLine: false,
+            lines: [line],
+            str: line.str,
+            x: line.x,
+            y: line.y,
+            width: line.width,
+            height: line.height,
+            fontSize: line.fontSize,
+            fontFamily: line.fontFamily,
+            cssFontStack: line.cssFontStack,
+            bold: line.bold,
+            italic: line.italic,
+            detectedFontLabel: line.detectedFontLabel,
+          });
+          continue;
+        }
+
+        const lastBlock = clustered[clustered.length - 1];
+        const prevLine = lastBlock.lines[lastBlock.lines.length - 1];
+
+        const gapY = line.y - (prevLine.y + prevLine.height);
+        const fontMatch =
+          lastBlock.fontFamily === line.fontFamily &&
+          Math.abs(lastBlock.fontSize - line.fontSize) <= 1 &&
+          lastBlock.bold === line.bold &&
+          lastBlock.italic === line.italic;
+
+        const marginMatch = Math.abs(lastBlock.x - line.x) < Math.max(32, lastBlock.fontSize * 3);
+        const isListMarker = /^\s*(\d+[\.\)]|[•\-\*\u2022])\s+/.test(line.str);
+
+        const isParagraphContinuation =
+          fontMatch &&
+          marginMatch &&
+          !isListMarker &&
+          prevLine.width > 180 &&
+          gapY >= -4 &&
+          gapY < lastBlock.fontSize * 1.5;
+
+        if (isParagraphContinuation) {
+          lastBlock.lines.push(line);
+          lastBlock.isMultiLine = true;
+          lastBlock.str += "\n" + line.str;
+          const minX = Math.min(lastBlock.x, line.x);
+          const maxX = Math.max(lastBlock.x + lastBlock.width, line.x + line.width);
+          lastBlock.x = minX;
+          lastBlock.width = maxX - minX;
+          lastBlock.height = (line.y + line.height) - lastBlock.y;
+        } else {
+          clustered.push({
+            isMultiLine: false,
+            lines: [line],
+            str: line.str,
+            x: line.x,
+            y: line.y,
+            width: line.width,
+            height: line.height,
+            fontSize: line.fontSize,
+            fontFamily: line.fontFamily,
+            cssFontStack: line.cssFontStack,
+            bold: line.bold,
+            italic: line.italic,
+            detectedFontLabel: line.detectedFontLabel,
+          });
+        }
+      }
+
+      // Enforce zero-bleed safe boundary between adjacent vertical blocks
+      for (let i = 0; i < clustered.length; i++) {
+        const current = clustered[i];
+        if (i < clustered.length - 1) {
+          const nextY = clustered[i + 1].y;
+          const safeMaxH = Math.max(current.fontSize, nextY - current.y - 2);
+          if (current.height > safeMaxH) {
+            current.height = safeMaxH;
+          }
+        }
+      }
+
+      setTextItems(clustered);
       setRendered(true);
     } catch (err) {
       console.warn("Render canvas error:", err);
     }
   };
 
-  // Click handler on page for tools
+  // Click handler on page for tools (with drag-to-highlight/shape support)
   const handlePagePointerDown = (e) => {
     onSelectPage();
     if (!viewportObj) return;
@@ -1949,6 +2132,74 @@ function PDFPageView({
     const visualX = domX / zoom;
     const visualY = domY / zoom;
 
+    const startX = visualX;
+    const startY = visualY;
+    const startClientX = e.clientX;
+    const startClientY = e.clientY;
+
+    if (activeTool === "highlight" || activeTool === "whiteout" || activeTool === "shape") {
+      const handlePointerMove = (moveEvt) => {
+        const dragDx = (moveEvt.clientX - startClientX) / zoom;
+        const dragDy = (moveEvt.clientY - startClientY) / zoom;
+        if (Math.hypot(dragDx, dragDy) > 4) {
+          const boxX = Math.min(startX, startX + dragDx);
+          const boxY = Math.min(startY, startY + dragDy);
+          const boxW = Math.max(8, Math.abs(dragDx));
+          const boxH = Math.max(6, Math.abs(dragDy));
+          setDragRect({ x: boxX, y: boxY, width: boxW, height: boxH, tool: activeTool });
+        }
+      };
+
+      const handlePointerUp = (upEvt) => {
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("pointerup", handlePointerUp);
+        setDragRect(null);
+        const dragDx = (upEvt.clientX - startClientX) / zoom;
+        const dragDy = (upEvt.clientY - startClientY) / zoom;
+        const isDragged = Math.hypot(dragDx, dragDy) > 6;
+
+        const boxX = isDragged ? Math.min(startX, startX + dragDx) : startX;
+        const boxY = isDragged ? Math.min(startY, startY + dragDy) : startY;
+
+        if (activeTool === "highlight") {
+          onAddAnnotation({
+            type: "highlight",
+            fillColor: highlightColor,
+            x: boxX,
+            y: boxY,
+            width: isDragged ? Math.max(15, Math.abs(dragDx)) : 90,
+            height: isDragged ? Math.max(10, Math.abs(dragDy)) : 18,
+            opacity: 0.35,
+          });
+        } else if (activeTool === "whiteout") {
+          onAddAnnotation({
+            type: "patch",
+            fillColor: "#ffffff",
+            x: boxX,
+            y: boxY,
+            width: isDragged ? Math.max(15, Math.abs(dragDx)) : 80,
+            height: isDragged ? Math.max(10, Math.abs(dragDy)) : 25,
+          });
+        } else if (activeTool === "shape") {
+          onAddAnnotation({
+            type: "shape",
+            fillColor: "#3b82f6",
+            strokeColor: "#1d4ed8",
+            strokeWidth: 2,
+            x: boxX,
+            y: boxY,
+            width: isDragged ? Math.max(20, Math.abs(dragDx)) : 100,
+            height: isDragged ? Math.max(20, Math.abs(dragDy)) : 60,
+            opacity: 0.8,
+          });
+        }
+      };
+
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerup", handlePointerUp);
+      return;
+    }
+
     if (activeTool === "text") {
       const newId = crypto.randomUUID();
       const cssStack =
@@ -1964,7 +2215,7 @@ function PDFPageView({
         x: visualX,
         y: visualY,
         width: 120,
-        height: (textStyle.fontSize || 14) * 1.08 + 2,
+        height: (textStyle.fontSize || 14) * 1.25 + 4,
         fontSize: textStyle.fontSize || 14,
         fontFamily: textStyle.fontFamily || "Helvetica",
         cssFontStack: cssStack,
@@ -1973,37 +2224,6 @@ function PDFPageView({
         italic: textStyle.italic || false,
       });
       setEditingTextId(newId);
-    } else if (activeTool === "whiteout") {
-      onAddAnnotation({
-        type: "patch",
-        fillColor: "#ffffff",
-        x: visualX,
-        y: visualY,
-        width: 80,
-        height: 25,
-      });
-    } else if (activeTool === "highlight") {
-      onAddAnnotation({
-        type: "highlight",
-        fillColor: highlightColor,
-        x: visualX,
-        y: visualY,
-        width: 90,
-        height: 18,
-        opacity: 0.35,
-      });
-    } else if (activeTool === "shape") {
-      onAddAnnotation({
-        type: "shape",
-        fillColor: "#3b82f6",
-        strokeColor: "#1d4ed8",
-        strokeWidth: 2,
-        x: visualX,
-        y: visualY,
-        width: 100,
-        height: 60,
-        opacity: 0.8,
-      });
     }
   };
 
@@ -2023,6 +2243,19 @@ function PDFPageView({
       return;
     }
 
+    // Guard against duplicate annotation spawning: If an annotation already claims this text item, select it instead of re-spawning
+    const existingAnn = annotations.find((ann) => {
+      if (ann.type !== "text") return false;
+      const targetX = ann.origX !== undefined ? ann.origX : ann.x;
+      const targetY = ann.origY !== undefined ? ann.origY : ann.y;
+      return Math.abs(targetX - (item.x - 2)) < 6 && Math.abs(targetY - item.y) < 6;
+    });
+
+    if (existingAnn) {
+      onSelectAnnotation(existingAnn.id);
+      return;
+    }
+
     const canvas = canvasRef.current;
     const sampledBg = sampleBackgroundColor(canvas, {
       left: item.x * zoom,
@@ -2033,23 +2266,26 @@ function PDFPageView({
 
     const textId = crypto.randomUUID();
     const padX = 2;
-    // Section 2 Bug 3: padY = 1
-    const padY = 1;
+    const padY = 0;
     const origX = item.x - padX;
-    const origY = item.y - padY;
-    // Section 2 Bug 2: origWidth = item.width + 4
+    const origY = item.y;
     const origW = item.width + 4;
-    const origH = item.height + padY * 2;
+    const origH = item.height;
 
-    // Section 2 Bug 2: Pre-Measure Initial Box Width
-    const measuredW = measureTextWidthPt(
-      item.str,
-      item.fontSize || 12,
-      item.cssFontStack,
-      item.bold,
-      item.italic
-    );
-    const boxW = Math.max(origW, measuredW + 10);
+    // Measure maximum line width for multi-line or single-line text
+    const lines = (item.str || "").split("\n");
+    let maxMeasuredW = 0;
+    for (const l of lines) {
+      const mw = measureTextWidthPt(
+        l,
+        item.fontSize || 12,
+        item.cssFontStack,
+        item.bold,
+        item.italic
+      );
+      if (mw > maxMeasuredW) maxMeasuredW = mw;
+    }
+    const boxW = Math.max(origW, maxMeasuredW + 10);
 
     onAddAnnotation({
       id: textId,
@@ -2071,6 +2307,7 @@ function PDFPageView({
       italic: item.italic || false,
       detectedFontLabel: item.detectedFontLabel || item.fontFamily,
       color: "#0f172a",
+      isMultiLine: !!item.isMultiLine,
     });
 
     setEditingTextId(textId);
@@ -2100,20 +2337,30 @@ function PDFPageView({
 
       {/* Clickable Text Glyphs for Smart Whiteout Editing */}
       {activeTool === "text" &&
-        textItems.map((item, tIdx) => (
-          <div
-            key={tIdx}
-            onClick={(e) => handleTextGlyphClick(e, item)}
-            style={{
-              left: item.x * zoom,
-              top: item.y * zoom,
-              width: item.width * zoom,
-              height: item.height * zoom,
-            }}
-            className="absolute cursor-text hover:bg-blue-400/20 rounded-sm pointer-events-auto"
-            title="Click to edit text with smart whiteout patch"
-          />
-        ))}
+        textItems
+          .filter((item) => {
+            // Do not render clickable glyph target if an annotation already replaces/covers this text
+            return !annotations.some((ann) => {
+              if (ann.type !== "text") return false;
+              const targetX = ann.origX !== undefined ? ann.origX : ann.x;
+              const targetY = ann.origY !== undefined ? ann.origY : ann.y;
+              return Math.abs(targetX - (item.x - 2)) < 6 && Math.abs(targetY - item.y) < 6;
+            });
+          })
+          .map((item, tIdx) => (
+            <div
+              key={tIdx}
+              onClick={(e) => handleTextGlyphClick(e, item)}
+              style={{
+                left: item.x * zoom,
+                top: item.y * zoom,
+                width: item.width * zoom,
+                height: item.height * zoom,
+              }}
+              className="absolute cursor-text hover:bg-blue-400/20 rounded-sm pointer-events-auto"
+              title="Click to edit text with smart whiteout patch"
+            />
+          ))}
 
       {/* Base Whiteout Masks to prevent reveal on drag */}
       {annotations.map((ann) => {
@@ -2143,6 +2390,7 @@ function PDFPageView({
           <AnnotationElement
             key={ann.id}
             ann={ann}
+            pageWidth={pageDesc.width || (viewportObj ? viewportObj.width / zoom : 595)}
             screenX={screenX}
             screenY={screenY}
             zoom={zoom}
@@ -2159,6 +2407,30 @@ function PDFPageView({
           />
         );
       })}
+
+      {/* Live Drag Rubber-Band Preview */}
+      {dragRect && (
+        <div
+          style={{
+            left: dragRect.x * zoom,
+            top: dragRect.y * zoom,
+            width: dragRect.width * zoom,
+            height: dragRect.height * zoom,
+            backgroundColor:
+              dragRect.tool === "highlight"
+                ? highlightColor
+                : dragRect.tool === "shape"
+                ? "#3b82f6"
+                : "#ffffff",
+            opacity: dragRect.tool === "highlight" ? 0.35 : dragRect.tool === "shape" ? 0.6 : 0.9,
+            border:
+              dragRect.tool === "shape"
+                ? "2px solid #1d4ed8"
+                : "1px dashed #3b82f6",
+          }}
+          className="absolute pointer-events-none z-30 rounded-sm"
+        />
+      )}
     </div>
   );
 }
@@ -2166,6 +2438,7 @@ function PDFPageView({
 // ── Interactive Annotation Element (Draggable & Editable) ────────────────────
 function AnnotationElement({
   ann,
+  pageWidth,
   screenX,
   screenY,
   zoom,
@@ -2179,6 +2452,14 @@ function AnnotationElement({
 }) {
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ mouseX: 0, mouseY: 0, annX: 0, annY: 0 });
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditingText && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [isEditingText]);
 
   const handlePointerDown = (e) => {
     e.stopPropagation();
@@ -2211,25 +2492,40 @@ function AnnotationElement({
     window.addEventListener("pointerup", handlePointerUp);
   };
 
-  const effectiveW = ann.origWidth ? Math.max(ann.origWidth, ann.width || 0) : (ann.width || 0);
-  const effectiveH = ann.origHeight ? Math.max(ann.origHeight, ann.height || 0) : (ann.height || 0);
+  const effectiveW = ann.width || (ann.origWidth ? Math.max(ann.origWidth, ann.width || 0) : (ann.width || 0));
+  const lineCount = (ann.text || "").split("\n").length;
+  const contentH = lineCount * (ann.fontSize || 14) * 1.25 + 4;
+  const effectiveH = ann.height || contentH;
   const widthPx = effectiveW * zoom;
   const heightPx = effectiveH * zoom;
 
   // Section 2 Bug 4: Identical Input & Span Box Model
   const textCommonStyle = {
     fontSize: `${(ann.fontSize || 14) * zoom}px`,
-    lineHeight: 1.05,
+    lineHeight: 1.25,
     fontFamily: ann.cssFontStack || "Helvetica, Arial, sans-serif",
     fontWeight: ann.bold ? "bold" : "normal",
     fontStyle: ann.italic ? "italic" : "normal",
     color: ann.color || "#0f172a",
     padding: "0 2px",
+    margin: 0,
+    boxSizing: "border-box",
   };
 
   return (
     <div
       onPointerDown={handlePointerDown}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+      }}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+        if (ann.type === "text" && onStartEditingText) {
+          onStartEditingText();
+        }
+      }}
       style={{
         left: screenX,
         top: screenY,
@@ -2270,10 +2566,17 @@ function AnnotationElement({
                   : newFam === "Courier"
                   ? "'Courier New', Courier, monospace"
                   : "Helvetica, Arial, sans-serif";
-              const w = Math.max(
-                ann.origWidth || 0,
-                measureTextWidthPt(ann.text, ann.fontSize || 14, newStack, ann.bold, ann.italic) + 10
-              );
+              let w = ann.width;
+              if (!ann.isMultiLine) {
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, ann.fontSize || 14, newStack, ann.bold, ann.italic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+              }
               onUpdate({ fontFamily: newFam, cssFontStack: newStack, width: w });
             }}
             className="bg-m3-surface border border-m3-outline-variant/60 rounded-lg px-1.5 py-0.5 text-xs text-m3-on-surface font-medium outline-none cursor-pointer"
@@ -2289,11 +2592,16 @@ function AnnotationElement({
               type="button"
               onClick={() => {
                 const newSize = Math.max(6, (ann.fontSize || 14) - 1);
-                const w = Math.max(
-                  ann.origWidth || 0,
-                  measureTextWidthPt(ann.text, newSize, ann.cssFontStack, ann.bold, ann.italic) + 10
-                );
-                const h = Math.max(ann.origHeight || 0, newSize * 1.15 + 2);
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, newSize, ann.cssFontStack, ann.bold, ann.italic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                const w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+                const lineCount = Math.max(1, lines.length);
+                const h = lineCount * newSize * 1.25 + 4;
                 onUpdate({ fontSize: newSize, width: w, height: h });
               }}
               className="w-4 h-4 flex items-center justify-center font-bold text-m3-on-surface hover:bg-m3-surface-variant rounded transition text-[11px]"
@@ -2308,11 +2616,16 @@ function AnnotationElement({
               value={ann.fontSize || 14}
               onChange={(e) => {
                 const newSize = Math.max(6, Math.min(72, Number(e.target.value) || 14));
-                const w = Math.max(
-                  ann.origWidth || 0,
-                  measureTextWidthPt(ann.text, newSize, ann.cssFontStack, ann.bold, ann.italic) + 10
-                );
-                const h = Math.max(ann.origHeight || 0, newSize * 1.15 + 2);
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, newSize, ann.cssFontStack, ann.bold, ann.italic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                const w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+                const lineCount = Math.max(1, lines.length);
+                const h = lineCount * newSize * 1.25 + 4;
                 onUpdate({ fontSize: newSize, width: w, height: h });
               }}
               className="w-8 text-center text-xs bg-transparent outline-none font-semibold p-0"
@@ -2321,11 +2634,16 @@ function AnnotationElement({
               type="button"
               onClick={() => {
                 const newSize = Math.min(72, (ann.fontSize || 14) + 1);
-                const w = Math.max(
-                  ann.origWidth || 0,
-                  measureTextWidthPt(ann.text, newSize, ann.cssFontStack, ann.bold, ann.italic) + 10
-                );
-                const h = Math.max(ann.origHeight || 0, newSize * 1.15 + 2);
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, newSize, ann.cssFontStack, ann.bold, ann.italic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                const w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+                const lineCount = Math.max(1, lines.length);
+                const h = lineCount * newSize * 1.25 + 4;
                 onUpdate({ fontSize: newSize, width: w, height: h });
               }}
               className="w-4 h-4 flex items-center justify-center font-bold text-m3-on-surface hover:bg-m3-surface-variant rounded transition text-[11px]"
@@ -2340,10 +2658,17 @@ function AnnotationElement({
             type="button"
             onClick={() => {
               const newBold = !ann.bold;
-              const w = Math.max(
-                ann.origWidth || 0,
-                measureTextWidthPt(ann.text, ann.fontSize || 14, ann.cssFontStack, newBold, ann.italic) + 10
-              );
+              let w = ann.width;
+              if (!ann.isMultiLine) {
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, ann.fontSize || 14, ann.cssFontStack, newBold, ann.italic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+              }
               onUpdate({ bold: newBold, width: w });
             }}
             className={`w-6 h-6 rounded-lg font-bold flex items-center justify-center transition text-xs ${
@@ -2359,10 +2684,17 @@ function AnnotationElement({
             type="button"
             onClick={() => {
               const newItalic = !ann.italic;
-              const w = Math.max(
-                ann.origWidth || 0,
-                measureTextWidthPt(ann.text, ann.fontSize || 14, ann.cssFontStack, ann.bold, newItalic) + 10
-              );
+              let w = ann.width;
+              if (!ann.isMultiLine) {
+                const lines = (ann.text || "").split("\n");
+                let maxLineW = 0;
+                for (const l of lines) {
+                  const lw = measureTextWidthPt(l, ann.fontSize || 14, ann.cssFontStack, ann.bold, newItalic);
+                  if (lw > maxLineW) maxLineW = lw;
+                }
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+                w = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+              }
               onUpdate({ italic: newItalic, width: w });
             }}
             className={`w-6 h-6 rounded-lg italic font-serif flex items-center justify-center transition text-xs ${
@@ -2440,7 +2772,7 @@ function AnnotationElement({
 
       {/* 4. Text Annotation */}
       {ann.type === "text" && (
-        <div className="w-full h-full flex items-center relative">
+        <div className="w-full h-full flex flex-col justify-start relative">
           {ann.fillColor && (
             <div
               style={{ backgroundColor: ann.fillColor, opacity: 1 }}
@@ -2448,21 +2780,49 @@ function AnnotationElement({
             />
           )}
           {isEditingText ? (
-            <input
+            <textarea
+              ref={textareaRef}
               autoFocus
-              type="text"
+              rows={1}
               value={ann.text}
               onChange={(e) => {
                 const newText = e.target.value;
-                const measuredW = measureTextWidthPt(
-                  newText,
-                  ann.fontSize || 14,
-                  ann.cssFontStack,
-                  ann.bold,
-                  ann.italic
-                );
-                const newW = Math.max(ann.origWidth || 0, measuredW + 10);
-                onUpdate({ text: newText, width: newW });
+                const target = e.target;
+                target.style.height = "auto";
+                const newScrollH = target.scrollHeight;
+                const lines = newText.split("\n");
+                const contentH = lines.length * (ann.fontSize || 14) * 1.25 + 4;
+                const newH = Math.max(contentH, newScrollH / zoom);
+
+                // Clamp new width so it never exceeds page right margin
+                const maxPageW = Math.max(80, (pageWidth || 595) - ann.x - 15);
+
+                let newW;
+                if (ann.isMultiLine && lines.length > 1) {
+                  // Lock width for existing multi-line paragraphs so text wraps naturally and expands downward
+                  newW = Math.min(maxPageW, ann.width || ann.origWidth || maxPageW);
+                } else {
+                  // Single line: expand width up to page margin
+                  let maxLineW = 0;
+                  for (const l of lines) {
+                    const lw = measureTextWidthPt(
+                      l,
+                      ann.fontSize || 14,
+                      ann.cssFontStack,
+                      ann.bold,
+                      ann.italic
+                    );
+                    if (lw > maxLineW) maxLineW = lw;
+                  }
+                  newW = Math.min(maxPageW, Math.max(ann.origWidth || 0, maxLineW + 10));
+                }
+
+                onUpdate({
+                  text: newText,
+                  width: newW,
+                  height: newH,
+                  isMultiLine: lines.length > 1 || newH > (ann.fontSize || 14) * 1.5,
+                });
               }}
               onBlur={() => {
                 // Section 2 Bug 1: Auto-delete any newly created text box if blurred with empty text
@@ -2472,19 +2832,40 @@ function AnnotationElement({
                 onStopEditingText();
               }}
               onKeyDown={(e) => {
-                if (e.key === "Enter") onStopEditingText();
+                if ((e.key === "Enter" && (e.ctrlKey || e.metaKey)) || e.key === "Escape") {
+                  e.preventDefault();
+                  onStopEditingText();
+                }
               }}
               style={{
                 ...textCommonStyle,
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                resize: "none",
+                overflow: "hidden",
                 backgroundColor: ann.fillColor || "transparent",
               }}
-              className="w-full h-full relative z-10 border border-blue-500 rounded-none outline-none m-0"
+              className="w-full h-full relative z-10 border border-blue-500 rounded-none outline-none m-0 p-0"
             />
           ) : (
             <span
-              onDoubleClick={onStartEditingText || onSelect}
-              style={textCommonStyle}
-              className="w-full h-full block whitespace-nowrap relative z-10 select-none flex items-center"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect();
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                onSelect();
+                if (onStartEditingText) {
+                  onStartEditingText();
+                }
+              }}
+              style={{
+                ...textCommonStyle,
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+              }}
+              className="w-full h-full block relative z-10 select-none flex flex-col justify-start"
             >
               {ann.text}
             </span>
