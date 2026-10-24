@@ -2155,10 +2155,14 @@ function PDFPageView({
         const dragDx = (moveEvt.clientX - startClientX) / zoom;
         const dragDy = (moveEvt.clientY - startClientY) / zoom;
         if (Math.hypot(dragDx, dragDy) > 4) {
-          const boxX = Math.min(startX, startX + dragDx);
-          const boxY = Math.min(startY, startY + dragDy);
-          const boxW = Math.max(8, Math.abs(dragDx));
-          const boxH = Math.max(6, Math.abs(dragDy));
+          const rawBoxX = Math.min(startX, startX + dragDx);
+          const rawBoxY = Math.min(startY, startY + dragDy);
+          const rawBoxW = Math.max(8, Math.abs(dragDx));
+          const rawBoxH = Math.max(6, Math.abs(dragDy));
+          const boxX = Math.round(rawBoxX);
+          const boxY = Math.round(rawBoxY);
+          const boxW = Math.round(rawBoxW);
+          const boxH = Math.round(rawBoxH);
           setDragRect({ x: boxX, y: boxY, width: boxW, height: boxH, tool: activeTool });
         }
       };
@@ -2169,10 +2173,21 @@ function PDFPageView({
         setDragRect(null);
         const dragDx = (upEvt.clientX - startClientX) / zoom;
         const dragDy = (upEvt.clientY - startClientY) / zoom;
-        const isDragged = Math.hypot(dragDx, dragDy) > 6;
+        const isDragged = Math.hypot(dragDx, dragDy) > 4;
 
-        const boxX = isDragged ? Math.min(startX, startX + dragDx) : startX;
-        const boxY = isDragged ? Math.min(startY, startY + dragDy) : startY;
+        const rawBoxX = isDragged ? Math.min(startX, startX + dragDx) : startX;
+        const rawBoxY = isDragged ? Math.min(startY, startY + dragDy) : startY;
+
+        const defaultW = activeTool === "shape" ? 100 : activeTool === "whiteout" ? 80 : 90;
+        const defaultH = activeTool === "shape" ? 60 : activeTool === "whiteout" ? 25 : 18;
+
+        const rawBoxW = isDragged ? Math.max(8, Math.abs(dragDx)) : defaultW;
+        const rawBoxH = isDragged ? Math.max(6, Math.abs(dragDy)) : defaultH;
+
+        const boxX = Math.round(rawBoxX);
+        const boxY = Math.round(rawBoxY);
+        const boxW = Math.round(rawBoxW);
+        const boxH = Math.round(rawBoxH);
 
         if (activeTool === "highlight") {
           onAddAnnotation({
@@ -2180,8 +2195,8 @@ function PDFPageView({
             fillColor: highlightColor,
             x: boxX,
             y: boxY,
-            width: isDragged ? Math.max(15, Math.abs(dragDx)) : 90,
-            height: isDragged ? Math.max(10, Math.abs(dragDy)) : 18,
+            width: boxW,
+            height: boxH,
             opacity: 0.35,
           });
         } else if (activeTool === "whiteout") {
@@ -2190,8 +2205,9 @@ function PDFPageView({
             fillColor: "#ffffff",
             x: boxX,
             y: boxY,
-            width: isDragged ? Math.max(15, Math.abs(dragDx)) : 80,
-            height: isDragged ? Math.max(10, Math.abs(dragDy)) : 25,
+            width: boxW,
+            height: boxH,
+            opacity: 1,
           });
         } else if (activeTool === "shape") {
           onAddAnnotation({
@@ -2201,8 +2217,8 @@ function PDFPageView({
             strokeWidth: 2,
             x: boxX,
             y: boxY,
-            width: isDragged ? Math.max(20, Math.abs(dragDx)) : 100,
-            height: isDragged ? Math.max(20, Math.abs(dragDy)) : 60,
+            width: boxW,
+            height: boxH,
             opacity: 0.8,
           });
         }
