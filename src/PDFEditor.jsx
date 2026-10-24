@@ -2113,6 +2113,19 @@ function PDFPageView({
     onSelectPage();
     if (!viewportObj) return;
 
+    // Detect if the user clicks a valid glyph target matching the .cursor-text wrapper selector class
+    const isCursorTextTarget = Boolean(
+      e.target && e.target.closest && e.target.closest(".cursor-text")
+    );
+
+    if (isCursorTextTarget) {
+      // Instantly clear the debounce block and exit early to let handleTextGlyphClick take immediate control
+      lastBlurTimeRef.current = 0;
+      setEditingTextId(null);
+      onSelectAnnotation(null);
+      return;
+    }
+
     // Fix B: If editing, selected, or blurred recently (< 250ms), ONLY clear selection and return
     if (
       editingTextId !== null ||
