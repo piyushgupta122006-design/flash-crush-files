@@ -2499,7 +2499,8 @@ function AnnotationElement({
   const widthPx = effectiveW * zoom;
   const heightPx = effectiveH * zoom;
 
-  // Section 2 Bug 4: Identical Input & Span Box Model
+  // Standardized Box Model: Round-calibrated zoom horizontal padding metrics
+  const padXpx = Math.round((ann.origWidth ? 2 : 1) * zoom);
   const textCommonStyle = {
     fontSize: `${(ann.fontSize || 14) * zoom}px`,
     lineHeight: 1.25,
@@ -2507,9 +2508,21 @@ function AnnotationElement({
     fontWeight: ann.bold ? "bold" : "normal",
     fontStyle: ann.italic ? "italic" : "normal",
     color: ann.color || "#0f172a",
-    padding: "0 2px",
+    padding: `0 ${padXpx}px`,
     margin: 0,
+    border: "0px solid transparent",
+    outline: "none",
     boxSizing: "border-box",
+    display: "block",
+    width: "100%",
+    height: "100%",
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
+    letterSpacing: "normal",
+    wordSpacing: "normal",
+    verticalAlign: "top",
+    backgroundColor: "transparent",
   };
 
   return (
@@ -2839,13 +2852,11 @@ function AnnotationElement({
               }}
               style={{
                 ...textCommonStyle,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
                 resize: "none",
                 overflow: "hidden",
                 backgroundColor: ann.fillColor || "transparent",
               }}
-              className="w-full h-full relative z-10 border border-blue-500 rounded-none outline-none m-0 p-0"
+              className="w-full h-full relative z-10 m-0 p-0 outline-none border-0 select-text"
             />
           ) : (
             <span
@@ -2860,12 +2871,8 @@ function AnnotationElement({
                   onStartEditingText();
                 }
               }}
-              style={{
-                ...textCommonStyle,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-              }}
-              className="w-full h-full block relative z-10 select-none flex flex-col justify-start"
+              style={textCommonStyle}
+              className="w-full h-full block relative z-10 select-none m-0 p-0 border-0"
             >
               {ann.text}
             </span>
