@@ -279,7 +279,7 @@ export default function App() {
       )}
 
       {/* ── Google M3 Workspace Top App Bar ── */}
-      <nav className="sticky top-0 z-40 w-full bg-[#f8fafd]/95 dark:bg-[#131314]/95 backdrop-blur-md px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#c4c7c5]/40 dark:border-[#444746]/40 transition-colors font-sans">
+      <nav className="sticky top-0 z-50 w-full bg-[#f8fafd]/95 dark:bg-[#131314]/95 backdrop-blur-md px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#c4c7c5]/40 dark:border-[#444746]/40 transition-colors font-sans">
         {/* Left Side: Logo & Navigation Pills */}
         <div className="flex items-center gap-2 lg:gap-4">
           {/* Logo */}
@@ -514,7 +514,7 @@ export default function App() {
             </button>
 
             {showThemeMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-1.5 z-50 font-sans">
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-[#ffffff] dark:bg-[#1e1f20] shadow-[0_2px_6px_2px_rgba(0,0,0,0.08),0_1px_2px_0_rgba(0,0,0,0.12)] dark:shadow-[0_2px_6px_2px_rgba(0,0,0,0.40)] border border-[#c4c7c5]/40 dark:border-[#444746]/40 p-1.5 z-[60] transform translate-z-0 font-sans">
                 <button
                   type="button"
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors font-sans ${
